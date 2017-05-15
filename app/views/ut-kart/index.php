@@ -15,18 +15,19 @@ use yii\grid\GridView;
 
 <!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
     <?php Pjax::begin(); ?>
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+	<div class="well well-large">
+			<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
+			<p>
 
-    </p>
+			</p>
 
-	<?= ListView::widget([
-		'dataProvider' => $dataProvider,
-//        'itemView' => 'searchview',
-		'itemView' => 'view',
-	]);?>
-
+			<?= ListView::widget([
+				'dataProvider' => $dataProvider,
+		//        'itemView' => 'searchview',
+				'itemView' => 'view',
+			]);?>
+	</div>
 
     <?php Pjax::end(); ?>
 </div>

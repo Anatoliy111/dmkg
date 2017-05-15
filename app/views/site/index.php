@@ -19,8 +19,10 @@ $asset = \app\assets\AppAsset::register($this);
 
 
 <!-- ======= Welcome section ======= -->
+<hr/>
+
 <section class="welcome_sec">
-	<div class="container">
+<!--	<div class="container">-->
 		<div class="row welcome_heading">
 
 
@@ -31,7 +33,11 @@ $asset = \app\assets\AppAsset::register($this);
 				<?= Carousel::widget(800, 420) ?>
 			</div>
 		</div> <!-- End Row -->
+</section>
 
+<hr/>
+
+<section class="welcome_sec">
 
 		<div class="row welcome welcome_details">
 			<div class="col-lg-6 col-md-12">
@@ -80,16 +86,13 @@ $asset = \app\assets\AppAsset::register($this);
 				</div>
 			</div>
 		</div> <!-- End Row -->
-	</div> <!-- End container -->
-</section> <!-- End welcome_sec -->
+<!--	</div> <!-- End container -->
+</section><!-- End welcome_sec
 <!-- ======= /Welcome section ======= -->
 
 
 
-<br/>
-<hr/>
-
-<br/>
+<!--<br/>-->
 <hr/>
 
 
@@ -124,18 +127,18 @@ $asset = \app\assets\AppAsset::register($this);
 </section> <!-- End latest_news_sec -->
 <!-- ======== /Latest News ======== -->
 
-<br/>
+
 <hr/>
 
 <!-- ======== Some Facts ======== -->
-<section class="some_facts hidden-xs">
-	<div class="container">
-		<span class="timer" data-from="1" data-to="12" data-speed="5000" data-refresh-interval="50">12</span><p>Years of <br>Experiences</p>
-		<span class="timer" data-from="10" data-to="54" data-speed="5000" data-refresh-interval="50">54</span><p>Professional <br>Advisors</p>
-		<span class="timer"  data-from="10" data-to="40" data-speed="5000" data-refresh-interval="50">40</span><p>news cases <br>every years</p>
-		<span class="timer" data-from="10" data-to="89" data-speed="5000" data-refresh-interval="50">89</span><p class="case">Registered <br>Cases</p>
-	</div>
-</section> <!-- End some_facts -->
+<!--<section class="some_facts hidden-xs">-->
+<!--	<div class="container">-->
+<!--		<span class="timer" data-from="1" data-to="12" data-speed="5000" data-refresh-interval="50">12</span><p>Years of <br>Experiences</p>-->
+<!--		<span class="timer" data-from="10" data-to="54" data-speed="5000" data-refresh-interval="50">54</span><p>Professional <br>Advisors</p>-->
+<!--		<span class="timer"  data-from="10" data-to="40" data-speed="5000" data-refresh-interval="50">40</span><p>news cases <br>every years</p>-->
+<!--		<span class="timer" data-from="10" data-to="89" data-speed="5000" data-refresh-interval="50">89</span><p class="case">Registered <br>Cases</p>-->
+<!--	</div>-->
+<!--</section> <!-- End some_facts -->
 <!-- ======== /Some Facts ======== -->
 
 
