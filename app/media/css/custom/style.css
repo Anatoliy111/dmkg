@@ -807,9 +807,9 @@ header .bottom_header .address .top-info .icon-box span:after {
 }
 
 .welcome_sec h2 {
-	font-family: 'sans-serif';
+	font-family: 'Raleway', sans-serif;
 	font-weight: 100;
-	font-size: 1.625em;
+	font-size: 2em;
 	color: #323232;
 	text-transform: uppercase;
 	position: relative;

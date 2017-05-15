@@ -1,5 +1,7 @@
 <?php
-use yii\easyii\modules\article\api\Article;
+	use yii\easyii\models\Tag;
+	use yii\easyii\models\TagAssign;
+	use yii\easyii\modules\article\api\Article;
 use yii\easyii\modules\carousel\api\Carousel;
 use yii\easyii\modules\gallery\api\Gallery;
 
@@ -37,7 +39,11 @@ $asset = \app\assets\AppAsset::register($this);
 
 <hr/>
 
-<section class="welcome_sec">
+<section class="our_advisor">
+
+	<h2>Послуги</h2>
+
+	</br>
 
 		<div class="row welcome welcome_details">
 			<div class="col-lg-6 col-md-12">
@@ -95,24 +101,26 @@ $asset = \app\assets\AppAsset::register($this);
 <!--<br/>-->
 <hr/>
 
-
-<!-- ======== Latest News ======== -->
-<section class="p0 container-fluid latest_news_sec news_large">
+<section class="our_advisor">
 	<div class="container">
 		<h2>Новини</h2>
 	</div>
-	<div class="news_highlight">
-		<?php foreach(News::last(4) as $news) : ?>
+	<div class="col-lg-4 col-md-4 col-sm-12 pull-left left_side pbt-86"> <!-- Left Side -->
+		<h4>Популярні новини</h4>
+		<?php foreach(News::popular(3) as $news) : ?>
+			<ul class="p0 post_item">
+
+
+				<li><?php echo Yii::$app->formatter->asDate($news->time) ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
+				<!--					<li>AUG 12,2015<a href="">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
+				<!--					<li>AUG 12,2015<a href="" class="bottom_item">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
+			</ul>
+		<?php endforeach;?>
+
+	</div> <!-- End left side -->
+	<?php foreach(News::last(4) as $news) : ?>
 		<div class="col-lg-3 col-md-6 news">
-			<div class="news_img_holder">
-				<?php if (!empty($news->image)) {?>
-					<?= Html::img($news->thumb(300, 300)) ?>
-				<?php }
-					else{ ?>
-						<img src="<?= $asset->baseUrl ?>/News--300x239.jpeg" style="width: 300px; height: 300px">
-					<?php 	}	?>
-				<div class="news_opacity">
-				</div>
+
 				<div class="news_details">
 					<a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>">
 						<span><?php echo Yii::$app->formatter->asDate($news->time) ?></span>
@@ -120,11 +128,41 @@ $asset = \app\assets\AppAsset::register($this);
 						<p><?= $news->short ?> </p>
 					</a>
 				</div>
-			</div>
+
 		</div>
-		<?php endforeach;?>
-	</div>
-</section> <!-- End latest_news_sec -->
+	<?php endforeach;?>
+
+</section>
+
+<!-- ======== Latest News ======== -->
+<!--<section class="p0 container-fluid latest_news_sec news_large">-->
+<!--	<div class="container">-->
+<!--		<h2>Новини</h2>-->
+<!--	</div>-->
+<!--	<div class="news_highlight">-->
+<!--		--><?php //foreach(News::last(4) as $news) : ?>
+<!--		<div class="col-lg-3 col-md-6 news">-->
+<!--			<div class="news_img_holder">-->
+<!--				--><?php //if (!empty($news->image)) {?>
+<!--					--><?//= Html::img($news->thumb(300, 300)) ?>
+<!--				--><?php //}
+//					else{ ?>
+<!--						<img src="--><?//= $asset->baseUrl ?><!--/News--300x239.jpeg" style="width: 300px; height: 300px">-->
+<!--					--><?php //	}	?>
+<!--				<div class="news_opacity">-->
+<!--				</div>-->
+<!--				<div class="news_details">-->
+<!--					<a href="--><?//= Url::to(['news/view', 'slug' => $news->slug]) ?><!--">-->
+<!--						<span>--><?php //echo Yii::$app->formatter->asDate($news->time) ?><!--</span>-->
+<!--						<h4>--><?//= $news->title ?><!--</h4>-->
+<!--						<p>--><?//= $news->short ?><!-- </p>-->
+<!--					</a>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		--><?php //endforeach;?>
+<!--	</div>-->
+<!--</section> <!-- End latest_news_sec -->-->
 <!-- ======== /Latest News ======== -->
 
 
@@ -158,7 +196,10 @@ $asset = \app\assets\AppAsset::register($this);
 
 						<?= $photo->box(280, 235) ?>
 
-
+<!--						transition: all .9s ease;-->
+<!--						-webkit-transform: scale(1.3);-->
+<!--						-ms-transform: scale(1.3);-->
+<!--						transform: scale(1.3);-->
 					</div>
 
 				</div>
