@@ -1,0 +1,165 @@
+<?php
+
+use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
+	use app\controllers;
+
+	use phpnt\pace\PaceAsset;
+
+$asset = \app\assets\AppAsset::register($this);
+
+?>
+
+
+
+<?php $this->beginContent('@app/views/layouts/base.php');
+
+?>
+    <header>
+
+		<?php PaceAsset::register($this);
+
+		error_reporting(E_ALL);
+		ini_set("display_errors", 1);
+
+		?>
+		<!-- ======= /mainmenu-area section ======= -->
+		<section class="search">
+			<div class="container-fluid top_head">
+				<div class="container">
+					<!-- <p class="float_left">Welcome to Me Financial Services, we have over 12 years of expertise</p> -->
+					<div class="float_right">
+						<ul>
+							<li>
+								<div  id="search_box">
+									<input id="search" type="text" placeholder="Пошук...">
+									<button id="button" type="submit"><span class="icon icon-Search"></span></button>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div> <!-- end container -->
+			</div><!-- end top_header -->
+		</section>
+
+
+
+		<div class="bottom_header top-bar-gradient">
+			<div class="container clear_fix">
+				<div class="float_left logo">
+					<a href="<?= Url::home() ?>">
+						<img src="<?= $asset->baseUrl ?>/logo.png" alt="ДМКГ">
+					</a>
+				</div>
+				<div class="padding-top">
+					<div class="float_right address">
+						<div class="top-info">
+							<div class="icon-box">
+								<span class=" icon icon-Pointer"></span>
+							</div>
+							<div class="content-box">
+								<p> вул. Нова 80-А <br><span>м. Долинська Кіровоградська обл.</span></p>
+							</div>
+						</div>
+						<div class="top-info">
+							<div class="icon-box">
+								<span class="separator icon icon-Phone2"></span>
+							</div>
+							<div class="content-box">
+								<p>+3805-234-5-22-56 <br><span>kp_centr@ukr.net</span></p>
+							</div>
+						</div>
+						<div class="top-info">
+							<div class="icon-box">
+								<span class="separator icon icon-Timer"></span>
+							</div>
+							<div class="content-box">
+								<p>Пн - Пт 8.00 - 17.00 <br><span>Сб. Нд. вихідний</span></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- end container -->
+		</div> <!-- end bottom_header -->
+
+		<!-- ======= mainmenu-area section ======= -->
+		<section class="mainmenu-area">
+			<div class="container">
+				<nav class="clearfix">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header clearfix">
+						<button type="button" class="navbar-toggle collapsed">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="fa fa-th fa-2x"></span>
+						</button>
+					</div>
+					<div class="nav_main_list custom-scroll-bar pull-left" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav" id="hover_slip">
+							<li><a href="<?= Url::home() ?>">Головна</a></li>
+							<li class="arrow_down"><a href='/about/index'>Про нас</a>
+								<div class="sub-menu">
+									<ul>
+										<li><a href='card-user/index'>Картка</a></li>
+										<li><a href="single-advisor.html">Single Advisor</a></li>
+										<li><a href="career.html">Career</a></li>
+										<li><a href="testimonial.html">Testimonaials</a></li>
+										<li><a href="partners.html">partners</a></li>
+									</ul>
+								</div>
+							</li>
+							<li class="arrow_down" ><a href='/articles/index'>Статті</a>
+								<div class="sub-menu">
+									<ul>
+										<li><a href="404.html">404 Page</a></li>
+										<li><a href="no-search-results.html">No Search Result</a></li>
+										<li><a href="search-results.html">Search Results</a></li>
+										<li><a href="faq.html">FAQ</a></li>
+									</ul>
+								</div>
+							</li>
+							<li class="arrow_down" ><a href='/news/index'>Новини</a>
+								<div class="sub-menu">
+									<ul>
+										<li><a href="blog-leftside-bar.html">Blog Left Bar</a></li>
+										<li><a href="blog-rightside-bar.html">Blog Right Bar</a></li>
+										<li><a href="blog-single-column.html">T H E M E L O C K . C O M</a></li>
+										<li><a href="blog-two-column.html">Blog Two Col</a></li>
+										<li><a href="blog-details.html">Blog Details</a></li>
+									</ul>
+								</div>
+							</li>
+							<li><a class="contact" href='/gallery/index'>Фотогалерея</a></li>
+							<li><a class="contact" href='/contact/index'>Контакти</a></li>
+						</ul>
+					</div>
+					<div class="find-advisor pull-right">
+<!--						<a href="--><?//= Url::home() ?><!--ut-kart\index" class="advisor ">Кабінет споживача</a>-->
+						<a href='/ut-kart/index' class="advisor ">Кабінет споживача</a>
+					</div>
+				</nav> <!-- End Nav -->
+			</div> <!-- End Container -->
+		</section>
+    </header>
+    <main class="main">
+        <?php if($this->context->id != 'site') : ?>
+
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ])?>
+        <?php endif; ?>
+
+			<?= $content ?>
+
+        <div class="push"></div>
+    </main>
+
+<footer>
+
+	<div class="bottom_footer container-fluid">
+		<div class="container">
+			<p class="float_left">Copyright &copy; DMKG 2017. All rights reserved. </p>
+			<p class="float_right">Created by: Bondyuk</p>
+		</div>
+	</div> <!-- End bottom_footer -->
+</footer>
+<?php $this->endContent(); ?>
