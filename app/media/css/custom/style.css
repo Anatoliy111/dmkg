@@ -1945,6 +1945,9 @@ footer .bottom_footer p {
 .history_sec {
 	/*margin-top: 80px;*/
 	padding-bottom: 87px;
+	padding-top: 20px;
+	background: #f7f8fa;
+
 }
 .history_sec .left-side {
     padding-right: 40px;
@@ -3442,7 +3445,9 @@ footer .bottom_footer p {
 /* ====== Education ========*/
 .education_sec {
 	/*margin-top:96px;*/
+	padding-top: 20px;
 	padding-bottom: 58px;
+	background: #f7f8fa;
 }
 .education_sec span {
 	font-family: 'PT Serif', serif;

@@ -254,7 +254,7 @@
 		padding-bottom: 25px;
 	}
 	.mainmenu-area nav {
-		background:#12a0b1;
+		background:#0c3c7b;;
 		width:750px;
 		margin: 0 auto;
 		height:auto;
@@ -656,7 +656,7 @@
 		color:#fff;
 	}
 	.mainmenu-area nav>div>ul {
-		background:#12a0b1; 
+		background:#0c3c7b; 
 	}
 	.mainmenu-area nav>div>ul li a {
 		border-bottom: 1px dotted rgba(255, 255, 255, 0.4);
