@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 	use app\controllers;
@@ -13,6 +14,8 @@ $asset = \app\assets\AppAsset::register($this);
 
 
 <?php $this->beginContent('@app/views/layouts/base.php');
+
+$search = '';
 
 ?>
     <header>
@@ -32,8 +35,11 @@ $asset = \app\assets\AppAsset::register($this);
 						<ul>
 							<li>
 								<div  id="search_box">
-									<input id="search" type="text" placeholder="Пошук...">
-									<button id="button" type="submit"><span class="icon icon-Search"></span></button>
+									<?= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
+									<?= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
+
+<!--									<input id="search" type="text" placeholder="Пошук...">-->
+<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
 								</div>
 							</li>
 						</ul>

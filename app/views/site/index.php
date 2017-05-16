@@ -1,5 +1,6 @@
 <?php
-	use yii\easyii\models\Tag;
+use yii\bootstrap\Collapse;
+use yii\easyii\models\Tag;
 	use yii\easyii\models\TagAssign;
 	use yii\easyii\modules\article\api\Article;
 use yii\easyii\modules\carousel\api\Carousel;
@@ -40,8 +41,9 @@ $asset = \app\assets\AppAsset::register($this);
 <hr/>
 
 <section class="our_advisor">
-
+	<div class="container">
 	<h2>Послуги</h2>
+	</div>
 
 	</br>
 
@@ -101,7 +103,7 @@ $asset = \app\assets\AppAsset::register($this);
 <!--<br/>-->
 <hr/>
 
-<section class="our_advisor">
+<section class="row our_advisor">
 	<div class="container">
 		<h2>Новини</h2>
 	</div>
@@ -112,25 +114,64 @@ $asset = \app\assets\AppAsset::register($this);
 
 
 				<li><?php echo Yii::$app->formatter->asDate($news->time) ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
-				<!--					<li>AUG 12,2015<a href="">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
-				<!--					<li>AUG 12,2015<a href="" class="bottom_item">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
 			</ul>
 		<?php endforeach;?>
 
 	</div> <!-- End left side -->
-	<?php foreach(News::last(4) as $news) : ?>
-		<div class="col-lg-3 col-md-6 news">
 
-				<div class="news_details">
-					<a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>">
-						<span><?php echo Yii::$app->formatter->asDate($news->time) ?></span>
-						<h4><?= $news->title ?></h4>
-						<p><?= $news->short ?> </p>
-					</a>
-				</div>
+	<div class="col-lg-6 col-md-6 news">
+		<?php
+		$items = [];
+		foreach(News::last(4) as $news) :
 
-		</div>
-	<?php endforeach;?>
+
+
+					array_push($items,
+
+
+						[
+							'label' => $news->title,
+							'content' => $news->short,
+						]
+
+
+					);
+
+
+
+
+
+
+
+
+
+		endforeach;?>
+
+		<!--				<div class="news_details">-->
+
+<!--		<a href="--><?//= Url::to(['news/view', 'slug' => $news->slug]) ?><!--">-->
+<!--			<span>--><?php //echo Yii::$app->formatter->asDate($news->time) ?><!--</span>-->
+<!--			<h4>--><?//= $news->title ?><!--</h4>-->
+<!--			<p>--><?//= $news->short ?><!-- </p>-->
+<!--		</a>-->
+	<?php	echo Collapse::widget([
+		'items' => $items,
+		]);
+	?>
+<!--	--><?php //foreach(News::last(4) as $news) : ?>
+<!---->
+<!---->
+<!--<!--				<div class="news_details">-->-->
+<!--					<a href="--><?//= Url::to(['news/view', 'slug' => $news->slug]) ?><!--">-->
+<!--						<span>--><?php //echo Yii::$app->formatter->asDate($news->time) ?><!--</span>-->
+<!--						<h4>--><?//= $news->title ?><!--</h4>-->
+<!--						<p>--><?//= $news->short ?><!-- </p>-->
+<!--					</a>-->
+<!--<!--				</div>-->-->
+<!---->
+<!---->
+<!--	--><?php //endforeach;?>
+	</div>
 
 </section>
 
