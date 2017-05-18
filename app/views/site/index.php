@@ -144,7 +144,7 @@ $asset = \app\assets\AppAsset::register($this);
 									</div>
 								</div>
 						</div>
-						<? endforeach;?>
+						<?php endforeach;?>
 					</div> <!-- End tab_option_right -->
 				</div> <!-- End tab_option -->
 			</div> <!-- End right_side -->
@@ -216,4 +216,4 @@ $asset = \app\assets\AppAsset::register($this);
 
 
 
-<br/>
+
