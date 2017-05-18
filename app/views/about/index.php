@@ -27,12 +27,3 @@ $this->params['breadcrumbs'][] = $page->model->title;
 	</div>
 </section>
 
-
-<div class="row">
-    <div class="col-md-8">
-<!--        --><?//=
-//		$page->text ?>
-    </div>
-<!---->
-<!--</div>-->
-
