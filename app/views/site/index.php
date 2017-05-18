@@ -94,117 +94,78 @@ $asset = \app\assets\AppAsset::register($this);
 				</div>
 			</div>
 		</div> <!-- End Row -->
-<!--	</div> <!-- End container -->
+
 </section><!-- End welcome_sec
 <!-- ======= /Welcome section ======= -->
 
-
-
-<!--<br/>-->
 <hr/>
 
-<section class="row our_advisor">
+
+
+
+<section class="career_details">
 	<div class="container">
-		<h2>Новини</h2>
-	</div>
-	<div class="col-lg-4 col-md-4 col-sm-12 pull-left left_side pbt-86"> <!-- Left Side -->
-		<h4>Популярні новини</h4>
-		<?php foreach(News::popular(3) as $news) : ?>
-			<ul class="p0 post_item">
+		<div class="row">
+			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pull-right right_side">
+				<h2>Новини</h2>
+				<div class="tab_option">
+					<div class="panel-group tab_option_right" id="accordion">
+						<?php
+
+							foreach(News::last(4) as $count=>$news) :
+						?>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion" href="#<?= $news->slug ?>">
+										<?= Yii::$app->formatter->asDate($news->time)?>
+										<h5><?= $news->title ?></h5>
+										<img src="<?= $asset->baseUrl ?>/images/icon-bg.png" alt="icon" class="active">
+										<img src="<?= $asset->baseUrl ?>/images/icon-bg-hover.png" alt="icon" class="hover">
+									</a>
+								</h4>
+							</div>
+							<?php
+							if ($count==0) :
+							?>
+								<div id="<?= $news->slug ?>" class="panel-collapse collapse in" >
+							<?php
+								else:
+							?>
+								<div id="<?= $news->slug ?>" class="panel-collapse collapse" >
+							<?php
+								endif
+							?>
+
+									<div class="panel-body">
+										<?= $news->short ?>
+										</br>
+										<a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>" class="read-more pull-right">Читати <i class="fa fa-angle-right"></i></a>
+									</div>
+								</div>
+						</div>
+						<? endforeach;?>
+					</div> <!-- End tab_option_right -->
+				</div> <!-- End tab_option -->
+			</div> <!-- End right_side -->
+			<div class="col-lg-4 col-md-4 col-sm-12 pull-left left_side"> <!-- Left Side -->
+				<h4>Популярні новини</h4>
+				<?php foreach(News::popular(3) as $news) : ?>
+					<ul class="p0 post_item">
 
 
-				<li><?php echo Yii::$app->formatter->asDate($news->time) ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
-			</ul>
-		<?php endforeach;?>
+						<li><?php echo Yii::$app->formatter->asDate($news->time) ?>
+							</br>
+							<a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
+					</ul>
+				<?php endforeach;?>
 
-	</div> <!-- End left side -->
-
-	<div class="col-lg-6 col-md-6 news">
-		<?php
-		$items = [];
-		foreach(News::last(4) as $news) :
-
-
-
-					array_push($items,
+			</div> <!-- End left side -->
+		</div> <!-- End row -->
+	</div> <!-- End container -->
+</section> <!-- End career_details -->
 
 
-						[
-							'label' => $news->title,
-							'content' => $news->short,
-						]
-
-
-					);
-
-
-
-
-
-
-
-
-
-		endforeach;?>
-
-		<!--				<div class="news_details">-->
-
-<!--		<a href="--><?//= Url::to(['news/view', 'slug' => $news->slug]) ?><!--">-->
-<!--			<span>--><?php //echo Yii::$app->formatter->asDate($news->time) ?><!--</span>-->
-<!--			<h4>--><?//= $news->title ?><!--</h4>-->
-<!--			<p>--><?//= $news->short ?><!-- </p>-->
-<!--		</a>-->
-	<?php	echo Collapse::widget([
-		'items' => $items,
-		]);
-	?>
-<!--	--><?php //foreach(News::last(4) as $news) : ?>
-<!---->
-<!---->
-<!--<!--				<div class="news_details">-->-->
-<!--					<a href="--><?//= Url::to(['news/view', 'slug' => $news->slug]) ?><!--">-->
-<!--						<span>--><?php //echo Yii::$app->formatter->asDate($news->time) ?><!--</span>-->
-<!--						<h4>--><?//= $news->title ?><!--</h4>-->
-<!--						<p>--><?//= $news->short ?><!-- </p>-->
-<!--					</a>-->
-<!--<!--				</div>-->-->
-<!---->
-<!---->
-<!--	--><?php //endforeach;?>
-	</div>
-
-</section>
-
-<!-- ======== Latest News ======== -->
-<!--<section class="p0 container-fluid latest_news_sec news_large">-->
-<!--	<div class="container">-->
-<!--		<h2>Новини</h2>-->
-<!--	</div>-->
-<!--	<div class="news_highlight">-->
-<!--		--><?php //foreach(News::last(4) as $news) : ?>
-<!--		<div class="col-lg-3 col-md-6 news">-->
-<!--			<div class="news_img_holder">-->
-<!--				--><?php //if (!empty($news->image)) {?>
-<!--					--><?//= Html::img($news->thumb(300, 300)) ?>
-<!--				--><?php //}
-//					else{ ?>
-<!--						<img src="--><?//= $asset->baseUrl ?><!--/News--300x239.jpeg" style="width: 300px; height: 300px">-->
-<!--					--><?php //	}	?>
-<!--				<div class="news_opacity">-->
-<!--				</div>-->
-<!--				<div class="news_details">-->
-<!--					<a href="--><?//= Url::to(['news/view', 'slug' => $news->slug]) ?><!--">-->
-<!--						<span>--><?php //echo Yii::$app->formatter->asDate($news->time) ?><!--</span>-->
-<!--						<h4>--><?//= $news->title ?><!--</h4>-->
-<!--						<p>--><?//= $news->short ?><!-- </p>-->
-<!--					</a>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--		--><?php //endforeach;?>
-<!--	</div>-->
-<!--</section> <!-- End latest_news_sec -->-->
-<!-- ======== /Latest News ======== -->
 
 
 <hr/>

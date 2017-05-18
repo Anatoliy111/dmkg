@@ -2810,6 +2810,7 @@ footer .bottom_footer p {
     background-color: #12a0b1;
     color: #fff;
     border:none;
+    transition: all 0.4s ease-in-out;
 }
 
 .faqs_sec .row .left_side {
@@ -3101,9 +3102,11 @@ footer .bottom_footer p {
 .faqs_sec .right_side .tab_option .panel-title a:focus,
 .faqs_sec .right_side .tab_option .panel-title a.active,
 .career_details .right_side .tab_option .panel-title a:focus,
-.career_details .right_side .tab_option .panel-title a.active {
-	background: #1cbac8;
-	color: #fff;
+.career_details .right_side .tab_option .panel-title a.active,
+.career_details .right_side .tab_option .panel-title a:hover{
+    background: #1cbac8;
+    color: #fff;
+    transition: all 0.2s ease-in-out;
 }
 .faqs_sec .right_side .tab_option .panel-title a:focus img.hover,
 .career_details .right_side .tab_option .panel-title a:focus img.hover {
@@ -3135,7 +3138,7 @@ footer .bottom_footer p {
 	overflow: hidden;
 }
 .career_details .left_side {
-	padding-top:101px;
+	/*padding-top:101px;*/
 }
 .career_details .left_side h2 {
 	font-family: 'Raleway', sans-serif;
@@ -3170,23 +3173,32 @@ footer .bottom_footer p {
 	line-height: 25px;
 	padding-top: 5px;
     padding-bottom: 13px;
+
+
+}
+
+.career_details .left_side p:hover {
+    background: #13A0B2;
+    color: #fff;
 }
 .career_details .left_side a {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 500;
-	text-transform: uppercase;
-	color: #282f39;
+	/*text-transform: uppercase;*/
+	/*color: #282f39;*/
 	display: inline-block;
-	background: #f6ba18;
+	/*background: #f6ba18;*/
 	position: relative;
-	line-height: 40px;
-	padding-left:35px;
+	/*line-height: 40px;*/
+	padding-left:5px;
 	border-radius: 3px;
 	margin-bottom: 27px;
 	padding-right: 9px;
 	font-size: 14px;
 	transition: all .3s ease;
 }
+
+
 .career_details .left_side a:hover {
 	background: #13A0B2;
 	color: #fff;
@@ -3223,8 +3235,38 @@ footer .bottom_footer p {
 	position: relative;
 	z-index: 99;
 	padding-bottom: 53px;
-	padding-top: 76px;
+	/*padding-top: 76px;*/
 }
+
+.career_details .right_side a.read-more {
+    text-transform: uppercase;
+    /*display: inline-block;*/
+    color: #2A2A2A;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 7px 20px;
+    background: #f6ba18;
+    border-radius: 2px;
+    margin-top: -2px;
+    transition: all .3s ease;
+}
+
+.career_details .right_side a.read-more:hover {
+    background: #171B20;
+}
+.career_details .right_side a.read-more i {
+    font-size: 1.3em;
+    padding-left: 3px;
+}
+.career_details .right_side a.read-more:hover {
+    color: #fff;
+    -webkit-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+
 .career_details .right_side:after {
   content: '';
   width: 2000px;
