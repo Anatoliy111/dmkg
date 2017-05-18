@@ -148,6 +148,7 @@ $asset = \app\assets\AppAsset::register($this);
 					</div> <!-- End tab_option_right -->
 				</div> <!-- End tab_option -->
 			</div> <!-- End right_side -->
+
 			<div class="col-lg-4 col-md-4 col-sm-12 pull-left left_side"> <!-- Left Side -->
 				<h4>Популярні новини</h4>
 				<?php foreach(News::popular(3) as $news) : ?>

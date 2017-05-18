@@ -27,10 +27,6 @@ $this->params['breadcrumbs'][] = $page->model->title;
 	</div>
 </section>
 
-<!--<h1>--><?//=
-//	$page->seo('h1', $page->title)
-//	?><!--</h1>-->
-
 
 <div class="row">
     <div class="col-md-8">
