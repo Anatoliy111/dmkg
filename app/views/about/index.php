@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $page->model->title;
 
 <section class="education_sec">
 	<div class="container">
-		<div class="col-lg-4 col-md-4 col-sm-12 education_title_holder" style="padding-left: 0px;">
+		<div class="col-lg-4 col-md-4 col-sm-12 education_title_holder" style="padding-left: 10px;">
 			<h2><?= $page->seo('h1', $page->title) ?></h2>
 		</div>
 <!--		<div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 education_years_holder">-->
