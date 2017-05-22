@@ -5,6 +5,7 @@
 	use yii\helpers\Html;
 
 
+
 	//	use yii\bootstrap\
 
 /* @var $this yii\web\View */
@@ -27,9 +28,10 @@
 				'dataProvider' =>  $dp[$abon->id],
 							'columns' => [
 				['class' => 'yii\grid\SerialColumn'],
-
-
-				'period',
+				[
+						'attribute' => 'period',
+						'format' => ['date', 'php:MY'],
+				],
 				[
 					'attribute' => 'id_posl',
 					'value' => 'tipposl.poslug',

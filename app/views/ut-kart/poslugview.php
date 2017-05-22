@@ -29,7 +29,10 @@
 							'columns' => [
 				['class' => 'yii\grid\SerialColumn'],
 
-				'period',
+				[
+						'attribute' => 'period',
+						'format' => ['date', 'php:MY'],
+				],
 //				'id_tipposl',
 		     	[
 		     		'attribute' => 'id_tipposl',
@@ -38,7 +41,12 @@
 				'n_dog',
 				'date_dog',
 				'nnorma',
-				 'activ',
+//				 'activ',
+								[
+									'attribute' => 'activ',
+									'class' => '\kartik\grid\BooleanColumn',
+								],
+
 				// 'note:ntext',
 				// 'ur_fiz',
 				// 'id_dom',

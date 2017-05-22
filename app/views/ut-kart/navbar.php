@@ -1,7 +1,6 @@
 <?php
 
-use app\models\CardUser;
-use app\models\KomUlica;
+	use kartik\date\DatePicker;
 	use kartik\nav\NavX;
 	use yii\bootstrap\Nav;
 	use yii\bootstrap\NavBar;
@@ -21,7 +20,7 @@ use yii\helpers\Url;
 	//	use yii\bootstrap\
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CardUser */
+
 
 
 
@@ -39,7 +38,28 @@ use yii\helpers\Url;
 	<div class="well well-large">
 	<h3 class="text-center">Кабінет споживача</h3>
 
+
 	<div class="row">
+		<div class="col-sm-4 pull-right">
+			<?php
+				echo '<label class="control-label">Період</label>';
+				echo DatePicker::widget([
+					'options' => ['placeholder' => 'Виберіть місяць...'],
+					'name' => 'dp_1',
+					'type' => DatePicker::TYPE_COMPONENT_APPEND,
+					'value' => '01/29/2014',
+					'removeButton' => false,
+					'pluginOptions' => [
+						'autoclose' => true,
+						'startView'=>'year',
+						'minViewMode'=>'months',
+						'format' => 'M-yyyy',
+					]
+				]);
+			?>
+		</div>
+
+
 		<div class="col-sm-12">
 
 	<?php

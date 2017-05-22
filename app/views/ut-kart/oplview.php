@@ -27,9 +27,10 @@
 				'dataProvider' =>  $dp[$abon->id],
 							'columns' => [
 				['class' => 'yii\grid\SerialColumn'],
-
-
-				'period',
+				[
+						'attribute' => 'period',
+						'format' => ['date', 'php:MY'],
+				],
 				[
 					'attribute' => 'id_tipposl',
 					'value' => 'tipposl.poslug',
