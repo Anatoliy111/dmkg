@@ -41,22 +41,37 @@ use yii\helpers\Url;
 
 	<div class="row">
 		<div class="col-sm-4 pull-right">
+
 			<?php
-				echo '<label class="control-label">Період</label>';
-				echo DatePicker::widget([
-					'options' => ['placeholder' => 'Виберіть місяць...'],
-					'name' => 'dp_1',
-					'type' => DatePicker::TYPE_COMPONENT_APPEND,
-					'value' => '01/29/2014',
-					'removeButton' => false,
-					'pluginOptions' => [
-						'autoclose' => true,
-						'startView'=>'year',
-						'minViewMode'=>'months',
-						'format' => 'M-yyyy',
-					]
-				]);
-			?>
+
+			    $form = ActiveForm::begin([
+				'id'=>'period',
+				'action' => [$this->context->action->id, 'id' => Yii::$app->request->get('id')],
+				'options' => [
+//					'enctype' => 'multipart/form-data',
+						'data-pjax' => true,
+//	'enableAjaxValidation'=>true,
+					'validateOnSubmit'=>true,
+				]]);?>
+
+
+
+		<?=$form->field($model, 'MonthYear')->widget(DatePicker::classname(), [
+			'options' => ['placeholder' => 'Виберіть місяць...'],
+			'type' => DatePicker::TYPE_INPUT,
+			'pluginOptions' => [
+				'autoclose' => true,
+				'startView'=>'year',
+				'minViewMode'=>'months',
+				'format' => 'mm-yyyy',
+			]])?>
+
+
+
+
+			<?= Html::submitButton('Отправить', ['class' => 'btn btn-success']) ?>
+
+			<?php $form = ActiveForm::end()?>
 		</div>
 
 

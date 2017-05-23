@@ -12,6 +12,7 @@ use Yii;
 use app\models\UtKart;
 use app\models\SearchUtKart;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,6 +46,9 @@ class UtKartController extends Controller
         $searchModel = new SearchUtKart();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+
+		//		$searchModel->period();
+//		$searchModel->lastperiod();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -58,8 +62,11 @@ class UtKartController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -131,7 +138,7 @@ class UtKartController extends Controller
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
-			$query = UtNarah::find();
+			$query = UtNarah::find()->where(['period'=> $_SESSION['period']]);
 			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
@@ -155,7 +162,7 @@ class UtKartController extends Controller
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
-			$query = UtOpl::find();
+			$query = UtOpl::find()->where(['period'=> $_SESSION['period']]);
 			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
@@ -179,7 +186,7 @@ class UtKartController extends Controller
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
-			$query = UtObor::find();
+			$query = UtObor::find()->where(['period'=> $_SESSION['period']]);
 			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
@@ -200,6 +207,15 @@ class UtKartController extends Controller
 
 	public function actionInfo($id)
 	{
+		if (!isset($_SESSION['period']))
+		{
+			$session = Yii::$app->session;
+			$session['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
+		}
+
+
+
+
 		$model = $this->findModel($id);
 		$query = UtAbonent::find();
 		$query->andWhere(['id_kart' => $model->id]);
@@ -235,18 +251,6 @@ class UtKartController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing UtKart model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the UtKart model based on its primary key value.

@@ -101,4 +101,10 @@ class UtObor extends \yii\db\ActiveRecord
 			]);
 
 	}
+
+    public function sort()
+    {
+        $this->orderBy(['period' => SORT_DESC]);
+        return $this;
+    }
 }
