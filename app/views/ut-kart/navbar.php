@@ -69,7 +69,7 @@ use yii\helpers\Url;
 
 
 
-			<?= Html::submitButton('Отправить', ['class' => 'btn btn-success']) ?>
+			<?= Html::submitButton('Далі', ['class' => 'btn btn-success']) ?>
 
 			<?php $form = ActiveForm::end()?>
 		</div>
