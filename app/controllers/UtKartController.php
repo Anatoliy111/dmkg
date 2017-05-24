@@ -178,7 +178,7 @@ class UtKartController extends Controller
 		]);
 	}
 
-	public function actionObor($id)
+	public function actionObor($id,$per)
 	{
 
 		$model = $this->findModel($id);
@@ -205,7 +205,7 @@ class UtKartController extends Controller
 	}
 
 
-	public function actionInfo($id)
+	public function actionInfo($id,$per)
 	{
 		if (!isset($_SESSION['period']))
 		{

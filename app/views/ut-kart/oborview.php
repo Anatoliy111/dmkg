@@ -15,7 +15,7 @@
 
 
 
-	<?php $this->beginContent('@app/views/ut-kart/navbar.php'); ?>
+	<?php $this->beginContent('@app/views/ut-kart/navbar.php',['model'=>$model]); ?>
 
 <div class="utkart-info-view">
 

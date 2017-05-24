@@ -44,9 +44,10 @@ use yii\helpers\Url;
 
 			<?php
 
+			    $model->MonthYear = $_SESSION['period'];
 			    $form = ActiveForm::begin([
 				'id'=>'period',
-				'action' => [$this->context->action->id, 'id' => Yii::$app->request->get('id')],
+				'action' => [$this->context->action->id, 'id' => Yii::$app->request->get('id'), 'per' => $model->MonthYear],
 				'options' => [
 //					'enctype' => 'multipart/form-data',
 						'data-pjax' => true,
