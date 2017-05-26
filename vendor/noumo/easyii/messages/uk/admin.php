@@ -150,5 +150,9 @@ return [
 	'Kv' => 'Кв.',
 	'Id Abonent' => 'Абонент',
 	'Id Rabota' => 'Місце роботи',
+	'Articles' => 'Статті',
+	'Create article' => 'Створити статтю',
+	'News' => 'Новини',
+
 
 ];

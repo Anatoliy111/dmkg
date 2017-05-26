@@ -5,6 +5,7 @@
 	use yii\helpers\Html;
 
 
+
 	//	use yii\bootstrap\
 
 /* @var $this yii\web\View */
@@ -14,7 +15,7 @@
 
 
 
-	<?php $this->beginContent('@app/views/ut-kart/navbar.php'); ?>
+	<?php $this->beginContent('@app/views/ut-kart/navbar.php',['model'=>$model]); ?>
 
 <div class="utkart-info-view">
 
@@ -27,9 +28,10 @@
 				'dataProvider' =>  $dp[$abon->id],
 							'columns' => [
 				['class' => 'yii\grid\SerialColumn'],
-
-
-				'period',
+				[
+						'attribute' => 'period',
+						'format' => ['date', 'php:MY'],
+				],
 				[
 					'attribute' => 'id_posl',
 					'value' => 'tipposl.poslug',
@@ -47,12 +49,12 @@
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
 //		'showPageSummary' => true,
-				'pjax'=>true,
-				'pjaxSettings'=>[
-					'neverTimeout'=>true,
-//			'beforeGrid'=>'My fancy content before.',
-//			'afterGrid'=>'My fancy content after.',
-				],
+//				'pjax'=>true,
+//				'pjaxSettings'=>[
+//					'neverTimeout'=>true,
+////			'beforeGrid'=>'My fancy content before.',
+////			'afterGrid'=>'My fancy content after.',
+//				],
 				'panel' => [
 					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.Html::encode($abon->org->naim).'</h3>',
 					'type'=>'success',

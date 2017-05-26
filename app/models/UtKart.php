@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\poslug\models\UtObor;
 use app\poslug\models\UtUlica;
 use Yii;
 
@@ -32,6 +33,9 @@ class UtKart extends \yii\db\ActiveRecord
      */
 
 	public $enterpass;
+    public $periodd;
+    public $lastperiod;
+    public $MonthYear;
 
 
     public static function tableName()
@@ -52,6 +56,7 @@ class UtKart extends \yii\db\ActiveRecord
             [['fio', 'pass'], 'string', 'max' => 64],
             [['idcod'], 'string', 'max' => 25],
             [['dom'], 'string', 'max' => 4],
+			[['MonthYear'], 'safe'],
             [['korp'], 'string', 'max' => 1],
             [['telef'], 'string', 'max' => 15],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
@@ -82,6 +87,7 @@ class UtKart extends \yii\db\ActiveRecord
             'telef' => Yii::t('easyii', 'Telef'),
             'id_oldkart' => Yii::t('easyii', 'Id Oldkart'),
 			'enterpass' => Yii::t('easyii', 'Еnterpass'),
+			'MonthYear' => 'Період',
         ];
     }
 
@@ -92,4 +98,24 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtUlica::className(), ['id' => 'id_ulica']);
     }
+
+    public function period()
+    {
+        $sql = 'Select id_org,period from ut_obor group by id_org,period order by id_org,period ';
+        $periodd = UtObor::findbysql($sql)->all();
+
+        return $periodd;
+    }
+
+    public function lastperiod()
+    {
+//        $sql = 'Select id_org,period from ut_obor group by id_org,period order by id_org,period ';
+//        $lastperiod = UtObor::find()->all();
+        $lastperiod = UtObor::find()->select(['period'])->one();
+//        $lastperiod = UtObor::find()->select(['period, id_org'])->distinct();
+//        $lastperiod = ArrayHelper::map(UtUlica::find()->asArray()->all(), 'ID', 'ul'),
+        return $lastperiod;
+    }
+
+
 }

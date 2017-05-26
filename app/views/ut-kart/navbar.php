@@ -1,8 +1,10 @@
 <?php
 
-use app\models\CardUser;
-use app\models\KomUlica;
+	use app\poslug\models\UtObor;
+	use kartik\date\DatePicker;
+	use kartik\datecontrol\DateControl;
 	use kartik\nav\NavX;
+	use kartik\select2\Select2;
 	use yii\bootstrap\Nav;
 	use yii\bootstrap\NavBar;
 	use yii\data\ActiveDataProvider;
@@ -21,7 +23,7 @@ use yii\helpers\Url;
 	//	use yii\bootstrap\
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CardUser */
+
 
 
 
@@ -39,7 +41,66 @@ use yii\helpers\Url;
 	<div class="well well-large">
 	<h3 class="text-center">Кабінет споживача</h3>
 
+
 	<div class="row">
+		<div class="col-sm-4 pull-right">
+
+			<?php
+				$model->MonthYear = $_SESSION['period'];
+			    $form = ActiveForm::begin([
+//					'action' => 'period',
+				'id'=>'period',
+//				'action' => function ($model)
+//				{
+//					$_SESSION['period'] = $model->MonthYear;
+//					return [$this->context->action->id, 'id' => Yii::$app->request->get('id')];
+//				},
+
+
+
+
+
+
+//					[$this->context->action->id, 'id' => Yii::$app->request->get('id'), 'per' => $model->MonthYear],
+				'options' => [
+//					'enctype' => 'multipart/form-data',
+						'data-pjax' => true,
+//	'enableAjaxValidation'=>true,
+					'validateOnSubmit'=>true,
+				]]);?>
+
+				<?=
+
+
+
+				 $form->field($model, 'MonthYear')->widget(Select2::classname(), [
+
+					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
+//					'options' => ['placeholder' => 'Выберыть період...'],
+					 'hideSearch' => true,
+					 'showToggleAll' => true,
+					'addon' => [
+						'append' => [
+							'content' => Html::submitButton('Go', ['class'=>'btn btn-primary']),
+							'asButton' => true
+						],
+
+					],
+					'pluginOptions' => [
+						'allowClear' => true,
+						'format' => ['date', 'php:MY'],
+					],
+//					 'pluginEvents' => [
+//						 'change' => function() { log('change'); }
+//						 ],
+				]);
+				?>
+
+			<?php $form = ActiveForm::end()?>
+
+		</div>
+
+
 		<div class="col-sm-12">
 
 	<?php

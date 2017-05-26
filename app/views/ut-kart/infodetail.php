@@ -22,7 +22,6 @@ $this->title = $model->fio;
 
 
 
-	?>
 	<div class="row">
 
 
