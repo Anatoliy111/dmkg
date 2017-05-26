@@ -102,38 +102,9 @@ $search = '';
 					<div class="nav_main_list custom-scroll-bar pull-left" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav" id="hover_slip">
 							<li><a href="<?= Url::home() ?>">Головна</a></li>
-							<li class="arrow_down"><a href='/about/index'>Про нас</a>
-								<div class="sub-menu">
-									<ul>
-										<li><a href='card-user/index'>Картка</a></li>
-										<li><a href="single-advisor.html">Single Advisor</a></li>
-										<li><a href="career.html">Career</a></li>
-										<li><a href="testimonial.html">Testimonaials</a></li>
-										<li><a href="partners.html">partners</a></li>
-									</ul>
-								</div>
-							</li>
-							<li class="arrow_down" ><a href='/articles/index'>Статті</a>
-								<div class="sub-menu">
-									<ul>
-										<li><a href="404.html">404 Page</a></li>
-										<li><a href="no-search-results.html">No Search Result</a></li>
-										<li><a href="search-results.html">Search Results</a></li>
-										<li><a href="faq.html">FAQ</a></li>
-									</ul>
-								</div>
-							</li>
-							<li class="arrow_down" ><a href='/news/index'>Новини</a>
-								<div class="sub-menu">
-									<ul>
-										<li><a href="blog-leftside-bar.html">Blog Left Bar</a></li>
-										<li><a href="blog-rightside-bar.html">Blog Right Bar</a></li>
-										<li><a href="blog-single-column.html">T H E M E L O C K . C O M</a></li>
-										<li><a href="blog-two-column.html">Blog Two Col</a></li>
-										<li><a href="blog-details.html">Blog Details</a></li>
-									</ul>
-								</div>
-							</li>
+							<li><a href='/about/index'>Про нас</a></li>
+							<li><a href='/articles/index'>Статті</a></li>
+							<li><a href='/news/index'>Новини</a></li>
 							<li><a class="contact" href='/gallery/index'>Фотогалерея</a></li>
 							<li><a class="contact" href='/contact/index'>Контакти</a></li>
 						</ul>
