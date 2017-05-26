@@ -78,14 +78,6 @@ $this->params['breadcrumbs'][] = $page->model->title;
 <!--					<li>AUG 12,2015<a href="" class="bottom_item">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
 				</ul>
 				<?php endforeach;?>
-				<h4>Теги</h4>
-				<?php $TagAssign = Tag::findAll(['tag_id' => TagAssign::findAll(['class' => 'yii\easyii\modules\news\models\News'])])  ?>
-				<ul class="p0 clouds">
-					<?php foreach($TagAssign as $tag1) : ?>
-						<li><a href="<?= Url::to(['/news', 'tag' => $tag1->name]) ?>"><?= $tag1->name ?></a></li>
-					<?php endforeach; ?>
-				</ul>
-
 			</div> <!-- End left side -->
 		</div> <!-- End row -->
 	</div>

@@ -62,22 +62,6 @@ function renderNode($node)
 						<?= renderNode($node) ?>
 					<?php endforeach; ?>
 				</ul>
-				<h4>Популярні статті</h4>
-				<?php foreach(article::popular(3) as $articlepop) : ?>
-					<ul class="p0 post_item">
-						<li><?php echo Yii::$app->formatter->asDate($articlepop->time) ?><a href="<?= Url::to(['articles/view', 'slug' => $articlepop->slug]) ?>"><?= $articlepop->title ?></a></li>
-						<!--					<li>AUG 12,2015<a href="">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
-						<!--					<li>AUG 12,2015<a href="" class="bottom_item">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
-					</ul>
-				<?php endforeach;?>
-				<h4>Теги</h4>
-				<?php $TagAssign = Tag::findAll(['tag_id' => TagAssign::findAll(['class' => 'yii\easyii\modules\article\models\Item'])])  ?>
-				<ul class="p0 clouds">
-					<?php foreach($TagAssign as $tag1) : ?>
-						<li><a href="<?= Url::to(['/articles', 'tag' => $tag1->name]) ?>"><?= $tag1->name ?></a></li>
-					<?php endforeach; ?>
-				</ul>
-
 			</div> <!-- End left side -->
 			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pull-right white-right right-side ptb-13">
 				<!-- .single-blog-post -->
