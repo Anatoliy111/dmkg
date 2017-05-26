@@ -53,24 +53,10 @@ $asset = \app\assets\AppAsset::register($this);
 				    $articcat = Article::items(['where' => ['category_id' => '5']]);
 					foreach($articcat as $k=>$article)
 					{
-//						if ($k & 1)
-//						{
-//						?>
-<!---->
-<!--						<div class="welcome_item welcome_item_bottom">-->
-<!--							--><?//= Html::img($article->thumb(160, 120)) ?>
-<!--							<div class="welcome_info">-->
-<!--								<h3>--><?//= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?><!--</h3>-->
-<!--								<a href="--><?//= Url::to(['articles/view', 'slug' => $article->slug]) ?><!--">-->
-<!--									<p>--><?//= $article->short ?><!--</p>-->
-<!--								</a>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						--><?php
-//						}
-//						else
-//						{
-//						?>
+
+						?>
+
+
 
 						<div class="welcome_item">
 							<?= Html::img($article->thumb(160, 120)) ?>
@@ -83,7 +69,7 @@ $asset = \app\assets\AppAsset::register($this);
 							</div>
 						</div>
 						<?php
-//						}
+
 					}
 				?>
 			</div>
