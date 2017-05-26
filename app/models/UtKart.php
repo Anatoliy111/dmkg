@@ -56,6 +56,7 @@ class UtKart extends \yii\db\ActiveRecord
             [['fio', 'pass'], 'string', 'max' => 64],
             [['idcod'], 'string', 'max' => 25],
             [['dom'], 'string', 'max' => 4],
+			[['MonthYear'], 'safe'],
             [['korp'], 'string', 'max' => 1],
             [['telef'], 'string', 'max' => 15],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
@@ -86,6 +87,7 @@ class UtKart extends \yii\db\ActiveRecord
             'telef' => Yii::t('easyii', 'Telef'),
             'id_oldkart' => Yii::t('easyii', 'Id Oldkart'),
 			'enterpass' => Yii::t('easyii', 'Еnterpass'),
+			'MonthYear' => 'Період',
         ];
     }
 

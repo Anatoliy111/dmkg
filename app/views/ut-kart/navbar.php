@@ -1,7 +1,10 @@
 <?php
 
+	use app\poslug\models\UtObor;
 	use kartik\date\DatePicker;
+	use kartik\datecontrol\DateControl;
 	use kartik\nav\NavX;
+	use kartik\select2\Select2;
 	use yii\bootstrap\Nav;
 	use yii\bootstrap\NavBar;
 	use yii\data\ActiveDataProvider;
@@ -43,11 +46,22 @@ use yii\helpers\Url;
 		<div class="col-sm-4 pull-right">
 
 			<?php
-
-			    $model->MonthYear = $_SESSION['period'];
+				$model->MonthYear = $_SESSION['period'];
 			    $form = ActiveForm::begin([
+//					'action' => 'period',
 				'id'=>'period',
-				'action' => [$this->context->action->id, 'id' => Yii::$app->request->get('id'), 'per' => $model->MonthYear],
+//				'action' => function ($model)
+//				{
+//					$_SESSION['period'] = $model->MonthYear;
+//					return [$this->context->action->id, 'id' => Yii::$app->request->get('id')];
+//				},
+
+
+
+
+
+
+//					[$this->context->action->id, 'id' => Yii::$app->request->get('id'), 'per' => $model->MonthYear],
 				'options' => [
 //					'enctype' => 'multipart/form-data',
 						'data-pjax' => true,
@@ -55,24 +69,35 @@ use yii\helpers\Url;
 					'validateOnSubmit'=>true,
 				]]);?>
 
-
-
-		<?=$form->field($model, 'MonthYear')->widget(DatePicker::classname(), [
-			'options' => ['placeholder' => 'Виберіть місяць...'],
-			'type' => DatePicker::TYPE_INPUT,
-			'pluginOptions' => [
-				'autoclose' => true,
-				'startView'=>'year',
-				'minViewMode'=>'months',
-				'format' => 'mm-yyyy',
-			]])?>
+				<?=
 
 
 
+				 $form->field($model, 'MonthYear')->widget(Select2::classname(), [
 
-			<?= Html::submitButton('Далі', ['class' => 'btn btn-success']) ?>
+					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
+//					'options' => ['placeholder' => 'Выберыть період...'],
+					 'hideSearch' => true,
+					 'showToggleAll' => true,
+					'addon' => [
+						'append' => [
+							'content' => Html::submitButton('Go', ['class'=>'btn btn-primary']),
+							'asButton' => true
+						],
+
+					],
+					'pluginOptions' => [
+						'allowClear' => true,
+						'format' => ['date', 'php:MY'],
+					],
+//					 'pluginEvents' => [
+//						 'change' => function() { log('change'); }
+//						 ],
+				]);
+				?>
 
 			<?php $form = ActiveForm::end()?>
+
 		</div>
 
 

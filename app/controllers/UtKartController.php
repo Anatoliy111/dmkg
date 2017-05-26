@@ -45,7 +45,7 @@ class UtKartController extends Controller
     {
         $searchModel = new SearchUtKart();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+		$_SESSION['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
 
 		//		$searchModel->period();
 //		$searchModel->lastperiod();
@@ -88,15 +88,20 @@ class UtKartController extends Controller
         }
     }
 
+
 	public function actionPoslug($id)
 	{
+
+		if (isset($_POST['UtKart']['MonthYear']))
+		{ $_SESSION['period']= $_POST['UtKart']['MonthYear'];}
+
 		$model = $this->findModel($id);
-		$dp = array();
+
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
 			$query = UtPosl::find();
-			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id, 'ut_posl.period'=> $_SESSION['period']]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
@@ -111,35 +116,20 @@ class UtKartController extends Controller
 		]);
 	}
 
-//	public function actionPoslug($id)
-//	{
-//		$model = $this->findModel($id);
-//		$modelPosl = UtPosl::find();
-//		$dp = array();
-//
-////			$query = UtPosl::find();
-//			$query = $modelPosl->joinWith('abonent')->where(['ut_abonent.id_kart' => $model->id]);
-//			$dataProvider = new ActiveDataProvider([
-//				'query' => $query,
-//			]);
-//
-//
-//		return $this->render('poslugview', [
-//			'model' => $modelPosl,
-//			'dataProvider' => $dataProvider,
-//		]);
-//	}
-
 	public function actionNar($id)
 	{
 
+		if (isset($_POST['UtKart']['MonthYear']))
+		{ $_SESSION['period'] = $_POST['UtKart']['MonthYear'];}
+
 		$model = $this->findModel($id);
+
 		$dp = array();
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
-			$query = UtNarah::find()->where(['period'=> $_SESSION['period']]);
-			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+			$query = UtNarah::find();
+			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_narah.period'=> $_SESSION['period']]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
@@ -157,13 +147,17 @@ class UtKartController extends Controller
 	public function actionOpl($id)
 	{
 
+		if (isset($_POST['UtKart']['MonthYear']))
+		{ $_SESSION['period'] = $_POST['UtKart']['MonthYear'];}
+
 		$model = $this->findModel($id);
+
 		$dp = array();
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
-			$query = UtOpl::find()->where(['period'=> $_SESSION['period']]);
-			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+			$query = UtOpl::find();
+			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_opl.period'=> $_SESSION['period']]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
@@ -178,16 +172,19 @@ class UtKartController extends Controller
 		]);
 	}
 
-	public function actionObor($id,$per)
+	public function actionObor($id)
 	{
 
+		if (isset($_POST['UtKart']['MonthYear']))
+		{ $_SESSION['period'] = $_POST['UtKart']['MonthYear'];}
+
 		$model = $this->findModel($id);
-		$dp = array();
 		$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org')->all();
 
 		foreach ($abonents as $abon) {
-			$query = UtObor::find()->where(['period'=> $_SESSION['period']]);
-			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+			$query = UtObor::find();
+			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $_SESSION['period']]);
+			$ff = ArrayHelper::toArray($query);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
@@ -205,18 +202,15 @@ class UtKartController extends Controller
 	}
 
 
-	public function actionInfo($id,$per)
+	public function actionInfo($id)
 	{
-		if (!isset($_SESSION['period']))
-		{
-			$session = Yii::$app->session;
-			$session['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
-		}
 
-
+		if (isset($_POST['UtKart']['MonthYear']))
+		{ $_SESSION['period'] = $_POST['UtKart']['MonthYear'];}
 
 
 		$model = $this->findModel($id);
+
 		$query = UtAbonent::find();
 		$query->andWhere(['id_kart' => $model->id]);
 		$query->orderBy('id_org');

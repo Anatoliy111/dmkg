@@ -48,50 +48,44 @@ $asset = \app\assets\AppAsset::register($this);
 	</br>
 
 		<div class="row welcome welcome_details">
-			<div class="col-lg-6 col-md-12">
-				<div class="welcome_item">
-					<?php $article = Article::get(4); ?>
-					<?= Html::img($article->thumb(160, 120)) ?>
-					<div class="welcome_info">
-						<h3><?= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?></h3>
-						<a href="<?= Url::to(['articles/view', 'slug' => $article->slug]) ?>">
+			<div class="col-lg-12 col-md-12">
+				<?php
+				    $articcat = Article::items(['where' => ['category_id' => '5']]);
+					foreach($articcat as $k=>$article)
+					{
+//						if ($k & 1)
+//						{
+//						?>
+<!---->
+<!--						<div class="welcome_item welcome_item_bottom">-->
+<!--							--><?//= Html::img($article->thumb(160, 120)) ?>
+<!--							<div class="welcome_info">-->
+<!--								<h3>--><?//= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?><!--</h3>-->
+<!--								<a href="--><?//= Url::to(['articles/view', 'slug' => $article->slug]) ?><!--">-->
+<!--									<p>--><?//= $article->short ?><!--</p>-->
+<!--								</a>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						--><?php
+//						}
+//						else
+//						{
+//						?>
 
-						<p><?= $article->short ?></p>
-						</a>
-					</div>
-				</div>
-				<div class="welcome_item welcome_item_bottom">
-					<?php $article = Article::get(5); ?>
-					<?= Html::img($article->thumb(160, 120)) ?>
-					<div class="welcome_info">
-						<h3><?= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?></h3>
-						<a href="<?= Url::to(['articles/view', 'slug' => $article->slug]) ?>">
-						<p><?= $article->short ?></p>
-						</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-6 col-md-12 bottom_row">
-				<div class="welcome_item">
-					<?php $article = Article::get(6); ?>
-					<?= Html::img($article->thumb(160, 120)) ?>
-					<div class="welcome_info">
-						<h3><?= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?></h3>
-						<a href="<?= Url::to(['articles/view', 'slug' => $article->slug]) ?>">
-							<p><?= $article->short ?></p>
-						</a>
-					</div>
-				</div>
-				<div class="welcome_item welcome_item_bottom">
-					<?php $article = Article::get(7); ?>
-					<?= Html::img($article->thumb(160, 120)) ?>
-					<div class="welcome_info">
-						<h3><?= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?></h3>
-						<a href="<?= Url::to(['articles/view', 'slug' => $article->slug]) ?>">
-							<p><?= $article->short ?></p>
-						</a>
-					</div>
-				</div>
+						<div class="welcome_item">
+							<?= Html::img($article->thumb(160, 120)) ?>
+							<div class="welcome_info">
+								<h3><?= Html::a($article->title, ['articles/view', 'slug' => $article->slug]) ?></h3>
+								<a href="<?= Url::to(['articles/view', 'slug' => $article->slug]) ?>">
+
+									<p><?= $article->short ?></p>
+								</a>
+							</div>
+						</div>
+						<?php
+//						}
+					}
+				?>
 			</div>
 		</div> <!-- End Row -->
 

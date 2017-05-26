@@ -54,12 +54,12 @@
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
 //		'showPageSummary' => true,
-				'pjax'=>true,
-				'pjaxSettings'=>[
-					'neverTimeout'=>true,
-//			'beforeGrid'=>'My fancy content before.',
-//			'afterGrid'=>'My fancy content after.',
-				],
+//				'pjax'=>true,
+//				'pjaxSettings'=>[
+//					'neverTimeout'=>true,
+////			'beforeGrid'=>'My fancy content before.',
+////			'afterGrid'=>'My fancy content after.',
+//				],
 				'panel' => [
 					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.Html::encode($abon->org->naim).'</h3>',
 					'type'=>'success',
