@@ -2,6 +2,7 @@
 
 
 	use kartik\grid\GridView;
+	use yii\bootstrap\Tabs;
 	use yii\helpers\Html;
 
 

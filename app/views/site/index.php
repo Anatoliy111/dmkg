@@ -27,8 +27,6 @@ $asset = \app\assets\AppAsset::register($this);
 <section class="welcome_sec">
 <!--	<div class="container">-->
 		<div class="row welcome_heading">
-
-
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
 				<h2><?= Text::get('index-welcome-title') ?></h2>
 			</div>

@@ -11,7 +11,7 @@
 /* @var $this yii\web\View */
 /* @var $model app\models\UtKart */
 
-$this->title = $model->fio;
+
 //$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -22,11 +22,11 @@ $this->title = $model->fio;
 
 
 
-	<div class="row">
 
 
 
-		<div class="col-sm-12">
+
+		<div class="col-md-12">
 				<?=
 					DetailView::widget([
 						'model'=>$model,
@@ -56,18 +56,6 @@ $this->title = $model->fio;
 					]);
 				?>
 		</div>
-
-	</div>
-
-	<?php
-
-
-
-
-//
-
-
-	?>
 
 
 

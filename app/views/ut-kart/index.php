@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+	use yii\bootstrap\Tabs;
+	use yii\helpers\Html;
 use yii\grid\GridView;
 	use yii\widgets\ListView;
 	use yii\widgets\Pjax;
@@ -28,6 +29,8 @@ use yii\grid\GridView;
 				'itemView' => 'view',
 			]);?>
 	</div>
+
+
 
     <?php Pjax::end(); ?>
 </div>

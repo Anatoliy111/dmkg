@@ -48,7 +48,7 @@ $this->title = $model->fio;
 			<?=
 			$form->field($model, 'enterpass')->textInput();
 			?>
-					<?= Html::a('Далі', ['info', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+					<?= Html::a('Далі', ['kabinet', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
 
 		<?php endif; ?>
 		</div>
