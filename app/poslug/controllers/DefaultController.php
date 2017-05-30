@@ -137,10 +137,11 @@ class DefaultController extends Controller
 					}
 
 				}
-				echo "<script type=".'text/javascript'.">CloseModalprogress();</script>";
+//				echo "<script type=".'text/javascript'.">CloseModalprogress();</script>";
 				return $this->render('upload', ['model' => $model]);
 			}
 		}
+
 		return $this->render('upload', ['model' => $model]);
 	}
 

@@ -40,11 +40,13 @@ use yii\base\Event;
 //			'label' => 'Нажмите здесь, забавная штука!',
 //		]
 	]);
+    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
+
 
 //	echo 'Завантаження даних...';
 
 	$progres = Progress::widget([
-	'percent' => 100,
+	'percent' => 10,
 
 	'barOptions' => [
 		'class' => 'progress-bar-success'
@@ -76,7 +78,7 @@ use yii\base\Event;
 	'options' => [
 	'enctype' => 'multipart/form-data',
 	'data-pjax' => true,
-//	'enableAjaxValidation'=>true,
+	'enableAjaxValidation'=>true,
 	'validateOnSubmit'=>true,
 	]])
 ?>
@@ -112,12 +114,13 @@ use yii\base\Event;
 
 
 
-	<?=Html::submitButton('Завантажити', ['id'=>'sbutt','data-toggle'=>'modal','data-target'=>'#Modalprogress','class' => 'btn-lg btn-success'])?>
+	<?=Html::submitButton('Завантажити все', ['id'=>'sbutt','data-toggle'=>'modal','data-target'=>'#Modalprogress','class' => 'btn-lg btn-success'])?>
 
 
 <?//= Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success']) ?>
 <?//= Html::a("Refresh", ['upload'], ['class' => 'btn btn-lg btn-primary']);?>
 <?= Html::resetButton('Очистити',['class' => 'btn-lg btn-primary']) ?>
+<?= Html::a('Оновити абонентів', ['index'], ['class' => 'btn-lg btn-success']) ?>
 
 <?= Html::a('Назад', ['index'], ['class' => 'btn-lg btn-danger pull-right']) ?>
 <?//= Html::a('Оновити довідники', ['updatesprav'], ['class' => 'btn-lg btn-success']) ?>
