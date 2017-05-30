@@ -65,81 +65,13 @@ class DefaultController extends Controller
 
 	public function actionUpload()
 	{
-//		$model = new UploadForm();
-//							Alert::begin(['options' => ['class' => 'alert'],]);
-//					echo "Не удалось открыть DBF файл:'\n";
-//					Alert::end();
-
-//		if (Yii::$app->request->isPost) {
-//
-//		}
-
-
-//		return $this->redirect('upload', ['model' => $model]);
-//		return $this->render('upload', ['model' => $model]);
-//		return Yii::$app->getSession()->setFlash('success', 'Yes! Its`s empty!',true);
-
 		$model = new UploadForm();
 		if ($model->load(Yii::$app->request->post())) {
-			if (Yii::$app->request->isPjax) {
-				if(isset($_FILES['UploadForm']['name']['Files'][0]) && ($_FILES['UploadForm']['name']['Files'][0]) <> "")
-				{
-					$model->Files = UploadedFile::getInstances($model, 'Files');
-					if ($model->uploadFiles()) {
-						$pers = (100/count($model->Files));
-						foreach($model->Files as $upfile)
-						{
-//						Yii::$app->session->setFlash($upfile->name, "Завантажені файли - ".$upfile->name."");
-//						return $this->render('upload', ['model' => $model]);
-
-//						$model->percent += $pers;
-//						$this->renderPartial('upload', ['model' => $model],true);
-//						sleep(1);
-//						upda
-
-//						$this->render('upload');
-						}
-						// file is uploaded successfully
-
-					}
-				}
-				elseif(isset($_FILES['UploadForm']['name']['File']))
-				{
-					$model->File = UploadedFile::getInstance($model, 'File');
-//					$model->DateMonthYear =date('01-'.$_POST['UploadForm']['MonthYear']);
-//					$model->MonthYear =$_POST['UploadForm']['MonthYear'];
-//				$model->MonthYear =$_POST['UploadForm']['MonthYear'];
-//				$model->MonthYear=Yii::$app->formatter->asDate($model->MonthYear, "dd-mm-yyyy");
-//					echo "<script type=".'text/javascript'.">showModalprogress();</script>";
-
+			$model->File = UploadedFile::getInstance($model, 'File');
 					if ($model->uploadFile()) {
-
-						$UnPath = $model->UnZIP($model->File);
-						if ($UnPath <> '')
-						{
-//							$model->Importolddomulica($UnPath);
-//							$model->Importoldkart($UnPath);
-//							$model->Importoldorg($UnPath);
-//							$model->UpdateAbonentKart();
-//							$model->ImportNach($UnPath);
-							$model->ImportObor($UnPath);
-							$model->ImportOpl($UnPath);
-//							$model->UpdateBase();
-						}
-//						$model->ImportDbf($model->File);
-//						<script type="text/javascript">CloseModalprogress();</script>
-
-//					Yii::$app->session->setFlash($model->File->name, "Завантажено файл - ".$model->File->name."");
-						// file is uploaded successfully
-//				return;
-
-
+						$model->progress = true;
 					}
 
-				}
-//				echo "<script type=".'text/javascript'.">CloseModalprogress();</script>";
-				return $this->render('upload', ['model' => $model]);
-			}
 		}
 
 		return $this->render('upload', ['model' => $model]);

@@ -28,7 +28,7 @@ use yii\base\Event;
 	Modal::begin([
 		'header' => '<h2>Завантаження даних...</h2>',
 		'options'=>[
-			'id'=>'Modalprogress'
+			'id'=>'Modalprogress1'
 
 		],
 		'size'=> 'modal-lg',
@@ -40,7 +40,7 @@ use yii\base\Event;
 //			'label' => 'Нажмите здесь, забавная штука!',
 //		]
 	]);
-    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
+//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
 
 
 //	echo 'Завантаження даних...';
@@ -69,7 +69,17 @@ use yii\base\Event;
 	$this->title = $model->title;
 	$this->params['breadcrumbs'][] = $this->title;
 
+	if ($model->progress)
+	{
+		$this->registerJs(
+			"$('#Modalprogress1').modal('show');",
+			yii\web\View::POS_READY
+		);
+	}
+
 ?>
+
+
 
 
 
@@ -77,9 +87,9 @@ use yii\base\Event;
 	'id'=>'UploadAF',
 	'options' => [
 	'enctype' => 'multipart/form-data',
-	'data-pjax' => true,
-	'enableAjaxValidation'=>true,
-	'validateOnSubmit'=>true,
+//	'data-pjax' => true,
+//	'enableAjaxValidation'=>true,
+//	'validateOnSubmit'=>true,
 	]])
 ?>
 
@@ -114,7 +124,7 @@ use yii\base\Event;
 
 
 
-	<?=Html::submitButton('Завантажити все', ['id'=>'sbutt','data-toggle'=>'modal','data-target'=>'#Modalprogress','class' => 'btn-lg btn-success'])?>
+	<?=Html::submitButton('Завантажити все', ['class' => 'btn-lg btn-success'])?>
 
 
 <?//= Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success']) ?>
