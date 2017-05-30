@@ -92,7 +92,7 @@ $this->title = $model->fio;
 				{
 					$itemsorg[$org->id_org] =
 						[
-							'label'=>'<i class="glyphicon glyphicon-home">'.Html::encode($abon->org->naim).'</i>',
+							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>	 TabsX::widget([
 								'items'=>$items,
 								'position'=>TabsX::POS_LEFT,
@@ -107,7 +107,7 @@ $this->title = $model->fio;
 				{
 				$itemsorg[$org->id_org] =
 				[
-					'label'=>'<i class="glyphicon glyphicon-home"></i>xcbgdfhdfh',
+					'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 					'content'=>	 TabsX::widget([
 						'items'=>$items,
 						'position'=>TabsX::POS_LEFT,
