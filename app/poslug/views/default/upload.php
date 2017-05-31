@@ -80,10 +80,15 @@ use yii\base\Event;
 		$js = <<< JS
 				function repeat_import() {
 					$.ajax({
-							url: "/importdbf.php",
+							url: "/poslug/default/indexq111",
 							timeout: 50000,
 							success: function(data, textStatus){
 										$("#upprogress").append("I");
+										 _win = document.getElementById('#Modalprogress1'); //Получаем наше диалоговое окно по ID
+       									if (!_win) {
+       									$("#content").html("<h2>������ ��������!</h2>");
+       									}
+
 										if (data == "The End") {
 											$("#content").html("<h2>������ ��������!</h2>");
 										}
@@ -93,7 +98,11 @@ use yii\base\Event;
 										}
 									},
 							complete: function(xhr, textStatus){
-										if (textStatus != "success") {
+							             _win = document.getElementById('Modalprogress1'); //Получаем наше диалоговое окно по ID
+							            if (!_win) {
+       									$("#content").html("<h2>������ ��������!</h2>");
+       									}
+       									else if (textStatus != "success") {
 											$("#upprogress").append("I");
 											repeat_import();
 										}
@@ -103,7 +112,7 @@ use yii\base\Event;
 
 				$(function (){
 					repeat_import();
-				})(jQuery);
+				});
 
 JS;
 		$this->registerJs($js);

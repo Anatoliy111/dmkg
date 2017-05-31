@@ -42,7 +42,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
         ]);
         NavBar::end();
         ?>
-		<?php Pjax::begin(); ?>
+<!--		--><?php //Pjax::begin(); ?>
 		<?php
 			NavBar::begin([
 //				'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
@@ -116,7 +116,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 
         </div>
-		<?php Pjax::end(); ?>
+<!--		--><?php //Pjax::end(); ?>
         <div class="footer-fix"></div>
     </div>
     <footer class="footer">
