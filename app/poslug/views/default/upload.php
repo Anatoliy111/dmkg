@@ -47,6 +47,7 @@ use yii\base\Event;
 
 	$progres = Progress::widget([
 	'percent' => 10,
+	'id'=>'upprogress',
 
 	'barOptions' => [
 		'class' => 'progress-bar-success'
@@ -75,6 +76,38 @@ use yii\base\Event;
 			"$('#Modalprogress1').modal('show');",
 			yii\web\View::POS_READY
 		);
+
+		$js = <<< JS
+				function repeat_import() {
+					$.ajax({
+							url: "/importdbf.php",
+							timeout: 50000,
+							success: function(data, textStatus){
+										$("#upprogress").append("I");
+										if (data == "The End") {
+											$("#content").html("<h2>������ ��������!</h2>");
+										}
+										else {
+											$("#content").html("<p>" + data + "</p>");
+											repeat_import();
+										}
+									},
+							complete: function(xhr, textStatus){
+										if (textStatus != "success") {
+											$("#upprogress").append("I");
+											repeat_import();
+										}
+									}
+					});
+				}
+
+				$(function (){
+					repeat_import();
+				})(jQuery);
+
+JS;
+		$this->registerJs($js);
+
 	}
 
 ?>

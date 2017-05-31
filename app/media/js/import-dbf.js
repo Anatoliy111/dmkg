@@ -6,7 +6,7 @@ function repeat_import() {
 			success: function(data, textStatus){
 						$("#progress-bar").append("I");
 						if (data == "The End") {
-							$("#content").html("<h2>Импорт завершен!</h2>");
+							$("#content").html("<h2>РІРєРїС–РІР°РїСЂРІР°СЂРІР°СЂРІ!</h2>");
 						}
 						else {
 							$("#content").html("<p>" + data + "</p>");
