@@ -29,41 +29,41 @@
 //
 //});
 
-function showModalprogress () {
-    var Modalprogress = $('#Modalprogress');
+//function showModalprogress () {
+//    var Modalprogress = $('#Modalprogress');
+//
+//        //Modalprogress.modal('show');
+//         Modalprogress.modal();
+//
+//}
 
-        //Modalprogress.modal('show');
-         Modalprogress.modal();
+//function CloseModalprogress () {
+//    var Modalprogress = $('#Modalprogress');
+//
+//
+//        //Modalprogress.modal('hide');
+//        //Modalprogress.modal('close');
+//    //Modalprogress.modal('backdrop','false');
+//    Modalprogress.modal('hide');
+//
+//}
 
-}
-
-function CloseModalprogress () {
-    var Modalprogress = $('#Modalprogress');
-
-
-        //Modalprogress.modal('hide');
-        //Modalprogress.modal('close');
-    //Modalprogress.modal('backdrop','false');
-    Modalprogress.modal('hide');
-
-}
-
-jQuery(document).on('ready', function() {
-
-    //$("#Modalprogress").on('hide.bs.modal', function(){
-    //    alert("Модальное окно было успешно закрыто.");
-    //});
-    (function ($) {
-
-
-        ValidateForm();
-
-
-    })(jQuery);
-
-
-
-});
+//jQuery(document).on('ready', function() {
+//
+//    //$("#Modalprogress").on('hide.bs.modal', function(){
+//    //    alert("Модальное окно было успешно закрыто.");
+//    //});
+//    (function ($) {
+//
+//
+//        ValidateForm();
+//
+//
+//    })(jQuery);
+//
+//
+//
+//});
 
 function ValidateForm () {
 
@@ -96,9 +96,9 @@ function ValidateForm () {
 //    $(this).find('[type=submit]').attr('disabled','disabled');
 //});
 
-
-$(document).on('afterValidate', 'form', function (event, messages, errorAttributes) {
-    if (!errorAttributes.length) {
-        showModalprogress();
-    }
-});
+//
+//$(document).on('afterValidate', 'form', function (event, messages, errorAttributes) {
+//    if (!errorAttributes.length) {
+//        showModalprogress();
+//    }
+//});

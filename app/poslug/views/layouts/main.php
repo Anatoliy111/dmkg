@@ -42,7 +42,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
         ]);
         NavBar::end();
         ?>
-		<?php Pjax::begin(); ?>
+<!--		--><?php //Pjax::begin(); ?>
 		<?php
 			NavBar::begin([
 //				'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
@@ -61,7 +61,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 							['label' => 'Багатокв. будинки', 'url' => '/poslug/ut-dom/index'],
 							['label' => 'Місце роботи', 'url' => '/poslug/ut-rabota/index'],
 							'<li class="divider"></li>',
-							['label' => 'Послуги', 'url' => '/poslug/ut-tipposl/index'],
+							['label' => 'Види послуг', 'url' => '/poslug/ut-tipposl/index'],
 							['label' => 'Групи послуг', 'url' => '/poslug/ut-groupposl/index'],
 							'<li class="divider"></li>',
 							['label' => 'Тарифи', 'url' => '/poslug/ut-tarif/index'],
@@ -90,7 +90,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 							['label' => 'Субсидія абонентів', 'url' => '/poslug/ut-subs/index'],
 							],
 					],
-					['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
+//					['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
 					[
 						'label' => 'Розрахунок',
 						'items' => [
@@ -116,7 +116,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 
         </div>
-		<?php Pjax::end(); ?>
+<!--		--><?php //Pjax::end(); ?>
         <div class="footer-fix"></div>
     </div>
     <footer class="footer">

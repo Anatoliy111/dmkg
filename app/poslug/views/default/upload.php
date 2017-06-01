@@ -28,7 +28,8 @@ use yii\base\Event;
 	Modal::begin([
 		'header' => '<h2>Завантаження даних...</h2>',
 		'options'=>[
-			'id'=>'Modalprogress'
+			'id'=>'Modalprogress7',
+			'backdrop' => 'static',
 
 		],
 		'size'=> 'modal-lg',
@@ -40,11 +41,14 @@ use yii\base\Event;
 //			'label' => 'Нажмите здесь, забавная штука!',
 //		]
 	]);
+//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
+
 
 //	echo 'Завантаження даних...';
 
 	$progres = Progress::widget([
-	'percent' => 100,
+	'percent' => 10,
+	'id'=>'upprogress',
 
 	'barOptions' => [
 		'class' => 'progress-bar-success'
@@ -67,7 +71,96 @@ use yii\base\Event;
 	$this->title = $model->title;
 	$this->params['breadcrumbs'][] = $this->title;
 
+	if ($model->progress)
+	{
+//		$this->registerJs(
+////			"$('#Modalprogress1').modal('show');
+//		"$('#Modalprogress1').modal({backdrop: false})",
+//			yii\web\View::POS_READY
+//		);
+
+		$js = <<< JS
+				function repeat_import() {
+					$.ajax({
+							url: "/poslug/default/download",
+							//timeout: 50000,
+							success: function(data, textStatus){
+										$("#upprogress").append("I");
+
+										if (data == "The End") {
+											$("#content").html("<h2>������ ��������!</h2>");
+										}
+										else {
+											$("#content").html("<p>" + data + "</p>");
+											//repeat_import();
+										}
+									},
+							complete: function(xhr, textStatus){
+
+       									 if (textStatus != "success") {
+											$("#upprogress").append("I");
+											//repeat_import();
+										}
+									}
+					});
+				}
+				//$("#upprogress").append("I");
+
+				$(function (){
+
+					repeat_import();
+				});
+//								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
+//											alert("Modal window has been completely closed.");
+//										});
+
+JS;
+
+		$js1 = <<< JS
+		   var timer;
+
+    // The function to refresh the progress bar.
+    function refreshProgress() {
+      $.ajax({
+        url: "checker.php?file=<?php echo session_id() ?>",
+        success:function(data){
+          $("#progress").html('<div class="bar" style="width:' + data.percent + '%"></div>');
+          $("#message").html(data.message);
+          // If the process is completed, we should stop the checking process.
+          if (data.percent == 100) {
+            window.clearInterval(timer);
+            timer = window.setInterval(completed, 1000);
+          }
+        }
+      });
+    }
+
+    function completed() {
+      $("#message").html("Completed");
+      window.clearInterval(timer);
+    }
+
+
+				//$("#upprogress").append("I");
+
+				$(function (){
+				$.ajax({url: "process.php"});
+
+                  timer = window.setInterval(refreshProgress, 1000);
+				});
+//								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
+//											alert("Modal window has been completely closed.");
+//										});
+
+JS;
+
+		$this->registerJs($js1,\yii\web\View::POS_END);
+
+	}
+
 ?>
+
+
 
 
 
@@ -75,9 +168,9 @@ use yii\base\Event;
 	'id'=>'UploadAF',
 	'options' => [
 	'enctype' => 'multipart/form-data',
-	'data-pjax' => true,
+//	'data-pjax' => true,
 //	'enableAjaxValidation'=>true,
-	'validateOnSubmit'=>true,
+//	'validateOnSubmit'=>true,
 	]])
 ?>
 
@@ -112,12 +205,13 @@ use yii\base\Event;
 
 
 
-	<?=Html::submitButton('Завантажити', ['id'=>'sbutt','data-toggle'=>'modal','data-target'=>'#Modalprogress','class' => 'btn-lg btn-success'])?>
+	<?=Html::submitButton('Завантажити все', ['class' => 'btn-lg btn-success'])?>
 
 
 <?//= Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success']) ?>
 <?//= Html::a("Refresh", ['upload'], ['class' => 'btn btn-lg btn-primary']);?>
 <?= Html::resetButton('Очистити',['class' => 'btn-lg btn-primary']) ?>
+<?= Html::a('Оновити абонентів', ['index'], ['class' => 'btn-lg btn-success']) ?>
 
 <?= Html::a('Назад', ['index'], ['class' => 'btn-lg btn-danger pull-right']) ?>
 <?//= Html::a('Оновити довідники', ['updatesprav'], ['class' => 'btn-lg btn-success']) ?>

@@ -45,14 +45,20 @@ class UtKartController extends Controller
     {
         $searchModel = new SearchUtKart();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-		$_SESSION['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
 
+		$model = new UtKart();
 		//		$searchModel->period();
 //		$searchModel->lastperiod();
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+		if ($model->load(Yii::$app->request->post())) {
+//			if ($searchModel->pass.'111' == $_POST['SearchUtKart']['enterpass'] && $searchModel->validate()) {
+			$_SESSION['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
+			return $this->redirect(['kabinet', 'id' => $searchModel->id]);
+		} else {
+			return $this->render('index', [
+				'searchModel' => $searchModel,
+				'dataProvider' => $dataProvider,
+			]);
+		}
     }
 
     /**
@@ -222,6 +228,79 @@ class UtKartController extends Controller
 		return $this->render('infoview', [
 			'model' => $model,
 			'dataProvider' => $dataProvider,
+		]);
+	}
+
+	public function actionKabinet($id)
+	{
+
+		if (isset($_POST['UtKart']['MonthYear']))
+		{ $_SESSION['period'] = $_POST['UtKart']['MonthYear'];}
+
+
+		$model = $this->findModel($id);
+		$model->MonthYear = $_SESSION['period'];
+		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
+
+		$orgs = UtAbonent::find()->with('org')->where(['id_kart' => $model->id])->groupBy('id_org')->all();
+
+        foreach($orgs as $org)
+		{
+			$abonen = UtAbonent::find()->where(['id_kart' => $model->id,'id_org' => $org->id_org]);
+			$dpinfo[$org->id_org] = new ActiveDataProvider([
+				'query' => $abonen,
+			]);
+			$abonents[$org->id_org] = UtAbonent::find()->where(['id_kart' => $model->id,'id_org' => $org->id_org])->all();
+			foreach ($abonents[$org->id_org] as $abon) {
+
+				//-----------------------------------------------------------------------------
+				$obor= UtObor::find();
+				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $_SESSION['period']]);
+				$ff = ArrayHelper::toArray($obor);
+				$dataProvider1 = new ActiveDataProvider([
+					'query' => $obor,
+				]);
+				$dpobor[$org->id_org][$abon->id] = $dataProvider1;
+				//-----------------------------------------------------------------------------
+				$opl = UtOpl::find();
+				$opl->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_opl.period'=> $_SESSION['period']]);
+				$dataProvider2 = new ActiveDataProvider([
+					'query' => $opl,
+				]);
+
+				$dpopl[$org->id_org][$abon->id] = $dataProvider2;
+				//-----------------------------------------------------------------------------
+				$nar= UtNarah::find();
+				$nar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_narah.period'=> $_SESSION['period']]);
+				$dataProvider3 = new ActiveDataProvider([
+					'query' => $nar,
+				]);
+
+				$dpnar[$org->id_org][$abon->id] = $dataProvider3;
+				//-----------------------------------------------------------------------------
+				$pos = UtPosl::find();
+				$pos->joinWith('abonent')->where(['ut_abonent.id' => $abon->id, 'ut_posl.period'=> $_SESSION['period']]);
+				$dataProvider4 = new ActiveDataProvider([
+					'query' => $pos,
+				]);
+
+				$dppos[$org->id_org][$abon->id] = $dataProvider4;
+
+			}
+		}
+//		$dpinfo = new ActiveDataProvider([
+//			'query' => $abonen,
+//		]);
+
+		return $this->render('kabinet', [
+			'model' => $model,
+			'abonents' => $abonents,
+			'dpinfo' => $dpinfo,
+			'dpobor' => $dpobor,
+			'dpopl' => $dpopl,
+			'dpnar' => $dpnar,
+			'dppos' => $dppos,
+			'orgs' => $orgs,
 		]);
 	}
 

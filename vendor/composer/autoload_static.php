@@ -31,8 +31,10 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         ),
         'k' => 
         array (
+            'kartik\\tabs\\' => 12,
             'kartik\\sortable\\' => 16,
             'kartik\\select2\\' => 15,
+            'kartik\\plugins\\tabs\\' => 20,
             'kartik\\plugins\\fileinput\\' => 25,
             'kartik\\plugins\\dateformatter\\' => 29,
             'kartik\\nav\\' => 11,
@@ -110,6 +112,10 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         array (
             0 => __DIR__ . '/..' . '/phpnt/yii2-chartjs',
         ),
+        'kartik\\tabs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-tabs-x',
+        ),
         'kartik\\sortable\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-sortable',
@@ -117,6 +123,10 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         'kartik\\select2\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-select2',
+        ),
+        'kartik\\plugins\\tabs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/bootstrap-tabs-x',
         ),
         'kartik\\plugins\\fileinput\\' => 
         array (

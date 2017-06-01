@@ -14,7 +14,7 @@
 
 
 
-	<?php $this->beginContent('@app/views/ut-kart/navbar.php',['model'=>$model]); ?>
+
 
 <div class="utkart-info-view">
 
@@ -24,7 +24,7 @@
 
 
 			echo GridView::widget([
-				'dataProvider' =>  $dp[$abon->id],
+				'dataProvider' =>  $dataProvider[$abon->id],
 							'columns' => [
 				['class' => 'yii\grid\SerialColumn'],
 				[
@@ -82,7 +82,7 @@
 
 </div>
 
-	<?php $this->endContent(); ?>
+
 
 
 

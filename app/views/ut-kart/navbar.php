@@ -31,74 +31,44 @@ use yii\helpers\Url;
 
 
 
-
+<?php //Pjax::begin(); ?>
 <div class="utkart-view">
 
 
 
 
-	<?php Pjax::begin(); ?>
+
 	<div class="well well-large">
-	<h3 class="text-center">Кабінет споживача</h3>
-
-
-	<div class="row">
 		<div class="col-sm-4 pull-right">
-
 			<?php
-				$model->MonthYear = $_SESSION['period'];
-			    $form = ActiveForm::begin([
-//					'action' => 'period',
-				'id'=>'period',
-//				'action' => function ($model)
-//				{
-//					$_SESSION['period'] = $model->MonthYear;
-//					return [$this->context->action->id, 'id' => Yii::$app->request->get('id')];
-//				},
 
 
 
-
-
-
-//					[$this->context->action->id, 'id' => Yii::$app->request->get('id'), 'per' => $model->MonthYear],
-				'options' => [
-//					'enctype' => 'multipart/form-data',
-						'data-pjax' => true,
-//	'enableAjaxValidation'=>true,
-					'validateOnSubmit'=>true,
-				]]);?>
-
-				<?=
-
-
-
-				 $form->field($model, 'MonthYear')->widget(Select2::classname(), [
-
+				echo Select2::widget([
+					'model' => $model,
+					'attribute' => 'periodd',
 					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
-//					'options' => ['placeholder' => 'Выберыть період...'],
-					 'hideSearch' => true,
-					 'showToggleAll' => true,
+					'hideSearch' => true,
+//					'showToggleAll' => true,
 					'addon' => [
 						'append' => [
 							'content' => Html::submitButton('Go', ['class'=>'btn btn-primary']),
 							'asButton' => true
 						],
-
 					],
 					'pluginOptions' => [
 						'allowClear' => true,
 						'format' => ['date', 'php:MY'],
 					],
-//					 'pluginEvents' => [
-//						 'change' => function() { log('change'); }
-//						 ],
 				]);
-				?>
-
-			<?php $form = ActiveForm::end()?>
+			?>
 
 		</div>
+	<h3 class="text-center">Кабінет споживача</h3>
+
+
+	<div class="row">
+
 
 
 		<div class="col-sm-12">
@@ -125,15 +95,16 @@ use yii\helpers\Url;
 		</div>
 	</div>
 
-</br>
+
 	<!--Panel-->
 
 			<?= $content ?>
 
 	</div>
 
-	<?php Pjax::end(); ?>
+
 
 
 
 </div>
+<?php //Pjax::end(); ?>

@@ -27,6 +27,7 @@
 		public $DateMonthYear;
 		public $percent=0;
 		public $title = 'Завантаження';
+		public $progress;
 
 		private $handler = false;
 

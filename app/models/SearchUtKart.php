@@ -16,12 +16,17 @@ class SearchUtKart extends UtKart
     /**
      * @inheritdoc
      */
+	public $enterpass;
+
+
     public function rules()
     {
         return [
 			[['dom', 'id_ulica'], 'required'],
             [['id', 'id_ulica', 'kv', 'ur_fiz', 'id_oldkart'], 'integer'],
             [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef'], 'safe'],
+			[['enterpass'], 'string', 'min' => 7],
+			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];
     }
 

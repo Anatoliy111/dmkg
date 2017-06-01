@@ -25,14 +25,15 @@ use yii\helpers\Url;
 
 
 
-	<?php $this->beginContent('@app/views/ut-kart/navbar.php',['model'=>$model]); ?>
-
-<div class="utkart-info-view">
 
 
+<div class="utkart-info">
 
 
-	<?= ListView::widget([
+
+
+	<?php
+		echo ListView::widget([
 		'dataProvider' => $dataProvider,
 		'pager' => [
 		],
@@ -51,9 +52,12 @@ use yii\helpers\Url;
 
 
 
+
+
+
 </div>
 
-	<?php $this->endContent(); ?>
+
 
 
 
