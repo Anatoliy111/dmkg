@@ -45,13 +45,14 @@ class UtKartController extends Controller
     {
         $searchModel = new SearchUtKart();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+		$_SESSION['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
 
 		$model = new UtKart();
 		//		$searchModel->period();
 //		$searchModel->lastperiod();
 		if ($model->load(Yii::$app->request->post())) {
 //			if ($searchModel->pass.'111' == $_POST['SearchUtKart']['enterpass'] && $searchModel->validate()) {
-			$_SESSION['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
+
 			return $this->redirect(['kabinet', 'id' => $searchModel->id]);
 		} else {
 			return $this->render('index', [
