@@ -52,7 +52,7 @@ $this->title = $model->fio;
 			<?=
 			$form->field($model, 'enterpass')->textInput();
 			?>
-<!--					--><?//= Html::submitButton('Далі', ['class' => 'btn btn-primary']) ?>
+
 
 			       <?= Html::a('Далі', ['kabinet', 'id'=>$model->id],['class' => 'btn btn-primary']) ?>
 
