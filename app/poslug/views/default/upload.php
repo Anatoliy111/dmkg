@@ -28,7 +28,8 @@ use yii\base\Event;
 	Modal::begin([
 		'header' => '<h2>Завантаження даних...</h2>',
 		'options'=>[
-			'id'=>'Modalprogress1'
+			'id'=>'Modalprogress7',
+			'backdrop' => 'static',
 
 		],
 		'size'=> 'modal-lg',
@@ -72,50 +73,88 @@ use yii\base\Event;
 
 	if ($model->progress)
 	{
-		$this->registerJs(
-			"$('#Modalprogress1').modal('show');",
-			yii\web\View::POS_READY
-		);
+//		$this->registerJs(
+////			"$('#Modalprogress1').modal('show');
+//		"$('#Modalprogress1').modal({backdrop: false})",
+//			yii\web\View::POS_READY
+//		);
 
 		$js = <<< JS
 				function repeat_import() {
 					$.ajax({
-							url: "/poslug/default/indexq111",
-							timeout: 50000,
+							url: "/poslug/default/download",
+							//timeout: 50000,
 							success: function(data, textStatus){
 										$("#upprogress").append("I");
-										 _win = document.getElementById('#Modalprogress1'); //Получаем наше диалоговое окно по ID
-       									if (!_win) {
-       									$("#content").html("<h2>������ ��������!</h2>");
-       									}
 
 										if (data == "The End") {
 											$("#content").html("<h2>������ ��������!</h2>");
 										}
 										else {
 											$("#content").html("<p>" + data + "</p>");
-											repeat_import();
+											//repeat_import();
 										}
 									},
 							complete: function(xhr, textStatus){
-							             _win = document.getElementById('Modalprogress1'); //Получаем наше диалоговое окно по ID
-							            if (!_win) {
-       									$("#content").html("<h2>������ ��������!</h2>");
-       									}
-       									else if (textStatus != "success") {
+
+       									 if (textStatus != "success") {
 											$("#upprogress").append("I");
-											repeat_import();
+											//repeat_import();
 										}
 									}
 					});
 				}
+				//$("#upprogress").append("I");
 
 				$(function (){
+
 					repeat_import();
 				});
+//								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
+//											alert("Modal window has been completely closed.");
+//										});
 
 JS;
-		$this->registerJs($js);
+
+		$js1 = <<< JS
+		   var timer;
+
+    // The function to refresh the progress bar.
+    function refreshProgress() {
+      $.ajax({
+        url: "checker.php?file=<?php echo session_id() ?>",
+        success:function(data){
+          $("#progress").html('<div class="bar" style="width:' + data.percent + '%"></div>');
+          $("#message").html(data.message);
+          // If the process is completed, we should stop the checking process.
+          if (data.percent == 100) {
+            window.clearInterval(timer);
+            timer = window.setInterval(completed, 1000);
+          }
+        }
+      });
+    }
+
+    function completed() {
+      $("#message").html("Completed");
+      window.clearInterval(timer);
+    }
+
+
+				//$("#upprogress").append("I");
+
+				$(function (){
+				$.ajax({url: "process.php"});
+
+                  timer = window.setInterval(refreshProgress, 1000);
+				});
+//								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
+//											alert("Modal window has been completely closed.");
+//										});
+
+JS;
+
+		$this->registerJs($js1,\yii\web\View::POS_END);
 
 	}
 

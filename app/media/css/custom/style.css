@@ -795,6 +795,35 @@ header .bottom_header .address .top-info .icon-box span:after {
     margin-left: auto;
     min-height: calc(100vh - 10px);
 }
+.main .ut-kart {
+    padding-top: 18px;
+}
+
+.main .ut-kart h2 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 1.75em;
+    color: #323232;
+    position: relative;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.main .ut-kart h2:before {
+    content: '';
+    width:245px;
+    height:3px;
+    background: #f6ba18;
+    position: absolute;
+    top: 42px;
+    /*left: 14px;*/
+}
+
+.main .ut-kart li a{
+    font-family: 'Raleway', sans-serif;
+    /*font-weight: 700;*/
+    font-size: 1.25em;
+}
 
 
 .welcome_sec {
@@ -805,6 +834,8 @@ header .bottom_header .address .top-info .icon-box span:after {
 	margin-right: -15px;
 	margin-left: -15px;
 }
+
+
 
 .welcome_sec h2 {
 	font-family: 'Raleway', sans-serif;

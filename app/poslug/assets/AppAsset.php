@@ -25,7 +25,7 @@ class AppAsset extends \yii\web\AssetBundle
     public $js = [
 
 		'js/myscript.js',
-        'js/import-dbf.js',
+//        'js/import-dbf.js',
 //		'js/custom.js',
 //		'js/month/jquery.maskedinput.min.js',
 //		'js/month/MonthPicker.js',

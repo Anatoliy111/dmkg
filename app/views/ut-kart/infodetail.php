@@ -15,7 +15,7 @@
 //$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ut-kart-view">
+<div class="ut-kart-det">
 
 
 
@@ -26,7 +26,7 @@
 
 
 
-		<div class="col-md-12">
+
 				<?=
 					DetailView::widget([
 						'model'=>$model,
@@ -55,7 +55,7 @@
 						]
 					]);
 				?>
-		</div>
+
 
 
 

@@ -17,53 +17,55 @@
 $this->title = $model->fio;
 //$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
-	$items = [
+	foreach ($orgs as $k=>$org)
+	{
+	$items[$org->id_org] = [
 		[
-			'label'=>'<i class="glyphicon glyphicon-home"></i> Загальна інформація',
+			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
 //			'content'=>'dgfdgggggggggggggggggggg',
-			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo]),
+			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
 			'active'=>true
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-user"></i> Послуги',
-			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'abonents'=>$abonents]),
+			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
+			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-user"></i> Нарахування',
-			'content'=>'dgfdgggggggggggggggggggg',
-//			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor]),
+			'label'=>'<i class="glyphicon glyphicon-flag"></i> Нарахування',
+			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-user"></i> Оплата',
-			'content'=>'dgfdgggggggggggggggggggg',
-//			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor]),
+			'label'=>'<i class="glyphicon glyphicon-usd"></i> Оплата',
+			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-user"></i> Супсидія',
+//			'content'=>'dgfdgggggggggggggggggggg',
+////			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-user"></i> Супсидія',
-			'content'=>'dgfdgggggggggggggggggggg',
-//			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor]),
-		],
-		[
-			'label'=>'<i class="glyphicon glyphicon-user"></i> Зведена відомість',
-			'content'=>'dgfdgggggggggggggggggggg',
-//			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor]),
+			'label'=>'<i class="glyphicon glyphicon-transfer"></i> Зведена відомість',
+			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 
 	];
 
-
+	}
 
 ?>
 <div class="ut-kart">
 	<div class="well well-large container">
-		<div class="col-xs-4 pull-right">
+		<div class="col-xs-8">
+			<h2>Кабінет споживача</h2>
+		</div>
+		<div class="col-xs-4">
 			<?php
 
-
+				$form = ActiveForm::begin();
 
 				echo Select2::widget([
 					'model' => $model,
-					'attribute' => 'periodd',
+					'attribute' => 'MonthYear',
 					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
 					'hideSearch' => true,
 //					'showToggleAll' => true,
@@ -78,12 +80,16 @@ $this->title = $model->fio;
 						'format' => ['date', 'php:MY'],
 					],
 				]);
+
+				ActiveForm::end();
 			?>
 
-		</div>
-		<h3 class="text-center">Кабінет споживача</h3>
+
+			</div>
 
 
+
+		<div class="col-xs-12">
 		<?php
 			foreach ($orgs as $k=>$org)
 			{
@@ -94,8 +100,8 @@ $this->title = $model->fio;
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>	 TabsX::widget([
-								'items'=>$items,
-								'position'=>TabsX::POS_LEFT,
+								'items'=>$items[$org->id_org],
+								'position'=>TabsX::POS_ABOVE,
 								'encodeLabels'=>false,
 								'bordered'=>true,
 							]),
@@ -109,8 +115,8 @@ $this->title = $model->fio;
 				[
 					'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 					'content'=>	 TabsX::widget([
-						'items'=>$items,
-						'position'=>TabsX::POS_LEFT,
+						'items'=>$items[$org->id_org],
+						'position'=>TabsX::POS_ABOVE,
 						'encodeLabels'=>false,
 						'bordered'=>true,
 					]),
@@ -119,6 +125,7 @@ $this->title = $model->fio;
 				}
 
 			}
+
 
 
 
@@ -132,7 +139,7 @@ $this->title = $model->fio;
 			]);
 		?>
 
-
+	</div>
 <!--				--><?php
 //					echo TabsX::widget([
 //						'items'=>$items,

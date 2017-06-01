@@ -27,7 +27,7 @@ use yii\helpers\Url;
 
 
 
-<div class="utkart-info-view page-header">
+<div class="utkart-info">
 
 
 
