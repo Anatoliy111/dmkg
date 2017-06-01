@@ -240,7 +240,9 @@ class UtKartController extends Controller
 
 
 		$model = $this->findModel($id);
-		$model->MonthYear = $_SESSION['period'];
+		$session = Yii::$app->session;
+//		$model->MonthYear = $_SESSION['period'];
+		$model->MonthYear =  $session['period'];
 		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
 
 		$orgs = UtAbonent::find()->with('org')->where(['id_kart' => $model->id])->groupBy('id_org')->all();
