@@ -22,6 +22,11 @@ $this->title = $model->fio;
 
 	<?php $form = ActiveForm::begin([
 //			'enableAjaxValidation'=>true,
+		'action' => ['kabinet', 'id'=>$model->id],
+		'options' => [
+			'id' => 'search-form',
+			'method' => 'get',
+		],
 	'validateOnSubmit'=>true,
 
 	]);
@@ -53,8 +58,8 @@ $this->title = $model->fio;
 			$form->field($model, 'enterpass')->textInput();
 			?>
 
-
-			       <?= Html::a('Далі', ['kabinet', 'id'=>$model->id],['class' => 'btn btn-primary']) ?>
+			       <?= Html::submitButton('Далі',['class' => 'btn btn-primary']) ?>
+<!--			       --><?//= Html::a('Далі', ['kabinet', 'id'=>$model->id],['class' => 'btn btn-primary']) ?>
 
 
 		<?php endif; ?>
