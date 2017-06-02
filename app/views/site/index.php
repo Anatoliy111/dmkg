@@ -28,7 +28,7 @@ $asset = \app\assets\AppAsset::register($this);
 <!--	<div class="container">-->
 		<div class="row welcome_heading">
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
-				<h2><?= Text::get('index-welcome-title') ?></h2>
+				<h2><span itemprop="name"><?= Text::get('index-welcome-title') ?></span></h2>
 			</div>
 			<div class="col-sm-8">
 				<?= Carousel::widget(800, 420) ?>

@@ -18,7 +18,7 @@ $asset = \app\assets\AppAsset::register($this);
 $search = '';
 
 ?>
-    <header>
+<span itemscope itemtype="http://schema.org/LocalBusiness"><header>
 
 		<?php PaceAsset::register($this);
 
@@ -54,7 +54,7 @@ $search = '';
 			<div class="container clear_fix">
 				<div class="float_left logo">
 					<a href="<?= Url::home() ?>">
-						<img src="<?= $asset->baseUrl ?>/logo.png" alt="ДМКГ">
+						<img itemprop="image" src="<?= $asset->baseUrl ?>/logo.png" alt="ДМКГ">
 					</a>
 				</div>
 				<div class="padding-top">
@@ -63,8 +63,8 @@ $search = '';
 							<div class="icon-box">
 								<span class=" icon icon-Pointer"></span>
 							</div>
-							<div class="content-box">
-								<p> вул. Нова 80-А <br><span>м. Долинська Кіровоградська обл.</span></p>
+							<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="content-box">
+								<p itemprop="streetAddress"> вул. Нова 80-А <br><span>м. Долинська Кіровоградська обл.</span></p>
 							</div>
 						</div>
 						<div class="top-info">
@@ -72,15 +72,15 @@ $search = '';
 								<span class="separator icon icon-Phone2"></span>
 							</div>
 							<div class="content-box">
-								<p>+3805-234-5-22-56 <br><span>kp_centr@ukr.net</span></p>
+								<p><span itemprop="telephone">+3805-234-5-22-56</span> <br><span itemprop="email">kp_centr@ukr.net</span></p>
 							</div>
 						</div>
 						<div class="top-info">
 							<div class="icon-box">
 								<span class="separator icon icon-Timer"></span>
 							</div>
-							<div class="content-box">
-								<p>Пн - Пт 8.00 - 17.00 <br><span>Сб. Нд. вихідний</span></p>
+							<div itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" class="content-box">
+								<span itemprop="dayOfWeek" itemscope itemtype="http://schema.org/DayOfWeek"><p itemprop="name">Пн - Пт 8.00 - 17.00 <br/><span>Сб. Нд. вихідний</span></p></span>
 							</div>
 						</div>
 					</div>
@@ -128,7 +128,7 @@ $search = '';
 			<?= $content ?>
 
         <div class="push"></div>
-    </main>
+    </main></span>
 
 <footer>
 
