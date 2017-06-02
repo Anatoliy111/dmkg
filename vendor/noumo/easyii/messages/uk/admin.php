@@ -153,6 +153,11 @@ return [
 	'Articles' => 'Статті',
 	'Create article' => 'Створити статтю',
 	'News' => 'Новини',
+	'Select the body if there is...' => 'Виберіть корпус...',
+	'Select the street...' => 'Виберіть вулицю...',
+
+
+
 	'Ut Abonents' => 'Абоненти',
 	'Ut Karts' => 'Адресна картка',
 	'Ut Ulicas' => 'Вулиці',

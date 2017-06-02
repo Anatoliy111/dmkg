@@ -14,6 +14,30 @@ $this->params['breadcrumbs'][] = $article->model->title;
 <!--<h1>--><?//= $article->seo('h1', $article->title) ?><!--</h1>-->
 
 <!-- =============== blog container ============== -->
+<?php
+function renderNode($node)
+{
+if(!count($node->children)){
+if (Yii::$app->request->get('slug') == $node->slug)
+{
+$html = '<li class="active">'.Html::a($node->title, ['/articles/cat', 'slug' => $node->slug]).'</li>';
+}
+else
+{
+$html = '<li>'.Html::a($node->title, ['/articles/cat', 'slug' => $node->slug]).'</li>';
+}
+//        $html = '<li>'.Html::a($node->title, ['/articles/cat', 'slug' => $node->slug]).'</li>';
+} else {
+//        $html = '<li class="arrow_down">'.Html::a($node->title).'</li>';
+$html = '</ul>';
+//		$html .= '<div class="sub-menu">';
+	//        foreach($node->children as $child) $html .= renderNode($child);
+	//		$html .= '</div>';
+//        $html .= '</ul>';
+}
+return $html;
+}
+?>
 
 <article class="blog-container faqs_sec"> <!-- faqs_sec use for style side content -->
 	<div class="container">
@@ -22,26 +46,10 @@ $this->params['breadcrumbs'][] = $article->model->title;
 			<div class="col-lg-4 col-md-4 col-sm-12 pull-left left_side pbt-86"> <!-- Left Side -->
 				<h4>Категорії </h4>
 				<ul class="nav nav-tabs tabs-left"><!-- 'tabs-right' for right tabs -->
-<!--					--><?php //foreach(Article::tree() as $node) : ?>
-<!--						--><?//= renderNode($node) ?>
-<!--					--><?php //endforeach; ?>
-				</ul>
-				<h4>Популярні статті</h4>
-				<?php foreach(article::popular(3) as $articlepop) : ?>
-					<ul class="p0 post_item">
-						<li><?php echo Yii::$app->formatter->asDate($articlepop->time) ?><a href="<?= Url::to(['articles/view', 'slug' => $articlepop->slug]) ?>"><?= $articlepop->title ?></a></li>
-						<!--					<li>AUG 12,2015<a href="">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
-						<!--					<li>AUG 12,2015<a href="" class="bottom_item">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
-					</ul>
-				<?php endforeach;?>
-				<h4>Теги</h4>
-				<?php $TagAssign = Tag::findAll(['tag_id' => TagAssign::findAll(['class' => 'yii\easyii\modules\article\models\Item'])])  ?>
-				<ul class="p0 clouds">
-					<?php foreach($TagAssign as $tag1) : ?>
-						<li><a href="<?= Url::to(['/articles', 'tag' => $tag1->name]) ?>"><?= $tag1->name ?></a></li>
+					<?php foreach(Article::tree() as $node) : ?>
+						<?= renderNode($node) ?>
 					<?php endforeach; ?>
 				</ul>
-
 			</div> <!-- End left side -->
 			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pull-right white-right right-side ptb-13">
 				<!-- .single-blog-post -->
