@@ -10,7 +10,7 @@ $asset = \app\assets\AppAsset::register($this);
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<META NAME="Description" CONTENT="ДМКГ КП Долинський міськкомунгосп">
-		<META NAME="Keywords" CONTENT="ДМКГ, Долинський, міськкомунгосп, комунальні, послуги, будинки, опалення, водопостачання">
+		<META NAME="Keywords" CONTENT="ДМКГ, Долинський, міськкомунгосп, комунальні, послуги, будинки, опалення, водопостачання, dmkg">
 		<META NAME="Robots" CONTENT="ALL">
 		<META NAME="Revisit-After" CONTENT="1 Days">
 		<?= Html::csrfMetaTags() ?>
