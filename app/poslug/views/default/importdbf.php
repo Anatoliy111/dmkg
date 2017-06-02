@@ -11,9 +11,9 @@ use yii\bootstrap\Modal;
 
 
 
+    $percent = $percent + 1;
 
-
-
+	echo 'percent '.$percent;
 ?>
 
 <h2>нннннннннннннннннннннннннннн!</h2>

@@ -78,6 +78,17 @@ class DefaultController extends Controller
 	}
 
 
+	public function actionImportprogress()
+	{
+		return $this->render('importprogress');
+	}
+
+	public function actionImportdbf()
+	{
+		return $this->render('importdbf');
+	}
+
+
 	public function actionOldkart()
 	{
 		$model = new UtOldkart();

@@ -22,11 +22,11 @@ use kartik\file\FileInput;
 use yii\bootstrap\modal;
 use yii\base\Event;
 
-	Pjax::begin(['id' => 'upload']);
+//	Pjax::begin(['id' => 'upload']);
 
  echo Progress::widget([
-	'percent' => $model->percent,
-
+	'percent' => 0,
+    'id' => 'progress',
 	'barOptions' => [
 		'class' => 'progress-bar-success'
 	],
@@ -36,6 +36,7 @@ use yii\base\Event;
 ]);
 
 
-Pjax::end() ?>
+//Pjax::end()
+?>
 
 
