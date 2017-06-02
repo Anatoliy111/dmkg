@@ -9,8 +9,12 @@ $asset = \app\assets\AppAsset::register($this);
     <head>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <?= Html::csrfMetaTags() ?>
-        <title><?= Html::encode($this->title) ?></title>
+		<META NAME="Description" CONTENT="ДМКГ КП Долинський міськкомунгосп">
+		<META NAME="Keywords" CONTENT="ДМКГ, Долинський, міськкомунгосп, комунальні, послуги, будинки, опалення, водопостачання">
+		<META NAME="Robots" CONTENT="ALL">
+		<META NAME="Revisit-After" CONTENT="1 Days">
+		<?= Html::csrfMetaTags() ?>
+        <title>ДМКГ</title>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
         <link rel="shortcut icon" href="<?= $asset->baseUrl ?>/icon_16.png" type="image/x-icon">
         <link rel="icon" href="<?= $asset->baseUrl ?>/icon_16.png" type="image/x-icon">
