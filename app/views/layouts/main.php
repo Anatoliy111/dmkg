@@ -30,35 +30,35 @@ $search = '';
 		<section class="search">
 			<div class="container-fluid top_head">
 				<div class="container">
-					<div  id="search" class="col-xs-6 col-md-4 pull-right">
-						<script>
-							(function() {
-								var cx = '015121369027183181960:uwnbsuww_sq';
-								var gcse = document.createElement('script');
-								gcse.type = 'text/javascript';
-								gcse.async = true;
-								gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-								var s = document.getElementsByTagName('script')[0];
-								s.parentNode.insertBefore(gcse, s);
-							})();
-						</script>
-						<gcse:search></gcse:search>
-					</div>
-					<!-- <p class="float_left">Welcome to Me Financial Services, we have over 12 years of expertise</p> -->
-<!--					<div class="float_right">-->
-<!--						<ul>-->
-<!--							<li>-->
-<!--								<div  id="search_box">-->
-<!--									--><?//= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
-<!--									--><?//= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
-<!---->
-<!--<!--									<input id="search" type="text" placeholder="Пошук...">-->
-<!--<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
-<!--								</div>-->
-<!---->
-<!--							</li>-->
-<!--						</ul>-->
+<!--					<div  id="search" class="col-xs-6 col-md-4 pull-right">-->
+<!--						<script>-->
+<!--							(function() {-->
+<!--								var cx = '015121369027183181960:uwnbsuww_sq';-->
+<!--								var gcse = document.createElement('script');-->
+<!--								gcse.type = 'text/javascript';-->
+<!--								gcse.async = true;-->
+<!--								gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;-->
+<!--								var s = document.getElementsByTagName('script')[0];-->
+<!--								s.parentNode.insertBefore(gcse, s);-->
+<!--							})();-->
+<!--						</script>-->
+<!--						<gcse:search></gcse:search>-->
 <!--					</div>-->
+					<!-- <p class="float_left">Welcome to Me Financial Services, we have over 12 years of expertise</p> -->
+					<div class="float_right">
+						<ul>
+							<li>
+								<div  id="search_box">
+									<?= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
+									<?= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
+
+<!--									<input id="search" type="text" placeholder="Пошук...">-->
+<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
+								</div>
+
+							</li>
+						</ul>
+					</div>
 				</div> <!-- end container -->
 			</div><!-- end top_header -->
 		</section>
