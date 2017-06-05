@@ -67,10 +67,15 @@ class DefaultController extends Controller
 	{
 		$model = new UploadForm();
 		if ($model->load(Yii::$app->request->post())) {
-			$model->File = UploadedFile::getInstance($model, 'File');
-					if ($model->uploadFile()) {
-						$model->progress = true;
-					}
+			if(isset($_FILES['UploadForm']['name']['File']))
+			{
+				$model->File = UploadedFile::getInstance($model, 'File');
+				if ($model->uploadFile()) {
+					$model->progress = true;
+//					return $this->redirect(['upload', 'model' => $model]);
+				}
+
+			}
 
 		}
 
