@@ -16,6 +16,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * UtKartController implements the CRUD actions for UtKart model.
@@ -34,6 +35,22 @@ class UtKartController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+			'access' => [
+				'class' => AccessControl::className(),
+				'only' => ['index', 'logout','kabinet'],
+				'rules' => [
+					[
+						'allow' => true,
+						'actions' => ['index'],
+						'roles' => ['?'],
+					],
+					[
+						'allow' => true,
+						'actions' => ['logout'],
+						'roles' => ['@'],
+					],
+				],
+			],
         ];
     }
 
