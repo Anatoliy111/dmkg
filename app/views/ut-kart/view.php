@@ -45,7 +45,7 @@ $this->title = $model->fio;
 				[
 					'label' => Yii::t('easyii', 'Adress'),
 
-					'value' => $model->getUlica()->asArray()->one()['ul'].Yii::t('easyii', ' house №').$model->dom.Yii::t('easyii', ' ap.').$model->kv,
+					'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
 				],
 			],
 
