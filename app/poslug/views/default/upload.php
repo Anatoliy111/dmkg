@@ -47,7 +47,7 @@ use yii\base\Event;
 	echo '5555...';
 
 	$progres = Progress::widget([
-	'percent' => 10,
+	'percent' => 0,
 	'id'=>'upprogress',
 
 	'barOptions' => [
@@ -107,6 +107,8 @@ use yii\base\Event;
 				//$("#upprogress").append("I");
 
 				$(function (){
+		//			    var win = $('#Modalprogress7');
+		//win.modal({backdrop: false});
 
 					repeat_import();
 				});
@@ -120,21 +122,38 @@ JS;
 		   var timer;
 
     // The function to refresh the progress bar.
-    function refreshProgress() {
+    function refreshProgress(percent) {
       $.ajax({
         url: "importdbf",
-        success:function(data,percent,hhh){
-          percent = 70;
+        success:function(data,succ,hhh){
+			percent = percent + 20;
+          if($('#Modalprogress7').is(':visible')){
+            if (percent >= 100) {
+            //window.clearInterval(timer);
+            //timer = window.setInterval(completed, 1000);
+            //$('#Modalprogress7').modal('close');
+            //$('#Modalprogress7').removeClass('show');
+            $("#Modalprogress7").modal('hide');
+
+            //$('#Modalprogress7').modal({show: false});
+             //$('#Modalprogress7').remove();
+				alert("Импорт завершен");
+				location.replace();
+			  }
+			  else {
+				 refreshProgress(percent);
+			  }
+            //      alert("Вы почему окно закрыли, а?");
+            //window.clearInterval(timer);
+            //timer = window.setInterval(completed, 1000);
+          }
+          else{
+             alert("Импорт прерван");
+          }
+
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           $("#message").html(data.message);
           // If the process is completed, we should stop the checking process.
-          if (percent == 100) {
-            window.clearInterval(timer);
-            timer = window.setInterval(completed, 1000);
-          }
-          if(!$('.Modalprogress7').has()closest(){
-				window.clearInterval(timer);
-          }
 
         }
       });
@@ -149,10 +168,13 @@ JS;
 				//$("#upprogress").append("I");
 
 	$(function (){
+	    //var win = $('#Modalprogress7');
 		$('#Modalprogress7').modal({backdrop: false});
         $.ajax({url: "importprogress"});
+        percent = 0;
 
-        timer = window.setInterval(refreshProgress, 1000);
+       //timer = window.setInterval(refreshProgress, 1000);
+       refreshProgress(percent);
 	});
 //								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
 //											alert("Modal window has been completely closed.");
@@ -160,8 +182,9 @@ JS;
 
 JS;
 
-		$this->registerJs($js1,\yii\web\View::POS_END);
+		$this->registerJs($js1,\yii\web\View::POS_READY);
 
+		$model->progress = false;
 	}
 
 ?>
@@ -208,7 +231,6 @@ JS;
 				'showUpload' => false
 			]
 		]);?>
-
 
 
 	<?=Html::submitButton('Завантажити все', ['class' => 'btn-lg btn-success'])?>

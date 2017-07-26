@@ -59,7 +59,7 @@ $this->title = $model->fio;
 			?>
 
 			       <?= Html::submitButton('Далі',['class' => 'btn btn-primary']) ?>
-<!--			       --><?//= Html::a('Далі', ['kabinet', 'id'=>$model->id],['class' => 'btn btn-primary']) ?>
+
 
 
 		<?php endif; ?>

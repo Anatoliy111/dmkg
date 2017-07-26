@@ -14,7 +14,7 @@ use yii\grid\GridView;
 ?>
 <div class="ut-kart-index">
 
-<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
+
     <?php Pjax::begin(); ?>
 	<div class="well well-large">
 			<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
