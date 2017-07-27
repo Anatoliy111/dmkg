@@ -46,7 +46,6 @@ use yii\base\Event;
 
 	echo '5555...';
 
-
 	$progres = Progress::widget([
 	'percent' => 0,
 	'id'=>'upprogress',
@@ -121,7 +120,6 @@ JS;
 
 		$js1 = <<< JS
 		   var timer;
-		   var modalform = $('#Modalprogress7');
 
     // The function to refresh the progress bar.
     function refreshProgress(percent) {
@@ -129,20 +127,18 @@ JS;
         url: "importdbf",
         success:function(data,succ,hhh){
 			percent = percent + 20;
-			$('#modal-body').html(data);
-          if(modalform.is(':visible')){
-            if (percent > 100) {
+          if($('#Modalprogress7').is(':visible')){
+            if (percent >= 100) {
             //window.clearInterval(timer);
             //timer = window.setInterval(completed, 1000);
             //$('#Modalprogress7').modal('close');
             //$('#Modalprogress7').removeClass('show');
-
-            modalform.modal('hide');
+            $("#Modalprogress7").modal('hide');
 
             //$('#Modalprogress7').modal({show: false});
              //$('#Modalprogress7').remove();
 				alert("Импорт завершен");
-			//	location.replace();
+				location.replace();
 			  }
 			  else {
 				 refreshProgress(percent);
@@ -154,12 +150,9 @@ JS;
           else{
              alert("Импорт прерван");
           }
-         //$("#upprogress").html('<div class="modal-body">dgdsfhdsfhsdfj</div>');
-         //$("#modal-body").with('Csasdgdsghdsh!');
-         $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
 
-
-      //   $("#message").html(data.message);
+          $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
+          $("#message").html(data.message);
           // If the process is completed, we should stop the checking process.
 
         }
@@ -167,7 +160,7 @@ JS;
     }
 
     function completed() {
-      modalform.html("Completed");
+      $("#message").html("Completed");
       window.clearInterval(timer);
     }
 
@@ -176,7 +169,7 @@ JS;
 
 	$(function (){
 	    //var win = $('#Modalprogress7');
-		modalform.modal({backdrop: false});
+		$('#Modalprogress7').modal({backdrop: false});
         $.ajax({url: "importprogress"});
         percent = 0;
 

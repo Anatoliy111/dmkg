@@ -18,7 +18,7 @@ $this->title = 'Welcome to Gii';
     <p><a class="btn btn-success" href="http://www.yiiframework.com/extensions/?tag=gii">Get More Generators</a></p>
 
 	<?php
-
+	phpinfo();
 	?>
 
 
