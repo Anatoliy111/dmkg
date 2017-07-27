@@ -35,22 +35,22 @@ class UtKartController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-			'access' => [
-				'class' => AccessControl::className(),
-				'only' => ['index', 'logout','kabinet'],
-				'rules' => [
-					[
-						'allow' => true,
-						'actions' => ['index'],
-						'roles' => ['?'],
-					],
-					[
-						'allow' => true,
-						'actions' => ['logout'],
-						'roles' => ['@'],
-					],
-				],
-			],
+//			'access' => [
+//				'class' => AccessControl::className(),
+//				'only' => ['index', 'logout','kabinet'],
+//				'rules' => [
+//					[
+//						'allow' => true,
+//						'actions' => ['index'],
+//						'roles' => ['?'],
+//					],
+//					[
+//						'allow' => true,
+//						'actions' => ['logout'],
+//						'roles' => ['@'],
+//					],
+//				],
+//			],
         ];
     }
 
