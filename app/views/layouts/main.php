@@ -87,7 +87,7 @@ $search = '';
 								<span class="separator icon icon-Phone2"></span>
 							</div>
 							<div class="content-box">
-								<p><span itemprop="telephone">+3805-234-5-22-56</span> <br><span itemprop="email">kp_centr@ukr.net</span></p>
+								<p><span itemprop="telephone">+3805-234-5-22-56</span> <br><span itemprop="email">dmkg28500@ukr.net</span></p>
 							</div>
 						</div>
 						<div class="top-info">

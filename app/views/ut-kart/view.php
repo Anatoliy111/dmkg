@@ -9,7 +9,7 @@
 /* @var $this yii\web\View */
 /* @var $model app\models\UtKart */
 
-$this->title = $model->fio;
+//$this->title = $model->fio;
 
 ?>
 <div class="ut-kart-view">
@@ -35,21 +35,21 @@ $this->title = $model->fio;
 	?>
 
 
-		<?= DetailView::widget([
-			'model' => $model,
-			'attributes' => [
-
-				'fio',
-
-
-				[
-					'label' => Yii::t('easyii', 'Adress'),
-
-					'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
-				],
-			],
-
-		]) ?>
+<!--		--><?//= DetailView::widget([
+//			'model' => $model,
+//			'attributes' => [
+//
+//				'fio',
+//
+//
+//				[
+//					'label' => Yii::t('easyii', 'Adress'),
+//
+//					'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
+//				],
+//			],
+//
+//		]) ?>
 
 	<div class="row">
 		<div class="col-sm-3">
