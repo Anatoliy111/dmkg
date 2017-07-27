@@ -155,6 +155,8 @@ return [
 	'News' => 'Новини',
 	'Select the body if there is...' => 'Виберіть корпус...',
 	'Select the street...' => 'Виберіть вулицю...',
+	'house №' => 'буд. №',
+	'ap.' => 'кв.',
 
 
 
