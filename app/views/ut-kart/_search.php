@@ -50,6 +50,27 @@ use yii\widgets\ActiveForm;
 
 		</div>
 	</div>
+<<<<<<< HEAD
+=======
+	<?php
+		if ($dataProvider->getTotalCount() <> 0) {
+	?>
+
+	<div class="row">
+		<div class="col-sm-3">
+
+			<?php
+				$form->field($model, 'enterpass')->textInput();
+			?>
+
+		</div>
+	</div>
+	<?php
+		}
+	?>
+
+
+>>>>>>> 8556c24aed9f87e3ec5bb27eb65709f9f97bd33d
 
     <div class="form-group">
 		<?= Html::submitButton('Далі',['class' => 'btn btn-primary']) ?>
