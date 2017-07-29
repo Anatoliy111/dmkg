@@ -45,14 +45,27 @@ use yii\widgets\ActiveForm;
 
 		</div>
 	</div>
+	<?php
+		if ($dataProvider->getTotalCount() <> 0) {
+			?>
 
+	<div class="row">
+		<div class="col-sm-3">
 
+			<?=
+				$form->field($model, 'enterpass')->textInput();
+			?>
+
+		</div>
+	</div>
+	<?
+		}
+	?>
 
 
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('easyii', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('easyii', 'Reset'), ['class' => 'btn btn-default']) ?>
+		<?= Html::submitButton('Далі',['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -62,7 +62,7 @@ class UtKart extends \yii\db\ActiveRecord
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
 //			[['enterschet'], 'string', 'min' => 8],
 			[['enterpass'], 'string', 'min' => 7],
-			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
+//			[['enterpass'], 'compare',  'compareValue' => $this->pass, 'operator' => '==', 'message' => 'Код доступу не вірний !!!'],
         ];
     }
 
