@@ -22,8 +22,7 @@ use yii\grid\GridView;
 			<?php  echo $this->render('_search', ['model' => $searchModel, 'dataProvider' => $dataProvider]);
 				?>
 	</div>
-<<<<<<< HEAD
-=======
+
 	<div class="row">
 		<?php
 			if ($dataProvider->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
@@ -55,7 +54,7 @@ use yii\grid\GridView;
 	</div>
 
 
->>>>>>> 85c0d6ae4e43f612f9e5bad778adb5549c24a056
+
 
 
     <?php Pjax::end(); ?>
