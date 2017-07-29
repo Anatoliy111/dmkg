@@ -52,18 +52,18 @@ use yii\widgets\ActiveForm;
 	</div>
 	<?php
 		if ($dataProvider->getTotalCount() <> 0) {
-			?>
+	?>
 
 	<div class="row">
 		<div class="col-sm-3">
 
-			<?=
+			<?php
 				$form->field($model, 'enterpass')->textInput();
 			?>
 
 		</div>
 	</div>
-	<?
+	<?php
 		}
 	?>
 
