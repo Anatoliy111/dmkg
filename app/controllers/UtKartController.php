@@ -92,7 +92,11 @@ class UtKartController extends Controller
 //			return $this->render('kabinet', ['id'=>$dataProvider2->getModels()[0]->id]);
 //		}
 		if ($findmodel <> null and $findmodel <> 'bad'){
-			return $this->render('kabinet', ['id'=>$findmodel->id]);
+
+//			return $this->render('kabinet', ['id'=>$findmodel->id]);
+//			$this->actionKabinet($findmodel->id);
+
+			return $this->redirect(['kabinet', 'id' => $findmodel->id]);
 		}
 
 
