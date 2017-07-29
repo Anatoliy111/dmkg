@@ -60,15 +60,52 @@ class UtKartController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new SearchUtKart();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$session = Yii::$app->session;
-		$session['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
+        $searchModel = new SearchUtKart();
+		$findmodel = null;
+		$searchModel->scenario = 'adres';
+//		$searchModel->scenario = isset($_REQUEST['SearchUtKart']['enterpass']) ? $searchModel->scenario = 'password' : $searchModel->scenario = 'adres';
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//		if ($dataProvider->className()){
+//
+//		}
+		if ($dataProvider->getTotalCount() <> 0){
+			$searchModel->scenario = 'password';
+			$findmodel = $searchModel->searchPass(Yii::$app->request->queryParams,$dataProvider);
+		}
+//		$dataProvider2 = $searchModel->searchPass();
+//
+//		$session['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
+//		if ($dataProvider->getTotalCount() <> 0)
+//		{
+//			$session['findadres'] = Yii::$app->request->queryParams;
+//		}
+//        if ($dataProvider2->getTotalCount() == 0)
+//		{
+//			return $this->render('index', [
+//				'searchModel' => $searchModel,
+//				'dataProvider' => $dataProvider,
+//			]);
+//		}
+//		else
+//		{
+//			return $this->render('kabinet', ['id'=>$dataProvider2->getModels()[0]->id]);
+//		}
+		if ($findmodel <> null and $findmodel <> 'bad'){
+
+//			return $this->render('kabinet', ['id'=>$findmodel->id]);
+//			$this->actionKabinet($findmodel->id);
+
+			return $this->redirect(['kabinet', 'id' => $findmodel->id]);
+		}
+
 
 			return $this->render('index', [
 				'searchModel' => $searchModel,
 				'dataProvider' => $dataProvider,
+				'findmodel' => $findmodel,
 			]);
+
 
     }
 

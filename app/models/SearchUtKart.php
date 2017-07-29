@@ -17,16 +17,18 @@ class SearchUtKart extends UtKart
      * @inheritdoc
      */
 	public $enterpass;
+	const SCENARIO_ADDR = 'adres';
+	const SCENARIO_PASS = 'password';
 
 
     public function rules()
     {
         return [
-			[['dom', 'id_ulica'], 'required'],
+			[['dom', 'id_ulica','enterpass'], 'required'],
             [['id', 'id_ulica', 'kv', 'ur_fiz', 'id_oldkart'], 'integer'],
             [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef'], 'safe'],
 			[['enterpass'], 'string', 'min' => 7],
-			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
+//			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];
     }
 
@@ -36,7 +38,16 @@ class SearchUtKart extends UtKart
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+//        return Model::scenarios();
+//		return [
+//			self::SCENARIO_ADDR => ['dom', 'id_ulica'],
+//			self::SCENARIO_PASS => ['dom', 'id_ulica','enterpass'],
+//		];
+
+		$scenarios = parent::scenarios();
+		$scenarios[self::SCENARIO_ADDR] = ['dom', 'id_ulica', 'kv', 'korp'];
+		$scenarios[self::SCENARIO_PASS] = ['dom', 'id_ulica', 'kv', 'korp', 'enterpass'];
+		return $scenarios;
     }
 
     /**
@@ -86,21 +97,29 @@ class SearchUtKart extends UtKart
 			$query->andWhere(['=', 'dom', $this->dom]);
 		}
 
-		if ($dataProvider->getTotalCount() == 0) {
-//			Yii::$app->getSession()->setFlash('alert', [
-//				'body'=>'Thank you for contacting us. We will respond to you as soon as possible.',
-//				'options'=>['class'=>'alert-warning']
+//		if ($this->enterpass<>null){
+//			$query->andWhere(['=', 'pass', $this->enterpass]);
+//			if ($dataProvider->getTotalCount() <> 0) {
+//				return $dataProvider->getModels()[0];
+//			}
+//		}
+
+
+//		if ($dataProvider->getTotalCount() == 0) {
+////			Yii::$app->getSession()->setFlash('alert', [
+////				'body'=>'Thank you for contacting us. We will respond to you as soon as possible.',
+////				'options'=>['class'=>'alert-warning']
+////			]);
+//			Alert::begin([
+//				'options' => [
+//					'class' => 'alert-danger', 'style' => 'float:bottom; margin-top:50px',
+//				],
 //			]);
-			Alert::begin([
-				'options' => [
-					'class' => 'alert-danger', 'style' => 'position:static; float:right; margin-top:50px',
-				],
-			]);
-
-			echo 'По вашій адресі абонентів не знайдено ';
-
-			Alert::end();
-		}
+//
+//			echo 'По вашій адресі абонентів не знайдено ';
+//
+//			Alert::end();
+//		}
 
 
 
@@ -128,4 +147,21 @@ class SearchUtKart extends UtKart
 
         return $dataProvider;
     }
+
+	public function searchPass($params, $dataProvider)
+	{
+		$this->load($params);
+		if (!$this->validate()) {
+			return null;
+		}
+        $models = $dataProvider->getModels();
+        foreach($models as $model){
+           if ($model->pass == $this->enterpass){
+			   return $model;
+		   }
+		}
+
+
+		return 'bad';
+	}
 }

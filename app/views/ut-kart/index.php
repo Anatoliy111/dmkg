@@ -1,5 +1,7 @@
 <?php
 
+	use yii\bootstrap\ActiveForm;
+	use yii\bootstrap\Alert;
 	use yii\bootstrap\Tabs;
 	use yii\helpers\Html;
 use yii\grid\GridView;
@@ -17,18 +19,39 @@ use yii\grid\GridView;
 
     <?php Pjax::begin(); ?>
 	<div class="well well-large">
-			<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-
-			<p>
-
-			</p>
-
-			<?= ListView::widget([
-				'dataProvider' => $dataProvider,
-		//        'itemView' => 'searchview',
-				'itemView' => 'view',
-			]);?>
+			<?php  echo $this->render('_search', ['model' => $searchModel, 'dataProvider' => $dataProvider]);
+				?>
 	</div>
+	<div class="row">
+		<?php
+			if ($dataProvider->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
+
+				Alert::begin([
+					'options' => [
+						'class' => 'alert-danger', 'style' => 'float:bottom; margin-top:50px',
+					],
+				]);
+
+				echo 'По вашій адресі абонентів не знайдено ';
+
+				Alert::end();
+			}
+
+			if ($dataProvider->getTotalCount() <> 0  and $findmodel == 'bad') {
+
+				Alert::begin([
+					'options' => [
+						'class' => 'alert-danger', 'style' => 'float:bottom; margin-top:50px',
+					],
+				]);
+
+				echo 'Не вірний код доступу !';
+
+				Alert::end();
+			}
+		?>
+	</div>
+
 
 
 
