@@ -61,6 +61,8 @@ use yii\widgets\ActiveForm;
 				$form->field($model, 'enterpass')->textInput();
 			?>
 
+<!--			fdgsdfhdfsjfjfdj-->
+
 		</div>
 	</div>
 	<?php
