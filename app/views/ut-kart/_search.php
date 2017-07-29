@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
 				'pluginOptions' => [
 					'allowClear' => true
 				],
-			])
+			]);
 			 ?>
 		</div>
 		<div class="col-sm-2">
