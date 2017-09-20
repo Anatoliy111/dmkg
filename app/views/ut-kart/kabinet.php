@@ -20,12 +20,12 @@ $this->title = $model->fio;
 	foreach ($orgs as $k=>$org)
 	{
 	$items[$org->id_org] = [
-		[
-			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
-//			'content'=>'dgfdgggggggggggggggggggg',
-			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
-			'active'=>true
-		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
+////			'content'=>'dgfdgggggggggggggggggggg',
+//			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
+//			'active'=>true
+//		],
 		[
 			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
 			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
@@ -57,6 +57,7 @@ $this->title = $model->fio;
 	<div class="well well-large container">
 		<div class="col-xs-8">
 			<h2>Кабінет споживача</h2>
+
 		</div>
 		<div class="col-xs-4">
 			<?php
@@ -85,7 +86,28 @@ $this->title = $model->fio;
 			?>
 
 
+		</div>
+
+			<div class="col-sm-12">
+<!--				<h4>--><?//=$model->fio?><!--</h4>-->
+						<?= DetailView::widget([
+								'model' => $model,
+								'attributes' => [
+
+									'fio',
+									'idcod',
+									'telef',
+									[
+										'label' => Yii::t('easyii', 'Adress'),
+
+										'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
+									],
+								],
+
+							]) ?>
 			</div>
+
+
 
 
 
@@ -99,7 +121,9 @@ $this->title = $model->fio;
 					$itemsorg[$org->id_org] =
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
-							'content'=>	 TabsX::widget([
+							'content'=>
+                                Html::a('Показники').
+								TabsX::widget([
 								'items'=>$items[$org->id_org],
 								'position'=>TabsX::POS_ABOVE,
 								'encodeLabels'=>false,
@@ -114,7 +138,9 @@ $this->title = $model->fio;
 				$itemsorg[$org->id_org] =
 				[
 					'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
-					'content'=>	 TabsX::widget([
+					'content'=>
+						Html::a('Показники').
+						TabsX::widget([
 						'items'=>$items[$org->id_org],
 						'position'=>TabsX::POS_ABOVE,
 						'encodeLabels'=>false,

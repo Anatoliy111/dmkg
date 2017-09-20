@@ -24,16 +24,17 @@ use yii\base\Event;
 
 //	Pjax::begin(['id' => 'upload']);
 
- echo Progress::widget([
-	'percent' => 0,
-    'id' => 'progress',
-	'barOptions' => [
-		'class' => 'progress-bar-success'
-	],
-	'options' => [
-		'class' => 'active progress-striped'
-	]
-]);
+// echo Progress::widget([
+//	'percent' => 0,
+//    'id' => 'progress',
+//	'barOptions' => [
+//		'class' => 'progress-bar-success'
+//	],
+//	'options' => [
+//		'class' => 'active progress-striped'
+//	]
+//]);
+	$percent = $percent + 1;
 
 
 //Pjax::end()

@@ -801,7 +801,7 @@ header .bottom_header .address .top-info .icon-box span:after {
 
 .main .ut-kart h2 {
     font-family: 'Raleway', sans-serif;
-    font-weight: 700;
+    font-weight: 500;
     font-size: 1.75em;
     color: #323232;
     position: relative;
@@ -822,7 +822,7 @@ header .bottom_header .address .top-info .icon-box span:after {
 .main .ut-kart li a{
     font-family: 'Raleway', sans-serif;
     /*font-weight: 700;*/
-    font-size: 1.25em;
+    font-size: 1.20em;
 }
 
 

@@ -42,9 +42,13 @@ use yii\base\Event;
 //		]
 	]);
 //    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
+    ?>
+	<div id="mess">
+		<h1> dfgdfg</h1>
+	</div>
 
+	<?php
 
-	echo '5555...';
 
 	$progres = Progress::widget([
 	'percent' => 0,
@@ -127,6 +131,11 @@ JS;
         url: "importdbf",
         success:function(data,succ,hhh){
 			percent = percent + 20;
+          $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
+          $("#message").html(data.message);
+          $("#mess").html("<p>" + percent + "</p>");
+          // If the process is completed, we should stop the checking process.
+
           if($('#Modalprogress7').is(':visible')){
             if (percent >= 100) {
             //window.clearInterval(timer);
@@ -151,9 +160,6 @@ JS;
              alert("Импорт прерван");
           }
 
-          $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
-          $("#message").html(data.message);
-          // If the process is completed, we should stop the checking process.
 
         }
       });
