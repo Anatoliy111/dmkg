@@ -130,14 +130,14 @@ JS;
       $.ajax({
         url: "importdbf",
         success:function(data,succ,hhh){
-			percent = percent + 20;
+			percent = percent + 10;
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           $("#message").html(data.message);
           $("#mess").html("<p>" + percent + "</p>");
           // If the process is completed, we should stop the checking process.
 
           if($('#Modalprogress7').is(':visible')){
-            if (percent >= 100) {
+            if (percent >= 110) {
             //window.clearInterval(timer);
             //timer = window.setInterval(completed, 1000);
             //$('#Modalprogress7').modal('close');
@@ -239,13 +239,13 @@ JS;
 		]);?>
 
 
-	<?=Html::submitButton('Завантажити все', ['class' => 'btn-lg btn-success'])?>
+	<?=Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success'])?>
 
 
 <?//= Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success']) ?>
 <?//= Html::a("Refresh", ['upload'], ['class' => 'btn btn-lg btn-primary']);?>
 <?= Html::resetButton('Очистити',['class' => 'btn-lg btn-primary']) ?>
-<?= Html::a('Оновити абонентів', ['index'], ['class' => 'btn-lg btn-success']) ?>
+<?//= Html::a('Оновити абонентів', ['index'], ['class' => 'btn-lg btn-success']) ?>
 
 <?= Html::a('Назад', ['index'], ['class' => 'btn-lg btn-danger pull-right']) ?>
 <?//= Html::a('Оновити довідники', ['updatesprav'], ['class' => 'btn-lg btn-success']) ?>

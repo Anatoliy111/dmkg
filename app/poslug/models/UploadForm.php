@@ -76,6 +76,7 @@
 
 				$this->File->saveAs('uploads/DBF/' . $this->File->baseName . '.' . $this->File->extension);
 				Yii::$app->session->setFlash($this->File->name, "Завантажено файл - ".$this->File->name."");
+
 //                $this->ImportDbf($this->File);
 
 				return true;
@@ -130,14 +131,16 @@
 
 				Alert::end();
 				$this->MonthYear = date('Y-m-d',strtotime(substr($filename->baseName,0,4).'-'.substr($filename->baseName,4,2).'-01'));
-				return 'uploads/DBF/'.$filename->baseName;
+				$_SESSION['DirFiles'] = 'uploads/DBF/'.$filename->baseName;
+				return true;
 
 			} else {
+				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$this->File->name."");
 //                    echo 'ошибка';
-				Alert::begin(['options' => ['class' => 'alert-danger'],]);
-				echo "Не вдалося відкрити файл: '$filename'\n";
-				Alert::end();
-				return '';
+//				Alert::begin(['options' => ['class' => 'alert-danger'],]);
+//				echo "Не вдалося відкрити файл: '$filename'\n";
+//				Alert::end();
+				return false;
 			}
 
 		}

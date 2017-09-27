@@ -20,7 +20,7 @@ use yii\easyii\widgets\DateTimePicker;
 use kartik\date\DatePicker;
 use kartik\file\FileInput;
 use yii\bootstrap\modal;
-use yii\base\Event;
+use yii\bootstrap\Alert;
 
 //	Pjax::begin(['id' => 'upload']);
 
@@ -34,7 +34,35 @@ use yii\base\Event;
 //		'class' => 'active progress-striped'
 //	]
 //]);
-	$percent = $percent + 1;
+
+
+
+
+
+
+
+$DirFiles  = $_SESSION['DirFiles'];
+
+if ($DirFiles<>'')
+{
+
+
+
+//							$model->Importolddomulica($UnPath);
+//							$model->Importoldkart($UnPath);
+//							$model->Importoldorg($UnPath);
+//							$model->UpdateAbonentKart();
+//							$model->ImportNach($UnPath);
+$model->ImportObor($UnPath);
+$model->ImportOpl($UnPath);
+//							$model->UpdateBase();
+}
+
+
+
+
+
+
 
 
 //Pjax::end()
