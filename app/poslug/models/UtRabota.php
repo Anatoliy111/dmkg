@@ -61,10 +61,10 @@ class UtRabota extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUtAbonents()
-    {
-        return $this->hasMany(UtAbonent::className(), ['id_rabota' => 'id']);
-    }
+	public function getUtKart()
+	{
+		return $this->hasMany(UtKart::className(), ['id_rabota' => 'id']);
+	}
 
     /**
      * @return \yii\db\ActiveQuery

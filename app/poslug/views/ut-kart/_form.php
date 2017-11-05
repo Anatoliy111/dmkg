@@ -30,13 +30,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'kv')->textInput() ?>
 
+	<?= $form->field($model, 'rabota')->textInput(['maxlength' => true]) ?>
+
+	<?= $form->field($model, 'privat')->textInput() ?>
+
     <?= $form->field($model, 'ur_fiz')->textInput() ?>
 
     <?= $form->field($model, 'pass')->passwordInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'telef')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'id_oldkart')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>

@@ -28,7 +28,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
         <?php $this->beginBody() ?>
         <?php
         NavBar::begin([
-            'brandLabel' => Html::label('<h4>Облік компослуг</h4>'),
+            'brandLabel' => Html::label('<h4>Компослуги</h4>'),
             'brandUrl' => ['default/index'],
             'options' => ['class' => 'navbar-inverse navbar-fixed-top'],
         ]);
@@ -55,8 +55,8 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 					[
 						'label' => 'Довідники',
 						'items' => [
-							['label' => 'Абоненти', 'url' => '/poslug/ut-abonent/index'],
-							['label' => 'Адресна картка', 'url' => '/poslug/ut-kart/index'],
+							['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
+							['label' => 'Рахунки', 'url' => '/poslug/ut-abonent/index'],
 							['label' => 'Вулиці', 'url' => '/poslug/ut-ulica/index'],
 							['label' => 'Багатокв. будинки', 'url' => '/poslug/ut-dom/index'],
 							['label' => 'Місце роботи', 'url' => '/poslug/ut-rabota/index'],

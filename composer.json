@@ -15,7 +15,7 @@
         "php": ">=5.4.0",
         "noumo/easyii": "dev-master",
         "kartik-v/yii2-grid": "@dev",
-        "kartik-v/yii2-export": "*",
+        "kartik-v/yii2-export": "@dev",
         "kartik-v/yii2-widget-fileinput": "@dev",
         "kartik-v/yii2-datecontrol": "dev-master",
         "kartik-v/yii2-widget-datepicker": "@dev",

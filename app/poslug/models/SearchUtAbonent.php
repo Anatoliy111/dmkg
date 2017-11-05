@@ -15,11 +15,14 @@ class SearchUtAbonent extends UtAbonent
     /**
      * @inheritdoc
      */
+	public $kart;
+	public $org;
+
     public function rules()
     {
         return [
-            [['id', 'id_org', 'schet', 'id_kart', 'id_rabota', 'ur_fiz', 'id_dom', 'privat', 'id_oldkart'], 'integer'],
-            [['fio', 'note'], 'safe'],
+            [['id', 'id_org', 'schet', 'id_kart','id_oldkart'], 'integer'],
+            [['note','kart','org'], 'safe'],
         ];
     }
 
@@ -57,21 +60,32 @@ class SearchUtAbonent extends UtAbonent
             return $dataProvider;
         }
 
+		$query->joinWith('kart');
+		$query->joinWith('org');
+
+		$dataProvider->sort->attributes['kart'] = [
+			'asc' => ['ut_kart.fio' => SORT_ASC],
+			'desc' => ['ut_kart.fio' => SORT_DESC],
+		];
+
+		$dataProvider->sort->attributes['org'] = [
+			'asc' => ['ut_org.naim' => SORT_ASC],
+			'desc' => ['ut_org.naim' => SORT_DESC],
+		];
+
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'id_org' => $this->id_org,
+//            'id' => $this->id,
+//            'id_org' => $this->id_org,
             'schet' => $this->schet,
-            'id_kart' => $this->id_kart,
-            'id_rabota' => $this->id_rabota,
-            'ur_fiz' => $this->ur_fiz,
-            'id_dom' => $this->id_dom,
-            'privat' => $this->privat,
-            'id_oldkart' => $this->id_oldkart,
+//            'id_kart' => $this->id_kart,
+//            'id_oldkart' => $this->id_oldkart,
         ]);
 
-        $query->andFilterWhere(['like', 'fio', $this->fio])
-            ->andFilterWhere(['like', 'note', $this->note]);
+        $query->andFilterWhere(['like', 'note', $this->note])
+		->andFilterWhere(['like', UtKart::tableName() . '.fio', $this->kart])
+		->andFilterWhere(['like', UtOrg::tableName() . '.naim', $this->org]);
 
         return $dataProvider;
     }

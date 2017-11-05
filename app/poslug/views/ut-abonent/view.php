@@ -33,11 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'schet',
             'fio',
             'id_kart',
-            'id_rabota',
             'note:ntext',
-            'ur_fiz',
-            'id_dom',
-            'privat',
             'id_oldkart',
         ],
     ]) ?>

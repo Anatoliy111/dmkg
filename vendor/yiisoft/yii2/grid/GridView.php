@@ -52,7 +52,8 @@ class GridView extends BaseListView
     const FILTER_POS_FOOTER = 'footer';
     const FILTER_POS_BODY = 'body';
 
-    /**
+
+	/**
      * @var string the default data column class if the class name is not explicitly specified when configuring a data column.
      * Defaults to 'yii\grid\DataColumn'.
      */

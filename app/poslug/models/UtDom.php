@@ -68,9 +68,9 @@ class UtDom extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUtAbonents()
+    public function getUtKart()
     {
-        return $this->hasMany(UtAbonent::className(), ['id_dom' => 'id']);
+        return $this->hasMany(UtKart::className(), ['id_dom' => 'id']);
     }
 
     /**

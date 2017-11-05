@@ -1,6 +1,7 @@
 <?php
 
 	use kartik\grid\GridView;
+	use kartik\mpdf\Pdf;
 
 	$params = require(__DIR__ . '/params.php');
 
@@ -23,9 +24,26 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'd3nJy8BE2jOgBK3yTQtr0KZ3xm04n-mS',
         ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
+//        'user' => [
+//            'identityClass' => 'app\models\UserIdentity',
+//			'enableAutoLogin'=> true,
+//        ],
+		'cache' => [
+			'class' => 'yii\caching\FileCache',
+		],
+//		'users' => [
+//			'class' => 'yii\web\User',
+//			'identityClass' => 'app\models\SearchUtKart',
+//			'enableAutoLogin' => true,
+//			'authTimeout' => 86400,
+//		],
+		'pdf' => [
+			'class' => Pdf::classname(),
+			'format' => Pdf::FORMAT_A4,
+			'orientation' => Pdf::ORIENT_PORTRAIT,
+			'destination' => Pdf::DEST_BROWSER,
+			// refer settings section for all configuration options
+		],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -65,6 +83,10 @@ $config = [
                 ],
             ],
         ],
+		'authManager' => [
+			'class' => 'yii\rbac\PhpManager',
+			'defaultRoles' => ['admin', 'BRAND', 'TALENT'], // Здесь нет роли "guest", т.к. эта роль виртуальная и не присутствует в модели UserExt
+		],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

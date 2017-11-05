@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\easyii\modules\page\models\Page;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 
 class SiteController extends Controller
 {
@@ -26,4 +27,13 @@ class SiteController extends Controller
 	{
 		return $this->render('search');
 	}
+
+	public function actionAbout()
+	{
+		if (!\Yii::$app->user->can('about')) {
+			throw new ForbiddenHttpException('Access denied');
+		}
+		return $this->render('about');
+	}
+
 }

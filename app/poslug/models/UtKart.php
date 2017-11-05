@@ -2,6 +2,7 @@
 
 namespace app\poslug\models;
 
+
 use Yii;
 
 /**
@@ -21,10 +22,14 @@ use Yii;
  * @property string $pass пароль
  * @property string $telef телефон
  * @property int $id_oldkart стара база
+ * @property int $auth_key
+ * @property int $acess_token
+ * @property int $rabota робота
+ * @property int $id_dom многокв дом
+ * @property int $privat приватизация
  *
  * @property UtAbonent[] $utAbonents
  * @property UtUlica $ulica
- * @property UtOldkart $oldkart
  */
 class UtKart extends \yii\db\ActiveRecord
 {
@@ -35,6 +40,11 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return 'ut_kart';
     }
+	public $pass1;
+	public $pass2;
+
+	const SCENARIO_ADDR = 'adres';
+	const SCENARIO_PASS = 'password';
 
     /**
      * @inheritdoc
@@ -43,17 +53,23 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return [
             [['name_f', 'fio', 'id_ulica', 'dom'], 'required'],
-            [['id_ulica', 'kv', 'ur_fiz', 'id_oldkart'], 'integer'],
+            [['id_ulica', 'kv', 'ur_fiz', 'id_oldkart', 'id_dom', 'privat',], 'integer'],
             [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o'], 'string', 'max' => 30],
             [['dom'], 'string', 'max' => 4],
             [['korp'], 'string', 'max' => 1],
-            [['pass'], 'string', 'max' => 64],
+            [['pass1'], 'string', 'max' => 64],
+			[['pass2'], 'string', 'max' => 64],
 			[['fio'], 'string', 'max' => 64],
+			[['rabota'], 'string', 'max' => 64],
             [['telef'], 'string', 'max' => 15],
 			[['idcod'], 'string', 'max' => 25],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
-            [['id_oldkart'], 'exist', 'skipOnError' => true, 'targetClass' => UtOldkart::className(), 'targetAttribute' => ['id_oldkart' => 'id']],
+			[['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
+			[['auth_key', 'acess_token'], 'string', 'max' => 32],
+			[['pass1'], 'string', 'min' => 5],
+			[['pass2'], 'string', 'min' => 5],
+			['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
         ];
     }
 
@@ -74,21 +90,40 @@ class UtKart extends \yii\db\ActiveRecord
             'korp' => Yii::t('easyii', 'Korp'),
             'kv' => Yii::t('easyii', 'Kv'),
             'ur_fiz' => Yii::t('easyii', 'Ur Fiz'),
-            'pass' => Yii::t('easyii', 'Pass'),
+            'pass1' => Yii::t('easyii', 'Pass1'),
+			'pass2' => Yii::t('easyii', 'Pass2'),
             'telef' => Yii::t('easyii', 'Telef'),
             'id_oldkart' => Yii::t('easyii', 'Id Oldkart'),
+			'auth_key' => Yii::t('easyii', 'Auth Key'),
+			'acess_token' => Yii::t('easyii', 'Acess Token'),
+			'rabota' => Yii::t('easyii', 'Rabota'),
+			'id_dom' => Yii::t('easyii', 'Id Dom'),
+			'privat' => Yii::t('easyii', 'Privat'),
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUtAbonents()
-    {
-        return $this->hasMany(UtAbonent::className(), ['id_kart' => 'id']);
-    }
+	public function scenarios()
+	{
+		$scenarios = parent::scenarios();
+		$scenarios[self::SCENARIO_ADDR] = [['name_f', 'fio', 'id_ulica', 'dom'], 'required'];
+		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
+		return $scenarios;
+	}
+
+
 
     /**
+     * @return \yii\db\ActiveQuery
+	 *
+	 *
+	 *
+     */
+	public function getUtAbonents()
+	{
+		return $this->hasMany(UtAbonent::className(), ['id_kart' => 'id']);
+	}
+
+	/**
      * @return \yii\db\ActiveQuery
      */
     public function getUlica()
@@ -99,8 +134,14 @@ class UtKart extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOldkart()
-    {
-        return $this->hasOne(UtOldkart::className(), ['id' => 'id_oldkart']);
-    }
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getDom()
+	{
+		return $this->hasOne(UtDom::className(), ['id' => 'id_dom']);
+	}
+
+
 }

@@ -90,7 +90,8 @@ $this->title = $model->fio;
 
 			<div class="col-sm-12">
 <!--				<h4>--><?//=$model->fio?><!--</h4>-->
-						<?= DetailView::widget([
+						<?=
+							DetailView::widget([
 								'model' => $model,
 								'attributes' => [
 

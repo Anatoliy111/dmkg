@@ -58,7 +58,7 @@ use yii\widgets\ActiveForm;
 	<div class="row">
 		<div class="col-sm-3">
 
-			<?=	$form->field($model, 'enterpass')->textInput();	?>
+			<?=	$form->field($model, 'enterpass')->passwordInput();	?>
 
 		</div>
 	</div>
