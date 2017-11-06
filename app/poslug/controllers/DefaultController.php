@@ -29,12 +29,9 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-		$model = new UploadForm();
+//		$model = new UploadForm();
 //
-		return $this->render('index' ,[
-			'model' => $model,
-			]
-		);
+		return $this->render('index');
 //		return $this->render('index');
     }
 

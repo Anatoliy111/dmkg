@@ -83,54 +83,55 @@ use yii\base\Event;
 //			yii\web\View::POS_READY
 //		);
 
-		$js = <<< JS
-				function repeat_import() {
-					$.ajax({
-							url: "/poslug/default/download",
-							//timeout: 50000,
-							success: function(data, textStatus){
-										$("#upprogress").append("I");
-
-										if (data == "The End") {
-											$("#content").html("<h2>������ ��������!</h2>");
-										}
-										else {
-											$("#content").html("<p>" + data + "</p>");
-											//repeat_import();
-										}
-									},
-							complete: function(xhr, textStatus){
-
-       									 if (textStatus != "success") {
-											$("#upprogress").append("I");
-											//repeat_import();
-										}
-									}
-					});
-				}
+//		$js = <<< JS
+//				function repeat_import() {
+//					$.ajax({
+//							url: "/poslug/default/download",
+//							//timeout: 50000,
+//							success: function(data, textStatus){
+//										$("#upprogress").append("I");
+//
+//										if (data == "The End") {
+//											$("#content").html("<h2>������ ��������!</h2>");
+//										}
+//										else {
+//											$("#content").html("<p>" + data + "</p>");
+//											//repeat_import();
+//										}
+//									},
+//							complete: function(xhr, textStatus){
+//
+//       									 if (textStatus != "success") {
+//											$("#upprogress").append("I");
+//											//repeat_import();
+//										}
+//									}
+//					});
+//				}
 				//$("#upprogress").append("I");
 
-				$(function (){
+//				$(function (){
 		//			    var win = $('#Modalprogress7');
 		//win.modal({backdrop: false});
 
-					repeat_import();
-				});
+//					repeat_import();
+//				});
 //								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
 //											alert("Modal window has been completely closed.");
 //										});
 
-JS;
+//JS;
 
 		$js1 = <<< JS
 		   var timer;
+		   //var ttt = document.getElementById('percent1').value;
 
     // The function to refresh the progress bar.
     function refreshProgress(percent) {
       $.ajax({
         url: "importdbf",
         success:function(data,succ,hhh){
-			percent = percent + 10;
+			percent = percent + $('#percent1').val();
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           $("#message").html(data.message);
           $("#mess").html("<p>" + percent + "</p>");
