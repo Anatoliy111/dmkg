@@ -41,31 +41,29 @@ use yii\base\Event;
 //			'label' => 'Нажмите здесь, забавная штука!',
 //		]
 	]);
-//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
-    ?>
-	<div id="mess">
-		<h1> dfgdfg</h1>
-	</div>
+	//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
+?>
+<div class="results">Ждем ответа</div>
 
-	<?php
+<?php
 
 
 	$progres = Progress::widget([
-	'percent' => 0,
-	'id'=>'upprogress',
+		'percent' => 0,
+		'id'=>'upprogress',
 
-	'barOptions' => [
-		'class' => 'progress-bar-success'
-	],
-	'options' => [
-		'class' => 'active progress-striped'
-	]
-]);
+		'barOptions' => [
+			'class' => 'progress-bar-success'
+		],
+		'options' => [
+			'class' => 'active progress-striped'
+		]
+	]);
 	echo $progres;
 
 
-//	$model = new UploadForm();
-//	$this->render('ImportProgress', ['model' => $model]);
+	//	$model = new UploadForm();
+	//	$this->render('ImportProgress', ['model' => $model]);
 
 
 	Modal::end();
@@ -130,15 +128,16 @@ use yii\base\Event;
     function refreshProgress(percent) {
       $.ajax({
         url: "importdbf",
-        success:function(data,succ,hhh){
-			percent = percent + $('#percent1').val();
+        success:function(){
+           $('.results').html(percent);
+			percent = percent + 1;
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
-          $("#message").html(data.message);
+          //$("#message").html(data.message);
           $("#mess").html("<p>" + percent + "</p>");
           // If the process is completed, we should stop the checking process.
 
           if($('#Modalprogress7').is(':visible')){
-            if (percent >= 110) {
+            if (percent >= 101) {
             //window.clearInterval(timer);
             //timer = window.setInterval(completed, 1000);
             //$('#Modalprogress7').modal('close');
@@ -171,17 +170,41 @@ use yii\base\Event;
       window.clearInterval(timer);
     }
 
+    function closeImport(str) {
+
+       alert("Импорт прерван"+str);
+      //$("#Modalprogress7").modal('hide');
+
+    }
+
+
 
 				//$("#upprogress").append("I");
 
 	$(function (){
 	    //var win = $('#Modalprogress7');
-		$('#Modalprogress7').modal({backdrop: false});
-        $.ajax({url: "importprogress"});
+        //$('#Modalprogress7').modal({backdrop: false});
+        //$.ajax({url: "importprogress"});
         percent = 0;
+        $.ajax({
+        url: "importprogress",
+        success:function(data,succ,hhh){
+               //$('.results').html(data);
+               str = data;
+				if (str.indexOf("Error opening")<0)
+				{
+				    $('#Modalprogress7').show();
+				    $('#Modalprogress7').modal({backdrop: false});
+					refreshProgress(percent);
+				}
+				else
+				 	closeImport(str);
+        }
+        });
+
 
        //timer = window.setInterval(refreshProgress, 1000);
-       refreshProgress(percent);
+       //refreshProgress(percent);
 	});
 //								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
 //											alert("Modal window has been completely closed.");

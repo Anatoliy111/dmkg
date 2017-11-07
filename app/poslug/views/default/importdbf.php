@@ -11,12 +11,12 @@ use yii\bootstrap\Modal;
 
 
 
-    $percent1 = 50;
-
-	echo 'percent1 '.$percent1;
+//    $percent1 = 50;
+//
+//	echo 'percent1 '.$percent1;
 ?>
 
-<script type="text/javascript">ready();</script>
+<!--<script type="text/javascript">ready();</script>-->
 
 
 
