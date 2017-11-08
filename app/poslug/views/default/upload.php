@@ -172,7 +172,8 @@ use yii\base\Event;
 
     function closeImport(str) {
 
-       alert("Импорт прерван"+str);
+       alert("Импорт прерван "+str);
+       window.clearInterval(timer);
       //$("#Modalprogress7").modal('hide');
 
     }
