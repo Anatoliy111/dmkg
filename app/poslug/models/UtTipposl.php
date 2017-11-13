@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property int $id_org організація
- * @property string $period період
  * @property string $poslug послуга
  * @property int $id_groupposl група послуг
  * @property string $old_tipusl
@@ -20,7 +19,7 @@ use Yii;
  * @property int $flag_lgot флаг льготи
  * @property int $flag_dom флаг багат будинк
  * @property int $id_vidpokazprop вид показника абонента при пропорційному нарахуванню
- * @property int $activ активна
+ * @property int $del видалена
  *
  * @property UtNarah[] $utNarahs
  * @property UtPlgot[] $utPlgots
@@ -49,7 +48,7 @@ class UtTipposl extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'period', 'poslug', 'id_vidpokaz','ed_izm'], 'required'],
+            [['id_org', 'poslug', 'old_tipusl'], 'required'],
 //            [['ed_izm'], function ($this)
 //                                                        {
 //                                                            if ($this->id_vidpokaz <> null)
@@ -59,8 +58,7 @@ class UtTipposl extends \yii\db\ActiveRecord
 //                                                            }
 //
 //                                                        }],
-            [['id_org', 'id_groupposl', 'id_vidpokaz', 'flag_nar', 'flag_norm', 'flag_lgot', 'flag_dom', 'id_vidpokazprop', 'activ'], 'integer'],
-            [['period'], 'safe'],
+            [['id_org', 'id_groupposl', 'id_vidpokaz', 'flag_nar', 'flag_norm', 'flag_lgot', 'flag_dom', 'id_vidpokazprop', 'del'], 'integer'],
             [['poslug'], 'string', 'max' => 64],
             [['old_tipusl'], 'string', 'max' => 3],
             [['ed_izm'], 'string', 'max' => 10],
@@ -79,7 +77,6 @@ class UtTipposl extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('easyii', 'ID'),
             'id_org' => Yii::t('easyii', 'Id Org'),
-            'period' => Yii::t('easyii', 'Period'),
             'poslug' => Yii::t('easyii', 'Poslug'),
             'id_groupposl' => Yii::t('easyii', 'Id Groupposl'),
             'old_tipusl' => Yii::t('easyii', 'Old Tipusl'),
@@ -90,7 +87,7 @@ class UtTipposl extends \yii\db\ActiveRecord
             'flag_lgot' => Yii::t('easyii', 'Flag Lgot'),
             'flag_dom' => Yii::t('easyii', 'Flag Dom'),
             'id_vidpokazprop' => Yii::t('easyii', 'Id Vidpokazprop'),
-            'activ' => Yii::t('easyii', 'Activ'),
+            'del' => Yii::t('easyii', 'Del'),
         ];
     }
 

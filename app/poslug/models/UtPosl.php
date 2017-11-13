@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property int $id_org організація
  * @property int $id_abonent абонент
- * @property string $period період
  * @property int $id_tipposl тип послуг
  * @property int $flag_vrem признак тимчасової
  * @property string $date_n дата початку
@@ -20,7 +19,7 @@ use Yii;
  * @property double $nnorma норма
  * @property int $flag_dom признак послуги багатокв. будинку
  * @property int $id_dom силка на будинок
- * @property int $activ активна
+ * @property int $del активна
  *
  * @property UtNarah[] $utNarahs
  * @property UtOrg $org
@@ -45,9 +44,9 @@ class UtPosl extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'id_abonent', 'period', 'id_tipposl'], 'required'],
-            [['id_org', 'id_abonent', 'id_tipposl', 'flag_vrem', 'flag_dom', 'id_dom', 'activ'], 'integer'],
-            [['period', 'date_n', 'date_k', 'date_dog'], 'safe'],
+            [['id_org', 'id_abonent', 'id_tipposl'], 'required'],
+            [['id_org', 'id_abonent', 'id_tipposl', 'flag_vrem', 'flag_dom', 'id_dom', 'del'], 'integer'],
+            [['date_n', 'date_k', 'date_dog'], 'safe'],
             [['nnorma'], 'number'],
             [['n_dog'], 'string', 'max' => 24],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
@@ -66,7 +65,6 @@ class UtPosl extends \yii\db\ActiveRecord
             'id' => Yii::t('easyii', 'ID'),
             'id_org' => Yii::t('easyii', 'Id Org'),
             'id_abonent' => Yii::t('easyii', 'Id Abonent'),
-            'period' => Yii::t('easyii', 'Period'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'flag_vrem' => Yii::t('easyii', 'Flag Vrem'),
             'date_n' => Yii::t('easyii', 'Date N'),
@@ -76,7 +74,7 @@ class UtPosl extends \yii\db\ActiveRecord
             'nnorma' => Yii::t('easyii', 'Nnorma'),
             'flag_dom' => Yii::t('easyii', 'Flag Dom'),
             'id_dom' => Yii::t('easyii', 'Id Dom'),
-            'activ' => Yii::t('easyii', 'Activ'),
+            'del' => Yii::t('easyii', 'Del'),
         ];
     }
 

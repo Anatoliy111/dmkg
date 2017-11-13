@@ -132,6 +132,7 @@
 				Alert::end();
 				$this->MonthYear = date('Y-m-d',strtotime(substr($filename->baseName,0,4).'-'.substr($filename->baseName,4,2).'-01'));
 				$_SESSION['DirFiles'] = 'uploads/DBF/'.$filename->baseName;
+				$_SESSION['PeriodBase'] = $this->MonthYear;
 				return true;
 
 			} else {

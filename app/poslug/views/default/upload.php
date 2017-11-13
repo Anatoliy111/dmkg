@@ -128,8 +128,11 @@ use yii\base\Event;
     function refreshProgress(percent) {
       $.ajax({
         url: "importdbf",
-        success:function(){
+        success:function(data,succ,hhh){
            $('.results').html(percent);
+                str = data;
+				if (str.indexOf("Error!!!")>=0)
+				   percent = closeImport(str);
 			percent = percent + 1;
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           //$("#message").html(data.message);
@@ -172,8 +175,12 @@ use yii\base\Event;
 
     function closeImport(str) {
 
+       $("#Modalprogress7").modal('hide');
+
        alert("Импорт прерван "+str);
        window.clearInterval(timer);
+       return 100;
+       //location.replace();
       //$("#Modalprogress7").modal('hide');
 
     }
@@ -186,16 +193,16 @@ use yii\base\Event;
 	    //var win = $('#Modalprogress7');
         //$('#Modalprogress7').modal({backdrop: false});
         //$.ajax({url: "importprogress"});
+ 	    $('#Modalprogress7').show();
+	    $('#Modalprogress7').modal({backdrop: false});
         percent = 0;
         $.ajax({
         url: "importprogress",
         success:function(data,succ,hhh){
                //$('.results').html(data);
                str = data;
-				if (str.indexOf("Error opening")<0)
+				if (str.indexOf("Error!!!")<0)
 				{
-				    $('#Modalprogress7').show();
-				    $('#Modalprogress7').modal({backdrop: false});
 					refreshProgress(percent);
 				}
 				else

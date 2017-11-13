@@ -17,14 +17,13 @@ use Yii;
  * @property int $id_ulica вулиця
  * @property string $dom номер будинку
  * @property string $korp корпус
- * @property int $kv квартира
+ * @property string $kv квартира
  * @property int $ur_fiz юр чи фіз
  * @property string $pass пароль
  * @property string $telef телефон
- * @property int $id_oldkart стара база
  * @property int $auth_key
  * @property int $acess_token
- * @property int $rabota робота
+ * @property int id_rabota робота
  * @property int $id_dom многокв дом
  * @property int $privat приватизация
  *
@@ -52,20 +51,20 @@ class UtKart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_f', 'fio', 'id_ulica', 'dom'], 'required'],
-            [['id_ulica', 'kv', 'ur_fiz', 'id_oldkart', 'id_dom', 'privat',], 'integer'],
-            [['name_f'], 'string', 'max' => 50],
+            [['name_f', 'fio', 'id_ulica'], 'required'],
+            [['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota'], 'integer'],
+            [['name_f','kv'], 'string', 'max' => 50],
             [['name_i', 'name_o'], 'string', 'max' => 30],
             [['dom'], 'string', 'max' => 4],
             [['korp'], 'string', 'max' => 1],
             [['pass1'], 'string', 'max' => 64],
 			[['pass2'], 'string', 'max' => 64],
 			[['fio'], 'string', 'max' => 64],
-			[['rabota'], 'string', 'max' => 64],
-            [['telef'], 'string', 'max' => 15],
+            [['telef'], 'string', 'max' => 20],
 			[['idcod'], 'string', 'max' => 25],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
 			[['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
+			[['id_rabota'], 'exist', 'skipOnError' => true, 'targetClass' => UtRabota::className(), 'targetAttribute' => ['id_rabota' => 'id']],
 			[['auth_key', 'acess_token'], 'string', 'max' => 32],
 			[['pass1'], 'string', 'min' => 5],
 			[['pass2'], 'string', 'min' => 5],
@@ -93,10 +92,9 @@ class UtKart extends \yii\db\ActiveRecord
             'pass1' => Yii::t('easyii', 'Pass1'),
 			'pass2' => Yii::t('easyii', 'Pass2'),
             'telef' => Yii::t('easyii', 'Telef'),
-            'id_oldkart' => Yii::t('easyii', 'Id Oldkart'),
 			'auth_key' => Yii::t('easyii', 'Auth Key'),
 			'acess_token' => Yii::t('easyii', 'Acess Token'),
-			'rabota' => Yii::t('easyii', 'Rabota'),
+			'id_rabota' => Yii::t('easyii', 'Rabota'),
 			'id_dom' => Yii::t('easyii', 'Id Dom'),
 			'privat' => Yii::t('easyii', 'Privat'),
         ];
@@ -130,6 +128,11 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtUlica::className(), ['id' => 'id_ulica']);
     }
+
+	public function getRabota()
+	{
+		return $this->hasOne(UtRabota::className(), ['id' => 'id_rabota']);
+	}
 
     /**
      * @return \yii\db\ActiveQuery

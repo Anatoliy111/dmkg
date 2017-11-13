@@ -31,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'id_org',
             'id_abonent',
-            'period',
             'id_tipposl',
             'flag_vrem',
             'date_n',
@@ -41,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'nnorma',
             'flag_dom',
             'id_dom',
-            'activ',
+            'del',
         ],
     ]) ?>
 

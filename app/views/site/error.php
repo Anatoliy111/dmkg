@@ -9,22 +9,24 @@ $this->title = $name;
 <!--</div>-->
 
 <!-- ======= Banner ======= -->
-<section class="p0 container-fluid banner about_banner">
-	<div class="about_banner_opacity">
+
+<!--	<div class="about_banner_opacity">-->
 		<div class="container">
-			<div class="banner_info_about">
+<!--			<div class="banner_info_about">-->
 				<h1>404 Помилка</h1>
-				<ul>
+<!--				<ul>-->
 <!--					<li><a href="http://ow.ly/XqzNo">Home</a></li>-->
 <!--					<li><i class="fa fa-angle-right"></i></li>-->
-					<li><?= Html::encode($message) ?></li>
+					<h4><?= Html::encode($message) ?></h4>
 					<br/>
-					<li>Сталася помилка під час обробки вашого запиту</li>
-				</ul>
-			</div> <!-- End Banner Info -->
+					<h4>Сталася помилка під час обробки вашого запиту</h4>
+
+
+<!--				</ul>-->
+<!--			</div> <!-- End Banner Info -->
 		</div> <!-- End Container -->
-	</div> <!-- End Banner_opacity -->
-</section> <!-- End Banner -->
+<!--		</div> <!-- End Banner_opacity-->
+
 <!-- ================= /Banner ================ -->
 
 

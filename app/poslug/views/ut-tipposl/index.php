@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //            'id',
 //            'id_org',
-            'period',
 
             'poslug',
             [
@@ -47,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //                'attribute' => 'id_vidpokazprop',
 //                'value' => 'vidpokazprop.vid_pokaz',
 //            ],
-             'activ',
+             'del',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

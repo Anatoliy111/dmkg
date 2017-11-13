@@ -40,8 +40,9 @@ class UtPokaz extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'id_abonent', 'id_vidpokaz', 'pokaznik'], 'required'],
-            [['id_org', 'id_abonent', 'id_vidpokaz', 'pokaznik', 'flag_lich'], 'integer'],
+            [['id_org', 'id_abonent', 'id_vidpokaz'], 'required'],
+            [['id_org', 'id_abonent', 'id_vidpokaz','flag_lich'], 'integer'],
+			[['pokaznik'], 'number'],
             [['date_vstan', 'date_pov'], 'safe'],
             [['nser'], 'string', 'max' => 100],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],

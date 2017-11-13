@@ -12,7 +12,7 @@ $asset = \app\assets\AppAsset::register($this);
 		<META NAME="Description" CONTENT="ДМКГ КП Долинський міськкомунгосп">
 		<META NAME="Keywords" CONTENT="ДМКГ, Долинський, міськкомунгосп, комунальні, послуги, будинки, опалення, водопостачання, dmkg">
 		<META NAME="Robots" CONTENT="ALL">
-		<META NAME="Revisit-After" CONTENT="1 Days">
+		<META NAME="Revisit-After" CONTENT="10 Days">
 		<?= Html::csrfMetaTags() ?>
         <title>ДМКГ</title>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>

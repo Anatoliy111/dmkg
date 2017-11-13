@@ -18,9 +18,9 @@ class SearchUtNarah extends UtNarah
     public function rules()
     {
         return [
-            [['id', 'id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'id_tarif', 'id_vidpokaz'], 'integer'],
+            [['id', 'id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'id_vidlgot', 'id_tarif', 'id_vidpokaz'], 'integer'],
+            [['period', 'tipposl', 'lgot', 'vidpokaz', 'ed_izm'], 'safe'],
             [['tarif', 'pokaznik', 'nnorma', 'sum'], 'number'],
-            [['ed_izm'], 'safe'],
         ];
     }
 
@@ -62,9 +62,11 @@ class SearchUtNarah extends UtNarah
         $query->andFilterWhere([
             'id' => $this->id,
             'id_org' => $this->id_org,
+            'period' => $this->period,
             'id_abonent' => $this->id_abonent,
             'id_posl' => $this->id_posl,
             'id_tipposl' => $this->id_tipposl,
+            'id_vidlgot' => $this->id_vidlgot,
             'id_tarif' => $this->id_tarif,
             'tarif' => $this->tarif,
             'id_vidpokaz' => $this->id_vidpokaz,
@@ -73,7 +75,10 @@ class SearchUtNarah extends UtNarah
             'sum' => $this->sum,
         ]);
 
-        $query->andFilterWhere(['like', 'ed_izm', $this->ed_izm]);
+        $query->andFilterWhere(['like', 'tipposl', $this->tipposl])
+            ->andFilterWhere(['like', 'lgot', $this->lgot])
+            ->andFilterWhere(['like', 'vidpokaz', $this->vidpokaz])
+            ->andFilterWhere(['like', 'ed_izm', $this->ed_izm]);
 
         return $dataProvider;
     }

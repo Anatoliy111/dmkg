@@ -5,28 +5,26 @@ namespace app\poslug\models;
 use Yii;
 
 /**
- * This is the model class for table "ut_subs".
+ * This is the model class for table "ut_tarifab".
  *
  * @property int $id
- * @property string $period період
- * @property int $id_org організація
- * @property int $id_abonent абонент
- * @property int $id_tipposl тип послуги
- * @property string $tipposl
- * @property double $sum сума
- * @property double $sum_ob об. плата
+ * @property int $id_org
+ * @property int $id_tarif
+ * @property int $id_abonent
+ * @property int $del
  *
  * @property UtAbonent $abonent
  * @property UtOrg $org
+ * @property UtTarif $tarif
  */
-class UtSubs extends \yii\db\ActiveRecord
+class UtTarifab extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ut_subs';
+        return 'ut_tarifab';
     }
 
     /**
@@ -35,12 +33,11 @@ class UtSubs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['period', 'id_org', 'id_abonent'], 'required'],
-            [['period'], 'safe'],
-            [['id_org', 'id_abonent', 'id_tipposl'], 'integer'],
-			[['sum','sum_ob'], 'number'],
+            [['id_org', 'id_tarif', 'id_abonent'], 'required'],
+            [['id_org', 'id_tarif', 'id_abonent', 'del'], 'integer'],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
+            [['id_tarif'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarif::className(), 'targetAttribute' => ['id_tarif' => 'id']],
         ];
     }
 
@@ -50,14 +47,11 @@ class UtSubs extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('easyii', 'ID'),
-            'period' => Yii::t('easyii', 'Period'),
-            'id_org' => Yii::t('easyii', 'Id Org'),
-            'id_abonent' => Yii::t('easyii', 'Id Abonent'),
-            'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
-			'tipposl' => Yii::t('app', 'Tipposl'),
-            'sum' => Yii::t('easyii', 'Sum'),
-			'sum_ob' => Yii::t('easyii', 'Sum Ob'),
+            'id' => Yii::t('app', 'ID'),
+            'id_org' => Yii::t('app', 'Id Org'),
+            'id_tarif' => Yii::t('app', 'Id Tarif'),
+            'id_abonent' => Yii::t('app', 'Id Abonent'),
+            'del' => Yii::t('app', 'Del'),
         ];
     }
 
@@ -75,5 +69,13 @@ class UtSubs extends \yii\db\ActiveRecord
     public function getOrg()
     {
         return $this->hasOne(UtOrg::className(), ['id' => 'id_org']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTarif()
+    {
+        return $this->hasOne(UtTarif::className(), ['id' => 'id_tarif']);
     }
 }

@@ -9,9 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property int $id_org організація
+ * @property string $name
  * @property int $id_tipposl тип послуг
  * @property int $id_vidpokaz вид показника
- * @property string $period період
+ * @property int $kl ключ
  * @property double $tarif1 тариф
  * @property double $tarif2 тариф
  * @property double $tarif3 тариф
@@ -41,9 +42,9 @@ class UtTarif extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'id_tipposl', 'id_vidpokaz', 'period', 'tarif1'], 'required'],
-            [['id_org', 'id_tipposl', 'id_vidpokaz', 'activ'], 'integer'],
-            [['period'], 'safe'],
+            [['id_org', 'id_tipposl', 'kl', 'tarif1', 'name'], 'required'],
+            [['id_org', 'id_tipposl', 'id_vidpokaz', 'kl'], 'integer'],
+			[['name'], 'string', 'max' => 25],
             [['tarif1', 'tarif2', 'tarif3', 'koef_skl', 'norma', 'normalgot', 'normalgotsm'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
@@ -61,7 +62,8 @@ class UtTarif extends \yii\db\ActiveRecord
             'id_org' => Yii::t('easyii', 'Id Org'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'id_vidpokaz' => Yii::t('easyii', 'Id Vidpokaz'),
-            'period' => Yii::t('easyii', 'Period'),
+            'kl' => Yii::t('easyii', 'Kl'),
+			'name' => Yii::t('easyii', 'Name'),
             'tarif1' => Yii::t('easyii', 'Tarif1'),
             'tarif2' => Yii::t('easyii', 'Tarif2'),
             'tarif3' => Yii::t('easyii', 'Tarif3'),

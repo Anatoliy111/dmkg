@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "ut_ulica".
  *
  * @property int $id
+ * @property int $kl
  * @property string $ul вулиця
  * @property string $st_ul стара вулиця
  *
@@ -34,6 +35,7 @@ class UtUlica extends \yii\db\ActiveRecord
     {
         return [
             [['ul'], 'required'],
+			[['kl'], 'integer'],
             [['ul', 'st_ul'], 'string', 'max' => 64],
         ];
     }
@@ -45,6 +47,7 @@ class UtUlica extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('easyii', 'ID'),
+			'kl' => Yii::t('easyii', 'KL'),
             'ul' => Yii::t('easyii', 'Ul'),
             'st_ul' => Yii::t('easyii', 'St Ul'),
         ];

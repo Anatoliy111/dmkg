@@ -13,9 +13,9 @@ use Yii;
  * @property string $adress адреса
  * @property string $tel телефон
  * @property int $id_oldorg
+ * @property int $id_org
  *
  * @property UtAbonent[] $utAbonents
- * @property UtOldorg $oldorg
  * @property UtUtrim[] $utUtrims
  */
 class UtRabota extends \yii\db\ActiveRecord
@@ -36,10 +36,10 @@ class UtRabota extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['id_oldorg'], 'integer'],
+			[['id_org'], 'integer'],
             [['name'], 'string', 'max' => 128],
             [['fio_ruk', 'adress'], 'string', 'max' => 64],
             [['tel'], 'string', 'max' => 20],
-            [['id_oldorg'], 'exist', 'skipOnError' => true, 'targetClass' => UtOldorg::className(), 'targetAttribute' => ['id_oldorg' => 'id']],
         ];
     }
 
@@ -50,6 +50,7 @@ class UtRabota extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('easyii', 'ID'),
+			'id_org' => Yii::t('easyii', 'Id Org'),
             'name' => Yii::t('easyii', 'Name'),
             'fio_ruk' => Yii::t('easyii', 'Fio Ruk'),
             'adress' => Yii::t('easyii', 'Adress'),
@@ -69,10 +70,6 @@ class UtRabota extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOldorg()
-    {
-        return $this->hasOne(UtOldorg::className(), ['id' => 'id_oldorg']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery

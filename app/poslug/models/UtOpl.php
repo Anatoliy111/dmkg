@@ -13,15 +13,15 @@ use Yii;
  * @property int $id_abonent
  * @property int $id_posl
  * @property int $id_tipposl
+ * @property string $tipposl
  * @property string $dt
  * @property int $pach
  * @property double $sum
  * @property string $note
  *
- * @property UtPosl $posl
  * @property UtOrg $org
  * @property UtAbonent $abonent
- * @property UtTipposl $tipposl
+
  */
 class UtOpl extends \yii\db\ActiveRecord
 {
@@ -39,15 +39,14 @@ class UtOpl extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'period', 'id_abonent', 'id_posl', 'id_tipposl', 'dt', 'pach', 'sum'], 'required'],
+            [['id_org', 'period', 'id_abonent'], 'required'],
             [['id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'pach'], 'integer'],
             [['period', 'dt'], 'safe'],
+			[['tipposl', 'vidpokaz'], 'string', 'max' => 64],
             [['sum'], 'number'],
             [['note'], 'string'],
-            [['id_posl'], 'exist', 'skipOnError' => true, 'targetClass' => UtPosl::className(), 'targetAttribute' => ['id_posl' => 'id']],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
-            [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
         ];
     }
 
@@ -63,6 +62,7 @@ class UtOpl extends \yii\db\ActiveRecord
             'id_abonent' => Yii::t('easyii', 'Id Abonent'),
             'id_posl' => Yii::t('easyii', 'Id Posl'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
+			'tipposl' => Yii::t('app', 'Tipposl'),
             'dt' => Yii::t('easyii', 'Dt'),
             'pach' => Yii::t('easyii', 'Pach'),
             'sum' => Yii::t('easyii', 'Sum'),
@@ -72,11 +72,7 @@ class UtOpl extends \yii\db\ActiveRecord
 
     /**
      * @return \yii\db\ActiveQuery
-     */
-    public function getPosl()
-    {
-        return $this->hasOne(UtPosl::className(), ['id' => 'id_posl']);
-    }
+
 
     /**
      * @return \yii\db\ActiveQuery
@@ -97,8 +93,5 @@ class UtOpl extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTipposl()
-    {
-        return $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
-    }
+
 }

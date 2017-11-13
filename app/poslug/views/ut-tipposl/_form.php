@@ -16,18 +16,18 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_org')->textInput() ?>
 
-    <?=$form->field($model, 'period')->widget(DatePicker::classname(), [
-    			'options' => ['placeholder' => 'Виберіть місяць'],
-    //			'attribute2'=>'to_date',
-    			'type' => DatePicker::TYPE_INPUT,
-    			'pluginOptions' => [
-    				'autoclose' => true,
-    				'startView'=>'year',
-    				'minViewMode'=>'months',
-//    				'format' => 'dd-mm-yyyy'
-                    'format' => 'yyyy-mm-dd'
-    			]
-    			])?>
+<!--    --><?//=$form->field($model, 'period')->widget(DatePicker::classname(), [
+//    			'options' => ['placeholder' => 'Виберіть місяць'],
+//    //			'attribute2'=>'to_date',
+//    			'type' => DatePicker::TYPE_INPUT,
+//    			'pluginOptions' => [
+//    				'autoclose' => true,
+//    				'startView'=>'year',
+//    				'minViewMode'=>'months',
+////    				'format' => 'dd-mm-yyyy'
+//                    'format' => 'yyyy-mm-dd'
+//    			]
+//    			])?>
 
     <?= $form->field($model, 'poslug')->textInput(['maxlength' => true]) ?>
 
@@ -69,7 +69,7 @@ use yii\widgets\ActiveForm;
         ]
     ) ?>
 
-    <?= $form->field($model, 'activ')->checkbox(['uncheck' => '0']) ?>
+    <?= $form->field($model, 'del')->checkbox(['uncheck' => '0']) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>

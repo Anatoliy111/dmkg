@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\poslug\models\UtNarah */
 
-$this->title = Yii::t('easyii', 'Update {modelClass}: ', [
+$this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Ut Narah',
 ]) . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Narahs'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ut Narahs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('easyii', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="ut-narah-update">
 

@@ -22,17 +22,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_org') ?>
 
+    <?= $form->field($model, 'period') ?>
+
     <?= $form->field($model, 'id_abonent') ?>
 
     <?= $form->field($model, 'id_posl') ?>
 
-    <?= $form->field($model, 'id_tipposl') ?>
+    <?php // echo $form->field($model, 'id_tipposl') ?>
 
-    <?php // echo $form->field($model, 'id_tarif') ?>
+    <?php // echo $form->field($model, 'tipposl') ?>
+
+    <?php // echo $form->field($model, 'id_vidlgot') ?>
+
+    <?php // echo $form->field($model, 'lgot') ?>
 
     <?php // echo $form->field($model, 'tarif') ?>
 
     <?php // echo $form->field($model, 'id_vidpokaz') ?>
+
+    <?php // echo $form->field($model, 'vidpokaz') ?>
 
     <?php // echo $form->field($model, 'pokaznik') ?>
 
@@ -43,8 +51,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'sum') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('easyii', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('easyii', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

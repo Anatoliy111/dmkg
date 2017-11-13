@@ -14,19 +14,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_org')->textInput() ?>
 
+    <?= $form->field($model, 'period')->textInput() ?>
+
     <?= $form->field($model, 'id_abonent')->textInput() ?>
 
     <?= $form->field($model, 'id_posl')->textInput() ?>
 
     <?= $form->field($model, 'id_tipposl')->textInput() ?>
 
-    <?= $form->field($model, 'id_tarif')->textInput() ?>
+    <?= $form->field($model, 'tipposl')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'id_vidlgot')->textInput() ?>
+
+    <?= $form->field($model, 'lgot')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'tarif')->textInput() ?>
 
     <?= $form->field($model, 'id_vidpokaz')->textInput() ?>
 
-	<?= $form->field($model, 'id_vidlgot')->textInput() ?>
+    <?= $form->field($model, 'vidpokaz')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'pokaznik')->textInput() ?>
 
@@ -37,7 +43,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'sum')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

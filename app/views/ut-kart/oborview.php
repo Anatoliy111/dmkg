@@ -56,8 +56,8 @@
 ////			'afterGrid'=>'My fancy content after.',
 //				],
 				'panel' => [
-					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.Html::encode($abon->org->naim).'</h3>',
-					'type'=>'success',
+					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($abon->schet).'</h3>',
+					'type'=>'primary',
 //					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
 //					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
 					'footer'=>false

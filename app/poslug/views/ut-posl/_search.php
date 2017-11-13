@@ -24,8 +24,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_abonent') ?>
 
-    <?= $form->field($model, 'period') ?>
-
     <?= $form->field($model, 'id_tipposl') ?>
 
     <?php // echo $form->field($model, 'flag_vrem') ?>

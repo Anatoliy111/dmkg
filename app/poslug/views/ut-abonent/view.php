@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'fio',
             'id_kart',
             'note:ntext',
-            'id_oldkart',
         ],
     ]) ?>
 

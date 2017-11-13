@@ -45,20 +45,24 @@ $search = '';
 <!--						<gcse:search></gcse:search>-->
 <!--					</div>-->
 					<!-- <p class="float_left">Welcome to Me Financial Services, we have over 12 years of expertise</p> -->
-					<div class="float_right">
-						<ul>
-							<li>
-								<div  id="search_box">
-									<?= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
-									<?= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
+<!--					<div class="float_right">-->
+<!--						<ul>-->
+<!--							<li>-->
 
-<!--									<input id="search" type="text" placeholder="Пошук...">-->
-<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
-								</div>
+<!--								<form name="test" method="post" action="/site/search">
+<!--								<div  id="search_box">
 
-							</li>
-						</ul>
-					</div>
+<!--<!--									--><?////= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
+<!--<!--									--><?////= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
+
+<!--									<input id="search" type="text" placeholder="Пошук...">
+<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>
+<!--								</div>
+<!--								</form>-->
+
+<!--							</li>-->
+<!--						</ul>-->
+<!--					</div>-->
 				</div> <!-- end container -->
 			</div><!-- end top_header -->
 		</section>
@@ -150,7 +154,7 @@ $search = '';
 	<div class="bottom_footer container-fluid">
 		<div class="container">
 			<p class="float_left">Copyright &copy; DMKG 2017. All rights reserved. </p>
-			<p class="float_right">Created by: Bondyuk</p>
+<!--			<p class="float_right">Created by: Bondyuk</p>-->
 		</div>
 	</div> <!-- End bottom_footer -->
 </footer>

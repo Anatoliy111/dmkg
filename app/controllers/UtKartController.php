@@ -155,7 +155,7 @@ class UtKartController extends Controller
 
 		foreach ($abonents as $abon) {
 			$query = UtPosl::find();
-			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id, 'ut_posl.period'=> $_SESSION['period']]);
+			$query->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
 			$dataProvider = new ActiveDataProvider([
 				'query' => $query,
 			]);
@@ -329,7 +329,7 @@ class UtKartController extends Controller
 				$dpnar[$org->id_org][$abon->id] = $dataProvider3;
 				//-----------------------------------------------------------------------------
 				$pos = UtPosl::find();
-				$pos->joinWith('abonent')->where(['ut_abonent.id' => $abon->id, 'ut_posl.period'=> $session['period']]);
+				$pos->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
 				$dataProvider4 = new ActiveDataProvider([
 					'query' => $pos,
 				]);

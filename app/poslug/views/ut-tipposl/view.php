@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'id_org',
-            'period',
             'poslug',
             'id_groupposl',
             'old_tipusl',
@@ -41,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'flag_lgot',
             'flag_dom',
             'id_vidpokazprop',
-            'activ',
+            'del',
         ],
     ]) ?>
 

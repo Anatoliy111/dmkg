@@ -37,9 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'schet',
 				'value' => 'abonent.schet',
 			],
-            'period',
-
-			[
+    		[
 				'attribute' => 'id_tipposl',
 				'value' => 'tipposl.poslug',
 			],
@@ -51,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
              'nnorma',
              'flag_dom',
              'id_dom',
-             'activ',
+             'del',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

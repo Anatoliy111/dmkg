@@ -7,8 +7,12 @@
 	 */
 
 
+	use app\poslug\models\UtNarah;
 	use app\poslug\models\UtObor;
+	use app\poslug\models\UtOpl;
+	use app\poslug\models\UtSubs;
 	use kartik\datecontrol\DateControl;
+	use kartik\dialog\Dialog;
 	use yii\bootstrap\Html;
 //	use yii\helpers\Html;
 //	use yii\;
@@ -38,7 +42,10 @@ use yii\bootstrap\Alert;
 
 
 
-
+	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','NTARIF.DBF','OBOR.DBF','POSL.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','OBOR.DBF','POSL.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','OBOR.DBF','POSL.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','NACH.DBF','OBOR.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
 
@@ -52,66 +59,29 @@ if ($DirFiles<>'')
 
 	$RowsCount = 0;
 
-	$filename = $DirFiles.'/'.'KART.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$KartCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $KartCount;
-	$filename = $DirFiles.'/'.'NACH.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$NACHCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $NACHCount;
-	$filename = $DirFiles.'/'.'NTARIF.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$NTARIFCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $NTARIFCount;
-	$filename = $DirFiles.'/'.'OBOR.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$OborCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $OborCount;
-	$filename = $DirFiles.'/'.'OPL.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$OPLCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $OPLCount;
-	$filename = $DirFiles.'/'.'ORGAN.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$ORGANCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $ORGANCount;
-	$filename = $DirFiles.'/'.'POSL.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$POSLCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $POSLCount;
-	$filename = $DirFiles.'/'.'SUBS.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$SUBSCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $SUBSCount;
-	$filename = $DirFiles.'/'.'UDER.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$UDERCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $UDERCount;
-	$filename = $DirFiles.'/'.'UL.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$ULCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $ULCount;
-	$filename = $DirFiles.'/'.'WIDS.DBF';
-	$dbf = @dbase_open($filename, 0) or die("Error opening $filename");
-	@dbase_pack($dbf);
-	$WIDSCount = dbase_numrecords($dbf);
-	$RowsCount = $RowsCount + $WIDSCount;
 
-	$progress = ceil($RowsCount/100);
+	for ($i = 0; $i <= count($NameBase)-1; $i++)
+	{
+		$filename = $DirFiles.'/'.$NameBase[$i];
+		$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename");
+		@dbase_pack($dbf);
+//		$KartCount = dbase_numrecords($dbf);
+		$RowsCount = $RowsCount + dbase_numrecords($dbf);
+	};
 
+	$process = floor($RowsCount/100);
 
-
+	$_SESSION['RowsCount'] = $RowsCount;
+	$_SESSION['process'] = $process;
+	$_SESSION['NameBase'] = $NameBase;
+	$_SESSION['Progress'] = 0;
+	$_SESSION['NomBase']= 0;
+	$_SESSION['NomRec']= 0;
+	$_SESSION['EndCount'] = $RowsCount;
+    UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+	UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+	UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+	UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 
 
 }
