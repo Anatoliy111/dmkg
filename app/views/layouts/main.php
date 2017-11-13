@@ -9,6 +9,9 @@ use yii\widgets\Breadcrumbs;
 
 $asset = \app\assets\AppAsset::register($this);
 
+//Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']);
+//Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']);
+
 ?>
 
 
@@ -52,8 +55,7 @@ $search = '';
 <!--								<form name="test" method="post" action="/site/search">
 <!--								<div  id="search_box">
 
-<!--									--><?////= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
-<!--									--><?////= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
+
 
 <!--									<input id="search" type="text" placeholder="Пошук...">-->
 <!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
