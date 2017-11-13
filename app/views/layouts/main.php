@@ -55,8 +55,8 @@ $search = '';
 <!--<!--									--><?////= Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']) ?>
 <!--<!--									--><?////= Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']) ?>
 
-<!--									<input id="search" type="text" placeholder="Пошук...">
-<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>
+<!--									<input id="search" type="text" placeholder="Пошук...">-->
+<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
 <!--								</div>
 <!--								</form>-->
 
