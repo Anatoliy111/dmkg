@@ -34,7 +34,6 @@ class UtRabota extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
             [['id_oldorg'], 'integer'],
 			[['id_org'], 'integer'],
             [['name'], 'string', 'max' => 128],

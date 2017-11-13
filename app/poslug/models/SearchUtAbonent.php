@@ -21,7 +21,7 @@ class SearchUtAbonent extends UtAbonent
     public function rules()
     {
         return [
-            [['id', 'id_org', 'schet', 'id_kart','id_oldkart'], 'integer'],
+            [['id', 'id_org', 'schet', 'id_kart'], 'integer'],
             [['note','kart','org'], 'safe'],
         ];
     }

@@ -18,7 +18,7 @@ class SearchUtNarah extends UtNarah
     public function rules()
     {
         return [
-            [['id', 'id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'id_vidlgot', 'id_tarif', 'id_vidpokaz'], 'integer'],
+            [['id', 'id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'id_vidlgot', 'id_vidpokaz'], 'integer'],
             [['period', 'tipposl', 'lgot', 'vidpokaz', 'ed_izm'], 'safe'],
             [['tarif', 'pokaznik', 'nnorma', 'sum'], 'number'],
         ];
@@ -67,7 +67,6 @@ class SearchUtNarah extends UtNarah
             'id_posl' => $this->id_posl,
             'id_tipposl' => $this->id_tipposl,
             'id_vidlgot' => $this->id_vidlgot,
-            'id_tarif' => $this->id_tarif,
             'tarif' => $this->tarif,
             'id_vidpokaz' => $this->id_vidpokaz,
             'pokaznik' => $this->pokaznik,

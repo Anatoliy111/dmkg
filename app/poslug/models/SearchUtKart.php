@@ -24,7 +24,7 @@ class SearchUtKart extends UtKart
     public function rules()
     {
         return [
-            [['id', 'idcod', 'id_ulica', 'kv', 'ur_fiz', 'id_oldkart', 'id_dom', 'privat'], 'integer'],
+            [['id', 'idcod', 'id_ulica', 'kv', 'ur_fiz','id_dom', 'privat'], 'integer'],
             [['name_f', 'name_i', 'name_o', 'fio', 'dom', 'korp', 'pass', 'id_rabota','telef','ulica'], 'safe'],
         ];
     }
@@ -97,7 +97,6 @@ class SearchUtKart extends UtKart
             'id_ulica' => $this->id_ulica,
             'kv' => $this->kv,
             'ur_fiz' => $this->ur_fiz,
-            'id_oldkart' => $this->id_oldkart,
 			'id_dom' => $this->id_dom,
 			'privat' => $this->privat
         ]);

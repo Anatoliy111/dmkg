@@ -139,7 +139,7 @@ function importORGAN($dbf,$i)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
-		if (UtRabota::findOne(['id_oldorg' => $fields['ORG']])== null)
+		if (UtRabota::findOne(['id_oldorg' => $fields['ORG']])== null )
 		{
 
 			$model = new UtRabota();

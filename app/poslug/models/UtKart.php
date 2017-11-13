@@ -21,8 +21,6 @@ use Yii;
  * @property int $ur_fiz юр чи фіз
  * @property string $pass пароль
  * @property string $telef телефон
- * @property int $auth_key
- * @property int $acess_token
  * @property int id_rabota робота
  * @property int $id_dom многокв дом
  * @property int $privat приватизация
@@ -65,7 +63,6 @@ class UtKart extends \yii\db\ActiveRecord
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
 			[['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
 			[['id_rabota'], 'exist', 'skipOnError' => true, 'targetClass' => UtRabota::className(), 'targetAttribute' => ['id_rabota' => 'id']],
-			[['auth_key', 'acess_token'], 'string', 'max' => 32],
 			[['pass1'], 'string', 'min' => 5],
 			[['pass2'], 'string', 'min' => 5],
 			['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
@@ -92,8 +89,6 @@ class UtKart extends \yii\db\ActiveRecord
             'pass1' => Yii::t('easyii', 'Pass1'),
 			'pass2' => Yii::t('easyii', 'Pass2'),
             'telef' => Yii::t('easyii', 'Telef'),
-			'auth_key' => Yii::t('easyii', 'Auth Key'),
-			'acess_token' => Yii::t('easyii', 'Acess Token'),
 			'id_rabota' => Yii::t('easyii', 'Rabota'),
 			'id_dom' => Yii::t('easyii', 'Id Dom'),
 			'privat' => Yii::t('easyii', 'Privat'),
