@@ -20,7 +20,7 @@ use Yii;
  * @property double $norma норма
  * @property double $normalgot норма для льготника
  * @property double $normalgotsm норма льготника на сімю
- * @property int $activ активна
+ * @property int $del активна
  *
  * @property UtOrg $org
  * @property UtTipposl $tipposl
@@ -71,7 +71,7 @@ class UtTarif extends \yii\db\ActiveRecord
             'norma' => Yii::t('easyii', 'Norma'),
             'normalgot' => Yii::t('easyii', 'Normalgot'),
             'normalgotsm' => Yii::t('easyii', 'Normalgotsm'),
-            'activ' => Yii::t('easyii', 'Activ'),
+            'del' => Yii::t('easyii', 'Del'),
         ];
     }
 

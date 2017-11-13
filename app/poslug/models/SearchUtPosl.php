@@ -18,7 +18,7 @@ class SearchUtPosl extends UtPosl
     public function rules()
     {
         return [
-            [['id', 'id_org', 'id_abonent', 'id_tipposl', 'flag_vrem', 'flag_dom', 'id_dom', 'activ'], 'integer'],
+            [['id', 'id_org', 'id_abonent', 'id_tipposl', 'flag_vrem', 'flag_dom', 'id_dom', 'del'], 'integer'],
             [['period', 'date_n', 'date_k', 'n_dog', 'date_dog'], 'safe'],
             [['nnorma'], 'number'],
         ];
@@ -63,7 +63,6 @@ class SearchUtPosl extends UtPosl
             'id' => $this->id,
             'id_org' => $this->id_org,
             'id_abonent' => $this->id_abonent,
-            'period' => $this->period,
             'id_tipposl' => $this->id_tipposl,
             'flag_vrem' => $this->flag_vrem,
             'date_n' => $this->date_n,
@@ -72,7 +71,7 @@ class SearchUtPosl extends UtPosl
             'nnorma' => $this->nnorma,
             'flag_dom' => $this->flag_dom,
             'id_dom' => $this->id_dom,
-            'activ' => $this->activ,
+            'del' => $this->del,
         ]);
 
         $query->andFilterWhere(['like', 'n_dog', $this->n_dog]);
