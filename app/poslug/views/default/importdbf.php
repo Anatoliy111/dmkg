@@ -21,7 +21,8 @@
 	use app\poslug\models\UtTipposl;
 	use app\poslug\models\UtUlica;
 	use app\poslug\models\UtVidlgot;
-	use yii\bootstrap\Modal;
+use yii\bootstrap\Alert;
+use yii\bootstrap\Modal;
 	use yii\bootstrap\Progress;
 
 //	$_SESSION['RowsCount'] = $RowsCount;
@@ -60,14 +61,15 @@
 		if ($i==$rowsCount+1)
 		{
 			$_SESSION['NomRec'] = 0;
-			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $process;
-			$_SESSION['process'] = floor($_SESSION['EndCount']/(100-$_SESSION['Progress']));
+			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $process - $_SESSION['NomRec']+1;
+			if ($_SESSION['Progress']<100)
+			     $_SESSION['process'] = floor($_SESSION['EndCount']/(100-$_SESSION['Progress']));
 			$_SESSION['NomBase'] = $_SESSION['NomBase'] + 1;
 		}
 		else
 		{
 			$_SESSION['NomRec'] = $i;
-			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $process;
+			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $_SESSION['process'];
 		}
 
 	}
@@ -404,7 +406,7 @@ function importNTARIF($dbf,$i)
 		{
 			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
 			$kltar = $fields['KL'];
-			$FindTarif = UtTarif::findOne(['kl' => $fields['KL']]);
+			$FindTarif = UtTarif::findOne(['kl' => $fields['KL_NTAR']]);
 			$FindAbon =  UtAbonent::findOne(['schet' => $schet]);
 			if ($FindTarif <> null and $FindAbon <> null)
 			{
@@ -430,7 +432,8 @@ function importNTARIF($dbf,$i)
 
 
 			}
-			die("Error!!! $dbf Not find Abonent $schet $kltar");
+			else
+			    die("Error!!! $dbf Not find Abonent $schet $kltar");
 
 		}
 		return true;
@@ -445,7 +448,8 @@ function importNTARIF($dbf,$i)
 			$lgot = trim(iconv('CP866','utf-8',$fields['LGOTA']));
 			$FindAbon =  UtAbonent::findOne(['schet' => $schet]);
 			$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
-			$FindPosl = UtPosl::findOne(['old_tipusl' => $fields['WID']]);
+			if ($FindTipPosl<>null and $FindAbon<>null)
+			    $FindPosl = UtPosl::findOne(['id_tipposl' => $FindTipPosl->id,'id_abonent' => $FindAbon->id]);
 			$FindLgot = UtVidlgot::findOne(['lgota' => $lgot]);
 			if ($FindAbon <> null)
 			{
@@ -627,11 +631,14 @@ function importNTARIF($dbf,$i)
 							$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
 							if ($findposl==null)
 							{
-								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
+//								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
+								Alert::begin(['options' => ['class' => 'alert-danger'],]);
+								echo "Not find is UtPosl: '$schet $k'\n";
+								Alert::end();
 							}
 							else
 							{
-								if (NewOpl($findposl,$fields,$v))
+								if (NewOpl($findposl,$tipposl,$fields,$v))
 									return true;
 								else
 									die("Error!!!  Insert is $dbf  to UtOpl $schet $k");
@@ -655,7 +662,7 @@ function importNTARIF($dbf,$i)
 
 }
 
-	function NewOpl($findposl,$fields,$v)
+	function NewOpl($findposl,$tipposl,$fields,$v)
 
 {
 	$narah = new UtOpl();
@@ -665,7 +672,7 @@ function importNTARIF($dbf,$i)
 	$narah->id_abonent = $findposl->id_abonent;
 	$narah->id_posl = $findposl->id;
 	$narah->id_tipposl = $findposl->id_tipposl;
-	$narah->tipposl = $findposl->poslug;
+	$narah->tipposl = $tipposl->poslug;
 	$narah->dt = date('Y-m-d',strtotime(substr($fields['DT'],0,4).'-'.substr($fields['DT'],4,2).'-'.substr($fields['DT'],6,2)));
 	$narah->pach = $fields['PACH'];
 	$narah->sum = $v;
@@ -755,7 +762,7 @@ function importNTARIF($dbf,$i)
 								}
 								else
 								{
-									if (NewSubs($findposl,$fields,$sum,$sum_ob))
+									if (NewSubs($findposl,$fields,$tipposl,$sum,$sum_ob))
 										return true;
 									else
 										die("Error!!!  Insert is $dbf  to UtSubs $schet $k");
@@ -779,7 +786,7 @@ function importNTARIF($dbf,$i)
 
 	}
 
-	function NewSubs($findposl,$fields,$sum,$sum_ob)
+	function NewSubs($findposl,$fields,$tipposl,$sum,$sum_ob)
 
 	{
 		$narah = new UtSubs();
@@ -788,7 +795,7 @@ function importNTARIF($dbf,$i)
 		$narah->period = $_SESSION['PeriodBase'];
 		$narah->id_abonent = $findposl->id_abonent;
 		$narah->id_tipposl = $findposl->id_tipposl;
-		$narah->tipposl = $findposl->poslug;
+		$narah->tipposl = $tipposl->poslug;
 	    $narah->sum_ob = $sum_ob;
 		$narah->sum = $sum;
 

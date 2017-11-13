@@ -42,7 +42,7 @@ class UtOpl extends \yii\db\ActiveRecord
             [['id_org', 'period', 'id_abonent'], 'required'],
             [['id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'pach'], 'integer'],
             [['period', 'dt'], 'safe'],
-			[['tipposl', 'vidpokaz'], 'string', 'max' => 64],
+			[['tipposl'], 'string', 'max' => 64],
             [['sum'], 'number'],
             [['note'], 'string'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
