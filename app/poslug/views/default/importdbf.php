@@ -24,57 +24,122 @@
 use yii\bootstrap\Alert;
 use yii\bootstrap\Modal;
 	use yii\bootstrap\Progress;
+	use yii\helpers\Html;
 
-//	$_SESSION['RowsCount'] = $RowsCount;
+	//	$_SESSION['RowsCount'] = $RowsCount;
 //	$process = $_SESSION['process'];
 	$_SESSION['Progress'] = $_SESSION['Progress'] + 1;
 //	$_SESSION['NameBase'] = $NameBase;
 //	$_SESSION['NomBase']= 0;
 //	$_SESSION['EndCount'] = $RowsCount;
 //
-	$Base = $_SESSION['NameBase'][$_SESSION['NomBase']];
+//	$Base = $_SESSION['NameBase'][$_SESSION['NomBase']];
+//?>
+<!---->
+<!--	--><?//= Html::tag('p', Html::encode($Base), ['class' => 'base']) ?>
+<!---->
+<!---->
+<?php
+//	$filename = $_SESSION['DirFiles'].'/'.$Base;
+//	$dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
+//	@dbase_pack($dbf);
+//	$rowsCount = dbase_numrecords($dbf);
+//	$countRec = $rowsCount - $_SESSION['NomRec'];
+//	if ($countRec>$_SESSION['process'])
+//		$process=$_SESSION['NomRec']+$_SESSION['process'];
+//	else $process=$rowsCount;
+//
+//
+////	if ($process > $rowsCount)
+////		$process = $rowsCount;
+////	if ($_SESSION['NomRec']+$process )
+//
+//	$type = 'png';
+//	$functionname = 'import'.strstr($Base, '.', true);;
+//	if (function_exists($functionname)) {
+//
+//		for ($i = $_SESSION['NomRec']+1; $i <= $process; $i++)
+//		{
+//			if (!$functionname($dbf,$i))
+//				die("Error!!!  Return to false $functionname");
+//		};
+//		if ($i==$rowsCount+1)
+//		{
+//			$_SESSION['NomRec'] = 0;
+//			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $process - $_SESSION['NomRec']+1;
+//			if ($_SESSION['Progress']<100)
+//			     $_SESSION['process'] = floor($_SESSION['EndCount']/(100-$_SESSION['Progress']));
+//			$_SESSION['NomBase'] = $_SESSION['NomBase'] + 1;
+//		}
+//		else
+//		{
+//			$_SESSION['NomRec'] = $i;
+//			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $_SESSION['process'];
+//		}
+//
+//	}
+//	else
+//		die("Error!!!  Opening $functionname");
+
+	$process = $_SESSION['process'];
+	$nomrec = $_SESSION['NomRec'];
+	$nombase = $_SESSION['NomBase'];
+	$start = 0;
+	$endbase = count($_SESSION['NameBase'])-1;
 
 
-	$filename = $_SESSION['DirFiles'].'/'.$Base;
-	$dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
-	@dbase_pack($dbf);
-	$rowsCount = dbase_numrecords($dbf);
-	$countRec = $rowsCount - $_SESSION['NomRec'];
-	if ($countRec>$_SESSION['process'])
-		$process=$_SESSION['NomRec']+$_SESSION['process'];
-	else $process=$rowsCount;
 
+$t = true;
 
-//	if ($process > $rowsCount)
-//		$process = $rowsCount;
-//	if ($_SESSION['NomRec']+$process )
-
-	$type = 'png';
-	$functionname = 'import'.strstr($Base, '.', true);;
-	if (function_exists($functionname)) {
-
-		for ($i = $_SESSION['NomRec']+1; $i <= $process; $i++)
+	while( $t) {
+		$Base = $_SESSION['NameBase'][$nombase];
+		if ($Base==null)
+			break;
+		$filename = $_SESSION['DirFiles'].'/'.$Base;
+	    $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
+	    @dbase_pack($dbf);
+	     $rowsCount = dbase_numrecords($dbf);
+		if ($_SESSION['Progress']==100 and $nombase==$endbase)
 		{
-			if (!$functionname($dbf,$i))
-				die("Error!!!  Return to false $functionname");
-		};
-		if ($i==$rowsCount+1)
-		{
-			$_SESSION['NomRec'] = 0;
-			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $process - $_SESSION['NomRec']+1;
-			if ($_SESSION['Progress']<100)
-			     $_SESSION['process'] = floor($_SESSION['EndCount']/(100-$_SESSION['Progress']));
-			$_SESSION['NomBase'] = $_SESSION['NomBase'] + 1;
+			$process = $rowsCount-$nomrec;
 		}
-		else
-		{
-			$_SESSION['NomRec'] = $i;
-			$_SESSION['EndCount'] = $_SESSION['EndCount'] - $_SESSION['process'];
-		}
+//	     $countRec = $rowsCount - $_SESSION['NomRec'];
+//	     if ($countRec>$_SESSION['process'])
+//		  $process=$_SESSION['NomRec']+$_SESSION['process'];
+//	     else $process=$rowsCount;
+		$functionname = 'import'.strstr($Base, '.', true);
 
+		if (function_exists($functionname)) {
+
+			for ($i = $start+1; $i <= $process; $i++)
+			{
+				$nomrec = $nomrec +1;
+				if (!$functionname($dbf,$nomrec))
+				      die("Error!!!  Return to false $functionname");
+
+				if ($nomrec==$rowsCount)
+				{
+					$nombase = $nombase + 1;
+					$nomrec = 0;
+					if ($i==$process)
+						$t = false;
+					break;
+				}
+			}
+
+			$start = $i;
+			if ($i==$process+1)
+				$t = false;
+
+
+
+
+		}
 	}
-	else
-		die("Error!!!  Opening $functionname");
+
+	$_SESSION['NomBase'] = $nombase;
+	$_SESSION['NomRec'] = $nomrec;
+
 
 
 function importUL($dbf,$i)

@@ -44,6 +44,7 @@ use yii\base\Event;
 	//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
 ?>
 <div class="results">Ждем ответа</div>
+<div class="base">Ждем ответа</div>
 
 <?php
 
@@ -203,7 +204,7 @@ use yii\base\Event;
                str = data;
 				if (str.indexOf("Error!!!")<0)
 				{
-					refreshProgress(percent);
+					refreshProgress(percent=1);
 				}
 				else
 				 	closeImport(str);

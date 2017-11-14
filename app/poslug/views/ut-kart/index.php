@@ -107,15 +107,15 @@ $this->params['breadcrumbs'][] = $this->title;
 //				},
 //				'format' => 'raw'
 //			],
-//			[
-////				'class' => '\kartik\grid\ActionColumn',
-////				'template' => '{view} {update} {delete}',
-////				'template' => '{view} {update} {delete}',
-//////				'template' => '{update},{delete}',
-//////				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
-//////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh"></i>'],
-////				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove"></i>']
-//			]
+			[
+				'class' => '\kartik\grid\ActionColumn',
+				'template' => '{view} {update} {delete}',
+//				'template' => '{view} {update} {delete}',
+//				'template' => '{update},{delete}',
+//				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
+//				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh"></i>'],
+				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove"></i>']
+			]
 		],
 		'resizableColumns'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
