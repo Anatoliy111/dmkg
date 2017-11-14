@@ -92,11 +92,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				],
 //			        	'valueColOptions'=> array('style' =>'width:30%')),
                     'telef',
-			        [
-			        'attribute' => 'privat',
-			        'label'=>'Приватизація',
-			        'class' => '\kartik\grid\BooleanColumn',
-			        ],
+				[
+					'attribute'=>'privat',
+					'label'=>'Приватизація',
+					'format'=>'raw',
+					'value'=>$model->privat==1 ? '<span class="label label-success">Приватизована</span>': $model->privat,
+					'valueColOptions'=>['style'=>'width:30%']
+				],
+
+
 				[
 					'attribute' => 'id_rabota',
 //					'label'=>'Робота',

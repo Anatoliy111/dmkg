@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		'filterModel' => $searchModel,
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
-
+			'id',
 			[
 				'attribute'=>'org',
 				'label' => 'Організація',

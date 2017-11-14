@@ -78,16 +78,16 @@ Modal::begin([
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('easyii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('easyii', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('easyii', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+<!--    <p>-->
+<!--        --><?//= Html::a(Yii::t('easyii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+<!--        --><?//= Html::a(Yii::t('easyii', 'Delete'), ['delete', 'id' => $model->id], [
+//            'class' => 'btn btn-danger',
+//            'data' => [
+//                'confirm' => Yii::t('easyii', 'Are you sure you want to delete this item?'),
+//                'method' => 'post',
+//            ],
+//        ]) ?>
+<!--    </p>-->
 
 	<?=
 		DetailView::widget([
@@ -165,11 +165,13 @@ Modal::begin([
 
 //			        	'valueColOptions'=> array('style' =>'width:30%')),
                     'telef',
-			        [
-			        'attribute' => 'privat',
-			        'label'=>'Приватизація',
-			        'class' => '\kartik\grid\BooleanColumn',
-			        ],
+				[
+					'attribute'=>'privat',
+					'label'=>'Приватизація',
+					'format'=>'raw',
+					'value'=>$model->privat==1 ? '<span class="label label-success">Приватизована</span>': $model->privat,
+					'valueColOptions'=>['style'=>'width:30%']
+				],
 				[
 					'attribute' => 'id_rabota',
 //					'label'=>'Робота',

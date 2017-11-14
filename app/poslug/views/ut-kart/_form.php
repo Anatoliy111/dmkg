@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'korp')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'kv')->textInput() ?>
+    <?= $form->field($model, 'kv')->textInput(['maxlength' => true])  ?>
 
 	<?= $form->field($model, 'rabota')->textInput(['maxlength' => true]) ?>
 

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
 
-//			'fio',
+			'id',
 
 			[
 				'attribute' => 'fio',

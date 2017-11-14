@@ -21,6 +21,7 @@
 	use app\poslug\models\UtTipposl;
 	use app\poslug\models\UtUlica;
 	use app\poslug\models\UtVidlgot;
+use app\poslug\models\UtVidpokaz;
 use yii\bootstrap\Alert;
 use yii\bootstrap\Modal;
 	use yii\bootstrap\Progress;
@@ -525,9 +526,11 @@ function importNTARIF($dbf,$i)
 				$narah->id_abonent = $FindAbon->id;
 				$narah->id_posl = $FindPosl->id;
 				$narah->id_tipposl = $FindTipPosl->id;
+				$narah->tipposl = $FindTipPosl->poslug;
 				$narah->id_vidlgot = $fields['LGOTA'] <> '' ? UtVidlgot::findOne(['lgota' => trim(iconv('CP866','utf-8',$fields['LGOTA']))])->id : null;
 				$narah->tarif = $fields['TARIF'];
 				$narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
+				$narah->vidpokaz = UtVidpokaz::findOne(['id' => $narah->id_vidpokaz])->vid_pokaz;
 				$narah->pokaznik = $fields['RAZN'];
 				$narah->nnorma = $fields['FL_SCH'] == -1 ? $fields['RAZN'] : 0;
 //			$narah->pokaznik = UtPokaz::findOne(['id_abonent' => $narah->id_abonent,'id_vidpokaz' => $narah->id_vidpokaz ])->pokaznik;
