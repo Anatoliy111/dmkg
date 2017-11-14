@@ -126,8 +126,9 @@
 		public function UnZIP($filename)
 		{
 			$zip = new ZipArchive;
-			if ($zip->open('uploads/DBF/'.$filename) === TRUE) {
-				$zip->extractTo('uploads/DBF/'.$filename->baseName);
+			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+			if ($zip->open($uploadPath.$filename) === TRUE) {
+				$zip->extractTo($uploadPath.$filename->baseName);
 				$zip->close();
 //					Yii::$app->session->setFlash('success', 'Завантаження виконано!',true);
 				Alert::begin(['options' => ['class' => 'alert-success'],]);
@@ -135,12 +136,12 @@
 
 				Alert::end();
 				$this->MonthYear = date('Y-m-d',strtotime(substr($filename->baseName,0,4).'-'.substr($filename->baseName,4,2).'-01'));
-				$_SESSION['DirFiles'] = 'uploads/DBF/'.$filename->baseName;
+				$_SESSION['DirFiles'] = $uploadPath.$filename->baseName;
 				$_SESSION['PeriodBase'] = $this->MonthYear;
 				return true;
 
 			} else {
-				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$this->File->name."");
+				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name."");
 //                    echo 'ошибка';
 //				Alert::begin(['options' => ['class' => 'alert-danger'],]);
 //				echo "Не вдалося відкрити файл: '$filename'\n";
