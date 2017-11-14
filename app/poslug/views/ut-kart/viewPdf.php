@@ -97,7 +97,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			        'label'=>'Приватизація',
 			        'class' => '\kartik\grid\BooleanColumn',
 			        ],
-     				'rabota',
+				[
+					'attribute' => 'id_rabota',
+//					'label'=>'Робота',
+					'value' => $model->getRabota()->asArray()->one()['name'],
+				],
 			]
 		]);
 	?>

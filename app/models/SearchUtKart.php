@@ -27,8 +27,8 @@ class SearchUtKart extends UtKart
     {
         return [
 			[['dom', 'id_ulica','enterpass'], 'required'],
-            [['id', 'id_ulica', 'kv', 'ur_fiz', 'id_oldkart'], 'integer'],
-            [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef'], 'safe'],
+            [['id', 'id_ulica', 'ur_fiz', 'id_oldkart'], 'integer'],
+            [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv'], 'safe'],
 			[['enterpass'], 'string', 'min' => 5],
 //			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];

@@ -24,8 +24,8 @@ class SearchUtKart extends UtKart
     public function rules()
     {
         return [
-            [['id', 'idcod', 'id_ulica', 'kv', 'ur_fiz','id_dom', 'privat'], 'integer'],
-            [['name_f', 'name_i', 'name_o', 'fio', 'dom', 'korp', 'pass', 'id_rabota','telef','ulica'], 'safe'],
+            [['id', 'idcod', 'id_ulica', 'ur_fiz','id_dom', 'privat'], 'integer'],
+            [['name_f', 'name_i', 'name_o', 'fio', 'dom', 'korp', 'pass', 'id_rabota','telef','ulica','kv'], 'safe'],
         ];
     }
 

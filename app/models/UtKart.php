@@ -18,7 +18,7 @@ use Yii;
  * @property int $id_ulica вулиця
  * @property string $dom номер будинку
  * @property string $korp корпус
- * @property int $kv квартира
+ * @property string $kv квартира
  * @property int $ur_fiz юр чи фіз
  * @property string $pass пароль
  * @property string $telef телефон
@@ -50,12 +50,13 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return [
             [['name_f', 'fio', 'id_ulica', 'dom', 'enterpass'], 'required'],
-            [['id_ulica', 'kv', 'ur_fiz', 'id_oldkart'], 'integer'],
+            [['id_ulica','ur_fiz', 'id_oldkart'], 'integer'],
             [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o'], 'string', 'max' => 30],
             [['fio', 'pass'], 'string', 'max' => 64],
             [['idcod'], 'string', 'max' => 25],
             [['dom'], 'string', 'max' => 4],
+            [['kv'], 'string', 'max' => 5],
 			[['MonthYear'], 'safe'],
             [['korp'], 'string', 'max' => 1],
             [['telef'], 'string', 'max' => 15],
@@ -88,8 +89,6 @@ class UtKart extends \yii\db\ActiveRecord
             'telef' => Yii::t('easyii', 'Telef'),
             'id_oldkart' => Yii::t('easyii', 'Id Oldkart'),
 			'enterpass' => Yii::t('easyii', 'Еnterpass'),
-			'auth_key' => 'Auth Key',
-			'acess_token' => 'Acess Token',
 			'MonthYear' => 'Період',
         ];
     }

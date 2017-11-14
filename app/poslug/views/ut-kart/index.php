@@ -107,15 +107,15 @@ $this->params['breadcrumbs'][] = $this->title;
 //				},
 //				'format' => 'raw'
 //			],
-			[
-				'class' => '\kartik\grid\ActionColumn',
-				'template' => '{view} {update} {delete}',
+//			[
+//				'class' => '\kartik\grid\ActionColumn',
 //				'template' => '{view} {update} {delete}',
-//				'template' => '{update},{delete}',
-//				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
-//				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh"></i>'],
-				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove"></i>']
-			]
+////				'template' => '{view} {update} {delete}',
+////				'template' => '{update},{delete}',
+////				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
+////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh"></i>'],
+//				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove"></i>']
+//			]
 		],
 		'resizableColumns'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
@@ -131,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		'panel' => [
 			'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.$this->title.'</h3>',
 			'type'=>'success',
-			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
+//			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
 			'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
 			'footer'=>true
 		],

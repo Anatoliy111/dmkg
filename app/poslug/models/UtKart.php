@@ -51,9 +51,10 @@ class UtKart extends \yii\db\ActiveRecord
         return [
             [['name_f', 'fio', 'id_ulica'], 'required'],
             [['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota'], 'integer'],
-            [['name_f','kv'], 'string', 'max' => 50],
+            [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o'], 'string', 'max' => 30],
             [['dom'], 'string', 'max' => 4],
+			[['kv'], 'string', 'max' => 5],
             [['korp'], 'string', 'max' => 1],
             [['pass1'], 'string', 'max' => 64],
 			[['pass2'], 'string', 'max' => 64],

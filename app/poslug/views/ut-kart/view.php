@@ -170,15 +170,20 @@ Modal::begin([
 			        'label'=>'Приватизація',
 			        'class' => '\kartik\grid\BooleanColumn',
 			        ],
-     				'rabota',
-			]
+				[
+					'attribute' => 'id_rabota',
+//					'label'=>'Робота',
+					'value' => $model->getRabota()->asArray()->one()['name'],
+				],
+ 			]
 		]);
 	?>
 
 
 
 
-	<?= GridView::widget([
+	<?=
+	GridView::widget([
 		'dataProvider' => $dataProvider,
 		'columns' => [
 			['class' => 'yii\grid\SerialColumn'],
