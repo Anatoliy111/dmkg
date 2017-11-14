@@ -498,7 +498,7 @@ function importNTARIF($dbf,$i)
 
 			}
 			else
-			    die("Error!!! $dbf Not find Abonent $schet $kltar");
+				return true;
 
 		}
 		return true;
