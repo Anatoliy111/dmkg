@@ -19,6 +19,8 @@
 		/**
 		 * @var UploadedFile
 		 */
+		public static $UPLOADS_DIR = 'uploads/dbf';
+
 		public $dbf;
 		public $fields;
 		public $File;
@@ -74,7 +76,9 @@
 		{
 			if ($this->File && $this->validate()) {
 
-				$this->File->saveAs('uploads/DBF/' . $this->File->baseName . '.' . $this->File->extension);
+				$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+
+				$this->File->saveAs($uploadPath . $this->File->baseName . '.' . $this->File->extension);
 				Yii::$app->session->setFlash($this->File->name, "Завантажено файл - ".$this->File->name."");
 
 //                $this->ImportDbf($this->File);
