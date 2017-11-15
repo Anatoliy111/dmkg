@@ -60,6 +60,7 @@ class AdminModule extends \yii\base\Module implements BootstrapInterface
     public function renderToolbar()
     {
         $view = Yii::$app->getView();
+        if (Yii::$app->user->identity->roles <> 'poslug')
         echo $view->render('@easyii/views/layouts/frontend-toolbar.php');
     }
 

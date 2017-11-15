@@ -113,7 +113,7 @@ class UtKart extends \yii\db\ActiveRecord
     {
 //        $sql = 'Select id_org,period from ut_obor group by id_org,period order by id_org,period ';
 //        $lastperiod = UtObor::find()->all();
-        $lastperiod = UtObor::find()->max('period')->one();
+        $lastperiod = UtObor::find()->max('period');
 //        $lastperiod = UtObor::find()->select(['period, id_org'])->distinct();
 //        $lastperiod = ArrayHelper::map(UtUlica::find()->asArray()->all(), 'ID', 'ul'),
         return $lastperiod;

@@ -9,6 +9,7 @@ class Admin extends \yii\easyii\components\ActiveRecord implements \yii\web\Iden
         'admin_id' => 0,
         'username' => 'root',
         'password' => '',
+        'roles' => '',
         'auth_key' => '',
         'access_token' => ''
     ];
@@ -34,6 +35,7 @@ class Admin extends \yii\easyii\components\ActiveRecord implements \yii\web\Iden
         return [
             'username' => Yii::t('easyii', 'Username'),
             'password' => Yii::t('easyii', 'Password'),
+//            'roles' => Yii::t('easyii', 'Roles'),
         ];
     }
 

@@ -282,21 +282,25 @@ class UtKartController extends Controller
 
 	public function actionKabinet($id)
 	{
-		$session = Yii::$app->session;
-		if (isset($_POST['UtKart']['MonthYear']))
-		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
+//		$session = Yii::$app->session;
+//		if (isset($_POST['UtKart']['MonthYear']))
+//		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
 
 
 		$model = $this->findModel($id);
 		$session = Yii::$app->session;
+//		$session['period'] = UtObor::find()->max('period');
+//		$session['period'] = $model->period();
+//		$session['period'] = $model->lastperiod();
 //		$model->MonthYear = $_SESSION['period'];
-		$model->MonthYear =  $session['period'];
+//		$model->MonthYear =  $session['period'];
 		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
 
 		$orgs = UtAbonent::find()->with('org')->where(['id_kart' => $model->id])->groupBy('id_org')->all();
 
         foreach($orgs as $org)
 		{
+			$session['period'] = [$org->id_org => UtObor::find()->where(['id_org' => $org->id_org])->max('period')];
 			$abonen = UtAbonent::find()->where(['id_kart' => $model->id,'id_org' => $org->id_org]);
 			$dpinfo[$org->id_org] = new ActiveDataProvider([
 				'query' => $abonen,
@@ -306,7 +310,7 @@ class UtKartController extends Controller
 
 				//-----------------------------------------------------------------------------
 				$obor= UtObor::find();
-				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 				$ff = ArrayHelper::toArray($obor);
 				$dataProvider1 = new ActiveDataProvider([
 					'query' => $obor,
@@ -314,7 +318,7 @@ class UtKartController extends Controller
 				$dpobor[$org->id_org][$abon->id] = $dataProvider1;
 				//-----------------------------------------------------------------------------
 				$opl = UtOpl::find();
-				$opl->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_opl.period'=> $session['period']]);
+				$opl->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_opl.period'=> $session['period'][$org->id_org]]);
 				$dataProvider2 = new ActiveDataProvider([
 					'query' => $opl,
 				]);
@@ -322,7 +326,7 @@ class UtKartController extends Controller
 				$dpopl[$org->id_org][$abon->id] = $dataProvider2;
 				//-----------------------------------------------------------------------------
 				$nar= UtNarah::find();
-				$nar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_narah.period'=> $session['period']]);
+				$nar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_narah.period'=> $session['period'][$org->id_org]]);
 				$dataProvider3 = new ActiveDataProvider([
 					'query' => $nar,
 				]);

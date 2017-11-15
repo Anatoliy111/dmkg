@@ -14,7 +14,10 @@ class SignController extends \yii\web\Controller
         $model = new models\LoginForm;
 
         if (!Yii::$app->user->isGuest || ($model->load(Yii::$app->request->post()) && $model->login())) {
-            return $this->redirect(Yii::$app->user->getReturnUrl(['/admin']));
+            if ($model->getUser()->roles == 'poslug')
+                     return $this->redirect(Yii::$app->user->getReturnUrl(['/poslug']));
+            else
+                     return $this->redirect(Yii::$app->user->getReturnUrl(['/admin']));
         } else {
             return $this->render('in', [
                 'model' => $model,

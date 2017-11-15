@@ -31,7 +31,7 @@ $this->title = $model->fio;
 //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 //		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги та тарифи',
+			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
 			'content'=>$this->render('poslugview', ['model' => $model,'abonents'=>$abonents[$org->id_org],'dataProvider' => $dppos[$org->id_org]]),
 		],
 		[
@@ -97,7 +97,7 @@ $this->title = $model->fio;
 <!--		</div>-->
 
 			<div class="col-sm-12">
-<!--				<h4>--><?//=$model->fio?><!--</h4>-->
+
 						<?=
 							DetailView::widget([
 								'model' => $model,
@@ -141,7 +141,7 @@ $this->title = $model->fio;
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>
-                                Html::a('Показники').
+                                Html::label($_SESSION['period'][$org->id_org],[],['format' => ['date', 'php:MY']]).
 								TabsX::widget([
 								'items'=>$items[$org->id_org],
 								'position'=>TabsX::POS_ABOVE,

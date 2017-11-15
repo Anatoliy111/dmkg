@@ -38,7 +38,9 @@ $asset = \app\poslug\assets\AppAsset::register($this);
                 ['label' => 'Головна', 'url' => ['default/index']],
 				['label' => 'Gii', 'url' => '/gii'],
                 ['label' => 'Перейти до сайту', 'url' => Yii::$app->homeUrl],
-            ],
+				['label' => Yii::t('easyii', 'Logout'),['class'=>['glyphicon glyphicon-log-out']],'url' => ['/admin/sign/out']],
+
+		],
         ]);
         NavBar::end();
         ?>

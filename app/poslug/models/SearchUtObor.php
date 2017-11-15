@@ -20,7 +20,7 @@ class SearchUtObor extends UtObor
         return [
             [['id', 'id_org', 'id_abonent', 'id_posl'], 'integer'],
             [['period'], 'safe'],
-            [['dolg', 'nach', 'subs', 'opl', 'uder', 'sal'], 'number'],
+            [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal'], 'number'],
         ];
     }
 
@@ -69,7 +69,7 @@ class SearchUtObor extends UtObor
             'nach' => $this->nach,
             'subs' => $this->subs,
             'opl' => $this->opl,
-            'uder' => $this->uder,
+            'pere' => $this->pere,
             'sal' => $this->sal,
         ]);
 

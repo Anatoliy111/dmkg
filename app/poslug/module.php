@@ -21,6 +21,12 @@ class module extends \yii\base\Module
 
         parent::init();
 
+        if(Yii::$app->user->isGuest){
+            Yii::$app->user->setReturnUrl(Yii::$app->request->url);
+            Yii::$app->getResponse()->redirect(['/admin/sign/in'])->send();
+            return false;
+        }
+
 		// initialize the module with the configuration loaded from config.php
 //		\Yii::configure($this, require(__DIR__ . '/config.php'));
 //

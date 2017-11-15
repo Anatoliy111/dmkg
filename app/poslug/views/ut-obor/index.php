@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'nach',
             // 'subs',
             // 'opl',
-            // 'uder',
+            // 'pere',
             // 'sal',
 
             ['class' => 'yii\grid\ActionColumn'],

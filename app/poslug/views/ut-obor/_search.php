@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'opl') ?>
 
-    <?php // echo $form->field($model, 'uder') ?>
+    <?php // echo $form->field($model, 'pere') ?>
 
     <?php // echo $form->field($model, 'sal') ?>
 

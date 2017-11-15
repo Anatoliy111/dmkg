@@ -61,22 +61,22 @@ class UtNarah extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'id_org' => Yii::t('app', 'Id Org'),
-            'period' => Yii::t('app', 'Period'),
-            'id_abonent' => Yii::t('app', 'Id Abonent'),
-            'id_posl' => Yii::t('app', 'Id Posl'),
-            'id_tipposl' => Yii::t('app', 'Id Tipposl'),
-            'tipposl' => Yii::t('app', 'Tipposl'),
-            'id_vidlgot' => Yii::t('app', 'Id Vidlgot'),
-            'lgot' => Yii::t('app', 'Lgot'),
-            'tarif' => Yii::t('app', 'Tarif'),
-            'id_vidpokaz' => Yii::t('app', 'Id Vidpokaz'),
-            'vidpokaz' => Yii::t('app', 'Vidpokaz'),
-            'pokaznik' => Yii::t('app', 'Pokaznik'),
-            'ed_izm' => Yii::t('app', 'Ed Izm'),
-            'nnorma' => Yii::t('app', 'Nnorma'),
-            'sum' => Yii::t('app', 'Sum'),
+            'id' => Yii::t('easyii', 'ID'),
+            'id_org' => Yii::t('easyii', 'Id Org'),
+            'period' => Yii::t('easyii', 'Period'),
+            'id_abonent' => Yii::t('easyii', 'Id Abonent'),
+            'id_posl' => Yii::t('easyii', 'Id Posl'),
+            'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
+            'tipposl' => Yii::t('easyii', 'Tipposl'),
+            'id_vidlgot' => Yii::t('easyii', 'Id Vidlgot'),
+            'lgot' => Yii::t('easyii', 'Lgot'),
+            'tarif' => Yii::t('easyii', 'Tarif'),
+            'id_vidpokaz' => Yii::t('easyii', 'Id Vidpokaz'),
+            'vidpokaz' => Yii::t('easyii', 'Vidpokaz'),
+            'pokaznik' => Yii::t('easyii', 'Pokaznik'),
+            'ed_izm' => Yii::t('easyii', 'Ed Izm'),
+            'nnorma' => Yii::t('easyii', 'Nnorma'),
+            'sum' => Yii::t('easyii', 'Sum'),
         ];
     }
 
@@ -94,5 +94,10 @@ class UtNarah extends \yii\db\ActiveRecord
     public function getAbonent()
     {
         return $this->hasOne(UtAbonent::className(), ['id' => 'id_abonent']);
+    }
+
+    public function getTipposl()
+    {
+        return $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
     }
 }

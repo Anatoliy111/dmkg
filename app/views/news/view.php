@@ -94,4 +94,3 @@ $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['news/index']];
 
 
 
-<!--<div class="small-muted">Views: --><?//= $news->views?><!--</div>-->

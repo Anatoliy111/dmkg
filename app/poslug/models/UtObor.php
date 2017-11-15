@@ -17,7 +17,7 @@ use Yii;
  * @property double $nach
  * @property double $subs
  * @property double $opl
- * @property double $uder
+ * @property double $pere
  * @property double $sal
  *
  * @property UtOrg $org
@@ -44,7 +44,7 @@ class UtObor extends \yii\db\ActiveRecord
             [['id_org', 'id_abonent', 'id_posl'], 'integer'],
             [['period'], 'safe'],
 			[['tipposl'], 'string', 'max' => 64],
-            [['dolg', 'nach', 'subs', 'opl', 'uder', 'sal'], 'number'],
+            [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_posl'], 'exist', 'skipOnError' => true, 'targetClass' => UtPosl::className(), 'targetAttribute' => ['id_posl' => 'id']],
@@ -62,12 +62,12 @@ class UtObor extends \yii\db\ActiveRecord
             'period' => Yii::t('easyii', 'Period'),
             'id_abonent' => Yii::t('easyii', 'Id Abonent'),
             'id_posl' => Yii::t('easyii', 'Id Posl'),
-			'tipposl' => Yii::t('app', 'Tipposl'),
+			'tipposl' => Yii::t('easyii', 'Tipposl'),
             'dolg' => Yii::t('easyii', 'Dolg'),
             'nach' => Yii::t('easyii', 'Nach'),
             'subs' => Yii::t('easyii', 'Subs'),
             'opl' => Yii::t('easyii', 'Opl'),
-            'uder' => Yii::t('easyii', 'Uder'),
+            'pere' => Yii::t('easyii', 'Pere'),
             'sal' => Yii::t('easyii', 'Sal'),
         ];
     }

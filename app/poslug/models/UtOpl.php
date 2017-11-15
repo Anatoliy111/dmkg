@@ -62,7 +62,7 @@ class UtOpl extends \yii\db\ActiveRecord
             'id_abonent' => Yii::t('easyii', 'Id Abonent'),
             'id_posl' => Yii::t('easyii', 'Id Posl'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
-			'tipposl' => Yii::t('app', 'Tipposl'),
+			'tipposl' => Yii::t('easyii', 'Tipposl'),
             'dt' => Yii::t('easyii', 'Dt'),
             'pach' => Yii::t('easyii', 'Pach'),
             'sum' => Yii::t('easyii', 'Sum'),

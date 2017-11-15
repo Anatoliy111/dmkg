@@ -32,21 +32,45 @@
 
 				[
 						'attribute' => 'period',
+					    'label' => 'Період',
 						'format' => ['date', 'php:MY'],
 				],
-				[
-					'attribute' => 'id_tipposl',
-					'value' => 'tipposl.poslug',
-		    	],
-				'id_vidlgot',
+//								[
+//									'attribute' => 'tipposl',
+//									'label' => 'Послуга',
+//								],
+//								[
+//									'attribute' => 'lgot',
+//									'label' => 'Льгота',
+//								],
+//								[
+//									'attribute' => 'tarif',
+//									'label' => 'Тариф',
+//								],
+//								[
+//									'attribute' => 'vidpokaz',
+//									'label' => 'Вид показника',
+//								],
+//								[
+//									'attribute' => 'pokaznik',
+//									'label' => 'Показник',
+//								],
+//								[
+//									'attribute' => 'ed_izm',
+//									'label' => 'Од. вим',
+//								],
+//								[
+//									'attribute' => 'sum',
+//									'label' => 'Сумма',
+//								],
+//				'period',
+				'tipposl',
+				'lgot',
 				'tarif',
-				[
-						'attribute' => 'id_vidpokaz',
-						'value' => 'vidpokaz.vid_pokaz',
-				],
+                'vidpokaz',
 				'pokaznik',
 				'ed_izm',
-				'nnorma',
+//				'nnorma',
 				'sum',
 //				['class' => 'yii\grid\ActionColumn'],
 				],
