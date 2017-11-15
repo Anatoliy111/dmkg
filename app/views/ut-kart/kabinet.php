@@ -26,9 +26,13 @@ $this->title = $model->fio;
 //			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
 //			'active'=>true
 //		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
+//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
-			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги та тарифи',
+			'content'=>$this->render('poslugview', ['model' => $model,'abonents'=>$abonents[$org->id_org],'dataProvider' => $dppos[$org->id_org]]),
 		],
 		[
 			'label'=>'<i class="glyphicon glyphicon-flag"></i> Нарахування',
@@ -44,9 +48,13 @@ $this->title = $model->fio;
 ////			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 //		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-transfer"></i> Зведена відомість',
+			'label'=>'<i class="glyphicon glyphicon-retweet"></i> Зведена відомість',
 			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-book"></i> Архів ',
+//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
 
 	];
 
@@ -55,44 +63,52 @@ $this->title = $model->fio;
 ?>
 <div class="ut-kart">
 	<div class="well well-large container">
-		<div class="col-xs-8">
+		<div class="col-xs-12">
 			<h2>Кабінет споживача</h2>
 
 		</div>
-		<div class="col-xs-4">
-			<?php
-
-				$form = ActiveForm::begin();
-
-				echo Select2::widget([
-					'model' => $model,
-					'attribute' => 'MonthYear',
-					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
-					'hideSearch' => true,
-//					'showToggleAll' => true,
-					'addon' => [
-						'append' => [
-							'content' => Html::submitButton('Go', ['class'=>'btn btn-primary']),
-							'asButton' => true
-						],
-					],
-					'pluginOptions' => [
-						'allowClear' => true,
-						'format' => ['date', 'php:MY'],
-					],
-				]);
-
-				ActiveForm::end();
-			?>
-
-
-		</div>
+<!--		<div class="col-xs-4">-->
+<!--			--><?php
+//
+//				$form = ActiveForm::begin();
+//
+//				echo Select2::widget([
+//					'model' => $model,
+//					'attribute' => 'MonthYear',
+//					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
+//					'hideSearch' => true,
+////					'showToggleAll' => true,
+//					'addon' => [
+//						'append' => [
+//							'content' => Html::submitButton('Go', ['class'=>'btn btn-primary']),
+//							'asButton' => true
+//						],
+//					],
+//					'pluginOptions' => [
+//						'allowClear' => true,
+//						'format' => ['date', 'php:MY'],
+//					],
+//				]);
+//
+//				ActiveForm::end();
+//			?>
+<!---->
+<!---->
+<!--		</div>-->
 
 			<div class="col-sm-12">
 <!--				<h4>--><?//=$model->fio?><!--</h4>-->
 						<?=
 							DetailView::widget([
 								'model' => $model,
+								'hover'=>true,
+//								'condensed'=>true,
+								'striped'=>true,
+								'mode'=>DetailView::MODE_VIEW,
+//								'panel'=>[
+//									'heading'=>'Book # ' . $model->id,
+//									'type'=>DetailView::TYPE_INFO,
+//								],
 								'attributes' => [
 
 									'fio',
@@ -104,6 +120,8 @@ $this->title = $model->fio;
 										'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
 									],
 								],
+								'hAlign'=>DetailView::ALIGN_RIGHT ,
+								'vAlign'=>DetailView::ALIGN_TOP  ,
 
 							]) ?>
 			</div>

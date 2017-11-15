@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * UtOpltController implements the CRUD actions for UtOpl model.
  */
-class UtOpltController extends Controller
+class UtOplController extends Controller
 {
     /**
      * @inheritdoc

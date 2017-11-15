@@ -78,4 +78,9 @@ class UtTarifab extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtTarif::className(), ['id' => 'id_tarif']);
     }
+
+//	public function getTipposl()
+//	{
+//		return $this->hasOne(UtTipposl::className(), ['id' => $this->getTarif()->id_tipposl]);
+//	}
 }

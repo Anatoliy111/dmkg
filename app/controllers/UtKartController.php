@@ -8,6 +8,7 @@ use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
 use app\poslug\models\UtOrg;
 use app\poslug\models\UtPosl;
+use app\poslug\models\UtTarifab;
 use Yii;
 use app\models\UtKart;
 use app\models\SearchUtKart;
@@ -336,6 +337,19 @@ class UtKartController extends Controller
 
 				$dppos[$org->id_org][$abon->id] = $dataProvider4;
 
+				//-----------------------------------------------------------------------------
+				$tar = UtTarifab::find();
+				$tar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+				$tar->joinWith('tarif');
+				$tar->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
+
+
+				$dataProvider6 = new ActiveDataProvider([
+					'query' => $tar,
+				]);
+				$tt = ArrayHelper::toArray($tar);
+				$dptar[$org->id_org][$abon->id] = $dataProvider6;
+
 			}
 		}
 //		$dpinfo = new ActiveDataProvider([
@@ -350,6 +364,7 @@ class UtKartController extends Controller
 			'dpopl' => $dpopl,
 			'dpnar' => $dpnar,
 			'dppos' => $dppos,
+			'dptar' => $dptar,
 			'orgs' => $orgs,
 		]);
 	}

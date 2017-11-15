@@ -103,9 +103,9 @@ class UtKart extends \yii\db\ActiveRecord
 
     public function period()
     {
-        $sql = 'Select id_org,period from ut_obor group by id_org,period order by id_org,period ';
-        $periodd = UtObor::findbysql($sql)->all();
-
+//        $sql = 'Select id_org,period from ut_obor group by id_org,period order by id_org,period ';
+//        $periodd1 = UtObor::findbysql($sql)->all();
+		$periodd  = UtObor::find()->select('id_org','period')->groupBy('id_org','period')->orderBy('id_org','period')->all();
         return $periodd;
     }
 
@@ -113,7 +113,7 @@ class UtKart extends \yii\db\ActiveRecord
     {
 //        $sql = 'Select id_org,period from ut_obor group by id_org,period order by id_org,period ';
 //        $lastperiod = UtObor::find()->all();
-        $lastperiod = UtObor::find()->select(['period'])->one();
+        $lastperiod = UtObor::find()->max('period')->one();
 //        $lastperiod = UtObor::find()->select(['period, id_org'])->distinct();
 //        $lastperiod = ArrayHelper::map(UtUlica::find()->asArray()->all(), 'ID', 'ul'),
         return $lastperiod;

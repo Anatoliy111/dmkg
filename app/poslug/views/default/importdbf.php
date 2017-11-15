@@ -629,6 +629,7 @@ function importNTARIF($dbf,$i)
 	$obor->period = $_SESSION['PeriodBase'];
 	$obor->id_abonent = $findposl->id_abonent;
 	$obor->id_posl = $findposl->id;
+	$obor->tipposl = $findposl->getTipposl()->asArray()->one()['poslug'];
 	$obor->dolg = $fields['DOLG'];
 	$obor->nach = $fields['NACH'];
 	$obor->subs = $fields['SUBS'];

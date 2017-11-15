@@ -1,6 +1,12 @@
 <?php
+/**
+ *
+ * @var \app\models\UtKart $model
+ * @var Array access expression $abonents
+ * @var Array access expression $dataProvider
+ */
 
-
+	use app\poslug\models\UtTipposl;
 	use kartik\grid\GridView;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
@@ -8,7 +14,7 @@
 
 	//	use yii\bootstrap\
 
-/* @var $this yii\web\View */
+	/* @var $this yii\web\View */
 
 
 ?>
@@ -23,20 +29,30 @@
 	<?php
 		foreach ($abonents as $abon) {
 
-//
 			echo GridView::widget([
-				'dataProvider' =>  $dataProvider[$abon->id],
+				'dataProvider' =>  $dP[$abon->id],
 
-							'columns' => [
-				['class' => 'yii\grid\SerialColumn'],
+				'columns' => [
+					['class' => 'yii\grid\SerialColumn'],
 
-//				'id_tipposl',
-		     	[
-		     		'attribute' => 'id_tipposl',
-		     		'value' => 'tipposl.poslug',
-		     	],
-				'n_dog',
-				'date_dog',
+					'id',
+					'id_tarif',
+					[
+						'attribute' => 'tarif.id_tipposl',
+						'label' => 'Послуга',
+						'value' => 'tarif.id_tipposl',
+//						'value' =>ArrayHelper::map(UtTipposl::find()->asArray()->all(),'id','poslug'),
+					],
+					[
+						'label' => 'Назва тарифу',
+						'value' => 'tarif.name',
+					],
+					[
+						'label' => 'Тариф',
+						'value' => 'tarif.tarif1',
+					],
+//					'n_dog',
+//					'date_dog',
 //				'nnorma',
 //				 'activ',
 //								[
@@ -44,11 +60,11 @@
 //									'class' => '\kartik\grid\BooleanColumn',
 //								],
 
-				// 'note:ntext',
-				// 'ur_fiz',
-				// 'id_dom',
-				// 'privat',
-				// 'id_oldkart',
+					// 'note:ntext',
+					// 'ur_fiz',
+					// 'id_dom',
+					// 'privat',
+					// 'id_oldkart',
 
 //				['class' => 'yii\grid\ActionColumn'],
 				],
@@ -104,6 +120,8 @@
 
 
 
+
+
 	?>
 
 
@@ -111,8 +129,3 @@
 
 
 </div>
-
-
-
-
-
