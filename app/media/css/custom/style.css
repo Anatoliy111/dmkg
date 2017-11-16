@@ -809,6 +809,11 @@ header .bottom_header .address .top-info .icon-box span:after {
     text-align: center;
 }
 
+.main .ut-kart a {
+    margin-top: 18px;
+    text-align: center;
+}
+
 .main .ut-kart h2:before {
     content: '';
     width:245px;

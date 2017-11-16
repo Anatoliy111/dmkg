@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\poslug\models\UtAbonent;
+use app\models\UtAuth;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
@@ -12,6 +13,7 @@ use app\poslug\models\UtTarifab;
 use Yii;
 use app\models\UtKart;
 use app\models\SearchUtKart;
+use yii\bootstrap\Alert;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -62,6 +64,10 @@ class UtKartController extends Controller
     public function actionIndex()
     {
 		$session = Yii::$app->session;
+		if ($session['model']<>null)
+		{
+			return $this->redirect(['kabinet', 'id' => $session['model']->id]);
+		}
         $searchModel = new SearchUtKart();
 		$findmodel = null;
 		$searchModel->scenario = 'adres';
@@ -74,29 +80,14 @@ class UtKartController extends Controller
 			$searchModel->scenario = 'password';
 			$findmodel = $searchModel->searchPass(Yii::$app->request->queryParams,$dataProvider);
 		}
-//		$dataProvider2 = $searchModel->searchPass();
-//
-//		$session['period'] = ArrayHelper::getValue(UtObor::find()->orderBy(['period'=>SORT_DESC])->one(), 'period');
-//		if ($dataProvider->getTotalCount() <> 0)
-//		{
-//			$session['findadres'] = Yii::$app->request->queryParams;
-//		}
-//        if ($dataProvider2->getTotalCount() == 0)
-//		{
-//			return $this->render('index', [
-//				'searchModel' => $searchModel,
-//				'dataProvider' => $dataProvider,
-//			]);
-//		}
-//		else
-//		{
-//			return $this->render('kabinet', ['id'=>$dataProvider2->getModels()[0]->id]);
+
 //		}
 		if ($findmodel <> null and $findmodel <> 'bad'){
 
 //			return $this->render('kabinet', ['id'=>$findmodel->id]);
 //			$this->actionKabinet($findmodel->id);
 
+			$session['model'] = $findmodel;
 			return $this->redirect(['kabinet', 'id' => $findmodel->id]);
 		}
 
@@ -109,6 +100,42 @@ class UtKartController extends Controller
 
 
     }
+
+	public function actionReestr()
+	{
+
+		$searchModel = new SearchUtKart();
+		$searchModel->scenario = 'adres';
+//		$searchModel->scenario = isset($_REQUEST['SearchUtKart']['enterpass']) ? $searchModel->scenario = 'password' : $searchModel->scenario = 'adres';
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//		if ($dataProvider->className()){
+//
+//		}
+		if ($dataProvider->getTotalCount() <> 0){
+			$searchModel->scenario = 'password';
+			$findmodel = $searchModel->searchPass(Yii::$app->request->queryParams,$dataProvider);
+		}
+
+//		}
+
+
+
+		return $this->render('index', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+
+		]);
+
+
+	}
+
+
+	public function actionLogout()
+	{
+		$session = Yii::$app->session;
+		$session->destroy();
+		return $this->redirect(['ut-kart/index']);
+	}
 
     /**
      * Displays a single UtKart model.
@@ -289,11 +316,17 @@ class UtKartController extends Controller
 
 		$model = $this->findModel($id);
 		$session = Yii::$app->session;
+		if ($session['model']==null || $session['model']<>$model )
+		{
+			return $this->redirect(['ut-kart/index']);
+		}
+
 //		$session['period'] = UtObor::find()->max('period');
 //		$session['period'] = $model->period();
 //		$session['period'] = $model->lastperiod();
 //		$model->MonthYear = $_SESSION['period'];
 //		$model->MonthYear =  $session['period'];
+
 		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
 
 		$orgs = UtAbonent::find()->with('org')->where(['id_kart' => $model->id])->groupBy('id_org')->all();
@@ -354,6 +387,18 @@ class UtKartController extends Controller
 				$tt = ArrayHelper::toArray($tar);
 				$dptar[$org->id_org][$abon->id] = $dataProvider6;
 
+				$inf = UtTarifab::find();
+				$inf->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+				$inf->joinWith('tarif');
+				$inf->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
+
+
+				$dataProvider7 = new ActiveDataProvider([
+					'query' => $tar,
+				]);
+				$tt = ArrayHelper::toArray($inf);
+				$dptar[$org->id_org][$abon->id] = $dataProvider7;
+
 			}
 		}
 //		$dpinfo = new ActiveDataProvider([
@@ -363,11 +408,12 @@ class UtKartController extends Controller
 		return $this->render('kabinet', [
 			'model' => $model,
 			'abonents' => $abonents,
-			'dpinfo' => $dpinfo,
+//			'dpinfo' => $dpinfo,
 			'dpobor' => $dpobor,
 			'dpopl' => $dpopl,
 			'dpnar' => $dpnar,
 			'dppos' => $dppos,
+			'dptar' => $dptar,
 			'dptar' => $dptar,
 			'orgs' => $orgs,
 		]);
@@ -404,7 +450,13 @@ class UtKartController extends Controller
     protected function findModel($id)
     {
         if (($model = UtKart::findOne($id)) !== null) {
-            return $model;
+			$session = Yii::$app->session;
+			if ($session['model']<>null && $session['model']<>$model )
+			{
+				return $session['model'];
+			}
+			else
+                return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
@@ -416,6 +468,39 @@ class UtKartController extends Controller
 			return $model;
 		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+	}
+
+	public function actionAuth()
+	{
+		$model = new UtAuth();
+
+		if ($model->load(Yii::$app->request->post()))  {
+			$Abon = UtAbonent::findOne(['schet' => $model->schet]);
+			if ($Abon<> null)
+			{
+			$model->id_kart = $Abon->id_kart;
+			$model->passw = $model->pass1;
+			$model->date =	date('Y-m-d');
+			$model->save();
+
+
+//				echo 'Заявку подано !!!';
+
+				Yii::$app->session->AddFlash('alert-info', "Заявка на реєстрацію подана. Буде оброблена в період 1-3 дні ");
+			}
+			else
+			{
+				Yii::$app->session->AddFlash('alert-danger', "Рахунок незнайдено!!!");
+//				throw new NotFoundHttpException('tttThe requested page does not exist.');
+//				echo 'По вашій адресі абонентів не знайдено !!!';
+			}
+			return $this->redirect(['index']);
+		}
+		 else {
+			return $this->render('auth', [
+				'model' => $model,
+			]);
 		}
 	}
 

@@ -1,6 +1,7 @@
 <?php
 
 	use app\poslug\models\UtUlica;
+	use yii\bootstrap\Alert;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
 	use kartik\select2\Select2;
@@ -21,8 +22,13 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-	<div class="row">
+	<div class="col-xm-3">
+	<?= Html::a('Реєстація', ['auth'], ['class' => 'btn btn-primary']) ?>
 
+		</div>
+	<br>
+	<div class="row">
+<!--		--><?//= Yii::$app->session->['success'] ?>
 		<div class="col-sm-3">
 			<?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
 				'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),
@@ -49,7 +55,10 @@ use yii\widgets\ActiveForm;
 			<?= $form->field($model, 'kv') ?>
 
 		</div>
+
+
 	</div>
+
 
 	<?php
 		if ($dataProvider->getTotalCount() <> 0) {
@@ -74,5 +83,20 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+	<?php foreach(Yii::$app->session->getAllFlashes() as $type => $messages):
+		 foreach($messages as $message):
+
+	Alert::begin([
+	'options' => [
+	'class' => $type, 'style' => 'float:bottom; margin-top:50px',
+	],
+	]);
+
+	echo $message;
+
+	Alert::end();
+ endforeach;
+	endforeach ?>
 
 </div>

@@ -63,10 +63,18 @@ $this->title = $model->fio;
 ?>
 <div class="ut-kart">
 	<div class="well well-large container">
-		<div class="col-xs-12">
-			<h2>Кабінет споживача</h2>
+		<div class="col-xs-1">
+
+			<?= Html::a('Вихід', ['ut-kart/logout'], ['class' => 'btn btn-primary']) ?>
 
 		</div>
+		<div class="col-xs-6">
+			<h2>Кабінет споживача</h2>
+
+
+		</div>
+
+
 <!--		<div class="col-xs-4">-->
 <!--			--><?php
 //
