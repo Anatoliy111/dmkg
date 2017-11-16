@@ -477,21 +477,35 @@ class UtKartController extends Controller
 
 		if ($model->load(Yii::$app->request->post()))  {
 			$Abon = UtAbonent::findOne(['schet' => $model->schet]);
-			if ($Abon<> null)
+
+			$email = UtKart::find()->select('email')->where(['email' => $model->email])->all();
+
+			if ($Abon <> null && $email == null)
 			{
-			$model->id_kart = $Abon->id_kart;
-			$model->passw = $model->pass1;
-			$model->date =	date('Y-m-d');
-			$model->save();
+
+				$Kart = $Abon->getKart()->one();
+				if ($Kart->status<>1)
+				{
+					$model->id_kart = $Abon->id_kart;
+					$model->passw = $model->pass1;
+					$model->date =	date('Y-m-d');
+					$model->save();
+					Yii::$app->session->AddFlash('alert-info', "Заявка на реєстрацію подана. Буде оброблена в період 1-3 дні ");
+				}
+				else
+				{
+						Yii::$app->session->AddFlash('alert-danger', "Абонент з рахунком $Abon->schet вже зареестрований");
+				}
 
 
-//				echo 'Заявку подано !!!';
-
-				Yii::$app->session->AddFlash('alert-info', "Заявка на реєстрацію подана. Буде оброблена в період 1-3 дні ");
 			}
 			else
 			{
-				Yii::$app->session->AddFlash('alert-danger', "Рахунок незнайдено!!!");
+				if ($Abon == null)
+				   Yii::$app->session->AddFlash('alert-danger', "Рахунок незнайдено!!!");
+				if ($email <> null)
+					Yii::$app->session->AddFlash('alert-danger', "$model->email вже зареєстрований в системі!!!");
+
 //				throw new NotFoundHttpException('tttThe requested page does not exist.');
 //				echo 'По вашій адресі абонентів не знайдено !!!';
 			}

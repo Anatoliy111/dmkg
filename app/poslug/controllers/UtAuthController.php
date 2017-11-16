@@ -2,9 +2,13 @@
 
 namespace app\poslug\controllers;
 
+use app\poslug\models\SearchUtAuth;
+use app\poslug\models\UtAbonent;
+use app\poslug\models\UtKart;
 use Yii;
 use app\poslug\models\UtAuth;
-use app\poslug\SearchUtAuth;
+
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,10 +55,42 @@ class UtAuthController extends Controller
      */
     public function actionView($id)
     {
+		$auth = $this->findModel($id);
+		$query = UtAbonent::find();//->where(['id_kart' => $kart->id])->orderBy('id_org')->all();
+		$query->where(['id_kart' => $auth->id_kart])->orderBy('id_org');
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
+		]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $auth,
+			'dataProvider' =>$dataProvider,
         ]);
     }
+
+	public function actionActiv($id)
+	{
+		$auth = $this->findModel($id);
+		$Kart = UtKart::findOne($auth->id_kart);
+		if ($Kart != null)
+		{
+			$Kart->status = 1;
+			$Kart->pass = md5($auth->passw);
+			$Kart->save();
+			$auth->status = 1;
+			$auth->save();
+		}
+		return $this->redirect(['index']);
+	}
+
+	public function actionCansel($id)
+	{
+		$auth = $this->findModel($id);
+		$auth->status = 2;
+		$auth->save();
+
+		return $this->redirect(['index']);
+
+	}
 
     /**
      * Creates a new UtAuth model.

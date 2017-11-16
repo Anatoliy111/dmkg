@@ -23,7 +23,9 @@ use Yii;
  * @property string $telef телефон
  * @property int id_rabota робота
  * @property int $id_dom многокв дом
+ * @property string $email
  * @property int $privat приватизация
+ * @property string $status
  *
  * @property UtAbonent[] $utAbonents
  * @property UtUlica $ulica
@@ -50,15 +52,16 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return [
             [['name_f', 'fio', 'id_ulica'], 'required'],
-            [['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota'], 'integer'],
+            [['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota','status'], 'integer'],
             [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o'], 'string', 'max' => 30],
             [['dom'], 'string', 'max' => 4],
 			[['kv'], 'string', 'max' => 5],
             [['korp'], 'string', 'max' => 1],
             [['pass1'], 'string', 'max' => 64],
-			[['pass2'], 'string', 'max' => 64],
-			[['fio'], 'string', 'max' => 64],
+			[['pass2','pass'], 'string', 'max' => 64],
+			['email', 'email'],
+			[['fio','email'], 'string', 'max' => 64],
             [['telef'], 'string', 'max' => 20],
 			[['idcod'], 'string', 'max' => 25],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
@@ -89,9 +92,12 @@ class UtKart extends \yii\db\ActiveRecord
             'ur_fiz' => Yii::t('easyii', 'Ur Fiz'),
             'pass1' => Yii::t('easyii', 'Pass1'),
 			'pass2' => Yii::t('easyii', 'Pass2'),
+			'pass' => Yii::t('easyii', 'Pass'),
+			'email' => Yii::t('easyii', 'Email'),
             'telef' => Yii::t('easyii', 'Telef'),
 			'id_rabota' => Yii::t('easyii', 'Rabota'),
 			'id_dom' => Yii::t('easyii', 'Id Dom'),
+			'status' => Yii::t('easyii', 'Status'),
 			'privat' => Yii::t('easyii', 'Privat'),
         ];
     }

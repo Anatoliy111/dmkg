@@ -59,6 +59,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 						'items' => [
 							['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
 							['label' => 'Рахунки', 'url' => '/poslug/ut-abonent/index'],
+							['label' => 'Заявки на авторизацію', 'url' => '/poslug/ut-auth/index'],
 							['label' => 'Вулиці', 'url' => '/poslug/ut-ulica/index'],
 							['label' => 'Багатокв. будинки', 'url' => '/poslug/ut-dom/index'],
 							['label' => 'Місце роботи', 'url' => '/poslug/ut-rabota/index'],

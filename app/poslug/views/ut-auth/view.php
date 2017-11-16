@@ -1,6 +1,7 @@
 <?php
 
-use yii\helpers\Html;
+	use kartik\grid\GridView;
+	use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -28,17 +29,59 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'date',
-            'id_kart',
             'fio_p',
             'fio_i',
             'fio_b',
-            'passw',
             'telef',
             'email:email',
             'status',
         ],
     ]) ?>
+
+	<?=
+		GridView::widget([
+			'dataProvider' => $dataProvider,
+			'columns' => [
+				['class' => 'yii\grid\SerialColumn'],
+
+				[
+					'label' => 'Організація',
+					'value' => 'org.naim',
+				],
+				'schet',
+//			'fio',
+
+				[
+					'attribute' => 'note:ntext',
+					'label'=>'Нотатки',
+					'value' => 'note',
+
+				],
+				// 'ur_fiz',
+				// 'id_dom',
+
+//			[
+//				'attribute'=>'privat',
+//				'label'=>'Приватизація',
+//				'format'=>'raw',
+//				'value'=>$dataProvider->privat==0 ? '<span class="label label-success">Так</span>' : '<span class="label label-danger">Ні</span>',
+////				'type'=>DetailView::TYPE_INFO,
+////				'widgetOptions' => [
+////					'pluginOptions' => [
+////						'0' => 'Yes',
+////						'1' => 'No',
+////					]
+////				],
+//				'valueColOptions'=>['style'=>'width:30%']
+//			],
+				// 'id_oldkart',
+
+//			['class' => 'yii\grid\ActionColumn'],
+			],
+		]); ?>
+
+	<?= Html::a('Зареєструвати', ['activ', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+	<?= Html::a('Відхилити',  ['cansel', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
 
 </div>

@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+	use kartik\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\poslug\SearchUtAuth */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('easyii', 'Ut Auths');
+$this->title = Yii::t('easyii', 'Заявки на реєстрацію');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ut-auth-index">
@@ -24,21 +24,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+			['class' => '\kartik\grid\SerialColumn'],
 
-            'id',
             'date',
-            'id_kart',
             'fio_p',
             'fio_i',
-            // 'fio_b',
+             'fio_b',
             // 'passw',
             // 'telef',
-            // 'email:email',
-            // 'status',
+             'email:email',
+             'status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+			[
+				'class' => '\kartik\grid\ActionColumn',
+				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
+				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove"></i>']
+			]
         ],
+		'pjax'=>true,
+		'pjaxSettings'=>[
+			'neverTimeout'=>true,
+//			'beforeGrid'=>'My fancy content before.',
+//			'afterGrid'=>'My fancy content after.',
+		],
+
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
