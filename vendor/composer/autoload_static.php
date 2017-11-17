@@ -32,6 +32,7 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         'k' => 
         array (
             'kartik\\tabs\\' => 12,
+            'kartik\\switchinput\\' => 19,
             'kartik\\sortable\\' => 16,
             'kartik\\select2\\' => 15,
             'kartik\\plugins\\tabs\\' => 20,
@@ -116,6 +117,10 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         'kartik\\tabs\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-tabs-x',
+        ),
+        'kartik\\switchinput\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-switchinput',
         ),
         'kartik\\sortable\\' => 
         array (

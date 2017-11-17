@@ -18,6 +18,7 @@ return array(
     'phpnt\\pace\\' => array($vendorDir . '/phpnt/yii2-pace'),
     'phpnt\\chartJS\\' => array($vendorDir . '/phpnt/yii2-chartjs'),
     'kartik\\tabs\\' => array($vendorDir . '/kartik-v/yii2-tabs-x'),
+    'kartik\\switchinput\\' => array($vendorDir . '/kartik-v/yii2-widget-switchinput'),
     'kartik\\sortable\\' => array($vendorDir . '/kartik-v/yii2-sortable'),
     'kartik\\select2\\' => array($vendorDir . '/kartik-v/yii2-widget-select2'),
     'kartik\\plugins\\tabs\\' => array($vendorDir . '/kartik-v/bootstrap-tabs-x'),

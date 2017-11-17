@@ -68,9 +68,15 @@ class UtKartController extends Controller
 			if ($kart->validate())
 			{
 				if (empty($kart->pass2))
+				{
 					$kart->pass = "";
+					$kart->status = 0;
+				}
 				else
+				{
 				    $kart->pass =  md5($kart->id.$kart->pass2);
+					$kart->status = 1;
+				}
 				$kart->save();
 				if (!empty($kart->pass))
 				{
@@ -95,12 +101,18 @@ class UtKartController extends Controller
 				}
 			}
 //			return $this->redirect(['view', 'id' => $kart->id]);
+//			return $this->renderAjax('view', ['model' => $kart,'dataProvider' =>$dataProvider]);
 		}
 
 		return $this->render('view', [
 				'model' => $kart,
 				'dataProvider' =>$dataProvider,
 			]);
+
+//		return $this->renderAjax('view',[
+//			'model' => $kart,
+//				'dataProvider' =>$dataProvider,
+//			]);
 
 
 

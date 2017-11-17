@@ -51,6 +51,7 @@ class UtKart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+//			['status', 'validatePass','skipOnEmpty' => false],
             [['name_f', 'fio', 'id_ulica'], 'required'],
             [['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota','status'], 'integer'],
             [['name_f'], 'string', 'max' => 50],
@@ -70,8 +71,52 @@ class UtKart extends \yii\db\ActiveRecord
 			[['pass1'], 'string', 'min' => 5],
 			[['pass2'], 'string', 'min' => 5],
 			['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
+//			['pass1', 'compare',  'compareAttribute' => 'pass2', 'message' => 'Паролі не співпадають !!!'],
+//			['pass1', 'required', 'when' => function($this) { return $this->status == '1'; }],
+//			['pass1', 'required', 'when' => function ($this) {
+//				return $this->status == '1';
+//			}, 'whenClient' => "function (attribute, value) {
+//        return $('#status').val() == '1';
+//    }"],
+//			['status', 'required', 'when' => function ($model) {
+//				return $model->pass1 == '';
+//			}, 'whenClient' => 'function (attribute, value) {
+//        return $("#pass1").val() == "";
+//    }', 'message' => 'Заполните field 1 либо field 2'],
+
+//			['pass1', 'required', 'when' => function($model) {
+//				return $model->status == 1;
+//			}],
+//			['pass2', 'required', 'when' => function($model) {
+//				return $model->status == 1;
+//			}],
+//			['pass1', function ($attribute, $params) {
+//				if (empty($this->$attribute)) {
+//					$this->addError($attribute, 'Токен должен содержать буквы или цифры.');
+//				}
+//			} ],
+//			['token', function ($attribute, $params) {
+//				if (!ctype_alnum($this->$attribute)) {
+//					$this->addError($attribute, 'Токен должен содержать буквы или цифры.');
+//				}
+//			}],
+
         ];
     }
+
+	public function validatePass($attribute, $params)
+	{
+		if ($this->status=='1') {
+			$this->pass1= "1";
+			$this->pass2= "1";
+		}
+		else
+		{
+			$this->pass1= "";
+			$this->pass2= "";
+		}
+
+	}
 
     /**
      * @inheritdoc
@@ -147,6 +192,8 @@ class UtKart extends \yii\db\ActiveRecord
 	{
 		return $this->hasOne(UtDom::className(), ['id' => 'id_dom']);
 	}
+
+
 
 
 }

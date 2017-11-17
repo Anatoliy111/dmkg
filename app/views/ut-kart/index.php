@@ -21,7 +21,12 @@ use yii\grid\GridView;
 	<div class="well well-large">
 			<?php  echo $this->render('_search', ['model' => $searchModel, 'dataProvider' => $dataProvider]);
 				?>
+		<div class="text">
+			<p> * Для отримання коду доступу, треба з паспортом з'явитись в КП "ДОЛИНСЬКИЙ МІСЬККОМУНГОСП" вул. Нова 80-А, в кабінет №2.</p>
+		</div>
 	</div>
+
+
 
 	<div class="row">
 		<?php

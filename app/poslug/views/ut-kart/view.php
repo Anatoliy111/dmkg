@@ -1,15 +1,19 @@
 <?php
 
-	use kartik\detail\DetailView;
+
 	use kartik\dialog\Dialog;
+
 	use kartik\form\ActiveForm;
 	use kartik\grid\GridView;
+
 	use yii\bootstrap\Modal;
 	use yii\helpers\Html;
 	use kartik\select2\Select2;
+	use \kartik\switchinput\SwitchInput;
+	use yii\widgets\DetailView;
 
 
-/* @var $this yii\web\View */
+	/* @var $this yii\web\View */
 /* @var $model app\poslug\models\UtKart */
 
 $this->title = $model->fio;
@@ -27,9 +31,23 @@ Modal::begin([
 <?php
 //	$model->scenario = 'password';
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin([
+	'id' => 'pass-form',
+	'options' => [
+		'data-pjax' => '1'
+	],
+//	'enableAjaxValidation' => true,
+
+]); ?>
 
 
+    <?= $form->field($model, 'status')->widget(SwitchInput::classname(), [    'pluginOptions'=>[
+		'size' => 'large',
+		'onText'=>'Авторизований',
+		'offText'=>'Не авторизований',
+		'onColor' => 'success',
+		'offColor' => 'danger',
+	]]); ?>
 
 	<?= $form->field($model, 'pass1')->passwordInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'pass2')->passwordInput(['maxlength' => true]) ?>
@@ -44,7 +62,7 @@ Modal::begin([
 //		'data-toggle'=>'tooltip',
 //		'title'=>'Will open the generated PDF file in a new window'
 //	]);?>
-<!--<!---->-->
+<!--<!---->
 <!--	--><?php //echo Html::a(Yii::t('easyii', 'Save'), ['/poslug/ut-kart/repor9t', 'id' => $model->id], [
 //		'method' => 'post',
 //		'params' => [
@@ -79,8 +97,6 @@ Modal::begin([
 		DetailView::widget([
 			'model'=>$model,
 //			'condensed'=>true,
-			'hover'=>true,
-			'mode'=>DetailView::MODE_VIEW,
 //			'panel'=>[
 ////							'heading'=>$model->getOrg()->asArray()->one()['naim'],
 //				'heading'=>'gdfhsdfh',
