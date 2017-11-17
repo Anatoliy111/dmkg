@@ -12,23 +12,24 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'date')->textInput() ?>
 
-    <?= $form->field($model, 'id_kart')->textInput() ?>
 
-    <?= $form->field($model, 'fio_p')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'fio_i')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'telef')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'fio_b')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'schet')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'passw')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'fio_p')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'telef')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'fio_i')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'fio_b')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+
+	<?= $form->field($model, 'pass1')->passwordInput() ?>
+
+	<?= $form->field($model, 'pass2')->passwordInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>

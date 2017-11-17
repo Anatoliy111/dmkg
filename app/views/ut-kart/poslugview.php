@@ -36,7 +36,7 @@
 		     		'value' => 'tipposl.poslug',
 		     	],
 				'n_dog',
-				'date_dog',
+//				'date_dog',
 //				'nnorma',
 //				 'activ',
 //								[

@@ -22,13 +22,8 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-	<div class="col-xm-3">
-	<?= Html::a('Реєстація', ['auth'], ['class' => 'btn btn-primary']) ?>
-
-		</div>
-	<br>
 	<div class="row">
-<!--		--><?//= Yii::$app->session->['success'] ?>
+
 		<div class="col-sm-3">
 			<?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
 				'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),

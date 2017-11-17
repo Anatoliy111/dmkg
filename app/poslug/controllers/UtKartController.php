@@ -70,7 +70,7 @@ class UtKartController extends Controller
 				if (empty($kart->pass2))
 					$kart->pass = "";
 				else
-				    $kart->pass =  md5($kart->pass2);
+				    $kart->pass =  md5($kart->id.$kart->pass2);
 				$kart->save();
 				if (!empty($kart->pass))
 				{

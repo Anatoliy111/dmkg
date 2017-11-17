@@ -479,7 +479,8 @@ class UtKartController extends Controller
 			$Abon = UtAbonent::findOne(['schet' => $model->schet]);
 
 			$email = UtKart::find()->select('email')->where(['email' => $model->email])->all();
-
+//			$email1 = UtKart::find()->select('email')->all();
+			$ab = UtAbonent::find()->select('schet')->asArray()->column();
 			if ($Abon <> null && $email == null)
 			{
 

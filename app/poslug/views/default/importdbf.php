@@ -148,10 +148,10 @@ function importUL($dbf,$i)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
-		$ulic = trim(iconv('CP866','utf-8',$fields['UL']));
+		$ulic = encodestr(trim(iconv('CP866','utf-8',$fields['UL'])));
 		if (UtUlica::findOne(['ul' => $ulic])== null)
 		{
-			$ulic = trim(iconv('CP866','utf-8',$fields['UL']));
+			$ulic = encodestr(trim(iconv('CP866','utf-8',$fields['UL'])));
 
 			$model = new UtUlica();
 			$model->ul = $ulic;
@@ -180,9 +180,9 @@ function importWIDS($dbf,$i)
 
 			$model = new UtTipposl();
 			$model->old_tipusl = $fields['WID'];
-			$model->poslug = trim(iconv('CP866','utf-8',$fields['NAIM']));
+			$model->poslug = encodestr(trim(iconv('CP866','utf-8',$fields['NAIM'])));
 			$model->id_org = 1;
-			$model->ed_izm = trim(iconv('CP866','utf-8',$fields['PAR']));
+			$model->ed_izm = encodestr(trim(iconv('CP866','utf-8',$fields['PAR'])));
 			$model->id_vidpokaz = 8;
 			if ($model->validate())
 			{
@@ -210,9 +210,9 @@ function importORGAN($dbf,$i)
 
 			$model = new UtRabota();
 			$model->id_oldorg = $fields['ORG'];
-			$model->name = trim(iconv('CP866','utf-8',$fields['NAME']));
+			$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 			$model->id_org = 1;
-			$model->fio_ruk = trim(iconv('CP866','utf-8',$fields['RUK']));
+			$model->fio_ruk = encodestr(trim(iconv('CP866','utf-8',$fields['RUK'])));
 			if ($model->validate())
 			{
 				$model->save();
@@ -240,52 +240,8 @@ function importKART($dbf,$i)
 			$Abon = UtAbonent::findOne(['schet' => $schet]);
 			if ($Abon== null)
 			{
-				$modelKt = new UtKart();
-				$modelKt->name_f =trim(iconv('CP866','utf-8',$fields['FIO']));
-				$modelKt->name_i =trim(iconv('CP866','utf-8',$fields['IM']));
-				$modelKt->name_o =trim(iconv('CP866','utf-8',$fields['OT']));
-				$modelKt->fio = $modelKt->name_f.' '.$modelKt->name_i.' '.$modelKt->name_o;
-				if (trim($modelKt->fio)=='')
-				{
-					$modelKt->name_f = 'невідомий абонент';
-					$modelKt->fio = 'невідомий абонент';
-				}
-				$modelKt->idcod = trim($fields['IDCOD']);
-				$ulica = trim(iconv('CP866','utf-8',$fields['ULNAIM']));
-				$FindUl = UtUlica::findOne(['ul' => $ulica]);
-				if ($FindUl <> null)
-				{
-					$modelKt->id_ulica = $FindUl->id;
-				}
-				else
-				{
-					if (trim($ulica)<>'')
-					{
-					$ul = new UtUlica();
-					$ul->ul = $ulica;
-						if ($ul->validate() && $ul->save())
-						{
-							$modelKt->id_ulica = $ul->id;
-						}
-					}
-					else
-						$modelKt->id_ulica = 1;
-				}
-				$modelKt->dom = trim($fields['NOMDOM']);
-				$modelKt->kv = trim($fields['NOMKV']);
-				$FindRb = UtRabota::findOne(['id_oldorg' => $fields['ORG']]);
-				if ($FindRb <> null)
-				{
-					$modelKt->id_rabota = $FindRb->id;
-				}
-				$FindDom = UtDom::findOne(['n_dom' => $modelKt->dom,'id_ulica' => $modelKt->id_ulica]);
-				if ($FindDom <> null)
-				{
-					$modelKt->id_dom = $FindDom->id;
-				}
-				$modelKt->privat = trim($fields['PRIV']) == 'p' ? 1 : 0;
-				$modelKt->ur_fiz = 0;
-				$modelKt->telef = trim(iconv('CP866','utf-8',$fields['TELEF']));
+
+				$modelKt = NewUpKart($fields,null);
 
 				if ($modelKt->validate())
 				{
@@ -299,7 +255,7 @@ function importKART($dbf,$i)
 				}
 				else
 				{
-					die("Error!!!  Insert is $dbf  to UtKart $schet $modelKt->fio $ulica");
+					die("Error!!!  Insert is $dbf  to UtKart $schet $modelKt->fio $Abon");
 //			        return false;
 				}
 
@@ -310,42 +266,7 @@ function importKART($dbf,$i)
 			{
 				if ($Abon->id_kart == null)
 				{
-					$modelKt = new UtKart();
-					$modelKt->name_f =trim(iconv('CP866','utf-8',$fields['FIO']));
-					$modelKt->name_i =trim(iconv('CP866','utf-8',$fields['IM']));
-					$modelKt->name_o =trim(iconv('CP866','utf-8',$fields['OT']));
-					$modelKt->fio = $modelKt->fio.' '.$modelKt->im.' '.$modelKt->ot;
-					$modelKt->idcod = trim($fields['IDCOD']);
-					$ulica = trim(iconv('CP866','utf-8',$fields['ULNAIM']));
-					$FindUl = UtUlica::findOne(['ul' => $ulica]);
-					if ($FindUl <> null)
-					{
-						$modelKt->id_ulica = $FindUl->id;
-					}
-					else
-					{
-						$ul = new UtUlica();
-						$ul->ul = $ulica;
-						if ($ul->validate() && $ul->save())
-						{
-							$modelKt->id_ulica = $ul->id;
-						}
-					}
-					$modelKt->dom = trim($fields['NOMDOM']);
-					$modelKt->kv = trim($fields['NOMKV']);
-					$FindRb = UtRabota::findOne(['id_oldorg' => $fields['ORG']]);
-					if ($FindRb <> null)
-					{
-						$modelKt->id_rabota = $FindRb->id;
-					}
-					$FindDom = UtDom::findOne(['n_dom' => $modelKt->dom,'id_ulica' => $modelKt->id_ulica]);
-					if ($FindDom <> null)
-					{
-						$modelKt->id_dom = $FindDom->id;
-					}
-					$modelKt->privat = trim($fields['PRIV']) == 'p' ? 1 : 0;
-					$modelKt->ur_fiz = 0;
-					$modelKt->telef = trim(iconv('CP866','utf-8',$fields['TELEF']));
+					$modelKt = NewUpKart($fields,null);
 
 					if ($modelKt->validate())
 					{
@@ -365,7 +286,7 @@ function importKART($dbf,$i)
 					else
 					{
 
-						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $ulica");
+						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
 
 					}
 
@@ -379,13 +300,71 @@ function importKART($dbf,$i)
 	return true;
 }
 
+	function NewUpKart($fields,$model)
+	{
+		if ($model==null)
+			$modelKt = new UtKart();
+		else
+			$modelKt=$model;
+
+		$modelKt->name_f =encodestr(trim(iconv('CP866','utf-8',$fields['FIO'])));
+		$modelKt->name_i =encodestr(trim(iconv('CP866','utf-8',$fields['IM'])));
+		$modelKt->name_o =encodestr(trim(iconv('CP866','utf-8',$fields['OT'])));
+		$modelKt->fio = $modelKt->name_f.' '.$modelKt->name_i.' '.$modelKt->name_o;
+		if (trim($modelKt->fio)=='')
+		{
+			$modelKt->name_f = 'невідомий абонент';
+			$modelKt->fio = 'невідомий абонент';
+		}
+		$modelKt->idcod = trim($fields['IDCOD']);
+		$ulica = encodestr(trim(iconv('CP866','utf-8',$fields['ULNAIM'])));
+		$FindUl = UtUlica::findOne(['ul' => $ulica]);
+		if ($FindUl <> null)
+		{
+			$modelKt->id_ulica = $FindUl->id;
+		}
+		else
+		{
+			if (trim($ulica)<>'')
+			{
+				$ul = new UtUlica();
+				$ul->ul = $ulica;
+				if ($ul->validate() && $ul->save())
+				{
+					$modelKt->id_ulica = $ul->id;
+				}
+			}
+			else
+				$modelKt->id_ulica = 1;
+		}
+		$modelKt->dom = encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM'])));
+		$modelKt->kv = trim($fields['NOMKV']);
+		$FindRb = UtRabota::findOne(['id_oldorg' => $fields['ORG']]);
+		if ($FindRb <> null)
+		{
+			$modelKt->id_rabota = $FindRb->id;
+		}
+		$FindDom = UtDom::findOne(['n_dom' => $modelKt->dom,'id_ulica' => $modelKt->id_ulica]);
+		if ($FindDom <> null)
+		{
+			$modelKt->id_dom = $FindDom->id;
+		}
+		$modelKt->privat = trim($fields['PRIV']) == 'p' ? 1 : null;
+		$modelKt->ur_fiz = 0;
+		$modelKt->telef = encodestr(trim(iconv('CP866','utf-8',$fields['TELEF'])));
+
+		return $modelKt;
+
+	}
+
+
 function importAbon($fields,$schet,$idkart)
 {
 	$modelAb = new UtAbonent();
 	$modelAb->id_org = 1;
 	$modelAb->schet = $schet;
 	$modelAb->id_kart =  $idkart;
-	$modelAb->note = trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1']));
+	$modelAb->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1'])));
 
 	if ($modelAb->validate())
 	{
@@ -448,7 +427,7 @@ function importNTARIF($dbf,$i)
 			$model->kl = $fields['KL'];
 			$model->tarif1 = $fields['TARIF'];
 			$model->id_org = 1;
-			$model->name = trim(iconv('CP866','utf-8',$fields['NAME']));
+			$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 			if ($model->validate())
 			{
 				$model->save();
@@ -465,25 +444,29 @@ function importNTARIF($dbf,$i)
 	return true;
 }
 
-	function importPOSL($dbf,$i)
+	function importPOSLTAR($dbf,$i)
 	{
 		$fields = dbase_get_record_with_names($dbf,$i);
 		if ($fields['deleted'] <> 1)
 		{
 			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
-			$kltar = $fields['KL'];
-			$FindTarif = UtTarif::findOne(['kl' => $fields['KL_NTAR']]);
+
 			$FindAbon =  UtAbonent::findOne(['schet' => $schet]);
-			if ($FindTarif <> null and $FindAbon <> null)
+			$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+			if ($FindTipPosl<> null and $FindAbon <> null)
 			{
-				$FindTarifab = UtTarifab::findOne(['id_tarif' => $FindTarif->id,'id_abonent' => $FindAbon->id]);
+				$FindTarifab = UtTarifab::findOne(['id_tipposl' => $FindTipPosl->id,'id_abonent' => $FindAbon->id]);
 				if ($FindTarifab == null)
 				{
 					$model = new UtTarifab();
 					$model->id_org = 1;
-					$model->id_tarif = $FindTarif->id;
+					$model->id_tipposl = $FindTipPosl->id;
 					$model->id_abonent = $FindAbon->id;
-
+					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+					$model->tarif = $fields['TARIF'];
+					$model->kortarif = $fields['KORTARIF'];
+					$model->endtarif = $fields['ENDTARIF'];
+					$model->days = $fields['DAYS'];
 					if ($model->validate())
 					{
 						$model->save();
@@ -491,7 +474,7 @@ function importNTARIF($dbf,$i)
 					}
 					else
 					{
-						die("Error!!!  Insert is $dbf  to UtTarifab $schet $kltar");
+						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
 //			return false;
 					}
 				}
@@ -511,7 +494,7 @@ function importNTARIF($dbf,$i)
 		if ($fields['deleted'] <> 1)
 		{
 			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
-			$lgot = trim(iconv('CP866','utf-8',$fields['LGOTA']));
+			$lgot = encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])));
 			$FindAbon =  UtAbonent::findOne(['schet' => $schet]);
 			$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
 			if ($FindTipPosl<>null and $FindAbon<>null)
@@ -527,8 +510,8 @@ function importNTARIF($dbf,$i)
 				$narah->id_posl = $FindPosl->id;
 				$narah->id_tipposl = $FindTipPosl->id;
 				$narah->tipposl = $FindTipPosl->poslug;
-				$narah->id_vidlgot = $fields['LGOTA'] <> '' ? UtVidlgot::findOne(['lgota' => trim(iconv('CP866','utf-8',$fields['LGOTA']))])->id : null;
-				$narah->lgot = trim(iconv('CP866','utf-8',$fields['LGOTA']));
+				$narah->id_vidlgot = trim($fields['LGOTA']) <> '' ? UtVidlgot::findOne(['lgota' => encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])))])->id : null;
+				$narah->lgot = encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])));
 				$narah->tarif = $fields['TARIF'];
 				$narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
 				$narah->vidpokaz = UtVidpokaz::findOne(['id' => $narah->id_vidpokaz])->vid_pokaz;
@@ -578,7 +561,7 @@ function importNTARIF($dbf,$i)
 						$abonposl->id_abonent=$abon->id;
 						$abonposl->id_tipposl= $posl->id;
 						$abonposl->n_dog = trim($fields['N_DOG']);
-						$abonposl->date_dog = date('Y-m-d',strtotime(trim($fields['D_DOG'])));
+						$abonposl->date_dog = trim($fields['D_DOG'])<>'' ? date('Y-m-d',strtotime(trim($fields['D_DOG']))) : null;
 
 						if ($abonposl->validate() & $abonposl->save())
 						{
@@ -884,13 +867,33 @@ function importNTARIF($dbf,$i)
 	//    $percent1 = 50;
 //
 //	echo 'percent1 '.$percent1;
+
+
+
+function encodestr($str)
+{
+	$patterns[0] = "/H/";
+	$patterns[1] = "/h/";
+	$patterns[2] = "/C/";
+	$patterns[3] = "/c/";
+	$patterns[4] = "/I/";
+	$patterns[5] = "/i/";
+
+	$replacements[0] = "Н";
+	$replacements[1] = "н";
+	$replacements[2] = "С";
+	$replacements[3] = "с";
+	$replacements[4] = "І";
+	$replacements[5] = "і";
+
+	ksort($patterns);
+	ksort($replacements);
+
+	return preg_replace($patterns, $replacements, $str);
+
+}
+
 ?>
-
-<!--<script type="text/javascript">ready();</script>-->
-
-
-
-
 
 
 

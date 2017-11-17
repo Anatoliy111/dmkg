@@ -28,7 +28,7 @@ Modal::begin([
 //	$model->scenario = 'password';
 ?>
 <?php $form = ActiveForm::begin(); ?>
-<h2 class="title">Введіть пароль</h2>
+
 
 
 	<?= $form->field($model, 'pass1')->passwordInput(['maxlength' => true]) ?>
@@ -37,10 +37,7 @@ Modal::begin([
 <p class="text">Якщо ви натисните кнопку Зберегти з пустим паролем, авторизація буде знята</p>
 <div class="form-group">
 	<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success','target'=>'_blank','data-toggle'=>'tooltip']) ?>
-<!--	--><?//= Html::resetButton(Yii::t('easyii', 'Reset'), ['class' => 'btn btn-danger']) ?>
-<!---->
-<!---->
-<!---->
+
 <!--	--><?php //echo Html::a('Распечатать .PDF', ['/poslug/ut-kart/report', 'id' => $model->id, 'pass' => $model->pass2], [
 //		'class'=>'btn btn-default',
 //		'target'=>'_blank',
@@ -66,7 +63,7 @@ Modal::begin([
 //		'title'=>'Will open the generated PDF file in a new window'
 //		]);?>
 
-<!--	--><?//= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+
 </div>
 <?php ActiveForm::end(); ?>
 
@@ -77,17 +74,6 @@ Modal::begin([
 <div class="ut-kart-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-<!--    <p>-->
-<!--        --><?//= Html::a(Yii::t('easyii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-<!--        --><?//= Html::a(Yii::t('easyii', 'Delete'), ['delete', 'id' => $model->id], [
-//            'class' => 'btn btn-danger',
-//            'data' => [
-//                'confirm' => Yii::t('easyii', 'Are you sure you want to delete this item?'),
-//                'method' => 'post',
-//            ],
-//        ]) ?>
-<!--    </p>-->
 
 	<?=
 		DetailView::widget([

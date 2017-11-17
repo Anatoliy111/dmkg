@@ -2,6 +2,8 @@
 
 namespace app\poslug\controllers;
 
+use app\poslug\models\SearchAuthAb;
+use app\poslug\models\SearchUtAbonent;
 use app\poslug\models\SearchUtAuth;
 use app\poslug\models\UtAbonent;
 use app\poslug\models\UtKart;
@@ -99,15 +101,30 @@ class UtAuthController extends Controller
      */
     public function actionCreate()
     {
-        $model = new UtAuth();
+		$searchModel = new SearchAuthAb();
+		$searchModel->search(Yii::$app->request->get('SearchAuthAb'));
+		if ($searchModel->load(Yii::$app->request->post()) && $searchModel->validate()) {
+//		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
+
+
+			$model = new UtAuth();
+//			$model->id_kart = $abon->
+			if ($model->load(Yii::$app->request->post()) && $model->save()) {
+				return $this->redirect(['index']);
+			} else {
+				return $this->render('create', [
+					'model' => $model,
+				]);
+			}
+		}
+
+
+
+            return $this->render('_searchAb', [
+                'model' => $searchModel,
             ]);
-        }
+
     }
 
     /**

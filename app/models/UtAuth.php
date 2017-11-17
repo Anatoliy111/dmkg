@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\poslug\models\UtAbonent;
 use app\poslug\models\UtAuthfoto;
 use Yii;
 
@@ -53,7 +54,7 @@ class UtAuth extends \yii\db\ActiveRecord
 			[['pass2'], 'string', 'min' => 5],
 			[['schet'], 'string', 'min' => 7],
 			['email', 'email'],
-//			['email', 'not in', 'range' => UtKart::find()->select('email')->asArray()->column()],
+			['schet', 'in', 'range' => UtAbonent::find()->select('schet')->joinWith('kart')->where(['ut_kart.status' => 0])->asArray()->column()],
             [['id_kart'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::className(), 'targetAttribute' => ['id_kart' => 'id']],
 			['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
         ];
