@@ -14,14 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ut-kart-index">
 
-<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
-<!--    --><?php //Pjax::begin(); ?>
-<!--    --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-<!--    <p>-->
-<!--        --><?//= Html::a(Yii::t('easyii', 'Create Ut Kart'), ['create'], ['class' => 'btn btn-success']) ?>
-<!--    </p>-->
-
 
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
@@ -29,25 +21,16 @@ $this->params['breadcrumbs'][] = $this->title;
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
 
-			'id',
-
 			[
 				'attribute' => 'fio',
 				'label' => 'ПІБ',
 				'format' => 'raw',
 				'value'=>function ($name, $id) {
-//					return Html::a('fio',['update', 'id' => $searchModel->id],''). '</li>' . PHP_EOL;
-//					return Html::a('fio',Url::to(['ut-kart/view', 'id' => $searchModel->id]),'');
 					return Html::a($name['fio'], ['/poslug/ut-kart/view', 'id' => $id]);
-//					return Yii::$app->urlManager->createUrl('UtKart/update');
+
 				},
 			],
 
-//			[
-//				'attribute' => 'ulica',
-//				'label' => 'Вулиця',
-//				'value' => 'ulica.ul',
-//			],
 			[
 				'attribute'=>'ulica',
 				'vAlign'=>'middle',
@@ -67,46 +50,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format'=>'raw'
 			],
 
-//			[
-//				'attribute'=>'ulica',
-//				'vAlign'=>'middle',
-////				'width'=>'180px',
-//				'filterType'=>GridView::FILTER_SELECT2,
-//				'filter'=>ArrayHelper::map(\app\poslug\models\UtUlica::find()->orderBy('ul')->asArray()->all(),'ul','ulica'),
-//				'filterWidgetOptions'=>[
-//					'pluginOptions'=>['allowClear'=>true],
-//				],
-//				'filterInputOptions'=>['placeholder'=>Yii::t('easyii', 'Ul')],
-//				'format'=>'raw'
-//			],
-
 			'dom',
 			'kv',
-//			'utAbonents[0].schet',
-//			['utAbonents.schet'],
-//			[
-//				'attribute'=>'utAbonents.schet',
-//				'vAlign'=>'middle',
-//				'width'=>'180px',
-//				'value' => 'utAbonents.schet',
-//			],
-//		    'schet',
-//			[
-//			'label' => 'Текст новости',
-//			'attribute' => 'utAbonents.schet',
-//			'value' => function($data) { return  $data["utAbonents.schet"]; },
-//			],
-//			[
-//				'label' => 'schet',
-//				'value' => function ($searchModel) {
-//					$components = ArrayHelper::map($searchModel->utAbonents, 'id', 'schet');
-//					$components = array_map(function ($id, $name) {
-//						return Html::a($name, ['/component/view', 'id' => $id]);
-//					}, array_keys($components), $components);
-//					return implode(', ', $components);
-//				},
-//				'format' => 'raw'
-//			],
+
+			[
+				'attribute' => 'status',
+				'label' => 'Авторизація',
+				'class' => '\kartik\grid\BooleanColumn',
+
+			],
 //			[
 //				'class' => '\kartik\grid\ActionColumn',
 //				'template' => '{view} {update} {delete}',

@@ -63,13 +63,8 @@ Modal::begin([
 //		'title'=>'Will open the generated PDF file in a new window'
 //	]);?>
 <!--<!---->
-<!--	--><?php //echo Html::a(Yii::t('easyii', 'Save'), ['/poslug/ut-kart/repor9t', 'id' => $model->id], [
-//		'method' => 'post',
-//		'params' => [
-//			'action' => 'view'
-//		],
+<!--	--><?php //echo Html::a(Yii::t('easyii', 'Save'), ['report', 'id' => $model->id, 'pass' => $model->pass2], [
 //		'class' => 'btn btn-success',
-//		'target'=>'_blank',
 //		'data-toggle'=>'tooltip',
 //		'title'=>'Will open the generated PDF file in a new window'
 //	]);?>
@@ -205,24 +200,6 @@ Modal::begin([
 				'value' => 'note',
 
 			],
-			// 'ur_fiz',
-			// 'id_dom',
-
-//			[
-//				'attribute'=>'privat',
-//				'label'=>'Приватизація',
-//				'format'=>'raw',
-//				'value'=>$dataProvider->privat==0 ? '<span class="label label-success">Так</span>' : '<span class="label label-danger">Ні</span>',
-////				'type'=>DetailView::TYPE_INFO,
-////				'widgetOptions' => [
-////					'pluginOptions' => [
-////						'0' => 'Yes',
-////						'1' => 'No',
-////					]
-////				],
-//				'valueColOptions'=>['style'=>'width:30%']
-//			],
-			// 'id_oldkart',
 
 //			['class' => 'yii\grid\ActionColumn'],
 		],
