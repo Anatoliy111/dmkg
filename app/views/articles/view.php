@@ -11,7 +11,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Статті', 'url' => ['articles
 $this->params['breadcrumbs'][] = ['label' => $article->cat->title, 'url' => ['articles/cat', 'slug' => $article->cat->slug]];
 $this->params['breadcrumbs'][] = $article->model->title;
 ?>
-<!--<h1>--><?//= $article->seo('h1', $article->title) ?><!--</h1>-->
 
 <!-- =============== blog container ============== -->
 <?php
