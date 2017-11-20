@@ -44,6 +44,9 @@ $config = [
 			'destination' => Pdf::DEST_BROWSER,
 			// refer settings section for all configuration options
 		],
+		'formatter' => [
+			'dateFormat' => 'MM.yyyy',
+			],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

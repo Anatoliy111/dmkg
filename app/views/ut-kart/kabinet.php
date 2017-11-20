@@ -19,6 +19,7 @@ $this->title = $model->fio;
 //$this->params['breadcrumbs'][] = $this->title;
 	foreach ($orgs as $k=>$org)
 	{
+
 	$items[$org->id_org] = [
 //		[
 //			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
@@ -141,15 +142,14 @@ $this->title = $model->fio;
 		<?php
 			foreach ($orgs as $k=>$org)
 			{
-			?>
-			<?=	Html::label($_SESSION['period'][$org->id_org] ,[],['class' => 'label', 'format' => ['date', 'php:MY']]) ?>
-        <?php
+
 				if ($k==0)
 				{
 					$itemsorg[$org->id_org] =
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>
+								Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'php:MY').
 								TabsX::widget([
 								'items'=>$items[$org->id_org],
 								'position'=>TabsX::POS_ABOVE,
