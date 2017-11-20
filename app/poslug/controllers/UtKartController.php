@@ -332,4 +332,23 @@ class UtKartController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+	public function actionGenpass($model)
+	{
+
+		$str = "0123456789";
+		$str_lenght = strlen($str) - 1;
+		$str_gen = '';
+		for($i = 0; $i < 5; $i++) {
+
+
+			$x = mt_rand(0,$str_lenght);
+
+			$str_gen .= $str[$x];
+
+         }
+		$model->pass1 = $str_gen;
+
+			return $model;
+	}
 }

@@ -89,6 +89,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			<div class="buttons" style="padding-bottom: 20px">
 				<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success','name' => 'print', 'value' => '']) ?>
 				<?= Html::submitButton(Yii::t('easyii', 'Save and Print'), ['class' => 'btn btn-success','name' => 'print', 'value' => 'true','target'=>'_blank']) ?>
+
+
 			</div>
 
 	<?php
