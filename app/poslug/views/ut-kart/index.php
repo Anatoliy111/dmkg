@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'ПІБ',
 				'format' => 'raw',
 				'value'=>function ($name, $id) {
-					return Html::a($name['fio'], ['/poslug/ut-kart/view', 'id' => $id]);
+					return Html::a($name['fio'], ['/poslug/ut-kart/view', 'id' => $id, 'mode' => 'view']);
 
 				},
 			],
@@ -58,6 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'Авторизація',
 				'class' => '\kartik\grid\BooleanColumn',
 
+			],
+			[
+				'attribute' => 'date_pass',
+				'label' => 'Дата авторизації',
 			],
 //			[
 //				'class' => '\kartik\grid\ActionColumn',

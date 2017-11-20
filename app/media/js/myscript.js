@@ -19,15 +19,27 @@
 //}
 
 
-//jQuery(document).on('ready', function() {
-//    (function ($) {
-//
-//        Modalprogress();
-//
-//
-//    })(jQuery);
-//
+//$('#modal-btn').on('click', function() {
+//    $('#passmodal').modal('show')
+//        .find('#modal-content')
+//        .load($(this).attr('data-target'));
 //});
+
+jQuery(document).on('ready', function() {
+    (function ($) {
+
+
+        $('#modal-btn').on('click', function() {
+            $('#passmodal').modal('show')
+                .find('.modal-content')
+                .load($(this).attr('href'));
+        });
+
+
+
+    })(jQuery);
+
+});
 
 //function showModalprogress () {
 //    var Modalprogress = $('#Modalprogress');

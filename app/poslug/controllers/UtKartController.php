@@ -54,10 +54,11 @@ class UtKartController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$mode)
     {
 		$kart = $this->findModel($id);
-
+//        if ($mode=='edit')
+//			$kart->scenario = 'password';
 		$query = UtAbonent::find();//->where(['id_kart' => $kart->id])->orderBy('id_org')->all();
 		$query->where(['id_kart' => $kart->id])->orderBy('id_org');
 		$dataProvider = new ActiveDataProvider([
@@ -67,20 +68,32 @@ class UtKartController extends Controller
 		if ($kart->load(Yii::$app->request->post())) {
 			if ($kart->validate())
 			{
-				if (empty($kart->pass2))
+
+				    $kart->pass =  md5($kart->id.trim($kart->pass2));
+					$kart->passopen = trim($kart->pass2);
+					$kart->date_pass = date('Y-m-d');
+				    $kart->save();
+				    $mode = 'view';
+
+				if (Yii::$app->request->post('print')=='true')
 				{
-					$kart->pass = "";
-					$kart->status = 0;
-				}
-				else
-				{
-				    $kart->pass =  md5($kart->id.$kart->pass2);
-					$kart->status = 1;
-				}
-				$kart->save();
-				if (!empty($kart->pass))
-				{
+
+
 					$this->actionReport($kart->id,$kart->pass2);
+					return $this->render('view', [
+						'model' => $kart,
+						'dataProvider' =>$dataProvider,
+						'mode' => 'view',
+					]);
+
+//					return $this->redirect(['report', 'id' => $kart->id,'pass' => $kart->pass2]);
+//					$mode = 'view';
+				}
+
+
+//				if (!empty($kart->pass))
+//				{
+//					$this->actionReport($kart->id,$kart->pass2);
 //				$pdf = Yii::$app->pdf;
 //				$pdf->content = $this->renderPartial('viewPdf', [
 //				'model' => $kart,
@@ -98,8 +111,11 @@ class UtKartController extends Controller
 //				'SetFooter' => ['|{PAGENO}|'],
 //			];
 //				return $pdf->render();
-				}
+//				}
 			}
+			else
+				$mode = 'edit';
+
 //			return $this->redirect(['view', 'id' => $kart->id]);
 //			return $this->renderAjax('view', ['model' => $kart,'dataProvider' =>$dataProvider]);
 		}
@@ -107,6 +123,7 @@ class UtKartController extends Controller
 		return $this->render('view', [
 				'model' => $kart,
 				'dataProvider' =>$dataProvider,
+			'mode' => $mode,
 			]);
 
 //		return $this->renderAjax('view',[
@@ -117,6 +134,54 @@ class UtKartController extends Controller
 
 
     }
+
+	public function actionPass($id)
+	{
+		$kart = $this->findModel($id);
+//        if ($mode=='edit')
+//			$kart->scenario = 'password';
+
+
+		if ($kart->load(Yii::$app->request->post())) {
+			if ($kart->validate())
+			{
+
+				$kart->pass =  md5($kart->id.trim($kart->pass2));
+				$kart->passopen = trim($kart->pass2);
+				$kart->date_pass = date('Y-m-d');
+				$kart->save();
+			}
+
+		}
+
+		return $this->renderAjax('pass', [
+			'model' => $kart,
+		]);
+
+//		$kart = $this->findModel($id);
+//		if (Yii::$app->request->isAjax && $kart->load(Yii::$app->request->post())) {
+//
+//
+//
+//			if ($kart->validate())
+//			{
+//
+//				$kart->pass =  md5($kart->id.trim($kart->pass2));
+//				$kart->passopen = trim($kart->pass2);
+//				$kart->date_pass = date('Y-m-d');
+//				$kart->save();
+//
+//				return $this->redirect('/site/confirm');
+//			} else {
+//				Yii::$app->response->format = Response::FORMAT_JSON;
+//				return ActiveForm::validate($kart);
+//			}
+//		}
+//		return $this->renderAjax('pass', [
+//			'model' => $kart,
+//		]);
+
+	}
 
 	public function actionKartPDF($id) {
 		$this->layout = 'pdf';
@@ -162,13 +227,13 @@ class UtKartController extends Controller
 		// setup kartik\mpdf\Pdf component
 		$pdf = new Pdf([
 			// set to use core fonts only
-			'mode' => Pdf::MODE_UTF8,
+//			'mode' => Pdf::MODE_UTF8,
 			// A4 paper format
 			'format' => Pdf::FORMAT_A4,
 			// portrait orientation
 			'orientation' => Pdf::ORIENT_PORTRAIT,
 			// stream to browser inline
-			'destination' => Pdf::DEST_BROWSER,
+			'destination' => Pdf::DEST_DOWNLOAD ,
 			// your html content input
 			'content' => $content,
 			// format content from your own css file if needed or use the
@@ -178,7 +243,8 @@ class UtKartController extends Controller
 			'cssInline' => '.kv-heading-1{font-size:18px}',
 			// set mPDF properties on the fly
 			'options' => ['title' => $kart->fio,
-			'subject' => 'PDF'
+			'subject' => 'PDF',
+						  'target'=>'_blank',
 			],
 			// call mPDF methods on the fly
 
@@ -190,6 +256,7 @@ class UtKartController extends Controller
 
 		// return the pdf output as per the destination setting
 		return $pdf->render();
+
 	}
 
     /**

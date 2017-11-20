@@ -20,6 +20,8 @@ use Yii;
  * @property string $kv квартира
  * @property int $ur_fiz юр чи фіз
  * @property string $pass пароль
+ * @property string $passopen пароль
+ * @property string $date_pass період
  * @property string $telef телефон
  * @property int id_rabota робота
  * @property int $id_dom многокв дом
@@ -54,13 +56,14 @@ class UtKart extends \yii\db\ActiveRecord
 //			['status', 'validatePass','skipOnEmpty' => false],
             [['name_f', 'fio', 'id_ulica'], 'required'],
             [['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota','status'], 'integer'],
+			[['date_pass'], 'safe'],
             [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o'], 'string', 'max' => 30],
             [['dom'], 'string', 'max' => 4],
 			[['kv'], 'string', 'max' => 5],
             [['korp'], 'string', 'max' => 1],
             [['pass1'], 'string', 'max' => 64],
-			[['pass2','pass'], 'string', 'max' => 64],
+			[['pass2','pass','passopen'], 'string', 'max' => 64],
 			['email', 'email'],
 			[['fio','email'], 'string', 'max' => 64],
             [['telef'], 'string', 'max' => 20],
@@ -73,11 +76,16 @@ class UtKart extends \yii\db\ActiveRecord
 			['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
 //			['pass1', 'compare',  'compareAttribute' => 'pass2', 'message' => 'Паролі не співпадають !!!'],
 //			['pass1', 'required', 'when' => function($this) { return $this->status == '1'; }],
-//			['pass1', 'required', 'when' => function ($this) {
-//				return $this->status == '1';
-//			}, 'whenClient' => "function (attribute, value) {
-//        return $('#status').val() == '1';
-//    }"],
+			['pass1', 'required', 'when' => function ($this) {
+				return $this->status == '1';
+			}, 'whenClient' => "function (attribute, value) {
+        return $('#status').val() == '1';
+    }"],
+			['pass2', 'required', 'when' => function ($this) {
+				return $this->status == '1';
+			}, 'whenClient' => "function (attribute, value) {
+        return $('#status').val() == '1';
+    }"],
 //			['status', 'required', 'when' => function ($model) {
 //				return $model->pass1 == '';
 //			}, 'whenClient' => 'function (attribute, value) {
@@ -143,6 +151,7 @@ class UtKart extends \yii\db\ActiveRecord
 			'id_rabota' => Yii::t('easyii', 'Rabota'),
 			'id_dom' => Yii::t('easyii', 'Id Dom'),
 			'status' => Yii::t('easyii', 'Status'),
+			'date_pass' => Yii::t('easyii', 'Date Pass'),
 			'privat' => Yii::t('easyii', 'Privat'),
         ];
     }

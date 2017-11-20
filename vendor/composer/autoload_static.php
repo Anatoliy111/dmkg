@@ -41,6 +41,7 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
             'kartik\\nav\\' => 11,
             'kartik\\mpdf\\' => 12,
             'kartik\\helpers\\' => 15,
+            'kartik\\growl\\' => 13,
             'kartik\\grid\\' => 12,
             'kartik\\form\\' => 12,
             'kartik\\file\\' => 12,
@@ -153,6 +154,10 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         'kartik\\helpers\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-helpers',
+        ),
+        'kartik\\growl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-growl',
         ),
         'kartik\\grid\\' => 
         array (

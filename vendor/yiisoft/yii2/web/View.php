@@ -580,4 +580,6 @@ class View extends \yii\base\View
 
         return empty($lines) ? '' : implode("\n", $lines);
     }
+
+
 }

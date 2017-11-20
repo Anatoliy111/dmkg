@@ -6,8 +6,9 @@ use yii\widgets\Breadcrumbs;
 	use app\controllers;
 
 	use phpnt\pace\PaceAsset;
+	use yii\widgets\Pjax;
 
-$asset = \app\assets\AppAsset::register($this);
+	$asset = \app\assets\AppAsset::register($this);
 
 //Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']);
 //Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']);
@@ -146,7 +147,9 @@ $search = '';
             ])?>
         <?php endif; ?>
 
+		<?php Pjax::begin(); ?>
 			<?= $content ?>
+		<?php Pjax::end(); ?>
 
         <div class="push"></div>
     </main></span>

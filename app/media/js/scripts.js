@@ -32,13 +32,14 @@ $(function(){
     }
 })(jQuery);
 ;
+/* Modal Pass
+ ========================================================*/
+(function ($) {
+    $('#modal-btn').on('click', function() {
+        $('#passmodal').modal('show')
+            .find('#modal-content')
+            .load($(this).attr('data-target'));
+    });
+})(jQuery);
+;
 
-
-
-//;
-//(function ($) {
-//    var o = $('html');
-//    if (o.hasClass('dropdown')) {
-//        $('.dropdown-toggle').dropdown()
-//    }
-//})(jQuery);

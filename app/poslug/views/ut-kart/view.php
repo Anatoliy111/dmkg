@@ -1,6 +1,7 @@
 <?php
 
 
+	use kartik\detail\DetailView;
 	use kartik\dialog\Dialog;
 
 	use kartik\form\ActiveForm;
@@ -10,7 +11,7 @@
 	use yii\helpers\Html;
 	use kartik\select2\Select2;
 	use \kartik\switchinput\SwitchInput;
-	use yii\widgets\DetailView;
+	use yii\widgets\Pjax;
 
 
 	/* @var $this yii\web\View */
@@ -20,103 +21,101 @@ $this->title = $model->fio;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 //	$model->ulica.ul;
-Modal::begin([
-		'header' => '<h4 class="modal-title">Авторизація абонента</h4>',
-//		'toggleButton' => ['label' => '<i class="glyphicon glyphicon-th-list"></i> Detail View in Modal', 'class' => 'btn btn-primary'],
-		'options' => [
-			'tabindex' => false,
-			'id'=>'pwd',
-			],
-	]);?>
-<?php
-//	$model->scenario = 'password';
+	//= Html::a("Змінити", ['/poslug/ut-kart/pass', 'id' => $model->id],['id'=>'modal-btn','class'=>'btn-sm btn-success'])
 ?>
-<?php $form = ActiveForm::begin([
-	'id' => 'pass-form',
-	'options' => [
-		'data-pjax' => '1'
-	],
-//	'enableAjaxValidation' => true,
-
-]); ?>
-
-
-    <?= $form->field($model, 'status')->widget(SwitchInput::classname(), [    'pluginOptions'=>[
-		'size' => 'large',
-		'onText'=>'Авторизований',
-		'offText'=>'Не авторизований',
-		'onColor' => 'success',
-		'offColor' => 'danger',
-	]]); ?>
-
-	<?= $form->field($model, 'pass1')->passwordInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'pass2')->passwordInput(['maxlength' => true]) ?>
-
-<p class="text">Якщо ви натисните кнопку Зберегти з пустим паролем, авторизація буде знята</p>
-<div class="form-group">
-	<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success','target'=>'_blank','data-toggle'=>'tooltip']) ?>
-
-<!--	--><?php //echo Html::a('Распечатать .PDF', ['/poslug/ut-kart/report', 'id' => $model->id, 'pass' => $model->pass2], [
-//		'class'=>'btn btn-default',
-//		'target'=>'_blank',
-//		'data-toggle'=>'tooltip',
-//		'title'=>'Will open the generated PDF file in a new window'
-//	]);?>
-<!--<!---->
-<!--	--><?php //echo Html::a(Yii::t('easyii', 'Save'), ['report', 'id' => $model->id, 'pass' => $model->pass2], [
-//		'class' => 'btn btn-success',
-//		'data-toggle'=>'tooltip',
-//		'title'=>'Will open the generated PDF file in a new window'
-//	]);?>
-<!---->
-<!--	--><?php //echo Html::a('Update', ['/poslug/ut-kart/update', 'id' => $model->id],[
-//			'class'=>'btn btn-default',
-//		'target'=>'_blank',
-//		'data-toggle'=>'tooltip',
-//		'title'=>'Will open the generated PDF file in a new window'
-//		]);?>
-
-
-</div>
-<?php ActiveForm::end(); ?>
-
-<?php Modal::end() ?>
 
 
 
 <div class="ut-kart-view">
 
+	<?php Pjax::begin(); ?>
+
     <h1><?= Html::encode($this->title) ?></h1>
+
+<!--	--><?php
+//		echo SwitchInput::widget(['name' => 'status',
+//			'readonly' => $mode=='view' ? true : false,
+//								  'value'=>$model->status,
+//								  'pluginOptions'=>[
+//									  'size' => 'large',
+//									  'onText'=>'Авторизований',
+//									  'offText'=>'Не авторизований',
+//									  'onColor' => 'success',
+//									  'offColor' => 'danger',
+//								  ]]);
+//	?>
+
+	<?php
+		Modal::begin([
+			'header' => '<h2>Реєстрація користувача</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+			'footer' => 'Низ окна',
+			'id' => 'passmodal',
+			'size' => 'modal-md',
+
+		]);
+	?>
+		<div id='contentpass'>Введіть пароль1111</div>
+
+	<?php
+		echo 'Введіть пароль';
+		Modal::end();
+	?>
+<!--	<a href='/poslug/ut-kart/pass' id="modal-btn" class='btn-sm btn-success' data-target='/poslug/ut-kart/pass'>Заказать</a>-->
+
+
+
+
+		<?php $form = ActiveForm::begin([
+		]); ?>
+
+	<?= $form->field($model, 'status')->widget(SwitchInput::classname(), [
+		'readonly' => $mode=='edit' ? false : true,
+		'pluginOptions'=>[
+			'size' => 'large',
+			'onText'=>'Авторизований',
+			'offText'=>'Не авторизований',
+			'onColor' => 'success',
+			'offColor' => 'danger',
+		]]); ?>
+
+	<?php
+		if ($mode=="edit")
+		{
+	?>
+			<?=	 $form->field($model, 'pass1')->passwordInput(['maxlength' => true])?>
+			<?=    $form->field($model, 'pass2')->passwordInput(['maxlength' => true])?>
+			<div class="buttons" style="padding-bottom: 20px">
+				<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success','name' => 'print', 'value' => '']) ?>
+				<?= Html::submitButton(Yii::t('easyii', 'Save and Print'), ['class' => 'btn btn-success','name' => 'print', 'value' => 'true','target'=>'_blank']) ?>
+			</div>
+
+	<?php
+		}else
+		{
+	?>
+
+			<div class="buttons" style="padding-bottom: 20px">
+				<?= 		Html::a(Yii::t('easyii', 'Update'), ['view', 'id' => $model->id,'mode' => 'edit'], ['class' => 'btn btn-primary',]) ?>
+			</div>
+
+			<?php }
+		 ActiveForm::end();
+	?>
+
+
 
 	<?=
 		DetailView::widget([
 			'model'=>$model,
-//			'condensed'=>true,
-//			'panel'=>[
-////							'heading'=>$model->getOrg()->asArray()->one()['naim'],
-//				'heading'=>'gdfhsdfh',
-//				'headingOptions' => [
-//					'tag' => 'asfsdgasd',
-//					'template' => '{title}{buttons}',
-//				],
-//				'type'=>DetailView::TYPE_INFO,
-//				'enableEditMode' => true,
-//			],
+			'hover'=>true,
+			'mode'=>'view',
 			'attributes'=>[
 			        	'fio',
                         'idcod',
-//			        'ulica.ul',
-//	                [
-//			        	'attribute' => 'ulica',
-//			        	'label' => 'Вулиця',
-////		        		'value' =>$model->ulica,
-//			        	'value' => function ($model, $key, $index, $widget) {
-//			        				return $model->ulica;
-//			        	},
-//			        ],
 			        [
 			        	'label' => Yii::t('easyii', 'Adress'),
-
 			        	'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
 			        ],
 			        [
@@ -124,43 +123,32 @@ Modal::begin([
 			        	'label'=>'Юр. чи Фіз.',
 			        	'format'=>'raw',
 			        	'value'=>$model->ur_fiz==0 ? '<span class="label label-success">Фізична особа</span>' : '<span class="label label-danger">Юридична особа</span>',
-//			        	'type'=>DetailView::TYPE_INFO,
-//			        	'widgetOptions' => [
-//			        		'pluginOptions' => [
-//			        			'0' => 'Yes',
-//			        			'1' => 'No',
-//			        		]
-//			        	],
 			        	'valueColOptions'=>['style'=>'width:30%']
 			        ],
-			        [
-			        	'attribute'=>'pass',
-			        	'label'=>'Авторизація',
-			        	'format'=>'raw',
-			        	'value'=>(!empty($model->pass) ? '<span class="label label-success">Авторизований</span> '
-			        	: '<span class="label label-danger">Не авторизований</span>') ,
 
-			        	],
-				[
-					'label'=>' ',
-					'format'=>'raw',
-					'value'=>function ($model, $key){
-						if (!empty($key->model['pass']))
-						{
-							return Html::a("Змінити", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#pwd','class'=>'btn-sm btn-success']);
-						}
-						else
-						{
-							return Html::a("Зареєструвати", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#pwd','class'=>'btn-sm btn-success']);
-						}
-
-					}
-				],
-
-
-
-
-//			        	'valueColOptions'=> array('style' =>'width:30%')),
+//			        [
+//			        	'attribute'=>'pass',
+//			        	'label'=>'Авторизація',
+//			        	'format'=>'raw',
+//			        	'value'=>(!empty($model->pass) ? '<span class="label label-success">Авторизований</span> '
+//			        	: '<span class="label label-danger">Не авторизований</span>') ,
+//
+//			        	],
+//				[
+//					'label'=>' ',
+//					'format'=>'raw',
+//					'value'=>function ($model, $key){
+//						if (!empty($key->model['pass']))
+//						{
+//							return Html::a("Змінити", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#pwd','class'=>'btn-sm btn-success']);
+//						}
+//						else
+//						{
+//							return Html::a("Зареєструвати", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#pwd','class'=>'btn-sm btn-success']);
+//						}
+//
+//					}
+//				],
                     'telef',
 				[
 					'attribute'=>'privat',
@@ -171,7 +159,6 @@ Modal::begin([
 				],
 				[
 					'attribute' => 'id_rabota',
-//					'label'=>'Робота',
 					'value' => $model->getRabota()->asArray()->one()['name'],
 				],
  			]
@@ -200,11 +187,9 @@ Modal::begin([
 				'value' => 'note',
 
 			],
-
-//			['class' => 'yii\grid\ActionColumn'],
 		],
 	]); ?>
 
-
+	<?php Pjax::end(); ?>
 
 </div>
