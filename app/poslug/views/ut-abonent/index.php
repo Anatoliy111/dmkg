@@ -14,28 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="ut-abonent-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-<!--    --><?php //Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-<!--        --><?//= Html::a(Yii::t('easyii', 'Create Ut Abonent'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-<!--    --><?//= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//
-//			'org.naim',
-//            'schet',
-//			'kart.fio',
-//            'note:ntext',
-//            // 'id_oldkart',
-//
-////            ['class' => 'yii\grid\ActionColumn'],
-//        ],
-//    ]); ?>
 
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
