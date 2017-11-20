@@ -141,14 +141,15 @@ $this->title = $model->fio;
 		<?php
 			foreach ($orgs as $k=>$org)
 			{
-
+			?>
+			<?=	Html::label($_SESSION['period'][$org->id_org] ,[],['class' => 'label', 'format' => ['date', 'php:MY']]) ?>
+        <?php
 				if ($k==0)
 				{
 					$itemsorg[$org->id_org] =
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>
-                                Html::label($_SESSION['period'][$org->id_org],[],['format' => ['date', 'php:MY']]).
 								TabsX::widget([
 								'items'=>$items[$org->id_org],
 								'position'=>TabsX::POS_ABOVE,
@@ -165,7 +166,6 @@ $this->title = $model->fio;
 				[
 					'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 					'content'=>
-						Html::a('Показники').
 						TabsX::widget([
 						'items'=>$items[$org->id_org],
 						'position'=>TabsX::POS_ABOVE,

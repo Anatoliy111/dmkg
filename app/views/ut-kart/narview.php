@@ -23,17 +23,25 @@
 	<?php
 		foreach ($abonents as $abon) {
 
+	?>
+			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+
+	<?php
+
 
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
-							'columns' => [
-				['class' => 'yii\grid\SerialColumn'],
+				'showPageSummary' => true,
+				'columns' => [
+					['class' => '\kartik\grid\SerialColumn'],
 
 
 				[
 						'attribute' => 'period',
 					    'label' => 'Період',
 						'format' => ['date', 'php:MY'],
+					'pageSummary' => 'Всього',
+					'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 				],
 //								[
 //									'attribute' => 'tipposl',
@@ -59,10 +67,7 @@
 //									'attribute' => 'ed_izm',
 //									'label' => 'Од. вим',
 //								],
-//								[
-//									'attribute' => 'sum',
-//									'label' => 'Сумма',
-//								],
+
 //				'period',
 				'tipposl',
 				'lgot',
@@ -70,11 +75,16 @@
                 'vidpokaz',
 				'pokaznik',
 				'ed_izm',
+					[
+						'attribute' => 'sum',
+						'format'=>['decimal', 2],
+						'pageSummary'=>true,
+					],
 //				'nnorma',
-				'sum',
 //				['class' => 'yii\grid\ActionColumn'],
 				],
 				'resizableColumns'=>true,
+				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
@@ -85,13 +95,13 @@
 ////			'beforeGrid'=>'My fancy content before.',
 ////			'afterGrid'=>'My fancy content after.',
 //				],
-				'panel' => [
-					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($abon->schet).'</h3>',
-					'type'=>'primary',
-//					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
-//					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-					'footer'=>false
-				],
+//				'panel' => [
+//					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($abon->schet).'</h3>',
+//					'type'=>'primary',
+////					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
+////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+//					'footer'=>true
+//				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],
@@ -106,7 +116,8 @@
 //					],
 //					'{export}',
 //					'{toggleData}',
-				]
+				],
+//				'showPageSummary' => true
 			]);
 		}
 	?>
