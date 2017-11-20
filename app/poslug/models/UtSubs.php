@@ -55,7 +55,7 @@ class UtSubs extends \yii\db\ActiveRecord
             'id_org' => Yii::t('easyii', 'Id Org'),
             'id_abonent' => Yii::t('easyii', 'Id Abonent'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
-			'tipposl' => Yii::t('app', 'Tipposl'),
+			'tipposl' => Yii::t('easyii', 'Tipposl'),
             'sum' => Yii::t('easyii', 'Sum'),
 			'sum_ob' => Yii::t('easyii', 'Sum Ob'),
         ];
