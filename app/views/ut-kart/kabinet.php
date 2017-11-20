@@ -42,11 +42,10 @@ $this->title = $model->fio;
 			'label'=>'<i class="glyphicon glyphicon-usd"></i> Оплата',
 			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-user"></i> Супсидія',
-//			'content'=>'dgfdgggggggggggggggggggg',
-////			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
+		[
+			'label'=>'<i class="glyphicon glyphicon-user"></i> Субсидія',
+			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+		],
 		[
 			'label'=>'<i class="glyphicon glyphicon-retweet"></i> Зведена відомість',
 			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),

@@ -9,6 +9,7 @@ use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
 use app\poslug\models\UtOrg;
 use app\poslug\models\UtPosl;
+use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarifab;
 use Yii;
 use app\models\UtKart;
@@ -399,6 +400,14 @@ class UtKartController extends Controller
 				$tt = ArrayHelper::toArray($inf);
 				$dptar[$org->id_org][$abon->id] = $dataProvider7;
 
+				$sub = UtSubs::find();
+				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+				$dataProvider8 = new ActiveDataProvider([
+					'query' => $sub,
+				]);
+
+				$dpsub[$org->id_org][$abon->id] = $dataProvider8;
+
 			}
 		}
 //		$dpinfo = new ActiveDataProvider([
@@ -414,7 +423,7 @@ class UtKartController extends Controller
 			'dpnar' => $dpnar,
 			'dppos' => $dppos,
 			'dptar' => $dptar,
-			'dptar' => $dptar,
+			'dpsub' => $dpsub,
 			'orgs' => $orgs,
 		]);
 	}
