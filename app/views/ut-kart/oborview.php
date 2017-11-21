@@ -27,7 +27,7 @@
 			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
 
 			<?php
-
+            $allsum = $dataProvider[$abon->id]->getModels();
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
 				'showPageSummary' => true,
@@ -88,13 +88,23 @@
 ////			'beforeGrid'=>'My fancy content before.',
 ////			'afterGrid'=>'My fancy content after.',
 //				],
-//				'panel' => [
+				'panel' => [
 //					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($abon->schet).'</h3>',
 //					'type'=>'primary',
-////					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
-////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-//					'footer'=>false
-//				],
+//					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
+					'after'=>function($allsum){
+						$summ = 0;
+						foreach($allsum as $sum)
+						{
+							if ($sum > 0)
+							{
+								$summ = $summ + $sum;
+							}
+						}
+						return '<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($summ).'</h3>';
+					},
+//					'footer'=>true,
+				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],

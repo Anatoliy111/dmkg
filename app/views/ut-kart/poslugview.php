@@ -23,7 +23,11 @@
 	<?php
 		foreach ($abonents as $abon) {
 
-//
+			?>
+			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+
+			<?php
+
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
 
