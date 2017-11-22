@@ -6,8 +6,9 @@ use yii\helpers\Html;
 use yii\easyii\models\Tag;
 use yii\easyii\models\TagAssign;
 use yii\easyii\modules\gallery\api\Gallery;
+	use yii\widgets\Pjax;
 
-$this->title = $news->seo('title', $news->model->title);
+	$this->title = $news->seo('title', $news->model->title);
 $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['news/index']];
 //$this->params['breadcrumbs'][] = $news->model->title;
 
@@ -27,12 +28,12 @@ $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['news/index']];
 						<!-- .post-meta -->
 						<div class="post-meta">
 							<div class="date-holder">
-								<span><?php echo Yii::$app->formatter->asDateTime($news->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($news->time, "MMM") ?>
+								<span><?php echo Yii::$app->formatter->asDateTime($news->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($news->time, "php:mm") ?>
 							</div>
 							<div class="title-holder">
 								<h2 class="title"><?= $news->title ?></h2>
 								<ul>
-									<li><a>Дата : <?php echo Yii::$app->formatter->asDate($news->time) ?></a></li>
+									<li><a>Дата : <?php echo Yii::$app->formatter->asDate($news->time, 'long') ?></a></li>
 									<li><a>Переглядів : <?= $news->views ?></a></li>
 									<li><a>Теги:
 											<?php foreach($news->tags as $tag) : ?>
@@ -47,9 +48,11 @@ $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['news/index']];
 							<a href="<?= Url::to([$news->image]) ?>"><?= Html::img($news->thumb(350, 250)) ?></a>
 							<?php }?>
 						<!-- .content -->
-						<div class="content">
-							<p><?= $news->text ?></p>
+
+						<div class="content"  >
+							<p><?= $news->text	?></p>
 						</div><!-- /.content -->
+
 					</div>
 
 				<?php if(count($news->photos)) : ?>
@@ -76,7 +79,7 @@ $this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['news/index']];
 				<h4>Популярні новини</h4>
 				<?php foreach(News::popular(3) as $news) : ?>
 					<ul class="p0 post_item">
-						<li><?php echo Yii::$app->formatter->asDate($news->time) ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
+						<li><?php echo Yii::$app->formatter->asDate($news->time, 'long') ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
 					</ul>
 				<?php endforeach;?>
 				<h4>Теги</h4>

@@ -86,12 +86,12 @@ function renderNode($node)
 							<!-- .post-meta -->
 							<div class="post-meta">
 								<div class="date-holder">
-									<span><?php echo Yii::$app->formatter->asDateTime($item->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($item->time, "MMM") ?>
+									<span><?php echo Yii::$app->formatter->asDateTime($item->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($item->time, "php:mm") ?>
 								</div>
 								<div class="title-holder">
 									<h2 class="title"><?= $item->title ?></h2>
 									<ul>
-										<li><a>Дата : <?php echo Yii::$app->formatter->asDate($item->time) ?></a></li>
+										<li><a>Дата : <?php echo Yii::$app->formatter->asDate($item->time, 'long') ?></a></li>
 										<li><a>Переглядів : <?= $item->views ?></a></li>
 										<li><a>Теги:
 												<?php foreach($item->tags as $tag) : ?>
@@ -132,12 +132,12 @@ function renderNode($node)
 						<!-- .post-meta -->
 						<div class="post-meta">
 							<div class="date-holder">
-								<span><?php echo Yii::$app->formatter->asDateTime($item->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($item->time, "MMM") ?>
+								<span><?php echo Yii::$app->formatter->asDateTime($item->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($item->time, "php:mm") ?>
 							</div>
 							<div class="title-holder">
 								<h2 class="title"><?= $item->title ?></h2>
 								<ul>
-									<li><a>Дата : <?php echo Yii::$app->formatter->asDate($item->time) ?></a></li>
+									<li><a>Дата : <?php echo Yii::$app->formatter->asDate($item->time, 'long') ?></a></li>
 									<li><a>Переглядів : <?= $item->views ?></a></li>
 									<li><a>Теги:
 											<?php foreach($item->tags as $tag) : ?>

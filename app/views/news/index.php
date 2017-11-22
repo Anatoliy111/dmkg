@@ -37,12 +37,12 @@ $this->params['breadcrumbs'][] = $page->model->title;
 					<!-- .post-meta -->
 					<div class="post-meta">
 						<div class="date-holder">
-							<span><?php echo Yii::$app->formatter->asDateTime($item->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($item->time, "MMM") ?>
+							<span><?php echo Yii::$app->formatter->asDateTime($item->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($item->time, "php:mm") ?>
 						</div>
 						<div class="title-holder">
 							<h2 class="title"><?= $item->title ?></h2>
 							<ul>
-								<li><a>Дата : <?php echo Yii::$app->formatter->asDate($item->time) ?></a></li>
+								<li><a>Дата : <?php echo Yii::$app->formatter->asDate($item->time, 'long') ?></a></li>
 								<li><a>Переглядів : <?= $item->views ?></a></li>
 									<li><a>Теги:
 										<?php foreach($item->tags as $tag) : ?>
@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $page->model->title;
 				<ul class="p0 post_item">
 
 
-					<li><?php echo Yii::$app->formatter->asDate($news->time) ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
+					<li><?php echo Yii::$app->formatter->asDate($news->time, 'long') ?><a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
 <!--					<li>AUG 12,2015<a href="">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
 <!--					<li>AUG 12,2015<a href="" class="bottom_item">Making Cents Investments in Start-ups become profitable for Companies ...</a></li>-->
 				</ul>

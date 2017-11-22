@@ -20,7 +20,8 @@ class NewsController extends \yii\web\Controller
         }
 
         return $this->render('view', [
-            'news' => $news
+            'news' => $news,
+//			'data-pjax' => false
         ]);
     }
 }

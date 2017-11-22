@@ -58,12 +58,12 @@ return $html;
 								<!-- .post-meta -->
 								<div class="post-meta">
 									<div class="date-holder">
-										<span><?php echo Yii::$app->formatter->asDateTime($article->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($article->time, "MMM") ?>
+										<span><?php echo Yii::$app->formatter->asDateTime($article->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($article->time, "php:mm") ?>
 									</div>
 									<div class="title-holder">
 										<h2 class="title"><?= $article->title ?></h2>
 										<ul>
-											<li><a>Дата : <?php echo Yii::$app->formatter->asDate($article->time) ?></a></li>
+											<li><a>Дата : <?php echo Yii::$app->formatter->asDate($article->time, 'long') ?></a></li>
 											<li><a>Переглядів : <?= $article->views ?></a></li>
 											<li><a>Теги:
 													<?php foreach($article->tags as $tag) : ?>
