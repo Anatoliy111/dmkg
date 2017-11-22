@@ -147,9 +147,9 @@ $search = '';
             ])?>
         <?php endif; ?>
 
-		<?php Pjax::begin(); ?>
+
 			<?= $content ?>
-		<?php Pjax::end(); ?>
+
 
         <div class="push"></div>
     </main></span>
