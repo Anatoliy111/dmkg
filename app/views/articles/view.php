@@ -117,4 +117,3 @@ return $html;
     <br/>
 <?php endif; ?>
 
-<!--<small class="text-muted">Views: --><?//= $article->views?><!--</small>-->
