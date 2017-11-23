@@ -149,7 +149,7 @@ $this->title = $model->fio;
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>
-							'<h3 class="panel-title" style="text-align:right">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'php:MY').'</h3>'.
+							'<h3 class="panel-title" style="text-align:right">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL-Y').'</h3>'.
 								TabsX::widget([
 								'items'=>$items[$org->id_org],
 								'position'=>TabsX::POS_ABOVE,

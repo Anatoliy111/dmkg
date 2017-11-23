@@ -92,17 +92,17 @@
 //					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($abon->schet).'</h3>',
 //					'type'=>'primary',
 //					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
-					'after'=>function($allsum){
-						$summ = 0;
-						foreach($allsum as $sum)
-						{
-							if ($sum > 0)
-							{
-								$summ = $summ + $sum;
-							}
-						}
-						return '<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($summ).'</h3>';
-					},
+//					'after'=>function($allsum){
+//						$summ = 0;
+//						foreach($allsum as $sum)
+//						{
+//							if ($sum > 0)
+//							{
+//								$summ = $summ + $sum;
+//							}
+//						}
+//						return $summ;
+//					},
 //					'footer'=>true,
 				],
 //		'panelBeforeTemplate' => [
