@@ -9,10 +9,28 @@
 
 //use yii\widgets\DetailView;
 	use kartik\detail\DetailView;
-	use yii\helpers\ArrayHelper;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 
 	/* @var $this yii\web\View */
 /* @var $model app\models\UtKart */
+
+
+		Modal::begin([
+			'header' => '<h2>Змінити пароль</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+			'id' => 'passmodal-1',
+			'size' => 'modal-md',
+
+		]);
+
+echo $this->render('pass', ['model' => $model]);
+Modal::end();
+
+
+
 
 $this->title = $model->fio;
 //$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
@@ -68,11 +86,13 @@ $this->title = $model->fio;
 			<?= Html::a('Вихід', ['ut-kart/logout'], ['class' => 'btn btn-primary']) ?>
 
 		</div>
+
 		<div class="col-xs-6">
 			<h2>Кабінет споживача</h2>
 
 
 		</div>
+
 
 
 <!--		<div class="col-xs-4">-->
@@ -135,7 +155,11 @@ $this->title = $model->fio;
 			</div>
 
 
+		<div class="col-xs-2">
 
+			<?= Html::a("Змінити пароль", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn-sm btn-success'])?>
+
+		</div>
 
 
 		<div class="col-xs-12">

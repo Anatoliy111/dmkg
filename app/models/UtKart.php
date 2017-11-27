@@ -33,7 +33,8 @@ class UtKart extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-
+    public $pass1;
+    public $pass2;
 	public $enterpass;
     public $periodd;
     public $lastperiod;
@@ -51,7 +52,7 @@ class UtKart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_f', 'fio', 'id_ulica', 'dom', 'enterpass'], 'required'],
+            [['name_f', 'fio', 'id_ulica', 'dom', 'enterpass','pass1','pass2'], 'required'],
             [['id_ulica','ur_fiz', 'id_oldkart','status'], 'integer'],
             [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o','email'], 'string', 'max' => 30],
@@ -67,6 +68,11 @@ class UtKart extends \yii\db\ActiveRecord
 //			[['enterschet'], 'string', 'min' => 8],
 			[['enterpass'], 'string', 'min' => 7],
 			[['auth_key', 'acess_token'], 'string', 'max' => 32],
+            [['pass1'], 'string', 'max' => 64],
+            [['pass2','pass','passopen'], 'string', 'max' => 64],
+            [['pass1'], 'string', 'min' => 5],
+            [['pass2'], 'string', 'min' => 5],
+            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
 //			[['enterpass'], 'compare',  'compareValue' => $this->pass, 'operator' => '==', 'message' => 'Код доступу не вірний !!!'],
         ];
     }
