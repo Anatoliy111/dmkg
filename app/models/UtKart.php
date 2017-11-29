@@ -18,13 +18,14 @@ use Yii;
  * @property int $id_ulica вулиця
  * @property string $dom номер будинку
  * @property string $korp корпус
+ * @property string $passopen пароль
+ * @property string $date_pass період
  * @property string $kv квартира
  * @property int $ur_fiz юр чи фіз
  * @property string $pass пароль
  * @property string $telef телефон
  * @property string $email
  * @property string $status
- * @property int $id_oldkart стара база
  *
  * @property UtUlica $ulica
  */
@@ -40,6 +41,8 @@ class UtKart extends \yii\db\ActiveRecord
     public $lastperiod;
     public $MonthYear;
 
+	const SCENARIO_ADDR = 'adres';
+	const SCENARIO_PASS = 'password';
 
     public static function tableName()
     {
@@ -52,11 +55,12 @@ class UtKart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_f', 'fio', 'id_ulica', 'dom', 'enterpass','pass1','pass2'], 'required'],
-            [['id_ulica','ur_fiz', 'id_oldkart','status'], 'integer'],
+            [['pass1', 'pass2'], 'required'],
+            [['id_ulica','ur_fiz', 'status'], 'integer'],
             [['name_f'], 'string', 'max' => 50],
             [['name_i', 'name_o','email'], 'string', 'max' => 30],
-            [['fio', 'pass'], 'string', 'max' => 64],
+            [['fio'], 'string', 'max' => 64],
+			[['date_pass'], 'safe'],
             [['idcod'], 'string', 'max' => 25],
             [['dom'], 'string', 'max' => 4],
             [['kv'], 'string', 'max' => 5],
@@ -66,14 +70,13 @@ class UtKart extends \yii\db\ActiveRecord
             [['telef'], 'string', 'max' => 15],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
 //			[['enterschet'], 'string', 'min' => 8],
-			[['enterpass'], 'string', 'min' => 7],
-			[['auth_key', 'acess_token'], 'string', 'max' => 32],
+			[['enterpass'], 'string', 'min' => 5],
             [['pass1'], 'string', 'max' => 64],
             [['pass2','pass','passopen'], 'string', 'max' => 64],
             [['pass1'], 'string', 'min' => 5],
             [['pass2'], 'string', 'min' => 5],
             ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
-//			[['enterpass'], 'compare',  'compareValue' => $this->pass, 'operator' => '==', 'message' => 'Код доступу не вірний !!!'],
+			[['enterpass'], 'compare',  'compareValue' => $this->pass, 'operator' => '==', 'message' => 'Код доступу не вірний !!!'],
         ];
     }
 
@@ -98,15 +101,24 @@ class UtKart extends \yii\db\ActiveRecord
             'pass' => Yii::t('easyii', 'Pass'),
 			'status' => Yii::t('easyii', 'Status'),
             'telef' => Yii::t('easyii', 'Telef'),
-            'id_oldkart' => Yii::t('easyii', 'Id Oldkart'),
 			'enterpass' => Yii::t('easyii', 'Еnterpass'),
 			'MonthYear' => 'Період',
+			'pass1' => Yii::t('easyii', 'Pass1'),
+			'pass2' => Yii::t('easyii', 'Pass2'),
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
+	public function scenarios()
+	{
+		$scenarios = parent::scenarios();
+		$scenarios[self::SCENARIO_ADDR] = [['id_ulica', 'dom', 'enterpass'], 'required'];
+		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
+		return $scenarios;
+	}
+
     public function getUlica()
     {
         return $this->hasOne(UtUlica::className(), ['id' => 'id_ulica']);

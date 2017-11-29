@@ -322,6 +322,22 @@ class UtKartController extends Controller
 			return $this->redirect(['ut-kart/index']);
 		}
 
+//		$model->scenario = 'password';
+
+		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+			$model->pass =  md5($model->id.trim($model->pass2));
+			$model->passopen = trim($model->pass2);
+			$model->date_pass = date('Y-m-d');
+
+			$model->save();
+			$session->setFlash('pass', 'Пароль змінено');
+			return $this->redirect(['kabinet', 'id' => $model->id]);
+		}
+
+		$model->pass1 = '';
+		$model->pass2 = '';
+
 //		$session['period'] = UtObor::find()->max('period');
 //		$session['period'] = $model->period();
 //		$session['period'] = $model->lastperiod();
@@ -535,7 +551,7 @@ class UtKartController extends Controller
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['view', 'id' => $model->id]);
 		} else {
-			return $this->render('update', [
+			return $this->render('pass', [
 				'model' => $model,
 			]);
 		}

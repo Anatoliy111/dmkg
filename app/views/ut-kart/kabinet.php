@@ -2,6 +2,7 @@
 
 	use kartik\builder\Form;
 	use kartik\form\ActiveForm;
+	use kartik\growl\Growl;
 	use kartik\helpers\Html;
 	use kartik\select2\Select2;
 	use kartik\tabs\TabsX;
@@ -11,12 +12,15 @@
 	use kartik\detail\DetailView;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
+	use yii\widgets\Pjax;
 
 	/* @var $this yii\web\View */
 /* @var $model app\models\UtKart */
 
+	?>
+	<?php Pjax::begin(); ?>
 
-		Modal::begin([
+<?php 	Modal::begin([
 			'header' => '<h2>Змінити пароль</h2>',
 
 //			'toggleButton' => ['label' => 'click me'],
@@ -25,14 +29,57 @@ use yii\helpers\ArrayHelper;
 			'size' => 'modal-md',
 
 		]);
-
-echo $this->render('pass', ['model' => $model]);
-Modal::end();
+?>
 
 
+<h1><?= Html::encode($this->title) ?></h1>
 
 
-$this->title = $model->fio;
+<?php $form = ActiveForm::begin([
+	'id' => 'pass-form1',
+
+]); ?>
+
+<?=	 $form->field($model, 'pass1')->passwordInput(['maxlength' => true])?>
+<?=    $form->field($model, 'pass2')->passwordInput(['maxlength' => true])?>
+<div class="buttons" style="padding-bottom: 20px">
+	<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+</div>
+<?php
+	ActiveForm::end();
+?>
+
+<?php Modal::end(); ?>
+
+<div class="row">
+	<?php
+
+		$session = Yii::$app->session;
+		if ($session->hasFlash('pass')) {
+
+			echo Growl::widget([
+				'type' => Growl::TYPE_SUCCESS,
+//				'title' => 'Помилка!',
+//				'icon' => 'glyphicon glyphicon-remove-sign',
+				'body' => $session->getFlash('pass'),
+				'showSeparator' => true,
+				'delay' => 0,
+				'pluginOptions' => [
+//						'showProgressbar' => true,
+					'placement' => [
+						'from' => 'top',
+						'align' => 'left',
+					]
+				]
+			]);
+		}
+	?>
+</div>
+
+<?php
+
+
+	$this->title = $model->fio;
 //$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
 	foreach ($orgs as $k=>$org)
@@ -95,34 +142,6 @@ $this->title = $model->fio;
 
 
 
-<!--		<div class="col-xs-4">-->
-<!--			--><?php
-//
-//				$form = ActiveForm::begin();
-//
-//				echo Select2::widget([
-//					'model' => $model,
-//					'attribute' => 'MonthYear',
-//					'data' => ArrayHelper::map(\app\poslug\models\UtObor::find()->groupBy('period')->all(),'period','period'),
-//					'hideSearch' => true,
-////					'showToggleAll' => true,
-//					'addon' => [
-//						'append' => [
-//							'content' => Html::submitButton('Go', ['class'=>'btn btn-primary']),
-//							'asButton' => true
-//						],
-//					],
-//					'pluginOptions' => [
-//						'allowClear' => true,
-//						'format' => ['date', 'php:MY'],
-//					],
-//				]);
-//
-//				ActiveForm::end();
-//			?>
-<!---->
-<!---->
-<!--		</div>-->
 
 			<div class="col-sm-12">
 
@@ -228,5 +247,5 @@ $this->title = $model->fio;
 //				?>
 
     </div>
-
+	<?php Pjax::end(); ?>
 </div>
