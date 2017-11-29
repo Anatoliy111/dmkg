@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'date_pass',
-				'label' => 'Дата авторизації',
+//				'label' => 'Дата авторизації',
 			],
 //			[
 //				'class' => '\kartik\grid\ActionColumn',
