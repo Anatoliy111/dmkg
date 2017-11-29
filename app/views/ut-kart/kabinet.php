@@ -21,7 +21,7 @@ use yii\helpers\ArrayHelper;
 	<?php Pjax::begin(); ?>
 
 <?php 	Modal::begin([
-			'header' => '<h2>Змінити пароль</h2>',
+			'header' => '<h2>Змінити код доступу</h2>',
 
 //			'toggleButton' => ['label' => 'click me'],
 //			'footer' => 'Низ окна',
@@ -176,7 +176,7 @@ use yii\helpers\ArrayHelper;
 
 		<div class="col-xs-2">
 
-			<?= Html::a("Змінити пароль", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn-sm btn-success'])?>
+			<?= Html::a("Змінити код доступу", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn-sm btn-success'])?>
 
 		</div>
 
