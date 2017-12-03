@@ -149,14 +149,27 @@ function importUL($dbf,$i)
 	if ($fields['deleted'] <> 1)
 	{
 		$ulic = encodestr(trim(iconv('CP866','utf-8',$fields['UL'])));
-		if (UtUlica::findOne(['ul' => $ulic])== null)
+		$FindModel = UtUlica::findOne(['ul' => $ulic]);
+		if ($FindModel== null)
 		{
-			$ulic = encodestr(trim(iconv('CP866','utf-8',$fields['UL'])));
-
 			$model = new UtUlica();
 			$model->ul = $ulic;
 			$model->kl = $fields['KL'];
 			if ($model->validate() && $model->save())
+			{
+				return true;
+			}
+			else
+			{
+				die("Error!!!  Insert is $dbf  to UtUlica $ulic");
+//				return false;
+			}
+		}
+		elseif ($FindModel->val != $fields['VAL'])
+		{
+			$FindModel->ul = $ulic;
+			$FindModel->kl = $fields['KL'];
+			if ($FindModel->validate() && $FindModel->save())
 			{
 				return true;
 			}

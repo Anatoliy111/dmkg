@@ -69,7 +69,7 @@ class DefaultController extends Controller
 				$model->File = UploadedFile::getInstance($model, 'File');
 				if ($model->uploadFile()) {
 					if ($model->UnZIP($model->File)) {
-						$model->progress = true;
+//						$model->progress = true;
 					}
 //					return $this->redirect(['upload', 'model' => $model]);
 				}
@@ -78,7 +78,8 @@ class DefaultController extends Controller
 
 		}
 
-		return $this->render('upload', ['model' => $model]);
+		return $this->render('upload', ['model' => $model,
+		]);
 	}
 
 

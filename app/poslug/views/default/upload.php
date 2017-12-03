@@ -192,6 +192,7 @@ use yii\base\Event;
 
 	$(function (){
 	    //var win = $('#Modalprogress7');
+	    //var url = "'.Url::toRoute('default/upload?log=').'";
         //$('#Modalprogress7').modal({backdrop: false});
         //$.ajax({url: "importprogress"});
  	    $('#Modalprogress7').show();

@@ -40,9 +40,10 @@ use yii\bootstrap\Alert;
 //	]
 //]);
 
-	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+//	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
 
-//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','POSL.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
 //	$NameBase = ['NACH.DBF','OBOR.DBF'];
 
 //		$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','NTARIF.DBF','POSL.DBF'];
@@ -81,10 +82,10 @@ if ($DirFiles<>'')
 	$_SESSION['NomBase']= 0;
 	$_SESSION['NomRec']= 0;
 	$_SESSION['EndCount'] = $RowsCount;
-    UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-	UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-	UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-	UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//    UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 
 
 }
