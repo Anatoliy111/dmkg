@@ -11,7 +11,8 @@ use Yii;
  * @property int $id_org организация
  * @property int $schet особовий рахунок
  * @property string $fio ФИО
- * @property int $id_kart адресна картка 
+ * @property int $id_kart адресна картка
+ * @property int $val
  * @property string $note заметки
 
  *

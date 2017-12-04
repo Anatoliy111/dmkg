@@ -16,6 +16,7 @@ use Yii;
  * @property double $kortarif
  * @property double $endtarif
  * @property int $days
+ * @property int $val
  * @property int $del
  *
  * @property UtTipposl $tipposl

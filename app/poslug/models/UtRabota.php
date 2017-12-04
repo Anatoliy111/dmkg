@@ -13,7 +13,9 @@ use Yii;
  * @property string $adress адреса
  * @property string $tel телефон
  * @property int $id_oldorg
+ * @property int $val
  * @property int $id_org
+ * @property int $del
  *
  * @property UtAbonent[] $utAbonents
  * @property UtUtrim[] $utUtrims
@@ -34,7 +36,7 @@ class UtRabota extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_oldorg'], 'integer'],
+            [['id_oldorg','val','del'], 'integer'],
 			[['id_org'], 'integer'],
             [['name'], 'string', 'max' => 128],
             [['fio_ruk', 'adress'], 'string', 'max' => 64],

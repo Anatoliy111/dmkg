@@ -188,7 +188,8 @@ function importWIDS($dbf,$i)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
-		if (UtTipposl::findOne(['old_tipusl' => $fields['WID']])== null)
+		$FindModel = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+		if ($FindModel== null)
 		{
 
 			$model = new UtTipposl();
@@ -209,6 +210,22 @@ function importWIDS($dbf,$i)
 			}
 
 		}
+		elseif ($FindModel->val != $fields['VAL'])
+		{
+			$FindModel->old_tipusl = $fields['WID'];
+			$FindModel->poslug = encodestr(trim(iconv('CP866','utf-8',$fields['NAIM'])));
+			$FindModel->ed_izm = encodestr(trim(iconv('CP866','utf-8',$fields['PAR'])));
+			if ($FindModel->validate())
+			{
+				$FindModel->save();
+				return true;
+			}
+			else
+			{
+				die("Error!!!  Insert is $dbf  to UtTipposl $FindModel->poslug");
+//				return false;
+			}
+		}
 	}
 	return true;
 }
@@ -218,7 +235,8 @@ function importORGAN($dbf,$i)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
-		if (UtRabota::findOne(['id_oldorg' => $fields['ORG']])== null )
+		$FindModel = UtRabota::findOne(['id_oldorg' => $fields['ORG']]);
+		if ($FindModel== null )
 		{
 
 			$model = new UtRabota();
@@ -238,6 +256,23 @@ function importORGAN($dbf,$i)
 			}
 
 		}
+		elseif ($FindModel->val != $fields['VAL'])
+		{
+			$FindModel->id_oldorg = $fields['ORG'];
+			$FindModel->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+			$FindModel->id_org = 1;
+			$FindModel->fio_ruk = encodestr(trim(iconv('CP866','utf-8',$fields['RUK'])));
+			if ($FindModel->validate())
+			{
+				$FindModel->save();
+				return true;
+			}
+			else
+			{
+				die("Error!!!  Insert is $dbf  to UtRabota $FindModel->name");
+//			return false;
+			}
+		}
 	}
 	return true;
 }
@@ -254,13 +289,13 @@ function importKART($dbf,$i)
 			if ($Abon== null)
 			{
 
-				$modelKt = NewUpKart($fields,null);
+				$modelKt = NewUpKart($fields,$Abon);
 
 				if ($modelKt->validate())
 				{
 					$modelKt->save();
 
-					if (importAbon($fields,$schet,$modelKt->id))
+					if (importAbon($fields,$schet,$modelKt->id,$Abon))
 					   return true;
 					else
 						die("Error!!!  Insert is $dbf  to UtAbonent $schet");
@@ -277,36 +312,47 @@ function importKART($dbf,$i)
 			}
 			else
 			{
+
 				if ($Abon->id_kart == null)
 				{
 					$modelKt = NewUpKart($fields,null);
-
 					if ($modelKt->validate())
 					{
 						$modelKt->save();
-
 						$Abon->id_kart = $modelKt->id;
-
 						if ($Abon->validate())
 						{
 							$Abon->save();
-							return true;
+							if ($Abon->val != $fields['VAL'])
+							{
+								importAbon($fields,$schet,$modelKt->id,$Abon);
+							}
 						}
 						else
 							die("Error!!!  Edit id_kart is $dbf  to UtAbonent $Abon->schet");
-
 					}
 					else
 					{
-
 						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
-
 					}
-
-
+				}
+				elseif ($Abon->val != $fields['VAL'])
+				{
+					$modelKt = UtKart::findOne(['id' => $Abon->id_kart]);
+					$modelKt = NewUpKart($fields,$modelKt);
+					if ($modelKt->validate())
+					{
+						$modelKt->save();
+					}
+					else
+					{
+						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
+					}
+					importAbon($fields,$schet,$modelKt->id,$Abon);
 
 				}
-				importPokaz($fields,$Abon);
+
+
 			}
 		}
 	}
@@ -371,18 +417,29 @@ function importKART($dbf,$i)
 	}
 
 
-function importAbon($fields,$schet,$idkart)
+function importAbon($fields,$schet,$idkart,$Abon)
 {
-	$modelAb = new UtAbonent();
-	$modelAb->id_org = 1;
-	$modelAb->schet = $schet;
-	$modelAb->id_kart =  $idkart;
-	$modelAb->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1'])));
+	if ($Abon==null)
+	{
+		$modelAb = new UtAbonent();
+		$modelAb->id_org = 1;
+		$modelAb->schet = $schet;
+		$modelAb->id_kart =  $idkart;
+		$modelAb->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1'])));
+	}
+
+	else
+	{
+		$modelAb = $Abon;
+		$modelAb->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1'])));
+	}
+
+
 
 	if ($modelAb->validate())
 	{
 		$modelAb->save();
-		if (importPokaz($fields,$modelAb))
+		if (importPokaz($fields,$modelAb,$Abon))
 		return true;
 	}
 	else
@@ -394,18 +451,18 @@ function importAbon($fields,$schet,$idkart)
 
 }
 
-function importPokaz($fields,$idabon)
+function importPokaz($fields,$modelAb,$st)
 {
 	$array = ['KOLI_PF' => 12,'KOLI_P' => 5,'KOLI_K' => 4,'PLOS_BB' => 3,'PLOS_OB' => 2];
 
 	foreach ($array as $k => $v)
 	{
-		$FindPF = UtPokaz::findOne(['id_abonent' => $idabon->id,'id_vidpokaz' => $v]);
+		$FindPF = UtPokaz::findOne(['id_abonent' => $modelAb->id,'id_vidpokaz' => $v]);
 		if ($FindPF == null)
 		{
 			$model = new UtPokaz();
 			$model->id_vidpokaz = $v;
-			$model->id_abonent = $idabon->id;
+			$model->id_abonent = $modelAb->id;
 			$model->id_org = 1;
 			$model->pokaznik = $fields[$k];
 			if ($model->validate())
@@ -413,8 +470,22 @@ function importPokaz($fields,$idabon)
 				$model->save();
 			}
 			else
-				die("Error!!!  Insert to UtPokaz $idabon->schet $model->pokaznik");
+				die("Error!!!  Insert to UtPokaz $modelAb->schet $model->pokaznik");
 
+		}
+		elseif ($st<>null)
+		{
+			$model = $FindPF;
+			$model->id_vidpokaz = $v;
+			$model->id_abonent = $modelAb->id;
+			$model->id_org = 1;
+			$model->pokaznik = $fields[$k];
+			if ($model->validate())
+			{
+				$model->save();
+			}
+			else
+				die("Error!!!  Insert to UtPokaz $modelAb->schet $model->pokaznik");
 		}
 	}
 
@@ -490,6 +561,23 @@ function importNTARIF($dbf,$i)
 						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
 //			return false;
 					}
+				}
+				elseif ($FindTarifab->val != $fields['VAL'])
+				{
+					$model = $FindTarifab;
+					$model->id_org = 1;
+					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+					$model->tarif = $fields['TARIF'];
+					$model->kortarif = $fields['KORTARIF'];
+					$model->endtarif = $fields['ENDTARIF'];
+					$model->days = $fields['DAYS'];
+					if ($model->validate())
+					{
+						$model->save();
+						return true;
+					}
+					else
+					   die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
 				}
 
 
