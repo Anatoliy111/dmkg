@@ -58,7 +58,8 @@ class UtKartController extends Controller
     {
 		$kart = $this->findModel($id);
 //        if ($mode=='edit')
-//			$kart->scenario = 'password';
+//		$kart->scenario = $kart::SCENARIO_ADDR;
+
 		$query = UtAbonent::find();//->where(['id_kart' => $kart->id])->orderBy('id_org')->all();
 		$query->where(['id_kart' => $kart->id])->orderBy('id_org');
 		$dataProvider = new ActiveDataProvider([

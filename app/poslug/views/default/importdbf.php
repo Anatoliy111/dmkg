@@ -175,6 +175,7 @@ function importUL($dbf,$i,$Base)
 		{
 			$FindModel->ul = $ulic;
 			$FindModel->kl = $fields['KL'];
+			$FindModel->val = $fields['VAL'];
 			if ($FindModel->validate() && $FindModel->save())
 			{
 				return true;
@@ -270,6 +271,7 @@ function importORGAN($dbf,$i,$Base)
 			$FindModel->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 			$FindModel->id_org = 1;
 			$FindModel->fio_ruk = encodestr(trim(iconv('CP866','utf-8',$fields['RUK'])));
+			$FindModel->val = $fields['VAL'];
 			if ($FindModel->validate())
 			{
 				$FindModel->save();
@@ -379,7 +381,7 @@ function importKART($dbf,$i,$Base)
 			$modelKt = new UtKart();
 		else
 			$modelKt=$model;
-
+		$modelKt->scenario = 'adres';
 		$modelKt->name_f =encodestr(trim(iconv('CP866','utf-8',$fields['FIO'])));
 		$modelKt->name_i =encodestr(trim(iconv('CP866','utf-8',$fields['IM'])));
 		$modelKt->name_o =encodestr(trim(iconv('CP866','utf-8',$fields['OT'])));
@@ -446,6 +448,7 @@ function importAbon($fields,$schet,$idkart,$Abon)
 	{
 		$modelAb = $Abon;
 		$modelAb->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1'])));
+		$modelAb->val = $fields['VAL'];
 	}
 
 
@@ -589,6 +592,7 @@ function importNTARIF($dbf,$i,$Base)
 					$model->kortarif = $fields['KORTARIF'];
 					$model->endtarif = $fields['ENDTARIF'];
 					$model->days = $fields['DAYS'];
+					$model->val = $fields['VAL'];
 					if ($model->validate())
 					{
 						$model->save();
@@ -672,7 +676,7 @@ function importNTARIF($dbf,$i,$Base)
 			{
 				$posl = UtTipposl::findOne(['old_tipusl' => $wid]);
 				$abon = UtAbonent::findOne(['schet' => $schet]);
-				if ($abon <> null)
+				if ($abon <> null && $posl<>null)
 				{
 					$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $posl->id ]);
 					if ($findposl==null)
@@ -801,7 +805,8 @@ function importNTARIF($dbf,$i,$Base)
 							if ($findposl==null)
 							{
 //								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
-								Flash($Base,$findposl,'Not find is UtPosl: '.$schet.' '. $k);
+
+								Flash($Base,$findposl,'По абоненту '.$schet.' незнайдено послуги '.$k.' '.$tipposl->poslug);
 							}
 							else
 							{
@@ -926,7 +931,7 @@ function importNTARIF($dbf,$i,$Base)
 								$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
 								if ($findposl==null)
 								{
-									Flash($Base,$findposl,'Not find to UtPosl'.$schet.' ',$k);
+									Flash($Base,$findposl,'По абоненту '.$schet.' незнайдено послуги '.$k.' '.$tipposl->poslug);
 //									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
 								}
 								else
@@ -1011,16 +1016,22 @@ function encodestr($str)
 
 function Flash($Base,$Model,$str)
 {
-	$errors = $Model->getErrors();
-	foreach ($errors as $key =>$err) {
-		if (gettype($err)=='array') {
-			foreach ($err as $er) {
-				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$str.' '.$Model->formName().' '.$er.' '.$Model->getAttribute($key));
+	if ($Model<>null)
+	{
+		$errors = $Model->getErrors();
+		foreach ($errors as $key =>$err) {
+			if (gettype($err)=='array') {
+				foreach ($err as $er) {
+					Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$Model->formName().' '.$str.' '.$er.' '.$Model->getAttribute($key));
+				}
 			}
+			else
+				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$Model->formName().' '.$str.' '.$err.' '.$Model->getAttribute($key));
 		}
-		else
-			Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$str.' '.$Model->formName().' '.$err.' '.$Model->getAttribute($key));
 	}
+	else
+		Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$str);
+
 
 return true;
 }
