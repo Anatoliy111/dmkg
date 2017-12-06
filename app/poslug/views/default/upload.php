@@ -123,6 +123,7 @@ use yii\base\Event;
 
 		$js1 = <<< JS
 		   var timer;
+		   var url = 'upload';
 		   //var ttt = document.getElementById('percent1').value;
 
     // The function to refresh the progress bar.
@@ -151,7 +152,8 @@ use yii\base\Event;
             //$('#Modalprogress7').modal({show: false});
              //$('#Modalprogress7').remove();
 				alert("Импорт завершен");
-				location.replace();
+				window.location.href = url
+				//location.replace();
 			  }
 			  else {
 				 refreshProgress(percent);
@@ -181,6 +183,7 @@ use yii\base\Event;
        alert("Импорт прерван "+str);
        window.clearInterval(timer);
        return 100;
+
        //location.replace();
       //$("#Modalprogress7").modal('hide');
 
@@ -192,7 +195,7 @@ use yii\base\Event;
 
 	$(function (){
 	    //var win = $('#Modalprogress7');
-	    //var url = "'.Url::toRoute('default/upload?log=').'";
+	    //var url = "'.Url::toRoute('default/upload').'";
         //$('#Modalprogress7').modal({backdrop: false});
         //$.ajax({url: "importprogress"});
  	    $('#Modalprogress7').show();
@@ -291,7 +294,16 @@ JS;
 
 <?php
 		foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
-		echo '<div class="info' . $key . '">' . $message . "</div>\n";
+			echo '<div class="info">Імпорт виконано з помилками:</div>';
+			if (gettype($message)=='array')
+			{
+				foreach($message as $mes)
+				{
+					echo '<div class="info' . $key . '">' . $mes . "</div>\n";
+				}
+			}
+			else
+				echo '<div class="info' . $key . '">' . $message . "</div>\n";
 		}
 	?>
 

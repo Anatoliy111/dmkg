@@ -27,9 +27,12 @@ use yii\bootstrap\Modal;
 	use yii\bootstrap\Progress;
 	use yii\helpers\Html;
 
+
+
 	//	$_SESSION['RowsCount'] = $RowsCount;
 //	$process = $_SESSION['process'];
 	$_SESSION['Progress'] = $_SESSION['Progress'] + 1;
+
 //	$_SESSION['NameBase'] = $NameBase;
 //	$_SESSION['NomBase']= 0;
 //	$_SESSION['EndCount'] = $RowsCount;
@@ -115,8 +118,9 @@ $t = true;
 			for ($i = $start+1; $i <= $process; $i++)
 			{
 				$nomrec = $nomrec +1;
-				if (!$functionname($dbf,$nomrec))
-				      die("Error!!!  Return to false $functionname");
+				if (!$functionname($dbf,$nomrec,$Base))
+					  Yii::$app->session->AddFlash('alert-danger', 'Return to false '.$functionname);
+//				      die("Error!!!  Return to false $functionname");
 
 				if ($nomrec==$rowsCount)
 				{
@@ -143,7 +147,7 @@ $t = true;
 
 
 
-function importUL($dbf,$i)
+function importUL($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
@@ -161,7 +165,9 @@ function importUL($dbf,$i)
 			}
 			else
 			{
-				die("Error!!!  Insert is $dbf  to UtUlica $ulic");
+//				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$dbf.' '.$ulic.' ' );
+				Flash($Base,$model,$model->ul);
+//				die("Error!!!  Insert is $dbf  to UtUlica $ulic");
 //				return false;
 			}
 		}
@@ -175,7 +181,7 @@ function importUL($dbf,$i)
 			}
 			else
 			{
-				die("Error!!!  Insert is $dbf  to UtUlica $ulic");
+				Flash($Base,$FindModel,$FindModel->ul);
 //				return false;
 			}
 		}
@@ -183,7 +189,7 @@ function importUL($dbf,$i)
 	return true;
 }
 
-function importWIDS($dbf,$i)
+function importWIDS($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
@@ -205,32 +211,33 @@ function importWIDS($dbf,$i)
 			}
 			else
 			{
-				die("Error!!!  Insert is $dbf  to UtTipposl $model->poslug");
-//				return false;
+				Flash($Base,$model,$model->poslug);
+
 			}
 
 		}
-		elseif ($FindModel->val != $fields['VAL'])
-		{
-			$FindModel->old_tipusl = $fields['WID'];
-			$FindModel->poslug = encodestr(trim(iconv('CP866','utf-8',$fields['NAIM'])));
-			$FindModel->ed_izm = encodestr(trim(iconv('CP866','utf-8',$fields['PAR'])));
-			if ($FindModel->validate())
-			{
-				$FindModel->save();
-				return true;
-			}
-			else
-			{
-				die("Error!!!  Insert is $dbf  to UtTipposl $FindModel->poslug");
-//				return false;
-			}
-		}
+//		elseif ($FindModel->val != $fields['VAL'])
+//		{
+//			$FindModel->old_tipusl = $fields['WID'];
+//			$FindModel->poslug = encodestr(trim(iconv('CP866','utf-8',$fields['NAIM'])));
+//			$FindModel->ed_izm = encodestr(trim(iconv('CP866','utf-8',$fields['PAR'])));
+//			if ($FindModel->validate())
+//			{
+//				$FindModel->save();
+//				return true;
+//			}
+//			else
+//			{
+//				Flash($Base,$FindModel,$FindModel->poslug);
+//				die("Error!!!  Insert is $Base  to UtTipposl $FindModel->poslug");
+////				return false;
+//			}
+//		}
 	}
 	return true;
 }
 
-function importORGAN($dbf,$i)
+function importORGAN($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
@@ -251,7 +258,8 @@ function importORGAN($dbf,$i)
 			}
 			else
 			{
-				die("Error!!!  Insert is $dbf  to UtRabota $model->name");
+				Flash($Base,$model,$model->name);
+//				die("Error!!!  Insert is $dbf  to UtRabota $model->name");
 //			return false;
 			}
 
@@ -269,7 +277,8 @@ function importORGAN($dbf,$i)
 			}
 			else
 			{
-				die("Error!!!  Insert is $dbf  to UtRabota $FindModel->name");
+				Flash($Base,$FindModel,$FindModel->name);
+//				die("Error!!!  Insert is $dbf  to UtRabota $FindModel->name");
 //			return false;
 			}
 		}
@@ -277,7 +286,7 @@ function importORGAN($dbf,$i)
 	return true;
 }
 
-function importKART($dbf,$i)
+function importKART($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
@@ -298,12 +307,14 @@ function importKART($dbf,$i)
 					if (importAbon($fields,$schet,$modelKt->id,$Abon))
 					   return true;
 					else
-						die("Error!!!  Insert is $dbf  to UtAbonent $schet");
+						Flash($Base,$Abon,$schet);
+//						die("Error!!!  Insert is $dbf  to UtAbonent $schet");
 
 				}
 				else
 				{
-					die("Error!!!  Insert is $dbf  to UtKart $schet $modelKt->fio $Abon");
+					Flash($Base,$modelKt,$schet.' '.$modelKt->fio);
+//					die("Error!!!  Insert is $dbf  to UtKart $schet $modelKt->fio $Abon");
 //			        return false;
 				}
 
@@ -329,11 +340,13 @@ function importKART($dbf,$i)
 							}
 						}
 						else
-							die("Error!!!  Edit id_kart is $dbf  to UtAbonent $Abon->schet");
+							Flash($Base,$Abon,$schet);
+//							die("Error!!!  Edit id_kart is $dbf  to UtAbonent $Abon->schet");
 					}
 					else
 					{
-						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
+						Flash($Base,$modelKt,$schet.' '.$modelKt->fio);
+//						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
 					}
 				}
 				elseif ($Abon->val != $fields['VAL'])
@@ -346,7 +359,8 @@ function importKART($dbf,$i)
 					}
 					else
 					{
-						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
+						Flash($Base,$modelKt,$schet.' '.$modelKt->fio);
+//						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
 					}
 					importAbon($fields,$schet,$modelKt->id,$Abon);
 
@@ -444,7 +458,8 @@ function importAbon($fields,$schet,$idkart,$Abon)
 	}
 	else
 	{
-		die("Error!!!  Insert is UtAbonent $schet $idkart ");
+		Flash('KART.DBF',$modelAb,$schet);
+//		die("Error!!!  Insert is UtAbonent $schet $idkart ");
 	}
 
 	return true;
@@ -470,7 +485,7 @@ function importPokaz($fields,$modelAb,$st)
 				$model->save();
 			}
 			else
-				die("Error!!!  Insert to UtPokaz $modelAb->schet $model->pokaznik");
+				Flash('KART.DBF',$model,$modelAb->schet);
 
 		}
 		elseif ($st<>null)
@@ -485,14 +500,15 @@ function importPokaz($fields,$modelAb,$st)
 				$model->save();
 			}
 			else
-				die("Error!!!  Insert to UtPokaz $modelAb->schet $model->pokaznik");
+				Flash('KART.DBF',$model,$modelAb->schet);
+//				die("Error!!!  Insert to UtPokaz $modelAb->schet $model->pokaznik");
 		}
 	}
 
     return true;
 }
 
-function importNTARIF($dbf,$i)
+function importNTARIF($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
@@ -519,7 +535,8 @@ function importNTARIF($dbf,$i)
 			}
 			else
 			{
-				die("Error!!!  Insert is $dbf  to UtTarif $model->name");
+				Flash($Base,$model,$model->name);
+//				die("Error!!!  Insert is $dbf  to UtTarif $model->name");
 //			return false;
 			}
 
@@ -528,7 +545,7 @@ function importNTARIF($dbf,$i)
 	return true;
 }
 
-	function importPOSLTAR($dbf,$i)
+	function importPOSLTAR($dbf,$i,$Base)
 	{
 		$fields = dbase_get_record_with_names($dbf,$i);
 		if ($fields['deleted'] <> 1)
@@ -558,7 +575,8 @@ function importNTARIF($dbf,$i)
 					}
 					else
 					{
-						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
+						Flash($Base,$model,$schet.' '.$model->nametarif);
+//						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
 //			return false;
 					}
 				}
@@ -577,7 +595,8 @@ function importNTARIF($dbf,$i)
 						return true;
 					}
 					else
-					   die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
+						Flash($Base,$model,$schet.' '.$model->nametarif);
+//					   die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
 				}
 
 
@@ -589,7 +608,7 @@ function importNTARIF($dbf,$i)
 		return true;
 	}
 
-	 function importNach($dbf,$i)
+	 function importNach($dbf,$i,$Base)
 	{
 		$fields = dbase_get_record_with_names($dbf,$i);
 		if ($fields['deleted'] <> 1)
@@ -630,14 +649,15 @@ function importNTARIF($dbf,$i)
 					return true;
 				}
 				else
-					die("Error!!!  Insert is $dbf  to UtNarah $schet $FindTipPosl->poslug");
+					Flash($Base,$narah,$schet.' '.$narah->tipposl);
+//					die("Error!!!  Insert is $dbf  to UtNarah $schet $FindTipPosl->poslug");
 			}
 		}
 		return true;
 
 	}
 
-	function importObor($dbf,$i)
+	function importObor($dbf,$i,$Base)
 	{
 		$fields = dbase_get_record_with_names($dbf,$i);
 		if ($fields['deleted'] <> 1)
@@ -666,25 +686,19 @@ function importNTARIF($dbf,$i)
 
 						if ($abonposl->validate() & $abonposl->save())
 						{
-//									$abonposl->save();
-							if (NewObor($abonposl,$fields))
-								return true;
-							else
-								die("Error!!!  Insert is $dbf  to UtObor $schet $wid");
-
+							NewObor($abonposl,$fields);
 
 						}
 						else
 						{
-							die("Error!!! Insert to poslug $wid to abonent $schet");
+							Flash($Base,$abonposl,$schet);
+//							die("Error!!! Insert to poslug $wid to abonent $schet");
 						}
 					}
 					else
 					{
-						if (NewObor($findposl,$fields))
-							return true;
-						else
-							die("Error!!!  Insert is $dbf  to UtObor $schet $wid");
+						NewObor($findposl,$fields);
+
 					}
 
 
@@ -727,10 +741,11 @@ function importNTARIF($dbf,$i)
 		return true;
 	}
 	else
-		return false;
+		Flash('OBOR.DBF',$obor,$findposl->getAbonent()->asArray()->one()['schet'].' '.$obor->tipposl);
+	return true;
 }
 
-	function importOPL($dbf,$i)
+	function importOPL($dbf,$i,$Base)
 
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
@@ -786,16 +801,13 @@ function importNTARIF($dbf,$i)
 							if ($findposl==null)
 							{
 //								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
-								Alert::begin(['options' => ['class' => 'alert-danger'],]);
-								echo "Not find is UtPosl: '$schet $k'\n";
-								Alert::end();
+								Flash($Base,$findposl,'Not find is UtPosl: '.$schet.' '. $k);
 							}
 							else
 							{
-								if (NewOpl($findposl,$tipposl,$fields,$v))
-									return true;
-								else
-									die("Error!!!  Insert is $dbf  to UtOpl $schet $k");
+								NewOpl($findposl,$tipposl,$fields,$v);
+
+
 							}
 						}
 
@@ -840,10 +852,12 @@ function importNTARIF($dbf,$i)
 		$narah->save();
 		return true;
 	}
-	else return false;
+	else
+		Flash('OPL.DBF',$narah,$findposl->getAbonent()->asArray()->one()['schet'].' '.$tipposl->tipposl);
+	return true;
 }
 
-	function importSUBS($dbf,$i)
+	function importSUBS($dbf,$i,$Base)
 
 	{
 		$fields = dbase_get_record_with_names($dbf,$i);
@@ -912,14 +926,13 @@ function importNTARIF($dbf,$i)
 								$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
 								if ($findposl==null)
 								{
-									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
+									Flash($Base,$findposl,'Not find to UtPosl'.$schet.' ',$k);
+//									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
 								}
 								else
 								{
-									if (NewSubs($findposl,$fields,$tipposl,$sum,$sum_ob))
-										return true;
-									else
-										die("Error!!!  Insert is $dbf  to UtSubs $schet $k");
+									NewSubs($findposl,$fields,$tipposl,$sum,$sum_ob);
+
 								}
 							}
 
@@ -958,7 +971,9 @@ function importNTARIF($dbf,$i)
 			$narah->save();
 			return true;
 		}
-		else return false;
+		else
+			Flash('SUBS.DBF',$narah,$findposl->getAbonent()->asArray()->one()['schet'].' '.$tipposl->tipposl);
+	return false;
 	}
 
 
@@ -992,6 +1007,22 @@ function encodestr($str)
 
 	return preg_replace($patterns, $replacements, $str);
 
+}
+
+function Flash($Base,$Model,$str)
+{
+	$errors = $Model->getErrors();
+	foreach ($errors as $key =>$err) {
+		if (gettype($err)=='array') {
+			foreach ($err as $er) {
+				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$str.' '.$Model->formName().' '.$er.' '.$Model->getAttribute($key));
+			}
+		}
+		else
+			Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$str.' '.$Model->formName().' '.$err.' '.$Model->getAttribute($key));
+	}
+
+return true;
 }
 
 ?>
