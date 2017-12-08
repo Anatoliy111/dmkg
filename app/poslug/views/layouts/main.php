@@ -79,6 +79,8 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 						],
 					],
+					['label' => 'Утримання будинків', 'url' => '/poslug/ut-domzatrat/index'],
+
 //					[
 //						'label' => 'Введення даних',
 //						'items' => [

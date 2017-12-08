@@ -140,6 +140,7 @@ class UtKart extends \yii\db\ActiveRecord
             'fio' => Yii::t('easyii', 'Fio'),
             'idcod' => Yii::t('easyii', 'Idcod'),
             'id_ulica' => Yii::t('easyii', 'Id Ulica'),
+			'ulica' => Yii::t('easyii', 'Ulica'),
             'dom' => Yii::t('easyii', 'Dom'),
             'korp' => Yii::t('easyii', 'Korp'),
             'kv' => Yii::t('easyii', 'Kv'),

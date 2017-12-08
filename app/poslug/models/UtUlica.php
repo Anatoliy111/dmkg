@@ -18,6 +18,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property UtDom[] $utDoms
  * @property UtKart[] $utKarts
+ * @property UtDomzatrat[] $utDomzatrats
  */
 class UtUlica extends \yii\db\ActiveRecord
 {
@@ -143,6 +144,11 @@ class UtUlica extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UtKart::className(), ['id_ulica' => 'id']);
     }
+
+	public function getUtDomzatrats()
+	{
+		return $this->hasMany(UtKart::className(), ['id_ulica' => 'id']);
+	}
 
 	public function getUtOldDom()
 	{
