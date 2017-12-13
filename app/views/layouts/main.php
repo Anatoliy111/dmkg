@@ -80,7 +80,7 @@ $search = '';
 					</a>
 				</div>
 				<div class="padding-top">
-					<div class="float_right address">
+					<div class="float_left address">
 						<div class="top-info">
 							<div class="icon-box">
 								<span class=" icon icon-Pointer"></span>

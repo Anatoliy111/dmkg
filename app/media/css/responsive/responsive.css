@@ -245,6 +245,10 @@
 	header .bottom_header .float_right {
 		float:none;
 	}
+    .address {
+        display: none;
+    }
+
 	header .bottom_header {
 		height:auto;
 		padding-bottom:20px;
@@ -277,9 +281,9 @@
 		padding-top: 249px;
     	margin-left: 23%;
 	}
-	.mainmenu-area .find-advisor {
-		margin-right: 0;
-	}
+	/*.mainmenu-area .find-advisor {*/
+		/*margin-right: 0;*/
+	/*}*/
 	.we_are .right_side,
 	.we_are .left_side {
 		float:none;
@@ -569,6 +573,9 @@
 	header .bottom_header .logo {
 		float:none;
 	}
+    .address {
+        display: none;
+    }
 	.welcome_sec .welcome_heading p {
 		padding-left:0px;
 	}
@@ -1213,7 +1220,7 @@
 
 /* menu configuration styles */
 
-@media (max-width: 1170px) {
+@media (max-width: 992px) {
 	.navbar-toggle {
 	    display: block;
 	    margin: 6px 0;
