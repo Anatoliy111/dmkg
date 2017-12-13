@@ -78,9 +78,11 @@ class UtKartController extends Controller
 
 				if (Yii::$app->request->post('print')=='true')
 				{
+                    if (empty($kart->status))
+						Yii::$app->session->AddFlash('alert-danger', 'Абонент не авторизований, друк неможливий');
+                    else
+					    $this->actionReport($kart->id,$kart->pass2);
 
-
-					$this->actionReport($kart->id,$kart->pass2);
 					return $this->render('view', [
 						'model' => $kart,
 						'dataProvider' =>$dataProvider,

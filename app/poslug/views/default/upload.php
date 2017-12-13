@@ -143,6 +143,7 @@ use yii\base\Event;
 
           if($('#Modalprogress7').is(':visible')){
             if (percent >= 101) {
+            $("#mess").html("<p>" + percent + "</p>");
             //window.clearInterval(timer);
             //timer = window.setInterval(completed, 1000);
             //$('#Modalprogress7').modal('close');

@@ -1,16 +1,18 @@
 <?php
 
 
-	use kartik\detail\DetailView;
+
 	use kartik\dialog\Dialog;
 
 	use kartik\form\ActiveForm;
 	use kartik\grid\GridView;
 
+	use kartik\growl\Growl;
 	use yii\bootstrap\Modal;
 	use yii\helpers\Html;
 	use kartik\select2\Select2;
 	use \kartik\switchinput\SwitchInput;
+	use yii\widgets\DetailView;
 	use yii\widgets\Pjax;
 
 
@@ -111,8 +113,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?=
 		DetailView::widget([
 			'model'=>$model,
-			'hover'=>true,
-			'mode'=>'view',
 			'attributes'=>[
 			        	'fio',
                         'idcod',
@@ -193,5 +193,50 @@ $this->params['breadcrumbs'][] = $this->title;
 	]); ?>
 
 	<?php Pjax::end(); ?>
+
+
+	<?php
+		foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
+			if (gettype($message)=='array')
+			{
+				foreach($message as $mes)
+				{
+
+					echo Growl::widget([
+						'type' => Growl::TYPE_DANGER,
+						'title' => 'Помилка!',
+						'icon' => 'glyphicon glyphicon-remove-sign',
+						'body' => $mes,
+						'showSeparator' => true,
+						'delay' => false,
+						'pluginOptions' => [
+//						'showProgressbar' => true,
+							'placement' => [
+								'from' => 'top',
+								'align' => 'right',
+							]
+						]
+					]);
+				}
+			}
+			else
+
+			echo Growl::widget([
+				'type' => Growl::TYPE_DANGER,
+				'title' => 'Помилка!',
+				'icon' => 'glyphicon glyphicon-remove-sign',
+				'body' => $message,
+				'showSeparator' => true,
+				'delay' => false,
+				'pluginOptions' => [
+//						'showProgressbar' => true,
+					'placement' => [
+						'from' => 'top',
+						'align' => 'right',
+					]
+				]
+			]);
+		}
+	?>
 
 </div>

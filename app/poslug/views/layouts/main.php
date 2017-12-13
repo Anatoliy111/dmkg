@@ -81,29 +81,29 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 					],
 					['label' => 'Утримання будинків', 'url' => '/poslug/ut-domzatrat/index'],
 
-//					[
-//						'label' => 'Введення даних',
-//						'items' => [
-//							['label' => 'Показники лічильника', 'url' => '/poslug/ut-lich/index'],
-//							['label' => 'Показники складного лічильника', 'url' => '/poslug/ut-lichskl/index'],
-//							'<li class="divider"></li>',
-//							['label' => 'Льготники', 'url' => '/poslug/ut-lgot/index'],
-//							'<li class="divider"></li>',
-//							['label' => 'Показники абонентів', 'url' => '/poslug/ut-pokaz/index'],
-//							['label' => 'Послуги абонентів', 'url' => '/poslug/ut-posl/index'],
-//							['label' => 'Утримання абонентів', 'url' => '/poslug/ut-utrim/index'],
-//							['label' => 'Субсидія абонентів', 'url' => '/poslug/ut-subs/index'],
-//							['label' => 'Оплата абонентів', 'url' => '/poslug/ut-opl/index'],
-//							],
-//					],
-//					['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
-//					[
-//						'label' => 'Розрахунок',
-//						'items' => [
-//							['label' => 'Нарахування', 'url' => '/poslug/ut-narah/index'],
-//							['label' => 'Оборотка', 'url' => '/poslug/ut-obor/index'],
-//						],
-//					],
+					[
+						'label' => 'Введення даних',
+						'items' => [
+							['label' => 'Показники лічильника', 'url' => '/poslug/ut-lich/index'],
+							['label' => 'Показники складного лічильника', 'url' => '/poslug/ut-lichskl/index'],
+							'<li class="divider"></li>',
+							['label' => 'Льготники', 'url' => '/poslug/ut-lgot/index'],
+							'<li class="divider"></li>',
+							['label' => 'Показники абонентів', 'url' => '/poslug/ut-pokaz/index'],
+							['label' => 'Послуги абонентів', 'url' => '/poslug/ut-posl/index'],
+							['label' => 'Утримання абонентів', 'url' => '/poslug/ut-utrim/index'],
+							['label' => 'Субсидія абонентів', 'url' => '/poslug/ut-subs/index'],
+							['label' => 'Оплата абонентів', 'url' => '/poslug/ut-opl/index'],
+							],
+					],
+					['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
+					[
+						'label' => 'Розрахунок',
+						'items' => [
+							['label' => 'Нарахування', 'url' => '/poslug/ut-narah/index'],
+							['label' => 'Оборотка', 'url' => '/poslug/ut-obor/index'],
+						],
+					],
 					[
 						'label' => 'Звіти',
 						'items' => [

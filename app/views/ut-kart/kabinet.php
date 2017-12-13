@@ -93,29 +93,61 @@ use yii\helpers\ArrayHelper;
 //			'active'=>true
 //		],
 //		[
-//			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
+//			'label'=>'Загальна інформація',
 //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 //		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
-			'content'=>$this->render('poslugview', ['model' => $model,'abonents'=>$abonents[$org->id_org],'dataProvider' => $dppos[$org->id_org]]),
+			'label'=>'Послуги/Тарифи',
+			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'dataProvider2' => $dptar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-flag"></i> Нарахування',
+			'label'=>'Нарахування',
 			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-usd"></i> Оплата',
-			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'label'=>'Оплата/Утримання',
+			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'dataProvider2' => $dpuder[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-user"></i> Субсидія',
+			'label'=>'Субсидія',
 			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
 		[
-			'label'=>'<i class="glyphicon glyphicon-retweet"></i> Зведена відомість',
+			'label'=>'Зведена відомість',
 			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
+//		[
+//			'label'=>'Архів ',
+//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
+
+
+		////////////////////////////////////////////////////////////////////
+
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
+//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
+//			'content'=>$this->render('poslugview', ['model' => $model,'abonents'=>$abonents[$org->id_org],'dataProvider' => $dppos[$org->id_org]]),
+//		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-flag"></i> Нарахування',
+//			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-usd"></i> Оплата/Утримання',
+//			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'dataProvider2' => $dpuder[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-user"></i> Субсидія',
+//			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
+//		[
+//			'label'=>'<i class="glyphicon glyphicon-retweet"></i> Зведена відомість',
+//			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+//		],
 //		[
 //			'label'=>'<i class="glyphicon glyphicon-book"></i> Архів ',
 //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
@@ -174,14 +206,14 @@ use yii\helpers\ArrayHelper;
 			</div>
 
 
-		<div class="col-xs-2">
+		<div class="col-sm-4">
 
 			<?= Html::a("Змінити код доступу", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn-sm btn-success'])?>
 
 		</div>
 
 
-		<div class="col-xs-12">
+		<div class="col-xs-12 .col-sm-6 .col-lg-8">
 		<?php
 			foreach ($orgs as $k=>$org)
 			{

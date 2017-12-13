@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'id_org',
             'id_abonent',
             'id_tipposl',
-            // 'sum',
+             'sum',
+            'sum_ob',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

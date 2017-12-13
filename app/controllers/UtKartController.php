@@ -11,6 +11,7 @@ use app\poslug\models\UtOrg;
 use app\poslug\models\UtPosl;
 use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarifab;
+use app\poslug\models\UtUtrim;
 use Yii;
 use app\models\UtKart;
 use app\models\SearchUtKart;
@@ -394,8 +395,8 @@ class UtKartController extends Controller
 				//-----------------------------------------------------------------------------
 				$tar = UtTarifab::find();
 				$tar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
-				$tar->joinWith('tarif');
-				$tar->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
+//				$tar->joinWith('tarif');
+//				$tar->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
 
 
 				$dataProvider6 = new ActiveDataProvider([
@@ -404,25 +405,23 @@ class UtKartController extends Controller
 				$tt = ArrayHelper::toArray($tar);
 				$dptar[$org->id_org][$abon->id] = $dataProvider6;
 
-				$inf = UtTarifab::find();
-				$inf->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
-				$inf->joinWith('tarif');
-				$inf->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
-
-
-				$dataProvider7 = new ActiveDataProvider([
-					'query' => $tar,
-				]);
-				$tt = ArrayHelper::toArray($inf);
-				$dptar[$org->id_org][$abon->id] = $dataProvider7;
-
 				$sub = UtSubs::find();
-				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_subs.period'=> $session['period'][$org->id_org]]);
 				$dataProvider8 = new ActiveDataProvider([
 					'query' => $sub,
 				]);
 
 				$dpsub[$org->id_org][$abon->id] = $dataProvider8;
+
+				$uder = UtUtrim::find();
+				$uder->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_utrim.period'=> $session['period'][$org->id_org]]);
+				$dataProvider9 = new ActiveDataProvider([
+					'query' => $uder,
+				]);
+
+				$dpuder[$org->id_org][$abon->id] = $dataProvider9;
+
+
 
 			}
 		}
@@ -440,6 +439,7 @@ class UtKartController extends Controller
 			'dppos' => $dppos,
 			'dptar' => $dptar,
 			'dpsub' => $dpsub,
+			'dpuder' => $dpuder,
 			'orgs' => $orgs,
 		]);
 	}

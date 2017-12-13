@@ -2,7 +2,6 @@
 
 
 	use kartik\grid\GridView;
-	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
 
 
@@ -32,7 +31,7 @@
 				'dataProvider' =>  $dataProvider[$abon->id],
 
 							'columns' => [
-				['class' => 'yii\grid\SerialColumn'],
+								['class' => '\kartik\grid\SerialColumn'],
 
 //				'id_tipposl',
 		     	[
@@ -40,7 +39,7 @@
 		     		'value' => 'tipposl.poslug',
 		     	],
 				'n_dog',
-//				'date_dog',
+				'date_dog',
 //				'nnorma',
 //				 'activ',
 //								[
@@ -86,6 +85,75 @@
 ////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
 //					'footer'=>false
 //				],
+//		'panelBeforeTemplate' => [
+//			'{before}' => 'true',
+//		],
+//				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+//				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+//				'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+				'toolbar'=> [
+//					['content'=>
+////				 Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Book', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
+////				 Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
+////						 Html::a(Yii::t('easyii', 'Update'), ['updateall'], ['class' => 'btn btn-danger'])
+//					],
+//					'{export}',
+//					'{toggleData}',
+				]
+			]);
+
+
+
+			echo GridView::widget([
+				'dataProvider' =>  $dataProvider2[$abon->id],
+				'showPageSummary' => true,
+
+				'columns' => [
+					['class' => '\kartik\grid\SerialColumn'],
+					[
+							'attribute' => 'id_tipposl',
+							'value' => 'tipposl.poslug',
+							'group'=>true,
+
+					],
+//					'tipposl',
+					'nametarif',
+
+					[
+						'attribute' => 'tarif',
+						'format'=>['decimal', 2],
+					],
+					[
+						'attribute' => 'kortarif',
+						'format'=>['decimal', 2],
+					],
+					[
+						'attribute' => 'endtarif',
+						'format'=>['decimal', 2],
+						'group'=>true,
+					],
+//					'days',
+//				['class' => 'yii\grid\ActionColumn'],
+				],
+				'resizableColumns'=>true,
+				'hover'=>true,
+//		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
+//		'floatHeader'=>true,
+//				'floatHeaderOptions'=>['scrollingTop'=>'50'],
+//		'showPageSummary' => true,
+//				'pjax'=>true,
+//				'pjaxSettings'=>[
+//					'neverTimeout'=>true,
+////			'beforeGrid'=>'My fancy content before.',
+////			'afterGrid'=>'My fancy content after.',
+//				],
+				'panel' => [
+					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Тарифи </h3>',
+					'type'=>'info',
+//					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
+//					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+					'footer'=>false
+				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],

@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			        	'attribute'=>'pass',
 			        	'label'=>'Авторизація',
 			        	'format'=>'raw',
-			        	'value'=>(!empty($model->pass) ? '<span class="label label-success">Авторизований</span>'
+			        	'value'=>(!empty($model->status) ? '<span class="label label-success">Авторизований</span>'
 			        	: '<span class="label label-danger">Не авторизований</span>') ,
 
 			        	],

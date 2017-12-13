@@ -16,7 +16,7 @@
 
 
 
-<div class="utkart-info-view">
+<div class="utkart-sub-view">
 
 
 	<?php

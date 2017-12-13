@@ -11,6 +11,7 @@
 	use app\poslug\models\UtObor;
 	use app\poslug\models\UtOpl;
 	use app\poslug\models\UtSubs;
+	use app\poslug\models\UtUtrim;
 	use kartik\datecontrol\DateControl;
 	use kartik\dialog\Dialog;
 	use yii\bootstrap\Html;
@@ -39,19 +40,21 @@ use yii\bootstrap\Alert;
 //		'class' => 'active progress-striped'
 //	]
 //]);
-	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
 
 
 
 //	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
 
-//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
+		$NameBase = ['POSLTAR.DBF'];
+
+	//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
 //	$NameBase = ['SUBS.DBF'];
 //	$NameBase = ['NACH.DBF','OBOR.DBF'];
 
 //		$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','NTARIF.DBF','POSL.DBF'];
 //	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','OBOR.DBF','POSL.DBF','NACH.DBF','OPL.DBF','SUBS.DBF'];
-//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','OBOR.DBF','POSL.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//	$NameBase = ['UDER.DBF'];
 //	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','NACH.DBF','OBOR.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
@@ -85,10 +88,11 @@ if ($DirFiles<>'')
 	$_SESSION['NomBase']= 0;
 	$_SESSION['NomRec']= 0;
 	$_SESSION['EndCount'] = $RowsCount;
-    UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-	UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-	UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-	UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//    UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+//	UtUtrim::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 
 
 }

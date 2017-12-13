@@ -20,6 +20,7 @@
 	use app\poslug\models\UtTarifab;
 	use app\poslug\models\UtTipposl;
 	use app\poslug\models\UtUlica;
+	use app\poslug\models\UtUtrim;
 	use app\poslug\models\UtVidlgot;
 use app\poslug\models\UtVidpokaz;
 use yii\bootstrap\Alert;
@@ -559,7 +560,7 @@ function importNTARIF($dbf,$i,$Base)
 			$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
 			if ($FindTipPosl<> null and $FindAbon <> null)
 			{
-				$FindTarifab = UtTarifab::findOne(['id_tipposl' => $FindTipPosl->id,'id_abonent' => $FindAbon->id]);
+				$FindTarifab = UtTarifab::findOne(['id_tipposl' => $FindTipPosl->id,'id_abonent' => $FindAbon->id,'kl' => $fields['KL_NTAR']]);
 				if ($FindTarifab == null)
 				{
 					$model = new UtTarifab();
@@ -567,6 +568,7 @@ function importNTARIF($dbf,$i,$Base)
 					$model->id_tipposl = $FindTipPosl->id;
 					$model->id_abonent = $FindAbon->id;
 					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+					$model->kl = $fields['KL_NTAR'];
 					$model->tarif = $fields['TARIF'];
 					$model->kortarif = $fields['KORTARIF'];
 					$model->endtarif = $fields['ENDTARIF'];
@@ -588,6 +590,7 @@ function importNTARIF($dbf,$i,$Base)
 					$model = $FindTarifab;
 					$model->id_org = 1;
 					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+					$model->kl = $fields['KL_NTAR'];
 					$model->tarif = $fields['TARIF'];
 					$model->kortarif = $fields['KORTARIF'];
 					$model->endtarif = $fields['ENDTARIF'];
@@ -686,7 +689,7 @@ function importNTARIF($dbf,$i,$Base)
 						$abonposl->id_abonent=$abon->id;
 						$abonposl->id_tipposl= $posl->id;
 						$abonposl->n_dog = trim($fields['N_DOG']);
-						$abonposl->date_dog = trim($fields['D_DOG'])<>'' ? date('Y-m-d',strtotime(trim($fields['D_DOG']))) : null;
+						$abonposl->date_dog = trim($fields['D_DOG'])<>'' ? trim($fields['D_DOG']) : null;
 
 						if ($abonposl->validate() & $abonposl->save())
 						{
@@ -701,6 +704,10 @@ function importNTARIF($dbf,$i,$Base)
 					}
 					else
 					{
+
+						$findposl->n_dog = trim($fields['N_DOG']);
+						$findposl->date_dog = trim($fields['D_DOG'])<>'' ? trim($fields['D_DOG']) : null;
+						$findposl->save();
 						NewObor($findposl,$fields);
 
 					}
@@ -709,6 +716,9 @@ function importNTARIF($dbf,$i,$Base)
 
 
 				}
+				else
+					Flash($Base,$abon,$posl);
+
 
 
 			}
@@ -982,6 +992,116 @@ function importNTARIF($dbf,$i,$Base)
 	}
 
 
+	function importUDER($dbf,$i,$Base)
+
+	{
+		$fields = dbase_get_record_with_names($dbf,$i);
+
+		if ($fields['deleted'] <> 1)
+		{
+			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
+//					$sum = $fields['SUM'];
+//							if ($dom == '8026')
+//							{
+//								$rowsCount = dbase_numrecords($dbf);
+//							}
+			if ($schet<>0 or $schet<>null)
+			{
+
+
+//						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
+
+				$abon = UtAbonent::findOne(['schet' => $schet]);
+				if ($abon <> null )
+				{
+
+					foreach ($fields as $k => $v )
+					{
+						if ($v<>0)
+						{
+							$tipposl= null;
+							$sum = null;
+							switch ($k) {
+								case 'SUM_EL':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
+									$sum = $fields['SUM_EL'];
+									break;
+								case 'SUM_KV':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
+									$sum = $fields['SUM_KV'];
+									break;
+								case 'SUM_OM':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
+									$sum = $fields['SUM_OM'];
+									break;
+								case 'SUM_OT':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
+									$sum = $fields['SUM_OT'];
+									break;
+								case 'SUM_SM':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
+									$sum = $fields['SUM_SM'];
+									break;
+								case 'SUM_HV':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
+									$sum = $fields['SUM_HV'];
+									break;
+							}
+
+
+							if ($tipposl<> null)
+							{
+								$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
+								if ($findposl==null)
+								{
+									Flash($Base,$findposl,'По абоненту '.$schet.' незнайдено послуги '.$k.' '.$tipposl->poslug);
+//									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
+								}
+								else
+								{
+									NewUder($findposl,$fields,$tipposl,$sum);
+
+								}
+							}
+
+
+
+						}
+
+					}
+
+
+
+				}
+			}
+
+		}
+
+		return true;
+
+	}
+
+	function NewUder($findposl,$fields,$tipposl,$sum)
+
+	{
+		$utrim = new UtUtrim();
+
+		$utrim->id_org = 1;
+		$utrim->period = $_SESSION['PeriodBase'];
+		$utrim->id_abonent = $findposl->id_abonent;
+		$utrim->id_tipposl = $findposl->id_tipposl;
+		$utrim->tipposl = $tipposl->poslug;
+		$utrim->summa = $sum;
+
+		if ($utrim->validate())
+		{
+			$utrim->save();
+			return true;
+		}
+		else
+			Flash('UDER.DBF',$utrim,$findposl->getAbonent()->asArray()->one()['schet'].' '.$tipposl->tipposl);
+		return false;
+	}
 
 
 
