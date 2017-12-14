@@ -795,8 +795,9 @@ header .bottom_header .address .top-info .icon-box span:after {
     margin-left: auto;
     min-height: calc(100vh - 10px);
 }
-.main .ut-kart {
+.main .ut-kart .container {
     padding-top: 18px;
+    margin-left: 1px;
 }
 
 .main .ut-kart h2 {
