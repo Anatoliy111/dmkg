@@ -113,7 +113,8 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 							['label' => 'Зведена відомість по субсидії', 'url' => '/poslug/zvit/zvedsubs'],
 						],
 					],
-//					['label' => 'Завантаження', 'url' => '/poslug/default/upload'],
+
+					['label' => 'Завантаження', 'url' => '/poslug/default/upload'],
 //					['label' => 'Налаштування', 'url' => '/poslug/setting/index'],
 				],
 			]);
