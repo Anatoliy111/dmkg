@@ -160,6 +160,7 @@ function importUL($dbf,$i,$Base)
 			$model = new UtUlica();
 			$model->ul = $ulic;
 			$model->kl = $fields['KL'];
+			$model->val = $fields['VAL'];
 			if ($model->validate() && $model->save())
 			{
 				return true;
@@ -253,6 +254,7 @@ function importORGAN($dbf,$i,$Base)
 			$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 			$model->id_org = 1;
 			$model->fio_ruk = encodestr(trim(iconv('CP866','utf-8',$fields['RUK'])));
+			$model->val = $fields['VAL'];
 			if ($model->validate())
 			{
 				$model->save();
@@ -301,7 +303,7 @@ function importKART($dbf,$i,$Base)
 			if ($Abon== null)
 			{
 
-				$modelKt = NewUpKart($fields,$Abon);
+				$modelKt = NewUpKart($fields,null);
 
 				if ($modelKt->validate())
 				{
@@ -443,6 +445,7 @@ function importAbon($fields,$schet,$idkart,$Abon)
 		$modelAb->schet = $schet;
 		$modelAb->id_kart =  $idkart;
 		$modelAb->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE']).' '.iconv('CP866','utf-8',$fields['NOTE1'])));
+		$modelAb->val = $fields['VAL'];
 	}
 
 	else
@@ -573,6 +576,7 @@ function importNTARIF($dbf,$i,$Base)
 					$model->kortarif = $fields['KORTARIF'];
 					$model->endtarif = $fields['ENDTARIF'];
 					$model->days = $fields['DAYS'];
+					$model->val = $fields['VAL'];
 					if ($model->validate())
 					{
 						$model->save();

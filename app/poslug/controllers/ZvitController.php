@@ -22,7 +22,7 @@ class ZvitController extends \yii\web\Controller
 
 	public function actionZvednarah()
 	{
-		$model = UtNarah::find()->select('period, tipposl, sum(sum) as sum')->groupBy('tipposl');
+		$model = UtNarah::find()->select('period, tipposl, sum(sum) as sum')->groupBy('period,tipposl');
 		$dataProvider = new ActiveDataProvider([
 			'query' => $model,
 		]);
@@ -37,7 +37,7 @@ class ZvitController extends \yii\web\Controller
 	public function actionZvedobor()
 	{
 //		select('period, tipposl, dolg, sum(nach), sum(subs), sum(opl), sum(uder), sum(sal)')->
-		$model = UtObor::find()->select('period, tipposl, sum(dolg) as dolg, sum(nach) as nach, sum(subs) as subs, sum(opl) as opl, sum(sal) as sal')->groupBy('tipposl');
+		$model = UtObor::find()->select('period, tipposl, sum(dolg) as dolg, sum(nach) as nach, sum(subs) as subs, sum(opl) as opl, sum(sal) as sal')->groupBy('period,tipposl');
 		$dataProvider = new ActiveDataProvider([
 			'query' => $model,
 		]);
