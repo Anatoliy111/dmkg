@@ -296,7 +296,7 @@ JS;
 
 <?php
 		foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
-			echo '<div class="info">Імпорт виконано з помилками:</div>';
+//			echo '<div class="info">Імпорт виконано з помилками:</div>';
 			if (gettype($message)=='array')
 			{
 				foreach($message as $mes)
