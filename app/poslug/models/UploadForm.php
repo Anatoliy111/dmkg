@@ -132,7 +132,9 @@
 				$zip->close();
 //					Yii::$app->session->setFlash('success', 'Завантаження виконано!',true);
 				Alert::begin(['options' => ['class' => 'alert-success'],]);
-				echo "Завантаження виконано: '$filename'\n";
+
+
+				echo "Завантаження виконано: '$filename'.'$zip->filename'\n";
 
 				Alert::end();
 				$this->MonthYear = date('Y-m-d',strtotime(substr($filename->baseName,0,4).'-'.substr($filename->baseName,4,2).'-01'));
@@ -141,7 +143,7 @@
 				return true;
 
 			} else {
-				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name." ".$uploadPath.$filename);
+				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name." ".$uploadPath.$filename." ".$zip->filename);
 //                    echo 'ошибка';
 //				Alert::begin(['options' => ['class' => 'alert-danger'],]);
 //				echo "Не вдалося відкрити файл: '$filename'\n";
