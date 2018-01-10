@@ -127,7 +127,8 @@
 		{
 			$zip = new ZipArchive;
 			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
-			if ($zip->open($uploadPath.$filename) === TRUE) {
+			$res = $zip->open($uploadPath.$filename);
+			if ( $res === TRUE) {
 				$zip->extractTo($uploadPath.$filename->baseName);
 				$zip->close();
 //					Yii::$app->session->setFlash('success', 'Завантаження виконано!',true);
@@ -143,7 +144,7 @@
 				return true;
 
 			} else {
-				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name." ".$uploadPath.$filename."--- ".$zip->filename);
+				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name." ".$uploadPath.$filename."--- ".$res);
 //                    echo 'ошибка';
 //				Alert::begin(['options' => ['class' => 'alert-danger'],]);
 //				echo "Не вдалося відкрити файл: '$filename'\n";
