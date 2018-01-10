@@ -143,7 +143,7 @@
 				return true;
 
 			} else {
-				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name." ".$uploadPath.$filename." ".$zip->filename);
+				Yii::$app->session->setFlash($this->File->name, "Не вдалося відкрити файл:".$uploadPath.$this->File->name." ".$uploadPath.$filename."--- ".$zip->filename);
 //                    echo 'ошибка';
 //				Alert::begin(['options' => ['class' => 'alert-danger'],]);
 //				echo "Не вдалося відкрити файл: '$filename'\n";
