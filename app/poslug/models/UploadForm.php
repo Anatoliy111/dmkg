@@ -79,6 +79,7 @@
 				$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
 
 				$this->File->saveAs($uploadPath . $this->File->baseName . '.' . $this->File->extension);
+				$this->File->name = mb_strtolower($this->File->name);
 				Yii::$app->session->setFlash($this->File->name, "Завантажено файл - ".$this->File->name."");
 
 //                $this->ImportDbf($this->File);
@@ -125,12 +126,13 @@
 
 		public function UnZIP($filename)
 		{
-			$zip = new ZipArchive;
-			$filename = mb_strtolower($filename);
+//			$zip = new PclZip("arch.zip");
+			$zip = new ZipArchive();
+			$file = $filename;
 			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
-			$res = $zip->open($uploadPath.$filename,ZipArchive::OVERWRITE);
+			$res = $zip->open($uploadPath.$filename);
 			if ( $res === TRUE) {
-				$zip->extractTo($uploadPath.$filename->baseName);
+				 $zip->extractTo($uploadPath.$filename->baseName);
 				$zip->close();
 //					Yii::$app->session->setFlash('success', 'Завантаження виконано!',true);
 				Alert::begin(['options' => ['class' => 'alert-success'],]);
