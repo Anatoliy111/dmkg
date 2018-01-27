@@ -127,7 +127,7 @@
 		{
 			$zip = new ZipArchive;
 			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
-			$res = $zip->open($uploadPath.$filename,ZipArchive::OVERWRITE);
+			$res = $zip->open(mb_strtolower($uploadPath.$filename),ZipArchive::OVERWRITE);
 			if ( $res === TRUE) {
 				$zip->extractTo($uploadPath.$filename->baseName);
 				$zip->close();
