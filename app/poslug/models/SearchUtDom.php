@@ -18,7 +18,7 @@ class SearchUtDom extends UtDom
     public function rules()
     {
         return [
-            [['id', 'id_ulica', 'kol_kv', 'kol_pod', 'kol_etag', 'lift', 'id_olddom'], 'integer'],
+            [['id', 'id_ulica', 'kol_kv', 'kol_pod', 'kol_etag', 'lift'], 'integer'],
             [['n_dom', 'note'], 'safe'],
         ];
     }
@@ -65,7 +65,6 @@ class SearchUtDom extends UtDom
             'kol_pod' => $this->kol_pod,
             'kol_etag' => $this->kol_etag,
             'lift' => $this->lift,
-            'id_olddom' => $this->id_olddom,
         ]);
 
         $query->andFilterWhere(['like', 'n_dom', $this->n_dom])
