@@ -51,53 +51,85 @@ HTML;
 									'format' => ['date', 'php:MY'],
 									'pageSummary' => 'Всього по сторінці',
 									'pageSummaryOptions' => ['class' =>'text-left text-warning'],
+									'group'=>true,
+									'groupFooter'=>function ($model, $key, $index, $widget) { // Closure method
+										return [
+											'mergeColumns'=>[[1,2]], // columns to merge in summary
+											'content'=>[             // content to show in each summary cell
+												2=>'Summary:',
+												3=>GridView::F_SUM,
+												4=>GridView::F_SUM,
+												5=>GridView::F_SUM,
+												6=>GridView::F_SUM,
+												7=>GridView::F_SUM,
+												8=>GridView::F_SUM,
+											],
+											'contentFormats'=>[      // content reformatting for each summary cell
+												3=>['format'=>'number', 'decimals'=>2],
+												4=>['format'=>'number', 'decimals'=>2],
+												5=>['format'=>'number', 'decimals'=>2],
+												6=>['format'=>'number', 'decimals'=>2],
+												7=>['format'=>'number', 'decimals'=>2],
+												8=>['format'=>'number', 'decimals'=>2],
+											],
+											'contentOptions'=>[      // content html attributes for each summary cell
+												1=>['style'=>'font-variant:small-caps'],
+//												4=>['style'=>'text-align:right'],
+//												5=>['style'=>'text-align:right'],
+//												6=>['style'=>'text-align:right'],
+											],
+											// html attributes for group summary row
+											'options'=>['class'=>'success','style'=>'font-weight:bold;']
+										];
+									}
 								],
 				'tipposl',
 								[
 									'attribute' => 'dolg',
-									'format'=>['decimal', 2],
+//									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'nach',
-									'format'=>['decimal', 2],
+//									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'subs',
-									'format'=>['decimal', 2],
+//									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
 									[
 									'attribute' => 'opl',
 									'label' => 'Оплата / Утримання',
-										'format'=>['decimal', 2],
+//										'format'=>['decimal', 2],
 										'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'pere',
-									'format'=>['decimal', 2],
+//									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'sal',
-									'format'=>['decimal', 2],
+//									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'striped'=>false,
 				'layout'=>"{items}",
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
-				'pjax'=>true,
-				'pjaxSettings'=>[
-					'neverTimeout'=>true,
-//			'beforeGrid'=>'My fancy content before.',
-//			'afterGrid'=>'My fancy content after.',
-				],
+//				'pjax'=>true,
+//				'pjaxSettings'=>[
+//					'neverTimeout'=>true,
+////			'beforeGrid'=>'My fancy content before.',
+////			'afterGrid'=>'My fancy content after.',
+//				],
 				'panel' => [
 //					'heading'=>'<h3 class="panel-title">'.' Зведена відомість '.'</h3>',
 					'heading'=>'<div class="NameTab"<h3>'.'Зведена відомість'.'</h3></div>',
@@ -120,7 +152,7 @@ HTML;
 //			'{before}' => 'true',
 //		],
 //				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
-				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+//				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 //				'filterRowOptions'=>['class'=>'kartik-sheet-style'],
 				'toolbar'=> [
 //					['content'=>
