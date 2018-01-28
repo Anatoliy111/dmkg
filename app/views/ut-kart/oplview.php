@@ -25,10 +25,29 @@
 		foreach ($abonents as $abon) {
 
 			?>
-			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
-			<br/>
+	<div class="rah"
+	<h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+
+</div>
+
 
 			<?php
+				$layout = <<< HTML
+			<div class="NameTab"
+			     <h3>Оплата</h3>
+
+			</div>
+{items}
+HTML;
+
+				$layout2 = <<< HTML
+			<div class="NameTab"
+			     <h3>Утримання</h3>
+
+			</div>
+{items}
+HTML;
+
 
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
@@ -51,6 +70,7 @@
 								],
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'layout' => $layout,
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
@@ -63,13 +83,13 @@
 ////			'beforeGrid'=>'My fancy content before.',
 ////			'afterGrid'=>'My fancy content after.',
 //				],
-				'panel' => [
-					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Оплата </h3>',
-					'type'=>'success',
-//					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
-//					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-					'footer'=>false
-				],
+//				'panel' => [
+//					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Оплата </h3>',
+//					'type'=>'success',
+////					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
+////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+//					'footer'=>false
+//				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],
@@ -108,6 +128,7 @@
 					],
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'layout' => $layout2,
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
@@ -120,13 +141,13 @@
 ////			'beforeGrid'=>'My fancy content before.',
 ////			'afterGrid'=>'My fancy content after.',
 //				],
-				'panel' => [
-					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Утримання </h3>',
-					'type'=>'warning',
-//					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
-//					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-					'footer'=>false
-				],
+//				'panel' => [
+//					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Утримання </h3>',
+//					'type'=>'warning',
+////					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
+////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+//					'footer'=>false
+//				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],

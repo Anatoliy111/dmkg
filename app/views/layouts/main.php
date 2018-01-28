@@ -86,7 +86,7 @@ $search = '';
 								<span class=" icon icon-Pointer"></span>
 							</div>
 							<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="content-box">
-								<p itemprop="streetAddress"> вул. Нова 80-А <br><span>м. Долинська Кіровоградська обл.</span></p>
+								<p itemprop="streetAddress"> вул. Нова 80-А <br> м. Долинська Кіровоградська обл.</p>
 							</div>
 						</div>
 						<div class="top-info">
@@ -94,7 +94,7 @@ $search = '';
 								<span class="separator icon icon-Phone2"></span>
 							</div>
 							<div class="content-box">
-								<p><span itemprop="telephone">+3805-234-5-22-56</span> <br><span itemprop="email">dmkg28500@ukr.net</span></p>
+								<p itemprop="telephone"> +3805-234-5-22-56 <br> dmkg28500@ukr.net </p>
 							</div>
 						</div>
 						<div class="top-info">
@@ -102,7 +102,7 @@ $search = '';
 								<span class="separator icon icon-Timer"></span>
 							</div>
 							<div itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" class="content-box">
-								<span itemprop="dayOfWeek" itemscope itemtype="http://schema.org/DayOfWeek"><p itemprop="name">Пн - Пт 8.00 - 17.00 <br/><span>Сб. Нд. вихідний</span></p></span>
+								<p itemprop="name">Пн - Пт 8.00 - 17.00 <br/>Сб. Нд. вихідний</p>
 							</div>
 						</div>
 					</div>

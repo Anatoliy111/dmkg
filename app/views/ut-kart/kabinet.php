@@ -160,14 +160,19 @@ use yii\helpers\ArrayHelper;
 ?>
 <div class="ut-kart">
 	<div class="well well-large container">
-		<div class="col-xs-1">
+		<div class="col-sm-1">
 
 			<?= Html::a('Вихід', ['ut-kart/logout'], ['class' => 'btn btn-primary']) ?>
 
 		</div>
+		<div class="col-sm-1">
 
-		<div class="col-xs-6">
-			<h2>Кабінет споживача</h2>
+			<?= Html::a("Змінити код доступу", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn btn-danger'])?>
+
+		</div>
+
+		<div class="col-xs-12">
+			<h1>Кабінет споживача</h1>
 
 
 		</div>
@@ -206,11 +211,7 @@ use yii\helpers\ArrayHelper;
 			</div>
 
 
-		<div class="col-sm-4">
 
-			<?= Html::a("Змінити код доступу", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn-sm btn-success'])?>
-
-		</div>
 
 
 		<div class="col-xs-12 .col-sm-6 .col-lg-8">

@@ -262,7 +262,7 @@ header .top_header ul li {
  }
  header .bottom_header .address p {
  	display: inline-block;
- 	font-family: 'Open Sans', sans-serif;
+ 	/*font-family: 'Open Sans', sans-serif;*/
  	font-size: 0.875em;
  	color: #232932;
  	margin: 0;
@@ -321,13 +321,13 @@ header .bottom_header .address .top-info .icon-box span {
 	color: #282F39;
 }
 header .bottom_header .address .top-info .icon-box span:after {
-	content: '';
-	position: absolute;
-	left: -1px;
-	top: 0;
-	width: 1px;
-	height: 100%;
-	background: #CFCFD0;
+	/*content: '';*/
+	/*position: absolute;*/
+	/*left: -1px;*/
+	/*top: 0;*/
+	/*width: 1px;*/
+	/*height: 100%;*/
+	/*background: #CFCFD0;*/
 }
 
  /*====================== Banner ===============*/
@@ -810,9 +810,54 @@ header .bottom_header .address .top-info .icon-box span:after {
     text-align: center;
 }
 
-.main .ut-kart a {
+.main .ut-kart h1 {
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.65em;
+    color: #f5f5f5;
+    position: relative;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+    background-color: #0070bf;
+}
+
+/*.main .ut-kart a {*/
+    /*margin-top: 18px;*/
+    /*text-align: center;*/
+/*}*/
+
+.main .ut-kart .rah {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 1.30em;
+    color: rgba(0,0,0,0.5);
+
+}
+
+.main .ut-kart .NameTab {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 1.30em;
+    color: #ea740f;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: 600;
+    /* font-variant: small-caps; */
+    letter-spacing: 3px;
+}
+
+.main .ut-kart .table a {
     margin-top: 18px;
     text-align: center;
+    color: #fdf9f9;
+}
+
+.main .ut-kart .table thead {
+    /*     margin-top: 18px; */
+    /*     text-align: center; */
+    background-color: #0070bf;
 }
 
 .main .ut-kart h2:before {
@@ -827,8 +872,23 @@ header .bottom_header .address .top-info .icon-box span:after {
 
 .main .ut-kart li a{
     font-family: 'Raleway', sans-serif;
-    /*font-weight: 700;*/
+    font-weight: bold;
     font-size: 1.20em;
+    /*text-transform: uppercase;*/
+}
+
+.main .ut-kart li.active a{
+    background-color:#0070bf;
+    color:#eee;
+}
+
+.main .ut-kart li.active a:focus{
+    color:#eee;
+}
+
+.main .ut-kart .panel-title{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 

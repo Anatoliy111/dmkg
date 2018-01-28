@@ -24,11 +24,20 @@
 		foreach ($abonents as $abon) {
 
 	?>
-			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+	<div class="rah"
+	<h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+
+</div>
 
 	<?php
 
+		$layout = <<< HTML
+			<div class="NameTab"
+			     <h3>Нарахування</h3>
 
+			</div>
+{items}
+HTML;
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
 				'showPageSummary' => true,
@@ -83,6 +92,7 @@
 //				'nnorma',
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'layout' => $layout,
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),

@@ -23,9 +23,27 @@
 		foreach ($abonents as $abon) {
 
 			?>
-			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+			<div class="rah"
+			     <h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
 
+			</div>
 			<?php
+
+			$layout = <<< HTML
+			<div class="NameTab"
+			     <h3>Послуги</h3>
+
+			</div>
+{items}
+HTML;
+
+				$layout2 = <<< HTML
+			<div class="NameTab"
+			     <h3>Тарифи</h3>
+
+			</div>
+{items}
+HTML;
 
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
@@ -55,6 +73,8 @@
 
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'layout' => $layout,
+//				'layout'=>"{items}",
 				'resizableColumns'=>true,
 				'hover'=>true,
 //				'showPageSummary'=>true,
@@ -106,7 +126,7 @@
 
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider2[$abon->id],
-				'showPageSummary' => true,
+//				'showPageSummary' => true,
 
 				'columns' => [
 					['class' => '\kartik\grid\SerialColumn'],
@@ -135,6 +155,7 @@
 //					'days',
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'layout' => $layout2,
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
@@ -147,13 +168,13 @@
 ////			'beforeGrid'=>'My fancy content before.',
 ////			'afterGrid'=>'My fancy content after.',
 //				],
-				'panel' => [
-					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Тарифи </h3>',
-					'type'=>'info',
-//					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
-//					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-					'footer'=>false
-				],
+//				'panel' => [
+//					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Тарифи </h3>',
+//					'type'=>'info',
+////					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
+////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+//					'footer'=>false
+//				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],
@@ -171,13 +192,10 @@
 				]
 			]);
 
+
 		}
 
-
-
-
 	?>
-
 
 
 

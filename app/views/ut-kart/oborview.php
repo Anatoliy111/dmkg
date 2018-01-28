@@ -24,10 +24,20 @@
 		foreach ($abonents as $abon) {
 
 			?>
-			<h3 class="panel-title" style="text-align:right">Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+	<div class="rah"
+	<h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+
+</div>
 
 			<?php
             $allsum = $dataProvider[$abon->id]->getModels();
+			$layout = <<< HTML
+			<div class="NameTab"
+			     <h3>Зведена відомість</h3>
+
+			</div>
+{items}
+HTML;
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
 				'showPageSummary' => true,
@@ -39,7 +49,7 @@
 									'attribute' => 'period',
 									'label' => 'Період',
 									'format' => ['date', 'php:MY'],
-									'pageSummary' => 'Всього',
+									'pageSummary' => 'Всього по сторінці',
 									'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 								],
 				'tipposl',
@@ -76,20 +86,21 @@
 								],
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'layout'=>"{items}",
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
-//		'showPageSummary' => true,
-//				'pjax'=>true,
-//				'pjaxSettings'=>[
-//					'neverTimeout'=>true,
-////			'beforeGrid'=>'My fancy content before.',
-////			'afterGrid'=>'My fancy content after.',
-//				],
+				'pjax'=>true,
+				'pjaxSettings'=>[
+					'neverTimeout'=>true,
+//			'beforeGrid'=>'My fancy content before.',
+//			'afterGrid'=>'My fancy content after.',
+				],
 				'panel' => [
-//					'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' Рахунок '.Html::encode($abon->schet).'</h3>',
+//					'heading'=>'<h3 class="panel-title">'.' Зведена відомість '.'</h3>',
+					'heading'=>'<div class="NameTab"<h3>'.'Зведена відомість'.'</h3></div>',
 //					'type'=>'primary',
 //					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
 //					'after'=>function($allsum){
@@ -109,16 +120,16 @@
 //			'{before}' => 'true',
 //		],
 //				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
-//				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 //				'filterRowOptions'=>['class'=>'kartik-sheet-style'],
 				'toolbar'=> [
 //					['content'=>
-////				 Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Book', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-////				 Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
-////						 Html::a(Yii::t('easyii', 'Update'), ['updateall'], ['class' => 'btn btn-danger'])
+//				 Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Book', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
+//				 Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
+//						 Html::a(Yii::t('easyii', 'Update'), ['updateall'], ['class' => 'btn btn-danger'])
 //					],
-//					'{export}',
-//					'{toggleData}',
+					'{export}',
+					'{toggleData}',
 				]
 			]);
 		}
