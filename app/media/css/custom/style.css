@@ -1966,6 +1966,8 @@ footer .bottom_footer p {
 
 #qoo-counter {
    float: right;
+    padding-top: 8px;
+    margin-top:  20px;
 }
 
 
