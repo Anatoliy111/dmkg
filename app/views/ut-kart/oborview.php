@@ -87,7 +87,7 @@ HTML;
 								[
 									'attribute' => 'dolg',
 //									'format'=>['decimal', 2],
-									'pageSummary'=>true,
+//									'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'nach',
@@ -113,7 +113,7 @@ HTML;
 								[
 									'attribute' => 'sal',
 //									'format'=>['decimal', 2],
-									'pageSummary'=>true,
+//									'pageSummary'=>true,
 								],
 //				['class' => 'yii\grid\ActionColumn'],
 				],
