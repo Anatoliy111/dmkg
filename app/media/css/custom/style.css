@@ -1964,6 +1964,12 @@ footer .bottom_footer p {
 	padding:30px 0;
 }
 
+#qoo-counter {
+   float: right;
+}
+
+
+
 /*============ Value of our company ======*/
 .company_value_sec {
 	background: url(../../images/about/bg.jpg)no-repeat center;

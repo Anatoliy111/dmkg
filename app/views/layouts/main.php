@@ -155,12 +155,21 @@ $search = '';
     </main></span>
 
 <footer>
-
 	<div class="bottom_footer container-fluid">
 		<div class="container">
 			<p class="float_left">Copyright &copy; DMKG 2017. All rights reserved. </p>
 <!--			<p class="float_right">Created by: Bondyuk</p>-->
+			<div id="qoo-counter">
+				<a href="http://qoo.by/" title="Сервис коротких ссылок">
+					<img src="http://qoo.by/counter/standard/013.png" alt="Укоротить ссылку">
+					<div id="qoo-counter-visits"></div>
+					<div id="qoo-counter-views"></div>
+				</a>
+			</div>
+			<script type="text/javascript" src="http://qoo.by/counter.js"></script>
+
 		</div>
+
 	</div> <!-- End bottom_footer -->
 </footer>
 <?php $this->endContent(); ?>
