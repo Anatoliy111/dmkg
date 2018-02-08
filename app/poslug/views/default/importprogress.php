@@ -46,12 +46,12 @@ use yii\bootstrap\Alert;
 
 //	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
-		$NameBase = ['UL.DBF'];
+//		$NameBase = ['UL.DBF'];
 
 //		$NameBase = ['OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
-//	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
 $DirFiles  = $_SESSION['DirFiles'];
