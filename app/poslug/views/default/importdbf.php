@@ -641,7 +641,7 @@ function importNTARIF($dbf,$i,$Base)
 				$narah->id_posl = $FindPosl->id;
 				$narah->id_tipposl = $FindTipPosl->id;
 				$narah->tipposl = $FindTipPosl->poslug;
-				$narah->id_vidlgot = trim($fields['LGOTA']) <> '' ? UtVidlgot::findOne(['lgota' => encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])))])->id : null;
+//				$narah->id_vidlgot = trim($fields['LGOTA']) <> '' ? UtVidlgot::findOne(['lgota' => encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])))])->id : null;
 				$narah->lgot = encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])));
 				$narah->tarif = $fields['TARIF'];
 				$narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
