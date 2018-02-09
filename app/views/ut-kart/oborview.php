@@ -174,9 +174,9 @@ HTML;
 								'SetHeader' => [
 									['odd' => $pdfHeader, 'even' => $pdfHeader]
 								],
-								'SetFooter' => [
-									['odd' => $pdfFooter, 'even' => $pdfFooter]
-								],
+//								'SetFooter' => [
+//									['odd' => $pdfFooter, 'even' => $pdfFooter]
+//								],
 							],
 							'options' => [
 								'title' => $title,
