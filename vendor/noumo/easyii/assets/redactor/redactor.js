@@ -1485,7 +1485,8 @@
 				var range = this.getRange();
 				if (range && range.collapsed === false)
 				{
-					sel = this.getSelection();
+					//noinspection JSUnresolvedVariable
+                    sel = this.getSelection();
 					if (sel.rangeCount)
 					{
 						range.deleteContents();
@@ -3110,7 +3111,8 @@
 				}, this));
 
 
-				html = this.$editor.html().replace(replaced, '</' + listTag + '>' + data + '<' + listTag + '>');
+				//noinspection JSUnresolvedVariable
+                html = this.$editor.html().replace(replaced, '</' + listTag + '>' + data + '<' + listTag + '>');
 
 				this.$editor.html(html);
 				this.$editor.find(listTag + ':empty').remove();
@@ -4752,7 +4754,8 @@
 			if (sel.getRangeAt && sel.rangeCount)
 			{
 				// with delete contents
-				range = sel.getRangeAt(0);
+				//noinspection JSUnresolvedVariable
+                range = sel.getRangeAt(0);
 				range.deleteContents();
 				range.insertNode(node);
 				range.setEndAfter(node);
@@ -5120,7 +5123,8 @@
 					if (matches !== null)
 					{
 						this.pasteClipboardMozilla = matches;
-						for (k in matches)
+						//noinspection JSUnresolvedVariable
+                        for (k in matches)
 						{
 							var img = matches[k].replace('<img', '<img data-mozilla-paste-image="' + k + '" ');
 							html = html.replace(matches[k], img);
@@ -6191,7 +6195,8 @@
 			{
 				var tr = $table.find('tr').first().clone();
 				tr.find('td').html(this.opts.invisibleSpace);
-				$thead = $('<thead></thead>');
+				//noinspection JSUnresolvedVariable
+                $thead = $('<thead></thead>');
 				$thead.append(tr);
 				$table.prepend($thead);
 

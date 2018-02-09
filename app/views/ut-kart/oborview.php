@@ -10,26 +10,7 @@
 
 /* @var $this yii\web\View */
 //	$today = new DateTime();
-	$pdfHeader = [
-		'L' => [
-			'content' => 'КП "Долинський міськкомунгосп"',
-		],
-		'C' => [
-			'content' => 'Зведена відомість '.$abon->schet,
-			'font-size' => 10,
-			'font-style' => 'B',
-			'font-family' => 'arial',
-			'color' => '#333333'
-		],
-		'R' => [
-			'content' => 'Згенеровано '.Yii::$app->formatter->asDatetime('now'),
-		],
-		'line' => true,
-	];
 
-	$pdfFooter = [
-		'line' => true,
-	];
 
 ?>
 
@@ -42,6 +23,27 @@
 
 	<?php
 		foreach ($abonents as $abon) {
+
+		$pdfHeader = [
+			'L' => [
+				'content' => 'КП "Долинський міськкомунгосп"',
+			],
+			'C' => [
+				'content' => 'Зведена відомість '.$abon->schet,
+				'font-size' => 10,
+				'font-style' => 'B',
+				'font-family' => 'arial',
+				'color' => '#333333'
+			],
+			'R' => [
+				'content' => 'Згенеровано '.Yii::$app->formatter->asDatetime('now'),
+			],
+			'line' => true,
+		];
+
+		$pdfFooter = [
+			'line' => true,
+		];
 
 			?>
 	<div class="rah"
