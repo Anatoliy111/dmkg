@@ -4173,6 +4173,12 @@ footer .bottom_footer p {
   margin-top: -4px;
 }
 
+.single-blog-post td {
+    padding: 5px !important;
+    border: 1px solid #252323;
+    vertical-align: top;
+}
+
 .single-blog-post a:hover {
   color: #f6ba18;
 }
