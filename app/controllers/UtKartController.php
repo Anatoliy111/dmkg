@@ -426,6 +426,10 @@ class UtKartController extends Controller
 
 			}
 		}
+//
+//		$searchModel = new OrderSearch();
+//		$dataProvider = $searchModel->search(Yii::$app->request->queryParams); // run search, so now we have a totalSum.
+//		$totalSum = $searchModel->totalSum;
 //		$dpinfo = new ActiveDataProvider([
 //			'query' => $abonen,
 //		]);

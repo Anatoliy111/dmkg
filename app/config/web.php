@@ -46,6 +46,8 @@ $config = [
 		],
 		'formatter' => [
 			'dateFormat' => 'MM.yyyy',
+			'thousandSeparator' => ' ',
+			'decimalSeparator' => ',',
 			],
         'errorHandler' => [
             'errorAction' => 'site/error',

@@ -9,7 +9,23 @@
 	//	use yii\bootstrap\
 
 /* @var $this yii\web\View */
-
+//	$today = new DateTime();
+	$pdfHeader = [
+		'L' => [
+			'content' => 'КП "Долинський міськкомунгосп"',
+		],
+		'C' => [
+			'content' => 'Зведена відомість',
+			'font-size' => 10,
+			'font-style' => 'B',
+			'font-family' => 'arial',
+			'color' => '#333333'
+		],
+		'R' => [
+			'content' => 'Згенеровано '.Yii::$app->formatter->asDatetime('now'),
+		],
+		'line' => true,
+	];
 
 ?>
 
@@ -40,7 +56,7 @@
 HTML;
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
-				'showPageSummary' => true,
+//				'showPageSummary' => true,
 							'columns' => [
 								['class' => '\kartik\grid\SerialColumn'],
 
@@ -54,9 +70,10 @@ HTML;
 									'group'=>true,
 									'groupFooter'=>function ($model, $key, $index, $widget) { // Closure method
 										return [
-											'mergeColumns'=>[[1,2]], // columns to merge in summary
+//											'mergeColumns'=>[[1,2]], // columns to merge in summary
 											'content'=>[             // content to show in each summary cell
-												2=>'Summary:',
+//												1=>'Summary (' . $model->period . ')',
+												1=>"tt"."yyyxdfggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
 												3=>GridView::F_SUM,
 												4=>GridView::F_SUM,
 												5=>GridView::F_SUM,
@@ -65,6 +82,7 @@ HTML;
 												8=>GridView::F_SUM,
 											],
 											'contentFormats'=>[      // content reformatting for each summary cell
+												1=>['format'=>'text'],
 												3=>['format'=>'number', 'decimals'=>2],
 												4=>['format'=>'number', 'decimals'=>2],
 												5=>['format'=>'number', 'decimals'=>2],
@@ -74,9 +92,12 @@ HTML;
 											],
 											'contentOptions'=>[      // content html attributes for each summary cell
 												1=>['style'=>'font-variant:small-caps'],
-//												4=>['style'=>'text-align:right'],
-//												5=>['style'=>'text-align:right'],
-//												6=>['style'=>'text-align:right'],
+												3=>['style'=>'text-align:right'],
+												4=>['style'=>'text-align:right'],
+												5=>['style'=>'text-align:right'],
+												6=>['style'=>'text-align:right'],
+												7=>['style'=>'text-align:right'],
+												8=>['style'=>'text-align:right'],
 											],
 											// html attributes for group summary row
 											'options'=>['class'=>'success','style'=>'font-weight:bold;']
@@ -92,23 +113,23 @@ HTML;
 								[
 									'attribute' => 'nach',
 //									'format'=>['decimal', 2],
-									'pageSummary'=>true,
+//									'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'subs',
 //									'format'=>['decimal', 2],
-									'pageSummary'=>true,
+//									'pageSummary'=>true,
 								],
 									[
 									'attribute' => 'opl',
 									'label' => 'Оплата / Утримання',
 //										'format'=>['decimal', 2],
-										'pageSummary'=>true,
+//										'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'pere',
 //									'format'=>['decimal', 2],
-									'pageSummary'=>true,
+//									'pageSummary'=>true,
 								],
 								[
 									'attribute' => 'sal',
@@ -117,6 +138,56 @@ HTML;
 								],
 //				['class' => 'yii\grid\ActionColumn'],
 				],
+				'exportConfig'=> [
+					GridView::PDF=>[
+						'label' => 'PDF',
+//						'icon' => '',
+//						'iconOptions' => '',
+//						'showHeader' => false,
+//						'showPageSummary' => false,
+//						'showFooter' => false,
+//						'showCaption' => false,
+//						'filename' => 'yii',
+//						'alertMsg' => 'created',
+//						'options' => ['title' => 'Semicolon -  Separated Values'],
+						'filename' => 'Зведена відомість',
+//						'alertMsg' => 'The PDF export file will be generated for download.',
+						'options' => ['title' => 'Portable Document Format'],
+						'mime' => 'application/pdf',
+						'config' => [
+//							'mode' => 'c',
+//							'format' => 'A4-L',
+//							'destination' => 'D',
+//							'marginTop' => 20,
+//							'marginBottom' => 20,
+//							'cssInline' => '.kv-wrap{padding:20px;}' .
+//								'.kv-align-center{text-align:center;}' .
+//								'.kv-align-left{text-align:left;}' .
+//								'.kv-align-right{text-align:right;}' .
+//								'.kv-align-top{vertical-align:top!important;}' .
+//								'.kv-align-bottom{vertical-align:bottom!important;}' .
+//								'.kv-align-middle{vertical-align:middle!important;}' .
+//								'.kv-page-summary{border-top:4px double #ddd;font-weight: bold;}' .
+//								'.kv-table-footer{border-top:4px double #ddd;font-weight: bold;}' .
+//								'.kv-table-caption{font-size:1.5em;padding:8px;border:1px solid #ddd;border-bottom:none;}',
+							'methods' => [
+								'SetHeader' => [
+									['odd' => $pdfHeader, 'even' => $pdfHeader]
+								],
+								'SetFooter' => [
+									['odd' => $pdfFooter, 'even' => $pdfFooter]
+								],
+							],
+							'options' => [
+								'title' => $title,
+								'subject' => 'PDF export generated by kartik-v/yii2-grid extension',
+								'keywords' => 'krajee, grid, export, yii2-grid, pdf'
+							],
+							'contentBefore'=>'',
+							'contentAfter'=>''
+						]
+					],
+				],
 				'striped'=>false,
 				'layout'=>"{items}",
 				'resizableColumns'=>true,
@@ -124,12 +195,12 @@ HTML;
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
-//				'pjax'=>true,
-//				'pjaxSettings'=>[
-//					'neverTimeout'=>true,
-////			'beforeGrid'=>'My fancy content before.',
-////			'afterGrid'=>'My fancy content after.',
-//				],
+				'pjax'=>true,
+				'pjaxSettings'=>[
+					'neverTimeout'=>true,
+//			'beforeGrid'=>'My fancy content before.',
+//			'afterGrid'=>'My fancy content after.',
+				],
 				'panel' => [
 //					'heading'=>'<h3 class="panel-title">'.' Зведена відомість '.'</h3>',
 					'heading'=>'<div class="NameTab"<h3>'.'Зведена відомість'.'</h3></div>',
@@ -151,7 +222,7 @@ HTML;
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
 //		],
-//				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 //				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 //				'filterRowOptions'=>['class'=>'kartik-sheet-style'],
 				'toolbar'=> [
