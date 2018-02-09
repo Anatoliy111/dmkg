@@ -15,7 +15,7 @@
 			'content' => 'КП "Долинський міськкомунгосп"',
 		],
 		'C' => [
-			'content' => 'Зведена відомість',
+			'content' => 'Зведена відомість '.$abon->schet,
 			'font-size' => 10,
 			'font-style' => 'B',
 			'font-family' => 'arial',
