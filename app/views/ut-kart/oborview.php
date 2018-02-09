@@ -27,6 +27,10 @@
 		'line' => true,
 	];
 
+	$pdfFooter = [
+		'line' => true,
+	];
+
 ?>
 
 
@@ -150,7 +154,7 @@ HTML;
 //						'filename' => 'yii',
 //						'alertMsg' => 'created',
 //						'options' => ['title' => 'Semicolon -  Separated Values'],
-						'filename' => 'Зведена відомість',
+						'filename' => 'Зведена відомість '.$abon->schet,
 //						'alertMsg' => 'The PDF export file will be generated for download.',
 						'options' => ['title' => 'Portable Document Format'],
 						'mime' => 'application/pdf',
@@ -174,9 +178,9 @@ HTML;
 								'SetHeader' => [
 									['odd' => $pdfHeader, 'even' => $pdfHeader]
 								],
-//								'SetFooter' => [
-//									['odd' => $pdfFooter, 'even' => $pdfFooter]
-//								],
+								'SetFooter' => [
+									['odd' => $pdfFooter, 'even' => $pdfFooter]
+								],
 							],
 							'options' => [
 //								'title' => $title,
