@@ -159,7 +159,7 @@ use yii\helpers\ArrayHelper;
 
 ?>
 <div class="ut-kart">
-	<div class="well well-large container">
+	<div class="mywell well-large container">
 		<div class="col-sm-1">
 
 			<?= Html::a('Вихід', ['ut-kart/logout'], ['class' => 'btn btn-primary']) ?>

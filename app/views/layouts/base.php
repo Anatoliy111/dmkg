@@ -35,5 +35,10 @@ $asset = \app\assets\AppAsset::register($this);
 		ga('send', 'pageview');
 
 	</script>
+	<script>
+		$(function() {
+			jQuery.scrollSpeed(100, 800);
+		});
+	</script>
 </html>
 <?php $this->endPage() ?>
