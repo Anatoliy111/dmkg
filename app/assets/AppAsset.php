@@ -33,7 +33,7 @@ class AppAsset extends \yii\web\AssetBundle
 		'js/jquery.mixitup.min.js',
 		'js/jquery.sliphover.min.js',
 //		'js/jquery-3.3.1.min.js',
-		'js/jQuery.scrollSpeed.js',
+//		'js/jQuery.scrollSpeed.js',
 
 
     ];
