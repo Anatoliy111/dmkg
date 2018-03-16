@@ -160,13 +160,18 @@ $search = '';
 			<p class="float_left">Copyright &copy; DMKG 2017. All rights reserved. </p>
 <!--			<p class="float_right">Created by: Bondyuk</p>-->
 			<div id="qoo-counter">
-				<a href="http://qoo.by/" title="Сервис коротких ссылок">
-					<img src="http://qoo.by/counter/standard/013.png" alt="Укоротить ссылку">
-					<div id="qoo-counter-visits"></div>
-					<div id="qoo-counter-views"></div>
-				</a>
+				<!-- HostCiti.net --><a href="http://hostciti.net/" title="hostciti.net" target="_blank" onclick="this.href='http://hostciti.net/stat/?ch=stat'+'&r='+escape(window.location.href.slice(7));" >
+					<script type="text/javascript" language="javascript">
+							Coun='<img src="http://hostciti.net/stat/stat.php?i=2&col=4d95bf&tc=ffffff';
+						iD=document; Coun+='&d='+(screen.colorDepth?screen.colorDepth:screen.pixelDepth)
+							+"&w="+screen.width+'&h='+screen.height;
+						iH=window.location.href.slice(7);
+						Coun+='&r='+escape(iH);
+						Coun+='&n='+escape(iD.referrer.slice(7));
+						iD.write(Coun+'" width="88" height="31" border="0" />');
+					</script></a><!-- End of HostCiti.net counter -->
 			</div>
-			<script type="text/javascript" src="http://qoo.by/counter.js"></script>
+
 
 		</div>
 
