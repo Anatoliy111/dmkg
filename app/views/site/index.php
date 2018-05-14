@@ -96,7 +96,7 @@ $asset = \app\assets\AppAsset::register($this);
 							<div class="panel-heading">
 								<h4 class="panel-title">
 									<a data-toggle="collapse" data-parent="#accordion" href="#<?= $news->slug ?>">
-										<?= Yii::$app->formatter->asDate($news->time)?>
+										<span><?php echo Yii::$app->formatter->asDateTime($news->time, "dd") ?></span> <?php echo Yii::$app->formatter->asDateTime($news->time, "php:mm") ?>
 										<h5><?= $news->title ?></h5>
 										<img src="<?= $asset->baseUrl ?>/images/icon-bg.png" alt="icon" class="active">
 										<img src="<?= $asset->baseUrl ?>/images/icon-bg-hover.png" alt="icon" class="hover">
