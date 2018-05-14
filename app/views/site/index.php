@@ -132,10 +132,10 @@ $asset = \app\assets\AppAsset::register($this);
 				<?php foreach(News::popular(3) as $news) : ?>
 					<ul class="p0 post_item">
 
-
-						<li><?php echo Yii::$app->formatter->asDate($news->time) ?>
+						<li><?php echo Yii::$app->formatter->asDate($news->time, 'long') ?>
 							</br>
 							<a href="<?= Url::to(['news/view', 'slug' => $news->slug]) ?>"><?= $news->title ?></a></li>
+
 					</ul>
 				<?php endforeach;?>
 
