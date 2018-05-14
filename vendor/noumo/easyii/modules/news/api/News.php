@@ -143,7 +143,7 @@ class News extends \yii\easyii\components\API
 
 		$result = [];
         $lasttime = NewsModel::find()->with($with)->status(NewsModel::STATUS_ON)->orderBy('time DESC')->one();
-		foreach(NewsModel::find()->with($with)->status(NewsModel::STATUS_ON)->where(['>', 'time', $lasttime->time-186400])->orderBy('views DESC')->limit($limit)->all() as $item){
+		foreach(NewsModel::find()->with($with)->status(NewsModel::STATUS_ON)->where(['>', 'time', $lasttime->time-1186400])->orderBy('views DESC')->limit($limit)->all() as $item){
 			$result[] = new NewsObject($item);
 		}
 
