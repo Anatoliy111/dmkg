@@ -1,6 +1,9 @@
 <?php
 
-use yii\helpers\Html;
+	use kartik\select2\Select2;
+	use yii\helpers\ArrayHelper;
+	use yii\helpers\Html;
+	use app\poslug\models\UtUlica;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -18,28 +21,23 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+	<div class="col-sm-3">
+		<?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
+			'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),
+			'language' => 'uk',
+			'options' => ['placeholder' => Yii::t('easyii', 'Select the street...')],
+			'pluginOptions' => [
+				'allowClear' => true
+			],
+		]);
+		?>
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('easyii', 'Search'), ['class' => 'btn btn-primary']) ?>
+		</div>
+	</div>
 
-    <?= $form->field($model, 'n_dom') ?>
 
-    <?= $form->field($model, 'id_ulica') ?>
 
-    <?= $form->field($model, 'kol_kv') ?>
-
-    <?= $form->field($model, 'kol_pod') ?>
-
-    <?php // echo $form->field($model, 'kol_etag') ?>
-
-    <?php // echo $form->field($model, 'lift') ?>
-
-    <?php // echo $form->field($model, 'note') ?>
-
-    <?php // echo $form->field($model, 'id_olddom') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('easyii', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('easyii', 'Reset'), ['class' => 'btn btn-default']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
 
