@@ -572,10 +572,21 @@ function importNTARIF($dbf,$i,$Base)
 			$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
 			if ($FindTipPosl<> null and $FindAbon <> null)
 			{
-				$FindTarifab = UtTarifab::findOne(['id_tipposl' => $FindTipPosl->id,'id_abonent' => $FindAbon->id,'kl' => $fields['KL_NTAR']]);
-				if ($FindTarifab == null)
+				$FindKart=UtKart::findOne(['id' => $FindAbon->id_kart]);
+				if ($FindKart == null)
 				{
-					$model = new UtTarifab();
+					Flash($Base,$FindKart,$schet.' '.$FindKart->fio);
+					return true;
+				}
+				if ($FindKart->id_dom == null)
+				{
+					Flash($Base,$FindKart,$schet.' '.$FindKart->fio);
+					return true;
+				}
+				$FindTarif = UtTarif::findOne(['id_dom' => $FindKart->id_dom,'period' => $_SESSION['PeriodBase'],'kl' => $fields['KL_NTAR']]);
+				if ($FindTarif == null)
+				{
+					$model = new UtTarif();
 					$model->id_org = 1;
 					$model->id_tipposl = $FindTipPosl->id;
 					$model->id_abonent = $FindAbon->id;
@@ -589,6 +600,16 @@ function importNTARIF($dbf,$i,$Base)
 					if ($model->validate())
 					{
 						$model->save();
+						$Tarifab = new UtTarifab();
+						$Tarifab->id_org = 1;
+						$Tarifab->id_abonent = $FindAbon->id;
+						$Tarifab->period = $_SESSION['PeriodBase'];
+						$Tarifab->id_tarif = $model->id;
+						if ($Tarifab->validate())
+						{
+							$Tarifab->save();
+							return true;
+						}
 						return true;
 					}
 					else
@@ -598,26 +619,40 @@ function importNTARIF($dbf,$i,$Base)
 //			return false;
 					}
 				}
-				elseif ($FindTarifab->val != $fields['VAL'])
+				else
 				{
-					$model = $FindTarifab;
-					$model->id_org = 1;
-					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
-					$model->kl = $fields['KL_NTAR'];
-					$model->tarif = $fields['TARIF'];
-					$model->kortarif = $fields['KORTARIF'];
-					$model->endtarif = $fields['ENDTARIF'];
-					$model->days = $fields['DAYS'];
-					$model->val = $fields['VAL'];
-					if ($model->validate())
+					$Tarifab = new UtTarifab();
+					$Tarifab->id_org = 1;
+					$Tarifab->id_abonent = $FindAbon->id;
+					$Tarifab->period = $_SESSION['PeriodBase'];
+					$Tarifab->id_tarif = $FindTarif->id;
+					if ($Tarifab->validate())
 					{
-						$model->save();
+						$Tarifab->save();
 						return true;
 					}
-					else
-						Flash($Base,$model,$schet.' '.$model->nametarif);
-//					   die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
+					return true;
 				}
+//				elseif ($FindTarifab->val != $fields['VAL'])
+//				{
+//					$model = $FindTarifab;
+//					$model->id_org = 1;
+//					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+//					$model->kl = $fields['KL_NTAR'];
+//					$model->tarif = $fields['TARIF'];
+//					$model->kortarif = $fields['KORTARIF'];
+//					$model->endtarif = $fields['ENDTARIF'];
+//					$model->days = $fields['DAYS'];
+//					$model->val = $fields['VAL'];
+//					if ($model->validate())
+//					{
+//						$model->save();
+//						return true;
+//					}
+//					else
+//						Flash($Base,$model,$schet.' '.$model->nametarif);
+////					   die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
+//				}
 
 
 			}

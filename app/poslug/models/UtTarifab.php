@@ -9,19 +9,13 @@ use Yii;
  *
  * @property int $id
  * @property int $id_org
- * @property int $id_tipposl
+ * @property string $period
  * @property int $id_abonent
- * @property int $kl
- * @property string $nametarif
- * @property double $tarif
- * @property double $kortarif
- * @property double $endtarif
- * @property int $days
- * @property int $val
+ * @property int $id_tarif
  * @property int $del
  *
  * @property UtAbonent $abonent
- * @property UtTipposl $tipposl
+ * @property UtTarif $tarif
  * @property UtOrg $org
  */
 class UtTarifab extends \yii\db\ActiveRecord
@@ -40,13 +34,12 @@ class UtTarifab extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'id_tipposl', 'id_abonent'], 'required'],
-            [['id_org', 'id_tipposl', 'id_abonent', 'kl', 'days', 'val', 'del'], 'integer'],
-            [['tarif', 'kortarif', 'endtarif'], 'number'],
-            [['nametarif'], 'string', 'max' => 50],
+            [['id_org','id_abonent','id_tarif'], 'required'],
+            [['id_org', 'id_abonent','del','id_tarif'], 'integer'],
+			[['period'], 'safe'],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
-            [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
+			[['id_tarif'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarif::className(), 'targetAttribute' => ['id_tarif' => 'id']],
         ];
     }
 
@@ -58,15 +51,9 @@ class UtTarifab extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('easyii', 'ID'),
             'id_org' => Yii::t('easyii', 'Id Org'),
-            'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'id_abonent' => Yii::t('easyii', 'Id Abonent'),
-            'kl' => Yii::t('easyii', 'Kl'),
-            'nametarif' => Yii::t('easyii', 'Nametarif'),
-            'tarif' => Yii::t('easyii', 'Tarif'),
-            'kortarif' => Yii::t('easyii', 'Kortarif'),
-            'endtarif' => Yii::t('easyii', 'Endtarif'),
-            'days' => Yii::t('easyii', 'Days'),
-            'val' => Yii::t('easyii', 'Val'),
+			'period' => Yii::t('easyii', 'Period'),
+            'id_tarif' => Yii::t('easyii', 'Id Tarif'),
             'del' => Yii::t('easyii', 'Del'),
         ];
     }
@@ -82,11 +69,6 @@ class UtTarifab extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTipposl()
-    {
-        return $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -94,4 +76,9 @@ class UtTarifab extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtOrg::className(), ['id' => 'id_org']);
     }
+
+	public function getTarif()
+	{
+		return $this->hasOne(UtTarif::className(), ['id' => 'id_tarif']);
+	}
 }

@@ -9,17 +9,16 @@ use Yii;
  *
  * @property int $id
  * @property int $id_org організація
+ * @property string $period
  * @property string $name
  * @property int $id_tipposl тип послуг
+ * @property int $id_dom dom
  * @property int $id_vidpokaz вид показника
+ * @property int $podezd
  * @property int $kl ключ
- * @property double $tarif1 тариф
- * @property double $tarif2 тариф
- * @property double $tarif3 тариф
- * @property double $koef_skl кеф для складного ліч
- * @property double $norma норма
- * @property double $normalgot норма для льготника
- * @property double $normalgotsm норма льготника на сімю
+ * @property double $tarifplan тариф
+ * @property double $tariffakt тариф
+ * @property double $tarifend тариф
  * @property int $del активна
  *
  * @property UtOrg $org
