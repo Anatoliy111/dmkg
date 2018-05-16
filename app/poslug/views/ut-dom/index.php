@@ -21,25 +21,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--    <p>-->
 <!--        --><?//= Html::a(Yii::t('easyii', 'Create Ut Dom'), ['create'], ['class' => 'btn btn-success']) ?>
 <!--    </p>-->
+        <p>
+            <?= Html::a('Оновити список', ['updatespis'], ['class' => 'btn btn-success']) ?>
+        </p>
 <!---->
-<!--    --><?//= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//
-//            'id',
-//            'n_dom',
-//            'id_ulica',
-//            'kol_kv',
-//            'kol_pod',
-//            // 'kol_etag',
-//            // 'lift',
-//            // 'note:ntext',
-//            // 'id_olddom',
-//
-//            ['class' => 'yii\grid\ActionColumn'],
-//        ],
-//    ]); ?>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'n_dom',
+            'id_ulica',
+            'note:ntext',
+
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 
 </div>

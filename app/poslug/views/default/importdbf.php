@@ -427,6 +427,14 @@ function importKART($dbf,$i,$Base)
 		{
 			$modelKt->id_dom = $FindDom->id;
 		}
+		elseif($modelKt->dom<>'' and $modelKt->id_ulica<>null)
+		{
+			$dom = new UtDom();
+			$dom->id_ulica = $modelKt->id_ulica;
+			$dom->n_dom = $modelKt->dom;
+			$dom->save();
+			$modelKt->id_dom = $dom->id;
+		}
 		$modelKt->privat = trim($fields['PRIV']) == 'p' ? 1 : null;
 		$modelKt->ur_fiz = 0;
 		$modelKt->telef = encodestr(trim(iconv('CP866','utf-8',$fields['TELEF'])));
@@ -520,6 +528,7 @@ function importNTARIF($dbf,$i,$Base)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
+
 		if (UtTarif::findOne(['kl' => $fields['KL']])== null)
 		{
 

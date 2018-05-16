@@ -2,10 +2,11 @@
 
 namespace app\poslug\models;
 
+use app\poslug\models\UtDom;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\poslug\models\UtDom;
+
 
 /**
  * SearchUtDom represents the model behind the search form of `app\poslug\models\UtDom`.
@@ -18,8 +19,8 @@ class SearchUtDom extends UtDom
     public function rules()
     {
         return [
-            [['id', 'id_ulica', 'kol_kv', 'kol_pod', 'kol_etag', 'lift'], 'integer'],
-            [['n_dom', 'note'], 'safe'],
+            [['id', 'id_ulica'], 'integer'],
+            [['n_dom', 'note','image'], 'safe'],
         ];
     }
 
@@ -61,15 +62,49 @@ class SearchUtDom extends UtDom
         $query->andFilterWhere([
             'id' => $this->id,
             'id_ulica' => $this->id_ulica,
-            'kol_kv' => $this->kol_kv,
-            'kol_pod' => $this->kol_pod,
-            'kol_etag' => $this->kol_etag,
-            'lift' => $this->lift,
         ]);
 
         $query->andFilterWhere(['like', 'n_dom', $this->n_dom])
-            ->andFilterWhere(['like', 'note', $this->note]);
+            ->andFilterWhere(['like', 'note', $this->note])
+        ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }
+
+    public function updspis()
+    {
+
+        $doms = UtKart::find()->groupBy(['id_ulica','dom'])->all();
+        foreach ($doms as $adres) {
+            // $customer - это объекта класса Customer
+            if ($adres->dom<>'' and $adres->id_ulica<>null)
+            {
+                $FindDom = UtDom::findOne(['n_dom' => $adres->dom,'id_ulica' => $adres->id_ulica]);
+                if ($FindDom == null)
+                {
+                    $dom = new UtDom();
+                    $dom->id_ulica = $adres->id_ulica;
+                    $dom->n_dom = $adres->dom;
+                    $dom->save();
+                }
+            }
+
+// обновить имеющуюся строку данных
+//            $customer = Customer::findOne(123);
+//            $customer->email = 'james@newexample.com';
+//            $customer->save();
+        }
+
+
+        $query = UtDom::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $dataProvider;
+    }
+
 }

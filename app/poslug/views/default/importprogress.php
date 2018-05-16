@@ -11,7 +11,8 @@
 	use app\poslug\models\UtObor;
 	use app\poslug\models\UtOpl;
 	use app\poslug\models\UtSubs;
-	use app\poslug\models\UtUtrim;
+use app\poslug\models\UtTarif;
+use app\poslug\models\UtUtrim;
 	use kartik\datecontrol\DateControl;
 	use kartik\dialog\Dialog;
 	use yii\bootstrap\Html;
@@ -73,6 +74,9 @@ if ($DirFiles<>'')
 //		$KartCount = dbase_numrecords($dbf);
 		$RowsCount = $RowsCount + dbase_numrecords($dbf);
 		switch ($NameBase[$i]) {
+			case 'POSLTAR.DBF':
+				UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+				break;
 			case 'OBOR.DBF':
 				UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 				break;

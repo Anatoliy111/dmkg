@@ -93,6 +93,17 @@ class UtDomController extends Controller
         }
     }
 
+    public function actionUpdatespis()
+    {
+        $searchModel = new SearchUtDom();
+        $dataProvider = $searchModel->updspis();
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Deletes an existing UtDom model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

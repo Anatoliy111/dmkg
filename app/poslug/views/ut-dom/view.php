@@ -31,12 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'n_dom',
             'id_ulica',
-            'kol_kv',
-            'kol_pod',
-            'kol_etag',
-            'lift',
             'note:ntext',
-            'id_olddom',
         ],
     ]) ?>
 
