@@ -8,7 +8,8 @@
 
 	use app\poslug\models\UtAbonent;
 	use app\poslug\models\UtDom;
-	use app\poslug\models\UtKart;
+use app\poslug\models\UtDominfo;
+use app\poslug\models\UtKart;
 	use app\poslug\models\UtNarah;
 	use app\poslug\models\UtObor;
 	use app\poslug\models\UtOpl;
@@ -433,6 +434,9 @@ function importKART($dbf,$i,$Base)
 			$dom->id_ulica = $modelKt->id_ulica;
 			$dom->n_dom = $modelKt->dom;
 			$dom->save();
+			$dominfo = new UtDominfo();
+			$dominfo->id_dom = $dom->id;
+			$dominfo->save();
 			$modelKt->id_dom = $dom->id;
 		}
 		$modelKt->privat = trim($fields['PRIV']) == 'p' ? 1 : null;
@@ -580,8 +584,26 @@ function importNTARIF($dbf,$i,$Base)
 				}
 				if ($FindKart->id_dom == null)
 				{
-					Flash($Base,$FindKart,$schet.' '.$FindKart->fio);
-					return true;
+					$FindDom = UtDom::findOne(['n_dom' => $FindKart->dom,'id_ulica' => $FindKart->id_ulica]);
+					if ($FindDom <> null)
+					{
+						$FindKart->id_dom = $FindDom->id;
+						$FindKart->save();
+					}
+					elseif($FindKart->dom<>'' and $FindKart->id_ulica<>null)
+					{
+						$dom = new UtDom();
+						$dom->id_ulica = $FindKart->id_ulica;
+						$dom->n_dom = $FindKart->dom;
+						$dom->save();
+						$dominfo = new UtDominfo();
+						$dominfo->id_dom = $dom->id;
+						$dominfo->save();
+						$FindKart->id_dom = $dom->id;
+						$FindKart->save();
+					}
+					else
+						return true;
 				}
 				$FindTarif = UtTarif::findOne(['id_dom' => $FindKart->id_dom,'period' => $_SESSION['PeriodBase'],'kl' => $fields['KL_NTAR']]);
 				if ($FindTarif == null)
@@ -589,14 +611,19 @@ function importNTARIF($dbf,$i,$Base)
 					$model = new UtTarif();
 					$model->id_org = 1;
 					$model->id_tipposl = $FindTipPosl->id;
-					$model->id_abonent = $FindAbon->id;
-					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+					$model->id_dom = $FindKart->id_dom;
+					$model->period = $_SESSION['PeriodBase'];
+					$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 					$model->kl = $fields['KL_NTAR'];
-					$model->tarif = $fields['TARIF'];
-					$model->kortarif = $fields['KORTARIF'];
-					$model->endtarif = $fields['ENDTARIF'];
-					$model->days = $fields['DAYS'];
-					$model->val = $fields['VAL'];
+					$model->tarifplan = $fields['TARIF'];
+					$model->tariffakt = $fields['KORTARIF'];
+					if ($model->tariffakt<>0)
+					{
+						$model->tarifend=$model->tariffakt;
+					}
+					else
+						$model->tarifend = $fields['ENDTARIF'];
+
 					if ($model->validate())
 					{
 						$model->save();
@@ -614,7 +641,7 @@ function importNTARIF($dbf,$i,$Base)
 					}
 					else
 					{
-						Flash($Base,$model,$schet.' '.$model->nametarif);
+						Flash($Base,$model,$schet.' '.$model->name);
 //						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
 //			return false;
 					}

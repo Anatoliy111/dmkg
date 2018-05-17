@@ -12,6 +12,7 @@
 	use app\poslug\models\UtOpl;
 	use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarif;
+use app\poslug\models\UtTarifab;
 use app\poslug\models\UtUtrim;
 	use kartik\datecontrol\DateControl;
 	use kartik\dialog\Dialog;
@@ -47,12 +48,12 @@ use yii\bootstrap\Alert;
 
 //	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
-//		$NameBase = ['UL.DBF'];
+		$NameBase = ['POSLTAR.DBF'];
 
 //		$NameBase = ['OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
-	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
 $DirFiles  = $_SESSION['DirFiles'];
@@ -76,6 +77,7 @@ if ($DirFiles<>'')
 		switch ($NameBase[$i]) {
 			case 'POSLTAR.DBF':
 				UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+				UtTarifab::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 				break;
 			case 'OBOR.DBF':
 				UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);

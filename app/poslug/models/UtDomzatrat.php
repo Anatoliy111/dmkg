@@ -8,13 +8,18 @@ use Yii;
  * This is the model class for table "ut_domzatrat".
  *
  * @property int $id
- * @property int $id_ulica вулиця
- * @property string $dom номер будинку
- * @property string $note нотатки
+ * @property int $id_dom вулиця
  * @property string $date
+ * @property int $n_akt
+ * @property int $id_org
+ * @property double $kol
+ * @property double $cena
+ * @property double $obem
  * @property double $sum
+ * @property string $note нотатки
  *
- * @property UtUlica $ulica
+ * @property UtDom $dom
+ * @property UtOrg $org
  */
 class UtDomzatrat extends \yii\db\ActiveRecord
 {
@@ -32,13 +37,13 @@ class UtDomzatrat extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_ulica', 'dom', 'note', 'date', 'sum'], 'required'],
-            [['id_ulica'], 'integer'],
-            [['note'], 'string'],
+            [['id_dom', 'date', 'n_akt', 'id_org'], 'required'],
+            [['id_dom', 'n_akt', 'id_org'], 'integer'],
             [['date'], 'safe'],
-            [['sum'], 'number'],
-            [['dom'], 'string', 'max' => 11],
-			[['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
+            [['kol', 'cena', 'obem', 'sum'], 'number'],
+            [['note'], 'string'],
+            [['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
+            [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
         ];
     }
 
@@ -49,21 +54,31 @@ class UtDomzatrat extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('easyii', 'ID'),
-            'id_ulica' => Yii::t('easyii', 'Id Ulica'),
-			'ulica' => Yii::t('easyii', 'Ulica'),
-            'dom' => Yii::t('easyii', 'Dom'),
-            'note' => Yii::t('easyii', 'Note'),
+            'id_dom' => Yii::t('easyii', 'Id Dom'),
             'date' => Yii::t('easyii', 'Date'),
+            'n_akt' => Yii::t('easyii', 'N Akt'),
+            'id_org' => Yii::t('easyii', 'Id Org'),
+            'kol' => Yii::t('easyii', 'Kol'),
+            'cena' => Yii::t('easyii', 'Cena'),
+            'obem' => Yii::t('easyii', 'Obem'),
             'sum' => Yii::t('easyii', 'Sum'),
+            'note' => Yii::t('easyii', 'Note'),
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDom()
+    {
+        return $this->hasOne(UtDom::className(), ['id' => 'id_dom']);
+    }
 
-	/**
-	 * @return \yii\db\ActiveQuery
-	 */
-	public function getUlica()
-	{
-		return $this->hasOne(UtUlica::className(), ['id' => 'id_ulica']);
-	}
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrg()
+    {
+        return $this->hasOne(UtOrg::className(), ['id' => 'id_org']);
+    }
 }

@@ -78,4 +78,9 @@ class UtDom extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UtPosl::className(), ['id_dom' => 'id']);
     }
+
+    public function getUtTarif()
+    {
+        return $this->hasMany(UtTarif::className(), ['id_dom' => 'id']);
+    }
 }

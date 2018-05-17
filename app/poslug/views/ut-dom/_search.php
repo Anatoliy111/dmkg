@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-	<div class="col-sm-3">
+	<div class="col-sm-12">
 		<?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
 			'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),
 			'language' => 'uk',

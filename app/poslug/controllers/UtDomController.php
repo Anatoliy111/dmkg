@@ -2,9 +2,13 @@
 
 namespace app\poslug\controllers;
 
+use app\poslug\models\UtDominfo;
+use app\poslug\models\UtDomzatrat;
+use app\poslug\models\UtTarif;
 use Yii;
 use app\poslug\models\UtDom;
 use app\poslug\models\SearchUtDom;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,10 +41,11 @@ class UtDomController extends Controller
     {
         $searchModel = new SearchUtDom();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $doms = $dataProvider->getModels();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'doms' => $doms,
         ]);
     }
 
@@ -51,8 +56,30 @@ class UtDomController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
+
+        $domtarif= UtTarif::find();
+        $domtarif->where(['id_dom' => $model->id])->orderBy(['id_tipposl' => SORT_ASC]);
+
+        $domzatrat= UtDomzatrat::find();
+        $domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
+
+        $dPtarif = new ActiveDataProvider([
+            'query' => $domtarif,
+        ]);
+
+        $dPzatrat = new ActiveDataProvider([
+            'query' => $domzatrat,
+        ]);
+
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'dominfo' => $dominfo,
+            'dPtarif' => $dPtarif,
+            'dPzatrat' => $dPzatrat,
         ]);
     }
 

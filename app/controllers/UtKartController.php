@@ -363,7 +363,7 @@ class UtKartController extends Controller
 				$obor= UtObor::find();
 //				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id])->orderBy(['period' => SORT_DESC]);
-				$ff = ArrayHelper::toArray($obor);
+//				$ff = ArrayHelper::toArray($obor);
 				$dataProvider1 = new ActiveDataProvider([
 					'query' => $obor,
 				]);

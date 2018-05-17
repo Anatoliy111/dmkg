@@ -19,6 +19,7 @@ class SearchUtDom extends UtDom
     public function rules()
     {
         return [
+            [['id_ulica'], 'required'],
             [['id', 'id_ulica'], 'integer'],
             [['n_dom', 'note','image'], 'safe'],
         ];
@@ -54,7 +55,7 @@ class SearchUtDom extends UtDom
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+             $query->where('0=1');
             return $dataProvider;
         }
 
@@ -67,6 +68,11 @@ class SearchUtDom extends UtDom
         $query->andFilterWhere(['like', 'n_dom', $this->n_dom])
             ->andFilterWhere(['like', 'note', $this->note])
         ->andFilterWhere(['like', 'image', $this->image]);
+
+//        $query->orderBy('n_dom');
+
+        $query->orderBy(['id_ulica' => SORT_ASC, 'n_dom' => SORT_ASC]);
+
 
         return $dataProvider;
     }

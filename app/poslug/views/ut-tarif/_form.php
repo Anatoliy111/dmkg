@@ -30,6 +30,13 @@ use yii\widgets\ActiveForm;
         ]
     ) ?>
 
+    <?= $form->field($model, 'id_dom')->dropDownList
+    (ArrayHelper::map(\app\poslug\models\UtDom::find()->all(), 'id', 'note'),
+        [
+            'prompt' => Yii::t('easyii', 'Select the dom...')
+        ]
+    ) ?>
+
     <?= $form->field($model, 'period')->widget(DatePicker::classname(), [
         'options' => ['placeholder' => 'Виберіть місяць'],
         //			'attribute2'=>'to_date',
@@ -43,21 +50,18 @@ use yii\widgets\ActiveForm;
         ]
     ])?>
 
-    <?= $form->field($model, 'tarif1')->textInput() ?>
+    <?= $form->field($model, 'tarifplan')->textInput() ?>
 
-    <?= $form->field($model, 'tarif2')->textInput() ?>
+    <?= $form->field($model, 'tariffakt')->textInput() ?>
 
-    <?= $form->field($model, 'tarif3')->textInput() ?>
+    <?= $form->field($model, 'tarifend')->textInput() ?>
 
-    <?= $form->field($model, 'koef_skl')->textInput() ?>
+    <?= $form->field($model, 'kl')->textInput() ?>
 
-    <?= $form->field($model, 'norma')->textInput() ?>
+    <?= $form->field($model, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'normalgot')->textInput() ?>
+    <?= $form->field($model, 'podezd')->textInput() ?>
 
-    <?= $form->field($model, 'normalgotsm')->textInput() ?>
-
-    <?= $form->field($model, 'activ')->checkbox(['uncheck' => '0']) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>

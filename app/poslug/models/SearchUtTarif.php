@@ -18,8 +18,10 @@ class SearchUtTarif extends UtTarif
     public function rules()
     {
         return [
-            [['id', 'id_org', 'id_tipposl', 'id_vidpokaz', 'del'], 'integer'],
-            [['tarif1', 'tarif2', 'tarif3', 'koef_skl', 'norma', 'normalgot', 'normalgotsm'], 'number'],
+            [['id', 'id_org', 'id_tipposl', 'id_vidpokaz', 'del', 'kl','podezd'], 'integer'],
+            [['name'], 'string', 'max' => 25],
+            [['period'], 'safe'],
+            [['tarifplan', 'tariffakt', 'tarifend'], 'number'],
         ];
     }
 
@@ -63,16 +65,17 @@ class SearchUtTarif extends UtTarif
             'id_org' => $this->id_org,
             'id_tipposl' => $this->id_tipposl,
             'id_vidpokaz' => $this->id_vidpokaz,
-            'tarif1' => $this->tarif1,
-            'tarif2' => $this->tarif2,
-            'tarif3' => $this->tarif3,
-            'koef_skl' => $this->koef_skl,
-            'norma' => $this->norma,
-            'normalgot' => $this->normalgot,
-            'normalgotsm' => $this->normalgotsm,
+            'kl' => $this->kl,
+            'podezd' => $this->podezd,
+            'period' => $this->period,
+            'tarifplan' => $this->tarifplan,
+            'tariffakt' => $this->tariffakt,
+            'tarifend' => $this->tarifend,
             'del' => $this->del,
         ]);
 
+
+        $query->andFilterWhere(['like', 'name', $this->name]);
         return $dataProvider;
     }
 }

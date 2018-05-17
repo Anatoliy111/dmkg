@@ -41,13 +41,16 @@ class UtTarif extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'id_tipposl', 'kl', 'tarif1', 'name'], 'required'],
-            [['id_org', 'id_tipposl', 'id_vidpokaz', 'kl'], 'integer'],
+            [['id_org', 'id_tipposl', 'kl', 'name','period'], 'required'],
+            [['id_org', 'id_tipposl', 'id_vidpokaz', 'kl','podezd'], 'integer'],
 			[['name'], 'string', 'max' => 25],
-            [['tarif1', 'tarif2', 'tarif3', 'koef_skl', 'norma', 'normalgot', 'normalgotsm'], 'number'],
+            [['period'], 'safe'],
+            [['tarifplan', 'tariffakt', 'tarifend'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
             [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
+            [['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
+
         ];
     }
 
@@ -61,16 +64,15 @@ class UtTarif extends \yii\db\ActiveRecord
             'id_org' => Yii::t('easyii', 'Id Org'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'id_vidpokaz' => Yii::t('easyii', 'Id Vidpokaz'),
+            'id_dom' => Yii::t('easyii', 'Id Vidpokaz'),
             'kl' => Yii::t('easyii', 'Kl'),
 			'name' => Yii::t('easyii', 'Name'),
-            'tarif1' => Yii::t('easyii', 'Tarif1'),
-            'tarif2' => Yii::t('easyii', 'Tarif2'),
-            'tarif3' => Yii::t('easyii', 'Tarif3'),
-            'koef_skl' => Yii::t('easyii', 'Koef Skl'),
-            'norma' => Yii::t('easyii', 'Norma'),
-            'normalgot' => Yii::t('easyii', 'Normalgot'),
-            'normalgotsm' => Yii::t('easyii', 'Normalgotsm'),
+            'tarifplan' => Yii::t('easyii', 'tarifplan'),
+            'tariffakt' => Yii::t('easyii', 'tariffakt'),
+            'tarifend' => Yii::t('easyii', 'tarifend'),
             'del' => Yii::t('easyii', 'Del'),
+            'podezd' => Yii::t('easyii', 'podezd'),
+            'period' => Yii::t('easyii', 'period'),
         ];
     }
 
@@ -96,5 +98,10 @@ class UtTarif extends \yii\db\ActiveRecord
     public function getVidpokaz()
     {
         return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokaz']);
+    }
+
+    public function getDom()
+    {
+        return $this->hasOne(UtDom::className(), ['id' => 'id_dom']);
     }
 }

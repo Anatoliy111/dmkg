@@ -28,21 +28,23 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'period') ?>
 
-    <?php // echo $form->field($model, 'tarif1') ?>
+    <?php // echo $form->field($model, 'tarifplan') ?>
 
-    <?php // echo $form->field($model, 'tarif2') ?>
+    <?php // echo $form->field($model, 'tariffakt') ?>
 
-    <?php // echo $form->field($model, 'tarif3') ?>
+    <?php // echo $form->field($model, 'tarifend') ?>
 
-    <?php // echo $form->field($model, 'koef_skl') ?>
+    <?php // echo $form->field($model, 'kl') ?>
 
-    <?php // echo $form->field($model, 'norma') ?>
+    <?php // echo $form->field($model, 'name') ?>
 
-    <?php // echo $form->field($model, 'normalgot') ?>
+    <?php // echo $form->field($model, 'id_dom') ?>
 
-    <?php // echo $form->field($model, 'normalgotsm') ?>
+    <?php // echo $form->field($model, 'podezd') ?>
 
-    <?php // echo $form->field($model, 'activ') ?>
+    <?php // echo $form->field($model, 'id_dom') ?>
+
+
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('easyii', 'Search'), ['class' => 'btn btn-primary']) ?>
