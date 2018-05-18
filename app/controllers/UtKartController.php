@@ -10,6 +10,7 @@ use app\poslug\models\UtOpl;
 use app\poslug\models\UtOrg;
 use app\poslug\models\UtPosl;
 use app\poslug\models\UtSubs;
+use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifab;
 use app\poslug\models\UtUtrim;
 use Yii;
@@ -394,8 +395,14 @@ class UtKartController extends Controller
 				$dppos[$org->id_org][$abon->id] = $dataProvider4;
 
 				//-----------------------------------------------------------------------------
-				$tar = UtTarifab::find();
-				$tar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
+				$tar = UtTarif::find();
+				$tar->innerJoin('ut_tarifab', ['ut_tarifab.id_tarif' => 'tarif.id','ut_tarifab.id' => $abon->id,'ut_tarifab.period'=>$session['period'][$org->id_org]]);
+//				$tar->where(['ut_tarifab.id' => $abon->id,'ut_tarifab.period'=>$session['period'][$org->id_org]]);
+
+
+
+
+
 //				$tar->joinWith('tarif');
 //				$tar->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
 

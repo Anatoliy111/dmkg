@@ -2,6 +2,8 @@
 
 namespace app\poslug\controllers;
 
+use app\models\UtKart;
+use app\poslug\models\UtAbonent;
 use app\poslug\models\UtDominfo;
 use app\poslug\models\UtDomzatrat;
 use app\poslug\models\UtTarif;
@@ -59,12 +61,30 @@ class UtDomController extends Controller
         $model = $this->findModel($id);
 
         $dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
+		if ($dominfo==null)
+		{
+			$newinfo = new UtDominfo();
+			$newinfo->id_dom=$model->id;
+			$newinfo->save();
+			$dominfo=$newinfo;
+		}
+
+		if ($dominfo->load(Yii::$app->request->post()) && $dominfo->validate()) {
+			$dominfo->save();
+		}
+
+
+
 
         $domtarif= UtTarif::find();
         $domtarif->where(['id_dom' => $model->id])->orderBy(['id_tipposl' => SORT_ASC]);
 
         $domzatrat= UtDomzatrat::find();
         $domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
+
+		$domabon= UtAbonent::find();
+		$domabon->joinWith('kart');
+		$domabon->where(['ut_kart.id_dom' => $model->id,])->orderBy(['schet' => SORT_ASC]);
 
         $dPtarif = new ActiveDataProvider([
             'query' => $domtarif,
@@ -74,12 +94,17 @@ class UtDomController extends Controller
             'query' => $domzatrat,
         ]);
 
+		$dPabon = new ActiveDataProvider([
+			'query' => $domabon,
+		]);
+
 
         return $this->render('view', [
             'model' => $model,
             'dominfo' => $dominfo,
             'dPtarif' => $dPtarif,
             'dPzatrat' => $dPzatrat,
+			'dPabon' => $dPabon,
         ]);
     }
 
@@ -109,15 +134,13 @@ class UtDomController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+//        $model = $this->findModel($id);
+//
+//
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
     }
 
     public function actionUpdatespis()

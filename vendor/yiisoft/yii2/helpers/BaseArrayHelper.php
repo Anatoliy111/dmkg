@@ -882,4 +882,24 @@ class BaseArrayHelper
 
         return $result;
     }
+
+	public static function setValue(&$array, $path, $value)
+	{
+		if ($path === null) {
+			$array = $value;
+			return;
+		}
+		$keys = is_array($path) ? $path : explode('.', $path);
+		while (count($keys) > 1) {
+			$key = array_shift($keys);
+			if (!isset($array[$key])) {
+				$array[$key] = [];
+			}
+			if (!is_array($array[$key])) {
+				$array[$key] = [$array[$key]];
+			}
+			$array = &$array[$key];
+		}
+		$array[array_shift($keys)] = $value;
+	}
 }

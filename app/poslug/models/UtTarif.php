@@ -24,6 +24,7 @@ use Yii;
  * @property UtOrg $org
  * @property UtTipposl $tipposl
  * @property UtVidpokaz $vidpokaz
+ * @property UtTarifab[] $utTarifabs
  */
 class UtTarif extends \yii\db\ActiveRecord
 {
@@ -50,6 +51,7 @@ class UtTarif extends \yii\db\ActiveRecord
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
             [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
             [['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
+
 
         ];
     }
@@ -104,4 +106,9 @@ class UtTarif extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtDom::className(), ['id' => 'id_dom']);
     }
+
+	public function getUtTarifabs()
+	{
+		return $this->hasMany(UtTarifab::className(), ['id_tarif' => 'id']);
+	}
 }

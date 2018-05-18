@@ -44,11 +44,22 @@ class SearchUtDom extends UtDom
     public function search($params)
     {
         $query = UtDom::find();
+		$query->select('ut_dom.*, CAST(ut_dom.n_dom AS SIGNED) AS intdom');
+
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+			'pagination' => [
+				'pageSize' => 50,
+			],
+//			'sort' => [
+//				'attributes' => [
+////					'id_ulica' => SORT_ASC,
+//					'intdom' => SORT_ASC,
+//				]
+//			],
         ]);
 
         $this->load($params);
@@ -71,7 +82,8 @@ class SearchUtDom extends UtDom
 
 //        $query->orderBy('n_dom');
 
-        $query->orderBy(['id_ulica' => SORT_ASC, 'n_dom' => SORT_ASC]);
+        $query->orderBy(['id_ulica' => SORT_ASC, 'intdom' => SORT_ASC]);
+
 
 
         return $dataProvider;

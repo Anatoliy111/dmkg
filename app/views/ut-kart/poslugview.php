@@ -137,18 +137,18 @@ HTML;
 
 					],
 //					'tipposl',
-					'nametarif',
+					'name',
 
 					[
-						'attribute' => 'tarif',
+						'attribute' => 'tarifplan',
 						'format'=>['decimal', 2],
 					],
 					[
-						'attribute' => 'kortarif',
+						'attribute' => 'tariffakt',
 						'format'=>['decimal', 2],
 					],
 					[
-						'attribute' => 'endtarif',
+						'attribute' => 'tarifend',
 						'format'=>['decimal', 2],
 						'group'=>true,
 					],

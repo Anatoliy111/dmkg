@@ -611,6 +611,7 @@ function importNTARIF($dbf,$i,$Base)
 					$model = new UtTarif();
 					$model->id_org = 1;
 					$model->id_tipposl = $FindTipPosl->id;
+					$model->id_vidpokaz = $FindTipPosl->id_vidpokaz;
 					$model->id_dom = $FindKart->id_dom;
 					$model->period = $_SESSION['PeriodBase'];
 					$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
@@ -622,7 +623,7 @@ function importNTARIF($dbf,$i,$Base)
 						$model->tarifend=$model->tariffakt;
 					}
 					else
-						$model->tarifend = $fields['ENDTARIF'];
+						$model->tarifend = $fields['TARIF'];
 
 					if ($model->validate())
 					{
