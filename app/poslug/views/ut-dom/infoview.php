@@ -7,6 +7,7 @@
 	use yii\bootstrap\Modal;
 	use yii\helpers\Html;
 	use kartik\select2\Select2;
+	use yii\widgets\Pjax;
 
 
 	/* @var $this yii\web\View */
@@ -19,7 +20,7 @@
 <div class="ut-dom-view">
 
 
-
+	<?php Pjax::begin(); ?>
 	<?=
 		DetailView::widget([
 			'model'=>$dominfo,
@@ -102,7 +103,29 @@
 		]);
 	?>
 
+	<?=
+		DetailView::widget([
+			'model'=>$model,
+			'striped'=>true,
+			'hover'=>true,
+			'mode'=>DetailView::MODE_VIEW,
+			'panel'=>[
+				'heading'=>'Характеристики будинку',
+				'type'=>DetailView::TYPE_INFO,
+			],
+			'buttons1' => '{update}',
+			'buttons2' => '{save},{view}',
+			'attributes'=>[
+				'n_dom',
+				'id_ulica',
+				'note',
+				'image'
 
+			]
+		]);
+	?>
+
+	<?php Pjax::end(); ?>
 
 
 
