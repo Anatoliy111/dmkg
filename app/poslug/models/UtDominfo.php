@@ -45,7 +45,7 @@ class UtDominfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'id_dom'], 'required'],
+            [['id_dom'], 'required'],
             [['id', 'id_dom', 'god_eksp', 'kol_etag', 'kol_pod', 'kol_kv', 'kol_kvpriv', 'kol_kvkom', 'kol_lud', 'kol_podval', 'kol_kladov'], 'integer'],
             [['plos', 'plos_kv', 'plos_nokv', 'plos_terit'], 'number'],
             [['form_vlas', 'teh_stan', 'tip_dom', 'lift'], 'string', 'max' => 30],
