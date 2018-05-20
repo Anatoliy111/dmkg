@@ -59,9 +59,8 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 						'items' => [
 							['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
 							['label' => 'Рахунки', 'url' => '/poslug/ut-abonent/index'],
-//							['label' => 'Заявки на авторизацію', 'url' => '/poslug/ut-auth/index'],
+							['label' => 'Види розшифровки тарифів', 'url' => '/poslug/ut-tarifvid/index'],
 //							['label' => 'Вулиці', 'url' => '/poslug/ut-ulica/index'],
-							['label' => 'Багатокв. будинки', 'url' => '/poslug/ut-dom/index'],
 //							['label' => 'Місце роботи', 'url' => '/poslug/ut-rabota/index'],
 //							'<li class="divider"></li>',
 //							['label' => 'Види послуг', 'url' => '/poslug/ut-tipposl/index'],
@@ -79,7 +78,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 						],
 					],
-					['label' => 'Утримання будинків', 'url' => '/poslug/ut-domzatrat/index'],
+					['label' => 'Будинки', 'url' => '/poslug/ut-dom/index'],
 
 //					[
 //						'label' => 'Введення даних',

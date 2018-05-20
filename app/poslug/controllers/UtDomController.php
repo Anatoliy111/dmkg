@@ -7,6 +7,7 @@ use app\poslug\models\UtAbonent;
 use app\poslug\models\UtDominfo;
 use app\poslug\models\UtDomzatrat;
 use app\poslug\models\UtTarif;
+use app\poslug\models\UtTarifinfo;
 use Yii;
 use app\poslug\models\UtDom;
 use app\poslug\models\SearchUtDom;
@@ -56,11 +57,68 @@ class UtDomController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionTarinfo($id)
     {
-        $model = $this->findModel($id);
 
-        $dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
+		$model = $this->findTarif($id);
+		$newtarinfo = new UtTarifinfo;
+		$newtarinfo->id_tarif = $model->id;
+		if ($newtarinfo->load(Yii::$app->request->post()) && $newtarinfo->validate()) {
+			$newtarinfo->save();
+			$newtarinfo = new UtTarifinfo;
+			$newtarinfo->id_tarif = $model->id;
+		}
+
+
+
+		$tarinfo = UtTarifinfo::find();
+		$tarinfo->where(['id_tarif' => $id])->orderBy(['id_tarifvid' => SORT_ASC]);
+//		if ($dominfo==null)
+//		{
+//			$newinfo = new UtDominfo();
+//			$newinfo->id_dom=$model->id;
+//			$newinfo->save();
+//			$dominfo=$newinfo;
+//		}
+//
+		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+			$model->save();
+		}
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $tarinfo,
+        ]);
+
+
+        return $this->render('tarinfo', [
+			'model' => $model,
+			'dataProvider' => $dataProvider,
+			'newtarinfo' => $newtarinfo,
+        ]);
+    }
+
+	public function actionCreatetarinfo($id)
+	{
+		$model = new UtTarifinfo();
+		$model->id_tarif = $id;
+
+
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			return $this->redirect(['tarinfo', 'id' => $model->id_tarif]);
+		} else {
+			return $this->render('createtarinfo', [
+				'model' => $model,
+			]);
+		}
+	}
+
+
+	public function actionView($id)
+	{
+		$model = $this->findModel($id);
+
+		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
 		if ($dominfo==null)
 		{
 			$newinfo = new UtDominfo();
@@ -76,37 +134,37 @@ class UtDomController extends Controller
 
 
 
-        $domtarif= UtTarif::find();
-        $domtarif->where(['id_dom' => $model->id])->orderBy(['id_tipposl' => SORT_ASC]);
+		$domtarif= UtTarif::find();
+		$domtarif->where(['id_dom' => $model->id])->orderBy(['id_tipposl' => SORT_ASC]);
 
-        $domzatrat= UtDomzatrat::find();
-        $domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
+		$domzatrat= UtDomzatrat::find();
+		$domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
 
 		$domabon= UtAbonent::find();
 		$domabon->joinWith('kart');
 		$domabon->where(['ut_kart.id_dom' => $model->id,])->orderBy(['schet' => SORT_ASC]);
 
-        $dPtarif = new ActiveDataProvider([
-            'query' => $domtarif,
-        ]);
+		$dPtarif = new ActiveDataProvider([
+			'query' => $domtarif,
+		]);
 
-        $dPzatrat = new ActiveDataProvider([
-            'query' => $domzatrat,
-        ]);
+		$dPzatrat = new ActiveDataProvider([
+			'query' => $domzatrat,
+		]);
 
 		$dPabon = new ActiveDataProvider([
 			'query' => $domabon,
 		]);
 
 
-        return $this->render('view', [
-            'model' => $model,
-            'dominfo' => $dominfo,
-            'dPtarif' => $dPtarif,
-            'dPzatrat' => $dPzatrat,
+		return $this->render('view', [
+			'model' => $model,
+			'dominfo' => $dominfo,
+			'dPtarif' => $dPtarif,
+			'dPzatrat' => $dPzatrat,
 			'dPabon' => $dPabon,
-        ]);
-    }
+		]);
+	}
 
     /**
      * Creates a new UtDom model.
@@ -142,6 +200,8 @@ class UtDomController extends Controller
 //            ]);
 
     }
+
+
 
     public function actionUpdatespis()
     {
@@ -182,4 +242,14 @@ class UtDomController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+	protected function findTarif($id)
+	{
+		if (($model = UtTarif::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+	}
+
 }

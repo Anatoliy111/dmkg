@@ -4,14 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\poslug\models\UtDom */
+/* @var $model app\poslug\models\UtTarifvid */
 
 $this->title = Yii::t('easyii', 'Create');
-
-$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Tarifvids'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ut-dom-create">
+<div class="ut-tarifvid-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -44,7 +44,7 @@ class UtUlicaController extends Controller
 //		}
 //		else
 //		{
-			$dataProvider = $searchModel->search(Yii::$app->request->queryParams,null);
+			$dataProvider = $searchModel->search(Yii::$app->request->queryParams,Yii::$app->session->get('FilterUtUlica'));
 //		}
 
 
@@ -138,7 +138,7 @@ class UtUlicaController extends Controller
 		}
 	}
 
-    public function actionUpdateAll()
+    public function actionUpdateall()
     {
 //        $model = $this->findModel($id);
 //

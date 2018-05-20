@@ -41,30 +41,28 @@
 
 			[
 				'attribute' => 'period',
-				'label'=>'Період',
+				'label' => 'Період',
+				'format' => ['date', 'php:MY'],
 			],
 			[
 				'attribute' => 'id_tipposl',
 				'value' => 'tipposl.poslug',
-				'label'=>'Послуга',
-
 			],
 			[
 				'attribute' => 'name',
-				'label'=>'Тариф',
 			],
-			'id_vidpokaz',
+			[
+				'attribute' => 'id_vidpokaz',
+				'value' => 'vidpokaz.vid_pokaz',
+			],
 			[
 				'attribute' => 'tarifplan',
-				'label'=>'Плановий тариф на м2',
 			],
 			[
 				'attribute' => 'tariffakt',
-				'label'=>'Фактичний тариф на м2',
 			],
 			[
 				'attribute' => 'tarifend',
-				'label'=>'Кінцевий тариф на м2',
 			],
 //				'nnorma',
 //				 'activ',
@@ -79,14 +77,30 @@
 			// 'privat',
 			// 'id_oldkart',
 
-//				['class' => 'yii\grid\ActionColumn'],
+			[
+				'class' => '\kartik\grid\ActionColumn',
+				'header'=>'Складові тарифу',
+				'template' => '{tarinfo}',
+				'buttons' => [
+					'tarinfo' => function ($name, $model) {
+//						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
+
+						return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
+					}
+				],
+//				'viewOptions' => ['label' => '<i class="glyphicon glyphicon-eye-open"> Складові тарифу</i>'],
+////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh">sdg</i>'],
+////				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove">sg</i>'],
+//				'dropdown' => true,
+//				'dropdownOptions' => ['class' => 'pull-right'],
+			]
 		],
 //		'layout' => $layout,
 //				'layout'=>"{items}",
 		'resizableColumns'=>true,
 		'hover'=>true,
 //				'showPageSummary'=>true,
-		'pjax'=>true,
+		'pjax'=>false,
 		'striped'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
 //		'floatHeader'=>true,
