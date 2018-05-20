@@ -138,6 +138,10 @@ HTML;
 					],
 //					'tipposl',
 					'name',
+					[
+						'attribute' => 'id_vidpokaz',
+						'value' => 'vidpokaz.vid_pokaz',
+					],
 
 					[
 						'attribute' => 'tarifplan',
