@@ -396,15 +396,7 @@ class UtKartController extends Controller
 
 				//-----------------------------------------------------------------------------
 				$tar = UtTarif::find();
-				$tar->innerJoin('ut_tarifab', ['ut_tarifab.id_tarif' => 'tarif.id','ut_tarifab.id' => $abon->id,'ut_tarifab.period'=>$session['period'][$org->id_org]]);
-//				$tar->where(['ut_tarifab.id' => $abon->id,'ut_tarifab.period'=>$session['period'][$org->id_org]]);
-
-
-
-
-
-//				$tar->joinWith('tarif');
-//				$tar->innerJoin('tipposl')->where(['tarif.id_tipposl' => 'tipposl.id']);
+				$tar->joinWith('utTarifabs')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['period'][$org->id_org]]);
 
 
 				$dataProvider6 = new ActiveDataProvider([
