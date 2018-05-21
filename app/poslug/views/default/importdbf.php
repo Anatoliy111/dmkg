@@ -616,14 +616,14 @@ function importNTARIF($dbf,$i,$Base)
 					$model->period = $_SESSION['PeriodBase'];
 					$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 					$model->kl = $fields['KL_NTAR'];
-					$model->tarifplan = $fields['TARIF'];
-					$model->tariffakt = $fields['KORTARIF'];
-					if ($model->tariffakt<>0)
+					$model->tariffakt = $fields['TARIF'];
+//					$model->tariffakt = $fields['KORTARIF'];
+					if ($fields['KORTARIF']<>0)
 					{
-						$model->tarifend=$model->tariffakt;
+						$model->tariffakt=$fields['KORTARIF'];
 					}
 					else
-						$model->tarifend = $fields['TARIF'];
+						$model->tariffakt = $fields['TARIF'];
 
 					if ($model->validate())
 					{
@@ -690,6 +690,93 @@ function importNTARIF($dbf,$i,$Base)
 		}
 		return true;
 	}
+
+function importTAR($dbf,$i,$Base)
+{
+	$fields = dbase_get_record_with_names($dbf,$i);
+	if ($fields['deleted'] <> 1)
+	{
+
+
+
+//		encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM'])))
+		$FindDom = UtDom::findOne(['n_dom' => encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM']))),'id_ulica' => $fields['KL_UL']]);
+		if ($FindDom <> null) {
+			$FindTarif = UtTarif::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => 2, ]);
+			if ($FindTarif == null) {
+				$model = new UtTarif();
+				$model->id_org = 1;
+				$model->id_tipposl = $FindTipPosl->id;
+				$model->id_vidpokaz = $FindTipPosl->id_vidpokaz;
+				$model->id_dom = $FindKart->id_dom;
+				$model->period = $_SESSION['PeriodBase'];
+				$model->name = encodestr(trim(iconv('CP866', 'utf-8', $fields['NAME'])));
+				$model->kl = $fields['KL_NTAR'];
+				$model->tariffakt = $fields['TARIF'];
+//					$model->tariffakt = $fields['KORTARIF'];
+				if ($fields['KORTARIF'] <> 0) {
+					$model->tariffakt = $fields['KORTARIF'];
+				} else
+					$model->tariffakt = $fields['TARIF'];
+
+				if ($model->validate()) {
+					$model->save();
+					$Tarifab = new UtTarifab();
+					$Tarifab->id_org = 1;
+					$Tarifab->id_abonent = $FindAbon->id;
+					$Tarifab->period = $_SESSION['PeriodBase'];
+					$Tarifab->id_tarif = $model->id;
+					if ($Tarifab->validate()) {
+						$Tarifab->save();
+						return true;
+					}
+					return true;
+				} else {
+					Flash($Base, $model, $schet . ' ' . $model->name);
+//						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
+//			return false;
+				}
+			} else {
+				$Tarifab = new UtTarifab();
+				$Tarifab->id_org = 1;
+				$Tarifab->id_abonent = $FindAbon->id;
+				$Tarifab->period = $_SESSION['PeriodBase'];
+				$Tarifab->id_tarif = $FindTarif->id;
+				if ($Tarifab->validate()) {
+					$Tarifab->save();
+					return true;
+				}
+				return true;
+			}
+//				elseif ($FindTarifab->val != $fields['VAL'])
+//				{
+//					$model = $FindTarifab;
+//					$model->id_org = 1;
+//					$model->nametarif = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+//					$model->kl = $fields['KL_NTAR'];
+//					$model->tarif = $fields['TARIF'];
+//					$model->kortarif = $fields['KORTARIF'];
+//					$model->endtarif = $fields['ENDTARIF'];
+//					$model->days = $fields['DAYS'];
+//					$model->val = $fields['VAL'];
+//					if ($model->validate())
+//					{
+//						$model->save();
+//						return true;
+//					}
+//					else
+//						Flash($Base,$model,$schet.' '.$model->nametarif);
+////					   die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
+//				}
+
+
+		}
+		else
+			return true;
+
+	}
+	return true;
+}
 
 	 function importNach($dbf,$i,$Base)
 	{
