@@ -158,7 +158,7 @@ function importUL($dbf,$i,$Base)
 	if ($fields['deleted'] <> 1)
 	{
 		$ulic = encodestr(trim(iconv('CP866','utf-8',$fields['UL'])));
-		$FindModel = UtUlica::findOne(['ul' => $ulic]);
+		$FindModel = UtUlica::findOne(['kl' => $fields['KL']]);
 		if ($FindModel== null)
 		{
 			$model = new UtUlica();
@@ -358,7 +358,7 @@ function importKART($dbf,$i,$Base)
 //						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
 					}
 				}
-				elseif ($Abon->val != $fields['VAL'])
+				else//if ($Abon->val != $fields['VAL'])
 				{
 					$modelKt = UtKart::findOne(['id' => $Abon->id_kart]);
 					$modelKt = NewUpKart($fields,$modelKt);
@@ -585,7 +585,7 @@ function importNTARIF($dbf,$i,$Base)
 					Flash($Base,$FindKart,$schet.' '.$FindKart->fio);
 					return true;
 				}
-				if ($FindKart->id_dom == null)
+				if ($FindKart->id_dom == null or UtDom::findOne($FindKart->id_dom)==null)
 				{
 					$FindDom = UtDom::findOne(['n_dom' => $FindKart->dom,'id_ulica' => $FindKart->id_ulica]);
 					if ($FindDom <> null)

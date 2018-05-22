@@ -2,6 +2,7 @@
 
 namespace app\poslug\controllers;
 
+use app\poslug\models\UtTarifinfo;
 use Yii;
 use app\poslug\models\UtTarifplan;
 use app\poslug\models\SearchUtTarifplan;
@@ -51,6 +52,31 @@ class UtTarifplanController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+	public function actionCalculate()
+	{
+		$Tarifplan=UtTarifplan::find();
+
+		foreach($Tarifplan as $tarif)
+		{
+			$suminfo = UtTarifinfo::find()->select('sum(tarifplan) as sum')->where(['id_tarifplan'=>$tarif->id])->groupBy('id_tarifplan');
+		}
+
+		$searchModel = new SearchUtTarifplan();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+//        $provider = new SqlDataProvider([
+//            'sql' => 'SELECT `ut_tarifplan`.`period`,`ut_tarifplan`.`id_tipposl`, `ut_tarifplan`.`tarifplan`, `ut_dom`.`n_dom`,`ut_ulica`.`ul` FROM `ut_tarifplan`
+//LEFT JOIN `ut_dom` ON `ut_tarifplan`.`id_dom` = `ut_dom`.`id`
+//LEFT JOIN `ut_ulica` ON `ut_dom`.`id_ulica`=`ut_ulica`.`id`',
+//
+//        ]);
+
+		return $this->render('index', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
+	}
 
     /**
      * Displays a single UtTarifplan model.

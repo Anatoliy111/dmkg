@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('easyii', 'Create Ut Tarifplan'), ['create'], ['class' => 'btn btn-success']) ?>
+		<?= Html::a('Перерахувати тарифи', ['calculate'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
