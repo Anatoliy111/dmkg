@@ -141,7 +141,7 @@
 
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
-		'filterModel' => $searchModel,
+//		'filterModel' => $searchModel,
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
 			[
