@@ -54,21 +54,7 @@ class SearchUtKart extends UtKart
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-//		$query = new Query;
-//		$query = (new \yii\db\Query())->from('ut_kart')->leftJoin('ut_abonent','ut_abonent.id_kart = ut_kart.id')->all();
-////		$query = (new \yii\db\Query())->from('ut_kart')->all();
-//
-//		$dataProvider = new ArrayDataProvider([
-//			'allModels' => $query,
-//			'sort' => [
-////				'attributes' => ['id','schet'],
-//				'attributes' => ['id'],
-//			],
-//			'pagination' => [
-//				'pageSize' => 20,
-//			],
-//		]);
-//		$query->from('ut_kart')->all();
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -85,10 +71,10 @@ class SearchUtKart extends UtKart
 			'desc' => ['ut_ulica.ul' => SORT_DESC],
 		];
 
-		$dataProvider->sort->attributes['utAbonents'] = [
-			'asc' => ['ut_аbonent.schet' => SORT_ASC],
-			'desc' => ['ut_аbonent.schet' => SORT_DESC],
-		];
+//		$dataProvider->sort->attributes['utAbonents'] = [
+//			'asc' => ['ut_аbonent.schet' => SORT_ASC],
+//			'desc' => ['ut_аbonent.schet' => SORT_DESC],
+//		];
 
         // grid filtering conditions
         $query->andFilterWhere([

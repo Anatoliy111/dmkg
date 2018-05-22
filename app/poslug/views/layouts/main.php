@@ -79,6 +79,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 						],
 					],
 					['label' => 'Будинки', 'url' => '/poslug/ut-dom/index'],
+					['label' => 'Планові тарифи', 'url' => '/poslug/ut-tarifplan/index'],
 
 //					[
 //						'label' => 'Введення даних',

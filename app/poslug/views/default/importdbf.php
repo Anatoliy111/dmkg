@@ -19,7 +19,10 @@ use app\poslug\models\UtKart;
 	use app\poslug\models\UtSubs;
 	use app\poslug\models\UtTarif;
 	use app\poslug\models\UtTarifab;
-	use app\poslug\models\UtTipposl;
+use app\poslug\models\UtTarifinfo;
+use app\poslug\models\UtTarifplan;
+use app\poslug\models\UtTarifvid;
+use app\poslug\models\UtTipposl;
 	use app\poslug\models\UtUlica;
 	use app\poslug\models\UtUtrim;
 	use app\poslug\models\UtVidlgot;
@@ -700,54 +703,61 @@ function importTAR($dbf,$i,$Base)
 
 
 //		encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM'])))
-		$FindDom = UtDom::findOne(['n_dom' => encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM']))),'id_ulica' => $fields['KL_UL']]);
+		$FindTipPosl = UtTipposl::findOne(['id' => 2]);
+		$FindUL = UtUlica::findOne(['kl' => $fields['KL_UL']]);
+		if ($FindUL==null)
+		{
+			Flash($Base,null,'вулиця '.$fields['KL_UL']);
+		}
+		$FindDom = UtDom::findOne(['n_dom' => encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM']))),'id_ulica' => $FindUL->id]);
 		if ($FindDom <> null) {
-			$FindTarif = UtTarif::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => 2, ]);
-			if ($FindTarif == null) {
-				$model = new UtTarif();
-				$model->id_org = 1;
+			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
+			if ($FindTarifPlan == null) {
+				$model = new UtTarifplan();
 				$model->id_tipposl = $FindTipPosl->id;
 				$model->id_vidpokaz = $FindTipPosl->id_vidpokaz;
-				$model->id_dom = $FindKart->id_dom;
+				$model->id_dom = $FindDom->id;
 				$model->period = $_SESSION['PeriodBase'];
-				$model->name = encodestr(trim(iconv('CP866', 'utf-8', $fields['NAME'])));
-				$model->kl = $fields['KL_NTAR'];
-				$model->tariffakt = $fields['TARIF'];
-//					$model->tariffakt = $fields['KORTARIF'];
-				if ($fields['KORTARIF'] <> 0) {
-					$model->tariffakt = $fields['KORTARIF'];
-				} else
-					$model->tariffakt = $fields['TARIF'];
-
 				if ($model->validate()) {
 					$model->save();
-					$Tarifab = new UtTarifab();
-					$Tarifab->id_org = 1;
-					$Tarifab->id_abonent = $FindAbon->id;
-					$Tarifab->period = $_SESSION['PeriodBase'];
-					$Tarifab->id_tarif = $model->id;
-					if ($Tarifab->validate()) {
-						$Tarifab->save();
+					$FindTarifPlan = $model;
+					}
+			} else {
+				$FindTarifinfo = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id]);
+
+				$FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'name' => encodestr(trim(iconv('CP866', 'utf-8', $fields['TAR'])))]);
+				if ($FindTarifvid == null) {
+					$Tarifvid = new UtTarifvid();
+					$Tarifvid->id_tipposl = $FindTipPosl->id;
+					$Tarifvid->name = encodestr(trim(iconv('CP866', 'utf-8', $fields['TAR'])));
+					if ($Tarifvid->validate()) {
+						$Tarifvid->save();
+						$FindTarifvid = $Tarifvid;
+					}
+				}
+				$FindTarifinfo  = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id, 'id_tarifvid' => $FindTarifvid->id]);
+				if ($FindTarifinfo == null) {
+					$Tarifinfo = new UtTarifinfo();
+					$Tarifinfo->id_tarifplan = $FindTarifPlan->id;
+					$Tarifinfo->id_tarifvid = $FindTarifvid->id;
+					$Tarifinfo->tarifplan = $fields['SUM'];
+					if ($Tarifinfo->validate()) {
+						$Tarifinfo->save();
 						return true;
 					}
-					return true;
-				} else {
-					Flash($Base, $model, $schet . ' ' . $model->name);
-//						die("Error!!!  Insert is $dbf  to UtTarifab $schet $FindAbon->schet");
-//			return false;
 				}
-			} else {
-				$Tarifab = new UtTarifab();
-				$Tarifab->id_org = 1;
-				$Tarifab->id_abonent = $FindAbon->id;
-				$Tarifab->period = $_SESSION['PeriodBase'];
-				$Tarifab->id_tarif = $FindTarif->id;
-				if ($Tarifab->validate()) {
-					$Tarifab->save();
-					return true;
+				else
+				{
+					$FindTarifinfo->tarifplan = $fields['SUM'];
+					if ($FindTarifinfo->validate()) {
+						$FindTarifinfo->save();
+						return true;
+					}
+
 				}
-				return true;
 			}
+			return true;
+
 //				elseif ($FindTarifab->val != $fields['VAL'])
 //				{
 //					$model = $FindTarifab;
@@ -772,7 +782,7 @@ function importTAR($dbf,$i,$Base)
 
 		}
 		else
-			return true;
+			Flash($Base,null,$FindUL->ul.' '.$fields['NOMDOM']);
 
 	}
 	return true;

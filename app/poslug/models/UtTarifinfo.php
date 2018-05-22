@@ -8,14 +8,12 @@ use Yii;
  * This is the model class for table "ut_tarifinfo".
  *
  * @property int $id
- * @property int $id_tarif
+ * @property int $id_tarifplan
  * @property int $id_tarifvid
  * @property double $tarifplan
- * @property double $tariffakt
- * @property double $tarifend
  *
- * @property UtTarif $tarif
  * @property UtTarifvid $idTarifv
+ * @property UtTarifplan $tarifplan0
  */
 class UtTarifinfo extends \yii\db\ActiveRecord
 {
@@ -33,11 +31,11 @@ class UtTarifinfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_tarif', 'id_tarifvid'], 'required'],
-            [['id_tarif', 'id_tarifvid'], 'integer'],
-            [['tarifplan', 'tariffakt', 'tarifend'], 'number'],
-            [['id_tarif'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarif::className(), 'targetAttribute' => ['id_tarif' => 'id']],
+            [['id_tarifplan', 'id_tarifvid'], 'required'],
+            [['id_tarifplan', 'id_tarifvid'], 'integer'],
+            [['tarifplan'], 'number'],
             [['id_tarifvid'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarifvid::className(), 'targetAttribute' => ['id_tarifvid' => 'id']],
+            [['id_tarifplan'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarifplan::className(), 'targetAttribute' => ['id_tarifplan' => 'id']],
         ];
     }
 
@@ -48,20 +46,10 @@ class UtTarifinfo extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('easyii', 'ID'),
-            'id_tarif' => Yii::t('easyii', 'Id Tarif'),
+            'id_tarifplan' => Yii::t('easyii', 'Id Tarifplan'),
             'id_tarifvid' => Yii::t('easyii', 'Id Tarifvid'),
             'tarifplan' => Yii::t('easyii', 'Tarifplan'),
-            'tariffakt' => Yii::t('easyii', 'Tariffakt'),
-            'tarifend' => Yii::t('easyii', 'Tarifend'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTarif()
-    {
-        return $this->hasOne(UtTarif::className(), ['id' => 'id_tarif']);
     }
 
     /**
@@ -70,5 +58,13 @@ class UtTarifinfo extends \yii\db\ActiveRecord
     public function getIdTarifv()
     {
         return $this->hasOne(UtTarifvid::className(), ['id' => 'id_tarifvid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTarifplan0()
+    {
+        return $this->hasOne(UtTarifplan::className(), ['id' => 'id_tarifplan']);
     }
 }
