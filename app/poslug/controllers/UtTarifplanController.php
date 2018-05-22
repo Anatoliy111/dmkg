@@ -6,6 +6,7 @@ use app\poslug\models\UtTarifinfo;
 use Yii;
 use app\poslug\models\UtTarifplan;
 use app\poslug\models\SearchUtTarifplan;
+use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,13 +54,73 @@ class UtTarifplanController extends Controller
         ]);
     }
 
+	public function actionCreatetarinfo($id)
+	{
+		$model = new UtTarifinfo();
+		$model->id_tarifplan = $id;
+
+
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			return $this->redirect(['tarinfo']);
+		} else {
+			return $this->render('createtarinfo', [
+				'model' => $model,
+			]);
+		}
+	}
+
+	public function actionTarinfo($id)
+	{
+
+		$model = $this->findModel($id);
+		$newtarinfo = new UtTarifinfo;
+		$newtarinfo->id_tarifplan = $model->id;
+		if ($newtarinfo->load(Yii::$app->request->post()) && $newtarinfo->validate()) {
+			$newtarinfo->save();
+			$newtarinfo = new UtTarifinfo;
+			$newtarinfo->id_tarifplan = $model->id;
+		}
+
+
+
+		$tarinfo = UtTarifinfo::find();
+		$tarinfo->where(['id_tarifplan' => $id])->orderBy(['id_tarifvid' => SORT_ASC]);
+//		if ($dominfo==null)
+//		{
+//			$newinfo = new UtDominfo();
+//			$newinfo->id_dom=$model->id;
+//			$newinfo->save();
+//			$dominfo=$newinfo;
+//		}
+//
+		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+			$model->save();
+		}
+
+
+		$dataProvider = new ActiveDataProvider([
+			'query' => $tarinfo,
+		]);
+
+
+		return $this->render('tarinfo', [
+			'model' => $model,
+			'dataProvider' => $dataProvider,
+			'newtarinfo' => $newtarinfo,
+		]);
+	}
+
 	public function actionCalculate()
 	{
-		$Tarifplan=UtTarifplan::find();
+		$Tarifplan=UtTarifplan::find()->all();
 
 		foreach($Tarifplan as $tarif)
 		{
-			$suminfo = UtTarifinfo::find()->select('sum(tarifplan) as sum')->where(['id_tarifplan'=>$tarif->id])->groupBy('id_tarifplan');
+			$sql = 'SELECT id_tarifplan,sum(tarifplan) as summ FROM ut_tarifinfo WHERE id_tarifplan=:st group by id_tarifplan';
+			$suminfo = UtTarifinfo::findBySql($sql, [':st' => $tarif->id])->asArray()->all();
+//			$suminfo = UtTarifinfo::find()->select('sum(tarifplan) as sum')->where(['id_tarifplan'=>$tarif->id])->groupBy('id_tarifplan')->all();
+			$tarif->tarifplan = $suminfo[0]['summ'];
+			$tarif->save();
 		}
 
 		$searchModel = new SearchUtTarifplan();

@@ -722,8 +722,9 @@ function importTAR($dbf,$i,$Base)
 					$model->save();
 					$FindTarifPlan = $model;
 					}
-			} else {
-				$FindTarifinfo = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id]);
+			}
+
+//			$FindTarifinfo = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id]);
 
 				$FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'name' => encodestr(trim(iconv('CP866', 'utf-8', $fields['TAR'])))]);
 				if ($FindTarifvid == null) {
@@ -755,7 +756,7 @@ function importTAR($dbf,$i,$Base)
 					}
 
 				}
-			}
+
 			return true;
 
 //				elseif ($FindTarifab->val != $fields['VAL'])
