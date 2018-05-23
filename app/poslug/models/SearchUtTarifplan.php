@@ -17,12 +17,13 @@ class SearchUtTarifplan extends UtTarifplan
      */
     public $ulica;
     public $n_dom;
+    public $poslug;
 
     public function rules()
     {
         return [
 //            [['id', 'id_dom', 'id_tipposl', 'id_vidpokaz'], 'integer'],
-            [['period','ulica','n_dom'], 'safe'],
+            [['period','ulica','n_dom','poslug'], 'safe'],
             [['tarifplan'], 'number'],
         ];
     }
@@ -66,6 +67,7 @@ class SearchUtTarifplan extends UtTarifplan
         }
         $query->leftJoin('ut_dom','`ut_tarifplan`.`id_dom`=`ut_dom`.`id`');
         $query->leftJoin('ut_ulica','`ut_ulica`.`id`=`ut_dom`.`id_ulica`');
+        $query->leftJoin('ut_tipposl','`ut_tipposl`.`id`=`ut_tarifplan`.`id_tipposl`');
 //        $query->select('*, CAST(ut_dom.n_dom AS SIGNED) AS intdom');
 
         $dataProvider->sort->attributes['ulica'] = [
@@ -76,6 +78,11 @@ class SearchUtTarifplan extends UtTarifplan
         $dataProvider->sort->attributes['n_dom'] = [
             'asc' => ['CAST(ut_dom.n_dom AS SIGNED)' => SORT_ASC],
             'desc' => ['CAST(ut_dom.n_dom AS SIGNED)' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['poslug'] = [
+            'asc' => ['ut_tipposl.poslug' => SORT_ASC],
+            'desc' => ['ut_tipposl.poslug' => SORT_DESC],
         ];
 
         // grid filtering conditions
@@ -90,6 +97,8 @@ class SearchUtTarifplan extends UtTarifplan
 
         $query->andFilterWhere(['LIKE', UtUlica::tableName() . '.ul', $this->ulica]);
         $query->andFilterWhere(['LIKE', UtDom::tableName() . '.n_dom', $this->n_dom]);
+        $query->andFilterWhere(['LIKE', UtTipposl::tableName() . '.poslug', $this->poslug]);
+
 
         return $dataProvider;
     }

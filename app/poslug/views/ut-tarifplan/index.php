@@ -14,9 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ut-tarifplan-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?= Html::a(Yii::t('easyii', 'Create Ut Tarifplan'), ['create'], ['class' => 'btn btn-success']) ?>
 		<?= Html::a('Перерахувати тарифи', ['calculate'], ['class' => 'btn btn-success']) ?>
@@ -31,12 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => '\kartik\grid\SerialColumn'],
 
-            'period',
+//            'period',
             [
                 'attribute'=>'ulica',
                 'label' => 'Вулиця',
                 'vAlign'=>'middle',
-                'width'=>'180px',
+                'width'=>'200px',
                 'value' => 'domul.ul',
                 'filterType'=>GridView::FILTER_SELECT2,
                 'filter'=>ArrayHelper::map(\app\poslug\models\UtUlica::find()->orderBy('ul')->asArray()->all(), 'ul', 'ul'),
@@ -44,7 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'pluginOptions'=>['allowClear'=>true],
                 ],
                 'filterInputOptions'=>['placeholder'=>'Any'],
-                'format'=>'raw'
+                'format'=>'raw',
+                'pageSummary'=>'Всього',
             ],
             [
                 'attribute' => 'n_dom',
@@ -55,14 +53,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             [
-                'attribute' => 'id_tipposl',
+                'attribute' => 'poslug',
                 'value' => 'tipposl.poslug',
+                'label' => 'Послуга',
+                'width'=>'80px',
             ],
             [
                 'attribute' => 'id_vidpokaz',
                 'value' => 'vidpokaz.vid_pokaz',
             ],
-            'tarifplan',
+            [
+                'attribute' =>'tarifplan',
+                'pageSummary'=>true,
+             ],
 
             [
                 'class' => '\kartik\grid\ActionColumn',
@@ -85,9 +88,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'pjaxSettings'=>[
             'neverTimeout'=>true,
         ],
-
+        'panel' => [
+            'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.$this->title.'</h3>',
+            'type'=>'success',
+//			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
+            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+            'footer'=>true
+        ],
         'toolbar'=> [
-
+            '{export}',
+            '{toggleData}',
         ]
     ]);
     ?>
