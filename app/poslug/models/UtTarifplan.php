@@ -33,13 +33,17 @@ class UtTarifplan extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
+<<<<<<< HEAD
 
+=======
+    public $periodmes;
+>>>>>>> origin/master
 
     public function rules()
     {
         return [
             [['period', 'id_dom', 'id_tipposl', 'id_vidpokaz'], 'required'],
-            [['period'], 'safe'],
+            [['period','periodmes'], 'safe'],
             [['id_dom', 'id_tipposl', 'id_vidpokaz'], 'integer'],
             [['tarifplan'], 'number'],
             [['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
