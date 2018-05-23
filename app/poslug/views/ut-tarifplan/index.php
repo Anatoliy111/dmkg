@@ -1,7 +1,9 @@
 <?php
 
-use kartik\grid\GridView;
-use yii\helpers\ArrayHelper;
+	use kartik\form\ActiveForm;
+	use kartik\grid\GridView;
+	use kartik\select2\Select2;
+	use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 
@@ -17,10 +19,42 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+<!--	<div class="ut-tarifplan-form">-->
+
+		<?php $form = ActiveForm::begin(); ?>
+
+		<?php echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
+//			'data' => \yii\helpers\ArrayHelper::map(\app\poslug\models\UtTarifplan::find()->all(), 'period', 'period'),
+			'hideSearch' => true,
+//			'data' =>[
+//				'foo' => [
+//					'bar' => 'dgdgdsgdgh',
+//					'bar1' => 'wwwwwwwwwwww',
+//					'bar2' => 'rrrrrrrrrrrrrrr',
+//				],
+//				'foo2' => [
+//					'bar' => 'dgdgdsgdgh',
+//					'bar1' => 'wwwwwwwwwwww',
+//					'bar2' => 'rrrrrrrrrrrrrrr',
+//				]
+//			],
+			'data'=>$per,
+				'options' => ['placeholder' => 'Select a state ...'],
+			'pluginOptions' => [
+				'allowClear' => true
+			],
+		]); ?>
+
+		<?php ActiveForm::end(); ?>
+
+<!--	</div>-->
+
     <p>
         <?= Html::a(Yii::t('easyii', 'Create Ut Tarifplan'), ['create'], ['class' => 'btn btn-success']) ?>
-		<?= Html::a('Перерахувати тарифи', ['calculate'], ['class' => 'btn btn-success']) ?>
+		<?= Html::a('Перерахувати всі тарифи', ['calculateall'], ['class' => 'btn btn-success']) ?>
     </p>
+
+
 
 
     <?php

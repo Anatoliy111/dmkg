@@ -8,6 +8,7 @@ use app\poslug\models\UtTarifplan;
 use app\poslug\models\SearchUtTarifplan;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,6 +39,13 @@ class UtTarifplanController extends Controller
      */
     public function actionIndex()
     {
+		foreach (ArrayHelper::map(UtTarifplan::find()->all(), 'period', 'period') as $dt)
+		{
+				ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'Y'), [Yii::$app->formatter->asDate($dt, 'LLLL') => Yii::$app->formatter->asDate($dt, 'LLLL')]);
+		}
+
+
+
         $searchModel = new SearchUtTarifplan();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,6 +59,8 @@ class UtTarifplanController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+			'per' => $per,
+
         ]);
     }
 
@@ -110,7 +120,7 @@ class UtTarifplanController extends Controller
 		]);
 	}
 
-	public function actionCalculate()
+	public function actionCalculateall()
 	{
 		$Tarifplan=UtTarifplan::find()->all();
 

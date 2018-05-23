@@ -17,12 +17,13 @@ class SearchUtTarifplan extends UtTarifplan
      */
     public $ulica;
     public $n_dom;
+	public $periodnow;
 
     public function rules()
     {
         return [
 //            [['id', 'id_dom', 'id_tipposl', 'id_vidpokaz'], 'integer'],
-            [['period','ulica','n_dom'], 'safe'],
+            [['period','ulica','n_dom','periodnow'], 'safe'],
             [['tarifplan'], 'number'],
         ];
     }

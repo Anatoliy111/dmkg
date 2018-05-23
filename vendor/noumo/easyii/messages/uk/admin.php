@@ -253,6 +253,8 @@ return [
 	'Create Ut Obor' =>      'Додати Оборотна відомість',
 	'Create Setting' =>       'Додати Налаштування',
 	'Create Ut Org' =>        'Додати Організацію',
+	'Create Ut Tarifplan' =>   'Додати Плановий тариф',
+
 
 
 
