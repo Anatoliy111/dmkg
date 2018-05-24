@@ -1,10 +1,13 @@
 <?php
 
-	use kartik\form\ActiveForm;
+use app\poslug\models\UtTarifplan;
+
 	use kartik\grid\GridView;
 	use kartik\select2\Select2;
 	use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\JsExpression;
+use yii\widgets\ActiveForm;
 
 
 /* @var $this yii\web\View */
@@ -14,44 +17,66 @@ use yii\helpers\Html;
 $this->title = Yii::t('easyii', 'Ut Tarifplans');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<div class="col-xs-12">
+    <div class="col-xs-4 pull-right">
+        <?php $form = ActiveForm::begin([
+            'action' => ['index'],
+            'method' => 'get',
+            'options' => [
+                'data-pjax' => 1
+            ],
+        ]); ?>
+
+    <?php
+
+    $url = \yii\helpers\Url::to(['index']);
+    echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
+        'hideSearch' => true,
+        'initValueText'=>$searchModel->periodnow,
+        'data'=>$per,
+        'value' => $searchModel->periodnow,
+
+
+//        'options' => ['placeholder' => 'Select a state ...',
+//                    'pluginEvents' => [
+//            'change' => function() { $this->redirect(['index']); },
+//            ],
+//        ],
+        'pluginOptions' => [
+
+            'allowClear' => false ],
+        'pluginEvents' => [
+            "select2-selecting" => "function(data) {
+            $(this).select2('close');
+            if (data.val != 'none') {
+                $.get('/shopping/add-category',
+                {id: $('#list-id').val()},
+                function (data) {
+                    $('#category-add .modal-body').html(data); $('#category-add').modal();
+                    }); return false;
+                    }
+                }," ],
+
+    ]); ?>
+
+    <?php ActiveForm::end();
+
+
+
+
+
+
+
+    ?>
+
+
+
+    </div>
+</div>
 <div class="ut-tarifplan-index">
 
-<<<<<<< HEAD
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<!--	<div class="ut-tarifplan-form">-->
-
-		<?php $form = ActiveForm::begin(); ?>
-
-		<?php echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
-//			'data' => \yii\helpers\ArrayHelper::map(\app\poslug\models\UtTarifplan::find()->all(), 'period', 'period'),
-			'hideSearch' => true,
-//			'data' =>[
-//				'foo' => [
-//					'bar' => 'dgdgdsgdgh',
-//					'bar1' => 'wwwwwwwwwwww',
-//					'bar2' => 'rrrrrrrrrrrrrrr',
-//				],
-//				'foo2' => [
-//					'bar' => 'dgdgdsgdgh',
-//					'bar1' => 'wwwwwwwwwwww',
-//					'bar2' => 'rrrrrrrrrrrrrrr',
-//				]
-//			],
-			'data'=>$per,
-				'options' => ['placeholder' => 'Select a state ...'],
-			'pluginOptions' => [
-				'allowClear' => true
-			],
-		]); ?>
-
-		<?php ActiveForm::end(); ?>
-
-<!--	</div>-->
-
-=======
->>>>>>> origin/master
     <p>
         <?= Html::a(Yii::t('easyii', 'Create Ut Tarifplan'), ['create'], ['class' => 'btn btn-success']) ?>
 		<?= Html::a('Перерахувати всі тарифи', ['calculateall'], ['class' => 'btn btn-success']) ?>
@@ -69,6 +94,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => '\kartik\grid\SerialColumn'],
 
 //            'period',
+//            [
+//                'attribute'=>'period',
+//                'label' => 'Период',
+//                'vAlign'=>'middle',
+//                'width'=>'200px',
+//                'value' => 'period',
+//                'filterType'=>GridView::FILTER_SELECT2,
+//                'filter'=>ArrayHelper::map(\app\poslug\models\UtTarifplan::find()->groupBy('period')->asArray()->all(), 'period', 'period'),
+//                'filterWidgetOptions'=>[
+//                    'pluginOptions'=>['allowClear'=>true],
+//                ],
+//                'filterInputOptions'=>['placeholder'=>'Any'],
+//                'format'=>'raw',
+//                'pageSummary'=>'Всього',
+//            ],
             [
                 'attribute'=>'ulica',
                 'label' => 'Вулиця',

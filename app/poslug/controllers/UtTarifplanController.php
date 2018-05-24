@@ -41,7 +41,7 @@ class UtTarifplanController extends Controller
     {
 		foreach (ArrayHelper::map(UtTarifplan::find()->all(), 'period', 'period') as $dt)
 		{
-				ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'Y'), [Yii::$app->formatter->asDate($dt, 'LLLL') => Yii::$app->formatter->asDate($dt, 'LLLL')]);
+				ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'Y'), [$dt => Yii::$app->formatter->asDate($dt, 'LLLL')]);
 		}
 
 
@@ -55,7 +55,7 @@ class UtTarifplanController extends Controller
 //LEFT JOIN `ut_ulica` ON `ut_dom`.`id_ulica`=`ut_ulica`.`id`',
 //
 //        ]);
-
+		$searchModel->periodnow = 'jkhkjhkj';
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -133,20 +133,7 @@ class UtTarifplanController extends Controller
 			$tarif->save();
 		}
 
-		$searchModel = new SearchUtTarifplan();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-//        $provider = new SqlDataProvider([
-//            'sql' => 'SELECT `ut_tarifplan`.`period`,`ut_tarifplan`.`id_tipposl`, `ut_tarifplan`.`tarifplan`, `ut_dom`.`n_dom`,`ut_ulica`.`ul` FROM `ut_tarifplan`
-//LEFT JOIN `ut_dom` ON `ut_tarifplan`.`id_dom` = `ut_dom`.`id`
-//LEFT JOIN `ut_ulica` ON `ut_dom`.`id_ulica`=`ut_ulica`.`id`',
-//
-//        ]);
-
-		return $this->render('index', [
-			'searchModel' => $searchModel,
-			'dataProvider' => $dataProvider,
-		]);
+		return $this->redirect(['index']);
 	}
 
     /**

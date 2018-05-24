@@ -1,5 +1,6 @@
 <?php
 
+use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,7 +13,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'period')->textInput() ?>
+<!--    --><?//= $form->field($model, 'period')->textInput() ?>
+
+    <?= $form->field($model, 'period')->widget(DatePicker::classname(), [
+    'options' => ['placeholder' => 'Enter birth date ...'],
+    'pluginOptions' => [
+    'autoclose'=>true,
+        'dateFormat' => 'yyyy-MM-dd',
+    ]
+    ])
+    ?>
 
     <?= $form->field($model, 'id_dom')->textInput() ?>
 

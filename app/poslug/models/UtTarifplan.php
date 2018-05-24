@@ -33,11 +33,11 @@ class UtTarifplan extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
-<<<<<<< HEAD
 
-=======
-    public $periodmes;
->>>>>>> origin/master
+
+
+
+
 
     public function rules()
     {
