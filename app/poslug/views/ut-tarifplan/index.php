@@ -31,46 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
         $url = \yii\helpers\Url::to(['index']);
-        $tagsUrl = \yii\helpers\Url::to(['tag/autocomplete']);
-        $tagsUrls = \yii\helpers\Url::to(['tag/autocomplete', 'id' => 'idreplace']);
-//        $initScript = <<< SCRIPT
-//    function () {
-//      var id = $(this).val();
-//      if (id !== "") {
-//        var url = "{$url}";
-//        \$.ajax(url.replace('idreplace', id), {dataType: "json"}).done(
-//          function(data) {
-//            callback(data.results);
-//          });
-//      }
-//    }
-//SCRIPT;
-
 
     echo $form->field($searchModel, 'period')->widget(Select2::classname(), [
         'hideSearch' => true,
         'initValueText'=>$searchModel->periodnow,
         'data'=>$per,
         'value' => $searchModel->periodnow,
-//        'options' => [
-//            'onchange' => 'alert ($(this).val())'
-//        ],
-
         'pluginEvents' => [
-//            "change" => 'function() {
-//        var data = $(this).val();
-//
-//        alert(data);
-//    }',
 //            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
             'change' => 'function(e){$("#select2-form").submit()}',
 
         ],
-//        'pluginOptions' => [
-////            'allowClear' => true,
-////            'minimumInputLength' => 3,
-//            'initSelection' => new JsExpression($initScript)
-//        ],
+
 
     ]); ?>
 

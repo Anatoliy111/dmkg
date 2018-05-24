@@ -39,13 +39,15 @@ class UtTarifplanController extends Controller
      */
     public function actionIndex()
     {
-		foreach (ArrayHelper::map(UtTarifplan::find()->all(), 'period', 'period') as $dt)
+		$dat = ArrayHelper::map(UtTarifplan::find()->all(), 'period', 'period');
+		$dat1 = ArrayHelper::map(UtTarifplan::find()->limit(1)->all(), 'period', 'period');
+		foreach ($dat as $dt)
 		{
 				ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'Y'), [$dt => Yii::$app->formatter->asDate($dt, 'LLLL')]);
 		}
 
 
-
+		Yii::$app->request->get($dat1);
         $searchModel = new SearchUtTarifplan();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
