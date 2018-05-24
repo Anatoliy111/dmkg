@@ -65,17 +65,18 @@ class SearchUtTarifplan extends UtTarifplan
         ]);
 
         $this->load($params);
-		if ($this->periodnow==null)
-		{
-			$this->period=$session['periodoblik'];
-			$this->periodnow=$session['periodoblik'];
-		}
-		else
-		{
-			$session['periodoblik']=$this->periodnow;
-			$this->period=$this->periodnow;
-
-		}
+//		if ($this->periodnow==null)
+//		{
+//			$this->period=$session['periodoblik'];
+//			$this->periodnow=$session['periodoblik'];
+//		}
+//		else
+//		{
+//			$session['periodoblik']=$this->periodnow;
+//			$this->period=$this->periodnow;
+//
+//		}
+//		$this->periodnow=$this->period;
 
 
         if (!$this->validate()) {

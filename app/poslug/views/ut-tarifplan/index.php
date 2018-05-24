@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'select2-form',
             'action' => ['index'],
             'method' => 'get',
-			
+
         ]); ?>
 
     <?php
@@ -44,12 +44,16 @@ $this->params['breadcrumbs'][] = $this->title;
 //
 //
 //    ]);
-			echo $form->field($searchModel, 'periodnow')->dropDownList($per,
+			echo $form->field($searchModel, 'period')->dropDownList($per,
 				[
 //            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
 
 					'onchange'=>'this.form.submit()',
-					$searchModel->periodnow => ['Selected' => true],
+					['options' =>
+						 [
+							 $searchModel->period => ['selected' => true]
+						 ]
+					]
 		]);
 
 
