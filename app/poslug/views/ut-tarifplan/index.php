@@ -173,12 +173,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ],
 
-        'resizableColumns'=>true,
+//        'resizableColumns'=>true,
         'hover'=>true,
 				'showPageSummary'=>true,
         'pjax'=>true,
-        'striped'=>true,
-        'floatHeaderOptions'=>['scrollingTop'=>'50'],
+//        'striped'=>true,
+//        'floatHeaderOptions'=>['scrollingTop'=>'50'],
         'pjaxSettings'=>[
             'neverTimeout'=>true,
         ],
@@ -186,8 +186,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.$this->title.'</h3>',
             'type'=>'success',
 //			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
-            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-            'footer'=>true
+//            'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+//            'footer'=>true
         ],
         'toolbar'=> [
             '{export}',

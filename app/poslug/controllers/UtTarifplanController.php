@@ -55,7 +55,7 @@ class UtTarifplanController extends Controller
 //LEFT JOIN `ut_ulica` ON `ut_dom`.`id_ulica`=`ut_ulica`.`id`',
 //
 //        ]);
-		$searchModel->periodnow = 'jkhkjhkj';
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
