@@ -18,7 +18,7 @@ class SearchUtTarifplan extends UtTarifplan
     public $ulica;
     public $n_dom;
 
-	public $periodnow;
+
 
     public $poslug;
 
@@ -53,7 +53,7 @@ class SearchUtTarifplan extends UtTarifplan
     public function search($params)
     {
         $query = UtTarifplan::find();
-
+		$session = Yii::$app->session;
 
         // add conditions that should always apply here
 
@@ -65,6 +65,18 @@ class SearchUtTarifplan extends UtTarifplan
         ]);
 
         $this->load($params);
+		if ($this->periodnow==null)
+		{
+			$this->period=$session['periodoblik'];
+			$this->periodnow=$session['periodoblik'];
+		}
+		else
+		{
+			$session['periodoblik']=$this->periodnow;
+			$this->period=$this->periodnow;
+
+		}
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

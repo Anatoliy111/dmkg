@@ -95,7 +95,7 @@ use yii\bootstrap\Modal;
 	$nombase = $_SESSION['NomBase'];
 	$start = 0;
 	$endbase = count($_SESSION['NameBase'])-1;
-
+	newmes();
 
 
 $t = true;
@@ -142,6 +142,11 @@ $t = true;
 				$t = false;
 
 
+			if ($_SESSION['Progress']==100)
+			{
+				newmes();
+			}
+
 
 
 		}
@@ -149,6 +154,45 @@ $t = true;
 
 	$_SESSION['NomBase'] = $nombase;
 	$_SESSION['NomRec'] = $nomrec;
+
+	function newmes()
+	{
+		$period  = UtObor::find()->where(['id_org' => 1])->max('period');
+		$OblikDate = date('Y-m-d', strtotime($period." +1 months"));
+		$FindModel = UtTarifplan::findOne(['period' => $OblikDate]);
+
+		if ($FindModel == null)
+		{
+			$Tarifplans = UtTarifplan::findAll(['period' => $period]);
+			foreach ($Tarifplans as $plan)
+			{
+				$newplan = new UtTarifplan();
+				$newplan->id_dom = $plan->id_dom;
+				$newplan->id_tipposl = $plan->id_tipposl;
+				$newplan->id_vidpokaz = $plan->id_vidpokaz;
+				$newplan->tarifplan = $plan->tarifplan;
+				$newplan->period = $OblikDate;
+				if ($newplan->validate())
+				{
+					$newplan->save();
+				}
+
+				$Tarifinfos = UtTarifinfo::findAll(['id_tarifplan' => $plan->id]);
+				foreach($Tarifinfos as $info)
+				{
+					$newinfo = new UtTarifinfo();
+					$newinfo->id_tarifplan = $newplan->id;
+					$newinfo->id_tarifvid = $info->id_tarifvid;
+					$newinfo->tarifplan = $info->tarifplan;
+					if ($newinfo->validate())
+					{
+						$newinfo->save();
+					}
+				}
+			}
+		}
+		return true;
+	}
 
 
 

@@ -67,4 +67,6 @@ class UtTarifinfo extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtTarifplan::className(), ['id' => 'id_tarifplan']);
     }
+
+
 }

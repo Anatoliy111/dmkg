@@ -77,55 +77,10 @@ use yii\base\Event;
 
 	if ($model->progress)
 	{
-//		$this->registerJs(
-////			"$('#Modalprogress1').modal('show');
-//		"$('#Modalprogress1').modal({backdrop: false})",
-//			yii\web\View::POS_READY
-//		);
-
-//		$js = <<< JS
-//				function repeat_import() {
-//					$.ajax({
-//							url: "/poslug/default/download",
-//							//timeout: 50000,
-//							success: function(data, textStatus){
-//										$("#upprogress").append("I");
-//
-//										if (data == "The End") {
-//											$("#content").html("<h2>������ ��������!</h2>");
-//										}
-//										else {
-//											$("#content").html("<p>" + data + "</p>");
-//											//repeat_import();
-//										}
-//									},
-//							complete: function(xhr, textStatus){
-//
-//       									 if (textStatus != "success") {
-//											$("#upprogress").append("I");
-//											//repeat_import();
-//										}
-//									}
-//					});
-//				}
-				//$("#upprogress").append("I");
-
-//				$(function (){
-		//			    var win = $('#Modalprogress7');
-		//win.modal({backdrop: false});
-
-//					repeat_import();
-//				});
-//								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
-//											alert("Modal window has been completely closed.");
-//										});
-
-//JS;
-
 		$js1 = <<< JS
 		   var timer;
 		   var url = 'upload';
-		   //var ttt = document.getElementById('percent1').value;
+
 
     // The function to refresh the progress bar.
     function refreshProgress(percent) {
@@ -149,10 +104,13 @@ use yii\base\Event;
             //timer = window.setInterval(completed, 1000);
             //$('#Modalprogress7').modal('close');
             //$('#Modalprogress7').removeClass('show');
+
+
             $("#Modalprogress7").modal('hide');
 
             //$('#Modalprogress7').modal({show: false});
              //$('#Modalprogress7').remove();
+
 				alert("Импорт завершен");
 				window.location.href = url
 				//location.replace();

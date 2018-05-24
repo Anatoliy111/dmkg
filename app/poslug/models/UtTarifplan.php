@@ -18,6 +18,7 @@ use Yii;
  * @property UtDom $dom
  * @property UtTipposl $tipposl
  * @property UtVidpokaz $vidpokaz
+ * @property UtTarifinfo[] $utTarifinfos
  */
 class UtTarifplan extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class UtTarifplan extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
-
+	public $periodnow;
 
 
 
@@ -97,4 +98,9 @@ class UtTarifplan extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokaz']);
     }
+
+	public function getUtTarifinfos()
+	{
+		return $this->hasMany(UtTarifinfo::className(), ['id_tarifplan' => 'id']);
+	}
 }

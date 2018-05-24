@@ -39,16 +39,31 @@ class UtTarifplanController extends Controller
      */
     public function actionIndex()
     {
-		$dat = ArrayHelper::map(UtTarifplan::find()->all(), 'period', 'period');
-		$dat1 = ArrayHelper::map(UtTarifplan::find()->limit(1)->all(), 'period', 'period');
+		$session = Yii::$app->session;
+		$per = [];
+		$ar  = UtTarifplan::find()->orderBy(['period' => SORT_DESC])->all();
+		if ($session['periodoblik']==null)
+		$session['periodoblik'] = $ar[0]['period'];
+		$dat = ArrayHelper::map($ar, 'period', 'period');
+
 		foreach ($dat as $dt)
 		{
+			$val=ArrayHelper::getValue($per, Yii::$app->formatter->asDate($dt, 'Y'));
+			    if ($val==null)
+				{
 				ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'Y'), [$dt => Yii::$app->formatter->asDate($dt, 'LLLL')]);
+				}
+				else
+				{
+				ArrayHelper::setValue($per, [Yii::$app->formatter->asDate($dt, 'Y'),$dt], Yii::$app->formatter->asDate($dt, 'LLLL'));
+
+				}
 		}
 
 
-		Yii::$app->request->get($dat1);
+
         $searchModel = new SearchUtTarifplan();
+//		$searchModel->period =$ar[0]['period'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 //        $provider = new SqlDataProvider([

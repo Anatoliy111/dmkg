@@ -24,27 +24,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'select2-form',
             'action' => ['index'],
             'method' => 'get',
-            'options' => [
-                'data-pjax' => 1
-            ],
         ]); ?>
 
     <?php
-        $url = \yii\helpers\Url::to(['index']);
 
-    echo $form->field($searchModel, 'period')->widget(Select2::classname(), [
-        'hideSearch' => true,
-        'initValueText'=>$searchModel->periodnow,
-        'data'=>$per,
-        'value' => $searchModel->periodnow,
-        'pluginEvents' => [
+
+	$searchModel->period=$dataProvider->getModels()[0]['period'];
+//    echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
+//        'hideSearch' => true,
+//        'data'=>$per,
+//        'pluginEvents' => [
+////            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
+//            'change' => 'function(e){$("#select2-form").submit()}',
+//
+//        ],
+//
+//
+//    ]);
+			echo $form->field($searchModel, 'periodnow')->dropDownList($per,
+				[
 //            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
-            'change' => 'function(e){$("#select2-form").submit()}',
+			"change" => 'function(e){$("#select2-form").submit()}',
+		]);
 
-        ],
 
 
-    ]); ?>
+
+
+		?>
 
     <?php ActiveForm::end();
 
@@ -80,21 +87,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => '\kartik\grid\SerialColumn'],
 
 //            'period',
-//            [
-//                'attribute'=>'period',
-//                'label' => 'Период',
-//                'vAlign'=>'middle',
-//                'width'=>'200px',
-//                'value' => 'period',
-//                'filterType'=>GridView::FILTER_SELECT2,
-//                'filter'=>ArrayHelper::map(\app\poslug\models\UtTarifplan::find()->groupBy('period')->asArray()->all(), 'period', 'period'),
-//                'filterWidgetOptions'=>[
-//                    'pluginOptions'=>['allowClear'=>true],
-//                ],
-//                'filterInputOptions'=>['placeholder'=>'Any'],
-//                'format'=>'raw',
-//                'pageSummary'=>'Всього',
-//            ],
+            [
+                'attribute'=>'period',
+                'label' => 'Период',
+                'vAlign'=>'middle',
+                'width'=>'200px',
+                'value' => 'period',
+                'filterType'=>GridView::FILTER_SELECT2,
+                'filter'=>ArrayHelper::map(\app\poslug\models\UtTarifplan::find()->groupBy('period')->asArray()->all(), 'period', 'period'),
+                'filterWidgetOptions'=>[
+                    'pluginOptions'=>['allowClear'=>true],
+                ],
+                'filterInputOptions'=>['placeholder'=>'Any'],
+                'format'=>'raw',
+                'pageSummary'=>'Всього',
+            ],
             [
                 'attribute'=>'ulica',
                 'label' => 'Вулиця',
