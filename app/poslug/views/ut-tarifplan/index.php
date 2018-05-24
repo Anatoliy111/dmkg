@@ -8,9 +8,10 @@ use app\poslug\models\UtTarifplan;
 use yii\helpers\Html;
 use yii\web\JsExpression;
 use yii\widgets\ActiveForm;
+	use yii\widgets\Pjax;
 
 
-/* @var $this yii\web\View */
+	/* @var $this yii\web\View */
 /* @var $searchModel app\poslug\models\SearchUtTarifplan */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -20,10 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-xs-12">
     <div class="col-xs-4 pull-right">
+		<?php Pjax::begin(); ?>
         <?php $form = ActiveForm::begin([
             'id' => 'select2-form',
             'action' => ['index'],
             'method' => 'get',
+			
         ]); ?>
 
     <?php
@@ -44,7 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
 			echo $form->field($searchModel, 'periodnow')->dropDownList($per,
 				[
 //            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
-			"change" => 'function(e){$("#select2-form").submit()}',
+
+					'onchange'=>'this.form.submit()',
+					$searchModel->periodnow => ['Selected' => true],
 		]);
 
 
@@ -54,14 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		?>
 
     <?php ActiveForm::end();
-
-
-
-
-
-
-
-    ?>
+		?>
+		<?php Pjax::end(); ?>
 
 
 
