@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-xs-12">
     <div class="col-xs-4 pull-right">
         <?php $form = ActiveForm::begin([
+            'id' => 'select2-form',
             'action' => ['index'],
             'method' => 'get',
             'options' => [
@@ -29,34 +30,47 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
 
     <?php
+        $url = \yii\helpers\Url::to(['index']);
+        $tagsUrl = \yii\helpers\Url::to(['tag/autocomplete']);
+        $tagsUrls = \yii\helpers\Url::to(['tag/autocomplete', 'id' => 'idreplace']);
+//        $initScript = <<< SCRIPT
+//    function () {
+//      var id = $(this).val();
+//      if (id !== "") {
+//        var url = "{$url}";
+//        \$.ajax(url.replace('idreplace', id), {dataType: "json"}).done(
+//          function(data) {
+//            callback(data.results);
+//          });
+//      }
+//    }
+//SCRIPT;
 
-    $url = \yii\helpers\Url::to(['index']);
-    echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
+
+    echo $form->field($searchModel, 'period')->widget(Select2::classname(), [
         'hideSearch' => true,
         'initValueText'=>$searchModel->periodnow,
         'data'=>$per,
         'value' => $searchModel->periodnow,
-
-
-//        'options' => ['placeholder' => 'Select a state ...',
-//                    'pluginEvents' => [
-//            'change' => function() { $this->redirect(['index']); },
-//            ],
+//        'options' => [
+//            'onchange' => 'alert ($(this).val())'
 //        ],
-        'pluginOptions' => [
 
-            'allowClear' => false ],
         'pluginEvents' => [
-            "select2-selecting" => "function(data) {
-            $(this).select2('close');
-            if (data.val != 'none') {
-                $.get('/shopping/add-category',
-                {id: $('#list-id').val()},
-                function (data) {
-                    $('#category-add .modal-body').html(data); $('#category-add').modal();
-                    }); return false;
-                    }
-                }," ],
+//            "change" => 'function() {
+//        var data = $(this).val();
+//
+//        alert(data);
+//    }',
+//            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
+            'change' => 'function(e){$("#select2-form").submit()}',
+
+        ],
+//        'pluginOptions' => [
+////            'allowClear' => true,
+////            'minimumInputLength' => 3,
+//            'initSelection' => new JsExpression($initScript)
+//        ],
 
     ]); ?>
 
