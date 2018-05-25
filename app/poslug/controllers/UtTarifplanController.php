@@ -59,7 +59,7 @@ class UtTarifplanController extends Controller
 
 				}
 		}
-
+		$session['dateplan']=$per;
 
 
         $searchModel = new SearchUtTarifplan();
@@ -76,7 +76,6 @@ class UtTarifplanController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-			'per' => $per,
 
         ]);
     }
@@ -103,6 +102,7 @@ class UtTarifplanController extends Controller
 		$newtarinfo = new UtTarifinfo;
 		$newtarinfo->id_tarifplan = $model->id;
 		if ($newtarinfo->load(Yii::$app->request->post()) && $newtarinfo->validate()) {
+			$tt = UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => 8])->asArray()->all();
 			$newtarinfo->save();
 			$newtarinfo = new UtTarifinfo;
 			$newtarinfo->id_tarifplan = $model->id;
@@ -121,6 +121,7 @@ class UtTarifplanController extends Controller
 //		}
 //
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+			$model->id_vidpokaz = $model->tipposl->id_vidpokaz;
 			$model->save();
 		}
 
@@ -191,7 +192,7 @@ class UtTarifplanController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModelinfo($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -211,9 +212,20 @@ class UtTarifplanController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+//		UtTarifinfo::deleteAll(['id_tarifplan'=>$id]);
+//		$model->delete();
+//        return $this->redirect(['index']);
     }
+
+	public function actionDeleteinfo($id)
+	{
+		$vidinfo = $this->findModelinfo($id);
+		$info = $vidinfo->id_tarifplan;
+		$vidinfo->delete();
+//		UtTarifinfo::deleteAll(['id_tarifplan'=>$id]);
+//		$model->delete();
+//		return $this->redirect(['tarinfo','id' => $info]);
+	}
 
     /**
      * Finds the UtTarifplan model based on its primary key value.
@@ -230,4 +242,13 @@ class UtTarifplanController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+	protected function findModelinfo($id)
+	{
+		if (($model = UtTarifinfo::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+	}
 }

@@ -103,4 +103,11 @@ class UtTarifplan extends \yii\db\ActiveRecord
 	{
 		return $this->hasMany(UtTarifinfo::className(), ['id_tarifplan' => 'id']);
 	}
+
+    public function beforeDelete()
+    {
+        UtTarifinfo::deleteAll(['id_tarifplan'=>$this->id]);
+
+         return parent::beforeDelete();
+    }
 }

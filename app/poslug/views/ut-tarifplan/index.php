@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-xs-12">
     <div class="col-xs-4 pull-right">
-		<?php Pjax::begin(); ?>
+
         <?php $form = ActiveForm::begin([
             'id' => 'select2-form',
             'action' => ['index'],
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
 
 
-	$searchModel->period=$dataProvider->getModels()[0]['period'];
+//	$searchModel->period=$dataProvider->getModels()[0]['period'];
 //    echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
 //        'hideSearch' => true,
 //        'data'=>$per,
@@ -44,11 +44,12 @@ $this->params['breadcrumbs'][] = $this->title;
 //
 //
 //    ]);
-			echo $form->field($searchModel, 'period')->dropDownList($per,
+			echo $form->field($searchModel, 'period')->dropDownList(Yii::$app->session['dateplan'],
 				[
 //            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
 
 					'onchange'=>'this.form.submit()',
+//                    'onchange'=>' $.post( "index")',
 					['options' =>
 						 [
 							 $searchModel->period => ['selected' => true]
@@ -64,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end();
 		?>
-		<?php Pjax::end(); ?>
+
 
 
 
@@ -89,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => '\kartik\grid\SerialColumn'],
 
-//            'period',
+//            'id',
             [
                 'attribute'=>'period',
                 'label' => 'Период',
@@ -145,12 +146,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => '\kartik\grid\ActionColumn',
-                'header'=>'Складові тарифу',
-                'template' => '{tarinfo}',
+                'header'=>'Дії',
+                'vAlign'=>'middle',
+                'template' => '{tarinfo}{delete}',
                 'buttons' => [
                     'tarinfo' => function ($name, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
-                    }
+                        return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn-sm','title'=>'Редагування та складові тарифу']);
+                    },
+//                    'delete' => function ($name, $model) {
+//        return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['delete','id' => $model->id], ['class' => 'btn btn-danger', 'title'=>'This is a test tooltip',]);
+//    }
                 ],
             ]
         ],

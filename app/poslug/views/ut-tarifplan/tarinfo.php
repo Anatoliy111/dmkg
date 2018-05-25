@@ -2,12 +2,14 @@
 
 	use app\poslug\models\UtTarifinfo;
 	use kartik\detail\DetailView;
-	use kartik\growl\Growl;
+use kartik\dialog\Dialog;
+use kartik\growl\Growl;
 	use yii\bootstrap\Modal;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
 	use kartik\grid\GridView;
-	use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 	use yii\widgets\Pjax;
 	/* @var $this yii\web\View */
 	/* @var $searchModel app\poslug\models\SearchUtAbonent */
@@ -16,10 +18,11 @@
 	$this->title = Yii::t('easyii', 'Ut Tarifinfo');
 //	$dom = $model->getDom()->one();
 //	$ul = $dom->getUlica()->one();
-//	$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' => ['index']];
+	$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Tarifplans'), 'url' => ['index']];
+	$this->params['breadcrumbs'][] = $this->title;
 //	$this->params['breadcrumbs'][] = ['label' => $ul->ul.' '.$dom->n_dom, 'url' => ['view', 'id' => $model->id_dom]];
 
-	$this->params['breadcrumbs'][] = $this->title;
+//	$this->params['breadcrumbs'][] = 'Плановий тариф';
 ?>
 <?php Pjax::begin(); ?>
 
@@ -63,7 +66,7 @@
 
 			'mode'=>DetailView::MODE_VIEW,
 			'panel'=>[
-				'heading'=>'Тариф',
+				'heading'=>'Плановий тариф',
 				'type'=>DetailView::TYPE_INFO,
 			],
 			'enableEditMode' => true,
@@ -75,13 +78,25 @@
 					'attribute' => 'period',
 					'label' => 'Період',
 					'format' => ['date', 'php:MY'],
-					'displayOnly'=>true,
+					'type'=>DetailView::INPUT_SELECT2,
+					'widgetOptions'=>[
+						'data'=>Yii::$app->session['dateplan'],
+						'options' => ['placeholder' => 'Select ...'],
+						'pluginOptions' => ['allowClear'=>true, 'width'=>'100%'],
+					],
+
 
 				],
 			    [
 					'attribute' => 'id_tipposl',
 					'value' => $model->getTipposl()->asArray()->one()['poslug'],
-					'displayOnly'=>true,
+					'type'=>DetailView::INPUT_SELECT2,
+					'widgetOptions'=>[
+						'data'=>ArrayHelper::map(\app\poslug\models\UtTipposl::find()->orderBy('poslug')->asArray()->all(), 'id', 'poslug'),
+						'options' => ['placeholder' => 'Select ...'],
+						'pluginOptions' => ['allowClear'=>true, 'width'=>'100%'],
+					],
+
 				],
 				[
 					'attribute' => 'id_vidpokaz',
@@ -96,7 +111,6 @@
 	?>
 
 	<?php 		Modal::begin([
-		'header' => '<h2>Завантаження даних...</h2>',
 		'options'=>[
 			'id'=>'tar-modal',
 			'backdrop' => 'static',
@@ -144,6 +158,7 @@
 //		'filterModel' => $searchModel,
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
+			'id',
 			[
 				'attribute' => 'id_tarifvid',
 				'value' => 'idTarifv.name',
@@ -163,10 +178,39 @@
 				'template' => '{update} {delete}',
 //				'template' => '{view} {update} {delete}',
 //				'template' => '{update},{delete}',
+				'urlCreator' => function ($action, $model, $key, $index) {
+//					return Url::to([$action, 'id' => $key]);
+					if ($action=='delete')
+					    return Url::to(['deleteinfo', 'id' => $key]);
+					else
+						return Url::to(['update', 'id' => $key]);
+				},
 				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
 //				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh"></i>'],
-				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove"></i>']
-			]
+//				'deleteOptions' => ['button' => '<i class="glyphicon glyphicon-remove"></i>',['deleteinfo','id' => $model->id]],
+				'deleteOptions' => [ 'class' => 'btn btn-xs btn-danger', 'title' => 'Delete',
+//	                      'message' => 'Ви дійсно хочете видалити ',
+					'type' => Dialog::TYPE_DANGER,
+//					'message' =>function () {
+//							return 'Ви дійсно хочете видалити ';
+//					},
+
+
+						],
+//				'deleteOptions' => ['role' => 'modal-remote', 'class' => 'btn btn-xs btn-danger', 'title' => 'Delete','confirm' =>'sdfsadg',
+//					'data-confirm' => true, 'data-method' => false, // for overide yii data api
+//					'data-request-method' => 'post','data-toggle' => 'tooltip','data-confirm-title' => 'Are you sure?','data-confirm-message' => 'Are you sure want to delete this item'],
+
+			],
+//				                'buttons' => [
+//		'tarinfo' => function ($name, $model) {
+//			return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn-sm','title'=>'Редагування та складові тарифу']);
+//		},
+////                    'delete' => function ($name, $model) {
+////        return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['delete','id' => $model->id], ['class' => 'btn btn-danger', 'title'=>'This is a test tooltip',]);
+////    }
+//	],
+//			]
 		],
 		'resizableColumns'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
