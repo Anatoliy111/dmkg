@@ -7,6 +7,7 @@
 	use yii\bootstrap\Modal;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
+	use yii\helpers\Url;
 	use yii\widgets\ActiveForm;
 
 
@@ -24,14 +25,9 @@
     <h1><?= Html::encode($this->title) ?></h1>
 
 	<?php $form = ActiveForm::begin([
-//		'action' => ['index'],
-//		'method' => 'get',
-		'options' => [
-			'data-pjax' => 1
-		],
+		'enableAjaxValidation' => true,
+		'validationUrl' => Url::toRoute(['ut-tarifplan/validate','id'=>$model->id_tarifplan]),
 	]); ?>
-
-<!--	--><?//= $form->field($model, 'id_tarif')->textInput() ?>
 
 	<?=
 

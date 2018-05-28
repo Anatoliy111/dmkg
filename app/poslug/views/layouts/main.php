@@ -146,27 +146,6 @@ $asset = \app\poslug\assets\AppAsset::register($this);
             <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
-
-<!--		<SCRIPT LANGUAGE="JScript">-->
-<!---->
-<!--			function ShowFolderList(folderspec)-->
-<!--			{-->
-<!--				var fso, f, fc, s;-->
-<!--				fso = new ActiveXObject("Scripting.FileSystemObject");-->
-<!--				f = fso.GetFolder(folderspec);-->
-<!--				fc = new Enumerator(f.SubFolders);-->
-<!--				s = "";-->
-<!--				for (; !fc.atEnd(); fc.moveNext())-->
-<!--				{-->
-<!--					s += fc.item();-->
-<!--					s += "<br>";-->
-<!--				}-->
-<!--				return(s);-->
-<!--			}-->
-<!---->
-<!--			document.write(ShowFolderList("c:/"));-->
-<!---->
-<!--		</SCRIPT>-->
 <?php $this->endBody() ?>
 </body>
 </html>

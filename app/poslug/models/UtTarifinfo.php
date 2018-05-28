@@ -36,7 +36,7 @@ class UtTarifinfo extends \yii\db\ActiveRecord
             [['tarifplan'], 'number'],
             [['id_tarifvid'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarifvid::className(), 'targetAttribute' => ['id_tarifvid' => 'id']],
             [['id_tarifplan'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarifplan::className(), 'targetAttribute' => ['id_tarifplan' => 'id']],
-            ['id_tarifvid', 'in', 'range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => 8])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!'],
+            ['id_tarifvid', 'in', 'range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => 'id_tarifplan'])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!'],
         ];
     }
 

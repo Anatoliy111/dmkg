@@ -24,34 +24,21 @@ use yii\widgets\ActiveForm;
 
 //	$this->params['breadcrumbs'][] = 'Плановий тариф';
 ?>
-<?php Pjax::begin(); ?>
+<?php 		Modal::begin([
+	'header' => '<h2>Складові тарифу</h2>',
+	'id'=>'tar-modal',
+	'size'=> 'modal-lg',
+//	'toggleButton' => false,
+	'options'=>[
+		'backdrop' => 'static',
+	],
+
+]);
 
 
+echo "<div id='modalContentinfo'></div>";
 
-<!--<div class="row">-->
-<!--	--><?php
-//
-//		$session = Yii::$app->session;
-//		if ($session->hasFlash('pass')) {
-//
-//			echo Growl::widget([
-//				'type' => Growl::TYPE_SUCCESS,
-////				'title' => 'Помилка!',
-////				'icon' => 'glyphicon glyphicon-remove-sign',
-//				'body' => $session->getFlash('pass'),
-//				'showSeparator' => true,
-//				'delay' => 0,
-//				'pluginOptions' => [
-////						'showProgressbar' => true,
-//					'placement' => [
-//						'from' => 'top',
-//						'align' => 'left',
-//					]
-//				]
-//			]);
-//		}
-//	?>
-<!--</div>-->
+ Modal::end(); ?>
 
 
 <div class="ut-tarinfo-index">
@@ -110,48 +97,15 @@ use yii\widgets\ActiveForm;
 		]);
 	?>
 
-	<?php 		Modal::begin([
-		'options'=>[
-			'id'=>'tar-modal',
-			'backdrop' => 'static',
-
-		],
-		'size'=> 'modal-lg',
-
-//		'toggleButton' => [
-//
-//
-//			'tag' => 'button',
-//			'class' => 'advisor ',
-//			'label' => 'Нажмите здесь, забавная штука!',
-////			'href' => \yii\helpers\Url::to(['/poslug/ut-dom/createtarinfo']),
-//		]
-//		    'toggleButton' => [
-//		'label' => ' Войти',
-//		'tag' => 'a',
-//		'data-target' => '#login-modal',
-//		'class' => 'glyphicon glyphicon-log-in',
-//		'href' => \yii\helpers\Url::to(['/account/login']),
-//	],
-	]);
-	?>
-
-
-
-
-
-
-
-
-	<?php
-
-		echo $this->render('createtarinfo', ['model' => $newtarinfo]);
-//		echo $this->render('createtarinfo',['id' => $model->id]);
-
-
-	?>
-
-	<?php Modal::end(); ?>
+	<?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' .
+		Yii::t('easyii', 'Add'), ['createtarinfo','id' => $model->id], [
+			'id' => 'stat-add',
+			'data-toggle' => 'modal',
+			'data-target' => '#tar-modal',
+			'class' => 'btn btn-success',
+			'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",
+		]
+	) ?>
 
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
@@ -176,78 +130,58 @@ use yii\widgets\ActiveForm;
 			[
 				'class' => '\kartik\grid\ActionColumn',
 				'template' => '{update} {delete}',
-//				'template' => '{view} {update} {delete}',
-//				'template' => '{update},{delete}',
 				'urlCreator' => function ($action, $model, $key, $index) {
-//					return Url::to([$action, 'id' => $key]);
 					if ($action=='delete')
 					    return Url::to(['deleteinfo', 'id' => $key]);
-					else
-						return Url::to(['update', 'id' => $key]);
+					if ($action=='update')
+						return Url::to(['updateinfo', 'id' => $key]);
+
+					return true;
 				},
-				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
-//				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh"></i>'],
-//				'deleteOptions' => ['button' => '<i class="glyphicon glyphicon-remove"></i>',['deleteinfo','id' => $model->id]],
+//				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
+				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-pencil"></i>',
+							'id' => 'activity-view-link',
+							'data-toggle' => 'modal',
+							'data-target' => '#tar-modal',
+							'data-pjax' => '0'],
 				'deleteOptions' => [ 'class' => 'btn btn-xs btn-danger', 'title' => 'Delete',
-//	                      'message' => 'Ви дійсно хочете видалити ',
 					'type' => Dialog::TYPE_DANGER,
-//					'message' =>function () {
-//							return 'Ви дійсно хочете видалити ';
-//					},
-
-
 						],
-//				'deleteOptions' => ['role' => 'modal-remote', 'class' => 'btn btn-xs btn-danger', 'title' => 'Delete','confirm' =>'sdfsadg',
-//					'data-confirm' => true, 'data-method' => false, // for overide yii data api
-//					'data-request-method' => 'post','data-toggle' => 'tooltip','data-confirm-title' => 'Are you sure?','data-confirm-message' => 'Are you sure want to delete this item'],
-
 			],
-//				                'buttons' => [
-//		'tarinfo' => function ($name, $model) {
-//			return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn-sm','title'=>'Редагування та складові тарифу']);
-//		},
-////                    'delete' => function ($name, $model) {
-////        return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['delete','id' => $model->id], ['class' => 'btn btn-danger', 'title'=>'This is a test tooltip',]);
-////    }
-//	],
-//			]
 		],
 		'resizableColumns'=>true,
-//		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
-//		'floatHeader'=>true,
 		'floatHeaderOptions'=>['scrollingTop'=>'50'],
 //		'showPageSummary' => true,
-		'pjax'=>true,
-		'pjaxSettings'=>[
-			'neverTimeout'=>true,
-//			'beforeGrid'=>'My fancy content before.',
-//			'afterGrid'=>'My fancy content after.',
-		],
+//		'pjax'=>true,
+//		'pjaxSettings'=>[
+//			'neverTimeout'=>true,
+//		],
 		'panel' => [
 			'heading'=>'<h3 class="panel-title"></i>'.' '.$this->title.'</h3>',
-//			'type'=>'success',
-//			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['createtarinfo','id' => $model->id], ['class' => 'btn btn-success']),
-			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['createtarinfo','id' => $model->id], ['data-toggle' =>'modal', 'data-target' =>'#tar-modal','class'=>'btn btn-success']),
-
-	//			'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-//			'footer'=>true
+			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['createtarinfo','id' => $model->id], ['id'=>'modalbutton','class'=>'btn btn-success']).' '.Html::a('Перерахувати тариф', ['calculateinfo','id' => $model->id], ['class' => 'btn btn-success']),
 		],
-//		'panelBeforeTemplate' => [
-//			'{before}' => 'true',
-//		],
 		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 		'filterRowOptions'=>['class'=>'kartik-sheet-style'],
 		'toolbar'=> [
-//			['content'=>
-////				 Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Book', 'class'=>'btn btn-success pull left', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
-////				 Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid']). ' '.
-//				 Html::a(Yii::t('easyii', 'Update'), ['updateall'], ['class' => 'btn btn-danger'])
-////				 Html::a(Yii::t('easyii', 'Back'),Yii::$app->request->referrer, ['data-pjax'=>0, 'class'=>'btn btn-success', 'title'=>'Back'])
-//			],
 			'{export}',
 			'{toggleData}',
 		]
 	]); ?>
-	<!--    --><?php //Pjax::end(); ?>
+
+
+
+	<?php $this->registerJs(
+		"$(function () {
+		$('#modalbutton').click(function(){
+		$('#tar-modal').modal('show')
+		.find('#modalContentinfo')
+		.load($(this).attr('value'));
+		});
+});
+    "
+	); ?>
+
+
+
 </div>

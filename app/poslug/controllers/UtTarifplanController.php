@@ -9,9 +9,12 @@ use app\poslug\models\SearchUtTarifplan;
 use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\validators\Validator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * UtTarifplanController implements the CRUD actions for UtTarifplan model.
@@ -63,15 +66,7 @@ class UtTarifplanController extends Controller
 
 
         $searchModel = new SearchUtTarifplan();
-//		$searchModel->period =$ar[0]['period'];
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-//        $provider = new SqlDataProvider([
-//            'sql' => 'SELECT `ut_tarifplan`.`period`,`ut_tarifplan`.`id_tipposl`, `ut_tarifplan`.`tarifplan`, `ut_dom`.`n_dom`,`ut_ulica`.`ul` FROM `ut_tarifplan`
-//LEFT JOIN `ut_dom` ON `ut_tarifplan`.`id_dom` = `ut_dom`.`id`
-//LEFT JOIN `ut_ulica` ON `ut_dom`.`id_ulica`=`ut_ulica`.`id`',
-//
-//        ]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -85,13 +80,47 @@ class UtTarifplanController extends Controller
 		$model = new UtTarifinfo();
 		$model->id_tarifplan = $id;
 
-
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['tarinfo']);
+		$vls = $model->validators;
+		$vnew = Validator::createValidator('in', $model, ['id_tarifvid'], ['range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => $id])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!']);
+		$vls->append($vnew);
+		// Ajax
+		$request = \Yii::$app->getRequest();
+		if ($request->isAjax && $model->load($request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
+		}
+		// General use
+		if ($model->load($request->post()) && $model->save()) {
+			return $this->redirect(['tarinfo','id'=>$id]);
 		} else {
-			return $this->render('createtarinfo', [
+			return $this->renderAjax('createtarinfo', [
 				'model' => $model,
 			]);
+		}
+
+
+//		$model = new UtTarifinfo();
+//		$model->id_tarifplan = $id;
+//
+//		// General use
+//		if ($model->load(Yii::$app->request->post())  && $model->save()) {
+//			return $this->redirect(['tarinfo']);
+//		} else {
+//			return $this->renderAjax('createtarinfo', [
+//				'model' => $model,
+//			]);
+//		}
+
+	}
+
+	public function actionValidate($id)
+	{
+		$model = new UtTarifinfo();
+		$model->id_tarifplan = $id;
+		$request = \Yii::$app->getRequest();
+		if ($request->isAjax && $model->load($request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
 		}
 	}
 
@@ -99,27 +128,9 @@ class UtTarifplanController extends Controller
 	{
 
 		$model = $this->findModel($id);
-		$newtarinfo = new UtTarifinfo;
-		$newtarinfo->id_tarifplan = $model->id;
-		if ($newtarinfo->load(Yii::$app->request->post()) && $newtarinfo->validate()) {
-			$tt = UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => 8])->asArray()->all();
-			$newtarinfo->save();
-			$newtarinfo = new UtTarifinfo;
-			$newtarinfo->id_tarifplan = $model->id;
-		}
-
-
 
 		$tarinfo = UtTarifinfo::find();
 		$tarinfo->where(['id_tarifplan' => $id])->orderBy(['id_tarifvid' => SORT_ASC]);
-//		if ($dominfo==null)
-//		{
-//			$newinfo = new UtDominfo();
-//			$newinfo->id_dom=$model->id;
-//			$newinfo->save();
-//			$dominfo=$newinfo;
-//		}
-//
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 			$model->id_vidpokaz = $model->tipposl->id_vidpokaz;
 			$model->save();
@@ -134,7 +145,6 @@ class UtTarifplanController extends Controller
 		return $this->render('tarinfo', [
 			'model' => $model,
 			'dataProvider' => $dataProvider,
-			'newtarinfo' => $newtarinfo,
 		]);
 	}
 
@@ -152,6 +162,17 @@ class UtTarifplanController extends Controller
 		}
 
 		return $this->redirect(['index']);
+	}
+
+	public function actionCalculateinfo($id)
+	{
+		$Tarifplan=$this->findModel($id);
+		$suminfo = UtTarifinfo::find()->select('sum(tarifplan) as summ')->where(['id_tarifplan'=>$Tarifplan->id])->groupBy('id_tarifplan')->asArray()->all();
+		$Tarifplan->tarifplan = $suminfo[0]['summ'];
+		$Tarifplan->save();
+
+
+		return $this->redirect(['tarinfo','id'=>$Tarifplan->id]);
 	}
 
     /**
@@ -191,17 +212,30 @@ class UtTarifplanController extends Controller
      * @return mixed
      */
     public function actionUpdate($id)
-    {
-        $model = $this->findModelinfo($id);
+{
+	$model = $this->findModelinfo($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
+	if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		return $this->redirect(['view', 'id' => $model->id]);
+	} else {
+		return $this->render('update', [
+			'model' => $model,
+		]);
+	}
+}
+
+	public function actionUpdateinfo($id)
+	{
+		$model = $this->findModelinfo($id);
+
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
+			return $this->redirect(['view', 'id' => $model->id]);
+		} else {
+			return $this->render('update', [
+				'model' => $model,
+			]);
+		}
+	}
 
     /**
      * Deletes an existing UtTarifplan model.
