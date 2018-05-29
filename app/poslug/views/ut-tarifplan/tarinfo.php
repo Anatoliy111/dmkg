@@ -99,7 +99,7 @@ echo "<div id='modalContentinfo'></div>";
 
 	<?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' .
 		Yii::t('easyii', 'Add'), ['createtarinfo','id' => $model->id], [
-			'id' => 'stat-add',
+			'id' => 'info-add',
 			'data-toggle' => 'modal',
 			'data-target' => '#tar-modal',
 			'class' => 'btn btn-success',
