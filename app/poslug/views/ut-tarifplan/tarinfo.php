@@ -29,9 +29,10 @@ use yii\widgets\ActiveForm;
 	'id'=>'tar-modal',
 	'size'=> 'modal-lg',
 //	'toggleButton' => false,
-	'options'=>[
-		'backdrop' => 'static',
-	],
+//	'options'=>[
+//		'backdrop' => 'static',
+//	],
+	'clientOptions' => ['backdrop' => false],
 
 ]);
 
@@ -97,16 +98,18 @@ echo "<div id='modalContentinfo'></div>";
 		]);
 	?>
 
-	<?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' .
-		Yii::t('easyii', 'Add'), ['createtarinfo','id' => $model->id], [
-			'id' => 'info-add',
-			'data-toggle' => 'modal',
-			'data-target' => '#tar-modal',
-			'class' => 'btn btn-success',
-			'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",
-		]
-	) ?>
+<!--	--><?//= Html::a('<span class="glyphicon glyphicon-plus"></span> ' .
+//		Yii::t('easyii', 'Add'), ['createtarinfo','id' => $model->id], [
+//			'id' => 'info-add',
+//			'data-toggle' => 'modal',
+//			'data-target' => '#tar-modal',
+//			'class' => 'btn btn-success',
+//			'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",
+//		]
+//	) ?>
 
+
+<!--	--><?php //Pjax::begin(['id' => 'table_grid_container']) ?>
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
 //		'filterModel' => $searchModel,
@@ -140,10 +143,11 @@ echo "<div id='modalContentinfo'></div>";
 				},
 //				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
 				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-pencil"></i>',
-							'id' => 'activity-view-link',
-							'data-toggle' => 'modal',
-							'data-target' => '#tar-modal',
-							'data-pjax' => '0'],
+									'id' => 'info-upd',
+									'data-toggle' => 'modal',
+									'data-target' => '#tar-modal',
+									'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",
+							],
 				'deleteOptions' => [ 'class' => 'btn btn-xs btn-danger', 'title' => 'Delete',
 					'type' => Dialog::TYPE_DANGER,
 						],
@@ -152,13 +156,16 @@ echo "<div id='modalContentinfo'></div>";
 		'resizableColumns'=>true,
 		'floatHeaderOptions'=>['scrollingTop'=>'50'],
 //		'showPageSummary' => true,
-//		'pjax'=>true,
-//		'pjaxSettings'=>[
+		'pjax'=>true,
+		'pjaxSettings'=>[
 //			'neverTimeout'=>true,
-//		],
+			'options'=>[
+				'id'=>'w3',
+			]
+		],
 		'panel' => [
 			'heading'=>'<h3 class="panel-title"></i>'.' '.$this->title.'</h3>',
-			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['createtarinfo','id' => $model->id], ['id'=>'modalbutton','class'=>'btn btn-success']).' '.Html::a('Перерахувати тариф', ['calculateinfo','id' => $model->id], ['class' => 'btn btn-success']),
+			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['createtarinfo','id' => $model->id], ['id' => 'info-add','data-pjax' => '1','data-toggle' => 'modal','data-target' => '#tar-modal','class' => 'btn btn-success','onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]).' '.Html::a('Перерахувати тариф', ['calculateinfo','id' => $model->id], ['class' => 'btn btn-success','data-pjax' => '1']),
 		],
 		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
@@ -168,20 +175,14 @@ echo "<div id='modalContentinfo'></div>";
 			'{toggleData}',
 		]
 	]); ?>
+<!--	--><?php //Pjax::end()?>
 
-
-
-	<?php $this->registerJs(
-		"$(function () {
-		$('#modalbutton').click(function(){
-		$('#tar-modal').modal('show')
-		.find('#modalContentinfo')
-		.load($(this).attr('value'));
-		});
-});
-    "
-	); ?>
-
+<!--	<script type="text/javascript">-->
+<!--					$(document).find('#tar-modal').modal('hide,function() {-->
+<!--					function () {-->
+<!--						$.pjax.reload({container:'#w0'});-->
+<!--					}');-->
+<!--	</script>-->
 
 
 </div>

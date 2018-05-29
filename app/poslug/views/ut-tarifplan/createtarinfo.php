@@ -27,6 +27,9 @@
 	<?php $form = ActiveForm::begin([
 		'enableAjaxValidation' => true,
 		'validationUrl' => Url::toRoute(['ut-tarifplan/validate','id'=>$model->id_tarifplan]),
+
+//		'data-pjax' => '1',
+
 	]); ?>
 
 	<?=
@@ -48,7 +51,7 @@
 <!--	--><?//= $form->field($model, 'tarifend')->textInput() ?>
 
 	<div class="form-group">
-		<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+		<?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success','data-pjax' => '1']) ?>
 	</div>
 
 	<?php ActiveForm::end(); ?>

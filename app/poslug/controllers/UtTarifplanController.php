@@ -75,54 +75,9 @@ class UtTarifplanController extends Controller
         ]);
     }
 
-	public function actionCreatetarinfo($id)
-	{
-		$model = new UtTarifinfo();
-		$model->id_tarifplan = $id;
-
-		$vls = $model->validators;
-		$vnew = Validator::createValidator('in', $model, ['id_tarifvid'], ['range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => $id])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!']);
-		$vls->append($vnew);
-		// Ajax
-		$request = \Yii::$app->getRequest();
-		if ($request->isAjax && $model->load($request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
-		}
-		// General use
-		if ($model->load($request->post()) && $model->save()) {
-			return $this->redirect(['tarinfo','id'=>$id]);
-		} else {
-			return $this->renderAjax('createtarinfo', [
-				'model' => $model,
-			]);
-		}
 
 
-//		$model = new UtTarifinfo();
-//		$model->id_tarifplan = $id;
-//
-//		// General use
-//		if ($model->load(Yii::$app->request->post())  && $model->save()) {
-//			return $this->redirect(['tarinfo']);
-//		} else {
-//			return $this->renderAjax('createtarinfo', [
-//				'model' => $model,
-//			]);
-//		}
 
-	}
-
-	public function actionValidate($id)
-	{
-		$model = new UtTarifinfo();
-		$model->id_tarifplan = $id;
-		$request = \Yii::$app->getRequest();
-		if ($request->isAjax && $model->load($request->post())) {
-			Yii::$app->response->format = Response::FORMAT_JSON;
-			return ActiveForm::validate($model);
-		}
-	}
 
 	public function actionTarinfo($id)
 	{
@@ -224,16 +179,70 @@ class UtTarifplanController extends Controller
 	}
 }
 
+	public function actionCreatetarinfo($id)
+	{
+		$model = new UtTarifinfo();
+		$model->id_tarifplan = $id;
+
+		$vls = $model->validators;
+		$vnew = Validator::createValidator('in', $model, ['id_tarifvid'], ['range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => $id])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!']);
+		$vls->append($vnew);
+		// Ajax
+		$request = \Yii::$app->getRequest();
+		if ($request->isAjax && $model->load($request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
+		}
+		// General use
+		if ($model->load($request->post()) && $model->save()) {
+			return $this->redirect(['tarinfo','id'=>$id]);
+		} else {
+			return $this->renderAjax('createtarinfo', [
+				'model' => $model,
+			]);
+		}
+//		return true;
+
+
+
+	}
+
+
+
 	public function actionUpdateinfo($id)
 	{
 		$model = $this->findModelinfo($id);
 
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->id]);
+		$vls = $model->validators;
+		$vnew = Validator::createValidator('in', $model, ['id_tarifvid'], ['range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => $model->id_tarifplan])->andWhere(['<>','id_tarifvid',$model->id_tarifvid])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!']);
+		$vls->append($vnew);
+		// Ajax
+		$request = \Yii::$app->getRequest();
+		if ($request->isAjax && $model->load($request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
+		}
+		// General use
+		if ($model->load($request->post()) && $model->save()) {
+			return $this->redirect(['tarinfo','id'=>$model->id_tarifplan]);
+//			return $this->redirect(Yii::$app->request->referrer);
 		} else {
-			return $this->render('update', [
+			return $this->renderAjax('createtarinfo', [
 				'model' => $model,
 			]);
+
+		}
+
+	}
+
+	public function actionValidate($id)
+	{
+		$model = new UtTarifinfo();
+		$model->id_tarifplan = $id;
+		$request = \Yii::$app->getRequest();
+		if ($request->isAjax && $model->load($request->post())) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			return ActiveForm::validate($model);
 		}
 	}
 
@@ -254,8 +263,14 @@ class UtTarifplanController extends Controller
 	public function actionDeleteinfo($id)
 	{
 		$vidinfo = $this->findModelinfo($id);
+		if ($vidinfo<>null)
+		{
+			$vidinfo->delete();
+		}
+
+
 		$info = $vidinfo->id_tarifplan;
-		$vidinfo->delete();
+
 //		UtTarifinfo::deleteAll(['id_tarifplan'=>$id]);
 //		$model->delete();
 //		return $this->redirect(['tarinfo','id' => $info]);
