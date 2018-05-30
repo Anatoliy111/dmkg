@@ -47,6 +47,7 @@
 			[
 				'attribute' => 'id_tipposl',
 				'value' => 'tipposl.poslug',
+				'group'=>true,
 			],
 			[
 				'attribute' => 'name',
@@ -57,13 +58,14 @@
 			],
 			[
 				'attribute' => 'tarifplan',
+				'group'=>true,
 			],
 			[
 				'attribute' => 'tariffakt',
 			],
-			[
-				'attribute' => 'tarifend',
-			],
+//			[
+//				'attribute' => 'tarifend',
+//			],
 //				'nnorma',
 //				 'activ',
 //								[
