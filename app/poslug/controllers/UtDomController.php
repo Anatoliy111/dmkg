@@ -135,7 +135,10 @@ class UtDomController extends Controller
 
 
 		$domtarif= UtTarif::find();
-		$domtarif->where(['id_dom' => $model->id])->orderBy(['id_tipposl' => SORT_ASC]);
+		$domtarif->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl`)');
+		$domtarif->where(['ut_tarif.id_dom' => $model->id]);
+		$domtarif->orderBy(['id_tipposl' => SORT_ASC]);
+		$rrrr = $domtarif->asArray()->all();
 
 		$domzatrat= UtDomzatrat::find();
 		$domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
