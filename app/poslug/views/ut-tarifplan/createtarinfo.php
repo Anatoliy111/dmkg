@@ -26,7 +26,7 @@
 
 	<?php $form = ActiveForm::begin([
 		'enableAjaxValidation' => true,
-		'validationUrl' => Url::toRoute(['ut-tarifplan/validate','id'=>$model->id_tarifplan]),
+//		'validationUrl' => Url::toRoute(['ut-tarifplan/validate','id'=>$model->id_tarifplan]),
 
 //		'data-pjax' => '1',
 
