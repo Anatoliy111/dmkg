@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -7,10 +8,36 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\poslug\models\SearchUtDom */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+?>
+<?php
 $this->title = Yii::t('easyii', 'Ut Doms');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<div class="col-xs-12">
+    <div class="col-xs-4 pull-right">
+        <?php $form = ActiveForm::begin([
+            'id' => 'dropdom-form',
+            'action' => ['index'],
+            'method' => 'get',
+
+        ]); ?>
+        <?php
+        echo $form->field($searchModel, 'period')->dropDownList(Yii::$app->session['dateplan'],
+            [
+                'onchange'=>'this.form.submit()',
+                ['options' =>
+                    [
+                        $searchModel->period => ['selected' => true]
+                    ]
+                ]
+            ]);
+        ?>
+        <?php ActiveForm::end(); ?>
+    </div>
+</div>
+
+
 <div class="row">
 <div class="ut-dom-index">
 

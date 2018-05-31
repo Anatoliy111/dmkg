@@ -151,11 +151,11 @@ HTML;
 						'attribute' => 'tariffakt',
 						'format'=>['decimal', 2],
 					],
-					[
-						'attribute' => 'tarifend',
-						'format'=>['decimal', 2],
-						'group'=>true,
-					],
+//					[
+//						'attribute' => 'tarifend',
+//						'format'=>['decimal', 2],
+//						'group'=>true,
+//					],
 //					'days',
 //				['class' => 'yii\grid\ActionColumn'],
 				],

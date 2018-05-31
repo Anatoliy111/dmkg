@@ -27,6 +27,7 @@ class UtDom extends \yii\db\ActiveRecord
         return 'ut_dom';
     }
 
+    public $period;
     /**
      * @inheritdoc
      */

@@ -2,7 +2,8 @@
 
 	use kartik\nav\NavX;
 	use kartik\tabs\TabsX;
-	use yii\bootstrap\NavBar;
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\NavBar;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -10,16 +11,45 @@ use yii\widgets\DetailView;
 
 	/* @var $this yii\web\View */
 /* @var $model app\poslug\models\UtDom */
+?>
+
+<?php
 $ul = $model->getUlica()->one();
 $this->title = $ul->ul.' '.$model->n_dom;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="col-xs-12">
+	<div class="col-xs-4 pull-right">
+		<?php $form = ActiveForm::begin([
+			'id' => 'drop-form',
+			'action' => ['view','id'=>$model->id],
+			'method' => 'get',
+		]); ?>
+		<?php
+		echo $form->field($model, 'period')->dropDownList(Yii::$app->session['dateplan'],
+			[
+				'onchange'=>'this.form.submit()',
+				['options' =>
+					[
+						$model->period => ['selected' => true]
+					]
+				]
+			]);
+		?>
+		<?php ActiveForm::end();?>
+	</div>
+</div>
+
 <div class="ut-dom-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+
+
     <?php
+
+
 
 
     $items = [
