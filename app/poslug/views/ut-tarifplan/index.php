@@ -32,18 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
 
 
-//	$searchModel->period=$dataProvider->getModels()[0]['period'];
-//    echo $form->field($searchModel, 'periodnow')->widget(Select2::classname(), [
-//        'hideSearch' => true,
-//        'data'=>$per,
-//        'pluginEvents' => [
-////            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
-//            'change' => 'function(e){$("#select2-form").submit()}',
-//
-//        ],
-//
-//
-//    ]);
 			echo $form->field($searchModel, 'period')->dropDownList(Yii::$app->session['dateplan'],
 				[
 //            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',

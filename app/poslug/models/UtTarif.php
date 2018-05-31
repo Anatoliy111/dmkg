@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "ut_tarif".
  *
  * @property int $id
+ * @property int $idplan
  * @property int $id_org організація
  * @property string $period
  * @property string $name

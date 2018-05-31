@@ -31,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			'label'=>'Інформація по будинку',
 			'content'=>$this->render('infoview', ['model' => $model,'dominfo' => $dominfo,]),
 		],
-    [
-    'label'=>'Акти витрат',
-    'content'=>$this->render('aktview', ['model' => $model,'dataProvider' => $dPzatrat]),
-    ],
+//    [
+//    'label'=>'Акти витрат',
+//    'content'=>$this->render('aktview', ['model' => $model,'dataProvider' => $dPzatrat]),
+//    ],
 	[
 		'label'=>'Абоненти по будинку',
 		'content'=>$this->render('abview', ['model' => $model,'dataProvider' => $dPabon]),

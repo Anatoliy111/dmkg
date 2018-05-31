@@ -7,9 +7,10 @@
 	use yii\bootstrap\Modal;
 	use yii\helpers\Html;
 	use kartik\select2\Select2;
+use yii\helpers\Url;
 
 
-	/* @var $this yii\web\View */
+/* @var $this yii\web\View */
 	/* @var $model app\poslug\models\UtKart */
 
 
@@ -21,6 +22,7 @@
 
 
 <?php
+    $prev = 0;
 	echo GridView::widget([
 		'dataProvider' =>  $dataProvider,
 
@@ -49,16 +51,28 @@
 				'value' => 'tipposl.poslug',
 				'group'=>true,
 			],
-			[
-				'attribute' => 'name',
-			],
+
 			[
 				'attribute' => 'id_vidpokaz',
 				'value' => 'vidpokaz.vid_pokaz',
+				'group'=>true,
 			],
 			[
 				'attribute' => 'tarifplan',
+				'format' => 'raw',
+				'value' =>function ($model, $id) {
+					if ($model->val<>null) {
+						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-tarifplan/tarinfo', 'id' => $model->val])],['class' => 'btn-sm','title'=>'Редагування та складові тарифу']);
+							}
+					else
+						$res = null;
+					return $res;
+				},
 				'group'=>true,
+			],
+			[
+				'attribute' => 'name',
+				'label'=>'Назва фактичного тарифу'
 			],
 			[
 				'attribute' => 'tariffakt',
@@ -79,23 +93,26 @@
 			// 'privat',
 			// 'id_oldkart',
 
-			[
-				'class' => '\kartik\grid\ActionColumn',
-				'header'=>'Складові тарифу',
-				'template' => '{tarinfo}',
-				'buttons' => [
-					'tarinfo' => function ($name, $model) {
-//						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
-
-						return Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
-					}
-				],
-//				'viewOptions' => ['label' => '<i class="glyphicon glyphicon-eye-open"> Складові тарифу</i>'],
-////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh">sdg</i>'],
-////				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove">sg</i>'],
-//				'dropdown' => true,
-//				'dropdownOptions' => ['class' => 'pull-right'],
-			]
+//			[
+//				'class' => '\kartik\grid\ActionColumn',
+//				'header'=>'Складові тарифу',
+//				'template' => '{tarinfo}',
+//				'buttons' => [
+//					'tarinfo' => function ($name, $model) {
+////						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
+////						if ($prev<>$model->id_tipposl)
+////						{
+//							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
+////						}
+//						return $res;
+//					}
+//				],
+////				'viewOptions' => ['label' => '<i class="glyphicon glyphicon-eye-open"> Складові тарифу</i>'],
+//////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh">sdg</i>'],
+//////				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove">sg</i>'],
+////				'dropdown' => true,
+////				'dropdownOptions' => ['class' => 'pull-right'],
+//			]
 		],
 //		'layout' => $layout,
 //				'layout'=>"{items}",
