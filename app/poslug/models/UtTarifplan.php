@@ -34,12 +34,6 @@ class UtTarifplan extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
-	public $periodnow;
-
-
-
-
-
     public function rules()
     {
         return [

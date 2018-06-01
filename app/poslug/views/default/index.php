@@ -1,5 +1,6 @@
 <?php
 
+	use yii\bootstrap\ActiveForm;
 	use yii\bootstrap\Tabs;
 	use yii\widgets\Pjax;
 	use phpnt\chartJS\ChartJs;
@@ -71,7 +72,6 @@
 		'options'   => []
 	]);
 ?>
-
 
 <?php Pjax::begin();?>
 <div class="row">

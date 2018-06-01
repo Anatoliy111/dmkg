@@ -1,9 +1,11 @@
 <?php
-use yii\bootstrap\NavBar;
+	use yii\bootstrap\ActiveForm;
+	use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 	use yii\widgets\Breadcrumbs;
 	use yii\widgets\Pjax;
+	use app\poslug\components\PeriodWidget;
 use yii\helpers\Url;
 
 /* @var $this \yii\web\View */
@@ -44,13 +46,24 @@ $asset = \app\poslug\assets\AppAsset::register($this);
         ]);
         NavBar::end();
         ?>
-<!--		--><?php //Pjax::begin(); ?>
+
+
+
 		<?php
 			NavBar::begin([
 //				'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
 //				'brandUrl' => ['default/index'],
 				'options' => ['class' => 'navbar-default','style'=>'padding-top: 80px'],
 			]);
+			?>
+
+		<div class="col-xs-12">
+			<div class="col-xs-4 pull-right">
+				<?= PeriodWidget::widget() ?>
+			</div>
+		</div>
+
+			<?php
 			echo Nav::widget([
 				'options' => ['class' => 'nav navbar-nav navbar-left'],
 				'items' => [
@@ -121,16 +134,21 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 					],
 
 					['label' => 'Завантаження', 'url' => '/poslug/default/upload'],
-//					['label' => 'Налаштування', 'url' => '/poslug/setting/index'],
 				],
 			]);
 			NavBar::end();
 		?>
+
+
+
 		<div class="container">
+
 			<?php echo Breadcrumbs::widget([
 				'homeLink' => ['label' => 'Головна', 'url' => '/poslug'],
 				'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 			]) ?>
+
+
 
 
             <?= $content ?>
