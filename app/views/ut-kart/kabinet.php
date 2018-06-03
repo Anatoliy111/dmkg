@@ -227,7 +227,7 @@ use yii\helpers\ArrayHelper;
 							'content'=>
 							'<div class="col-xs-12 .col-sm-6 .col-lg-8">'.
 //							'<h2 class="panel-danger" style="text-align:right">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL-Y').'  '.Html::a('Архів', ['ut-kart/logout'], ['class' => 'btn-lg btn-success']).'</h2>'.
-							'<h3 class="panel-danger" style="text-align:left">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL-Y').'</h3>'.
+							'<h3 class="panel-danger" style="text-align:left">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y').'</h3>'.
 							'</div>'.
 								TabsX::widget([
 								'items'=>$items[$org->id_org],

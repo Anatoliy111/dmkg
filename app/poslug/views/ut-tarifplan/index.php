@@ -19,46 +19,46 @@ $this->title = Yii::t('easyii', 'Ut Tarifplans');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="col-xs-12">
-    <div class="col-xs-4 pull-right">
-
-        <?php $form = ActiveForm::begin([
-            'id' => 'select2-form',
-            'action' => ['index'],
-            'method' => 'get',
-
-        ]); ?>
-
-    <?php
-
-
-			echo $form->field($searchModel, 'period')->dropDownList(Yii::$app->session['dateplan'],
-				[
-//            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
-
-					'onchange'=>'this.form.submit()',
-//                    'onchange'=>' $.post( "index")',
-					['options' =>
-						 [
-							 $searchModel->period => ['selected' => true]
-						 ]
-					]
-		]);
-
-
-
-
-
-		?>
-
-    <?php ActiveForm::end();
-		?>
-
-
-
-
-    </div>
-</div>
+<!--<div class="col-xs-12">-->
+<!--    <div class="col-xs-4 pull-right">-->
+<!---->
+<!--        --><?php //$form = ActiveForm::begin([
+//            'id' => 'select2-form',
+//            'action' => ['index'],
+//            'method' => 'get',
+//
+//        ]); ?>
+<!---->
+<!--    --><?php
+//
+//
+////			echo $form->field($searchModel, 'period')->dropDownList(Yii::$app->session['dateplan'],
+////				[
+//////            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
+////
+////					'onchange'=>'this.form.submit()',
+//////                    'onchange'=>' $.post( "index")',
+////					['options' =>
+////						 [
+////							 $searchModel->period => ['selected' => true]
+////						 ]
+////					]
+////		]);
+//
+//
+//
+//
+//
+//		?>
+<!---->
+<!--    --><?php //ActiveForm::end();
+//		?>
+<!---->
+<!---->
+<!---->
+<!---->
+<!--    </div>-->
+<!--</div>-->
 <div class="ut-tarifplan-index">
 
 
@@ -78,20 +78,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => '\kartik\grid\SerialColumn'],
 
-//            'id',
+
             [
                 'attribute'=>'period',
-                'label' => 'Период',
-                'vAlign'=>'middle',
-                'width'=>'200px',
-                'value' => 'period',
-                'filterType'=>GridView::FILTER_SELECT2,
-                'filter'=>ArrayHelper::map(\app\poslug\models\UtTarifplan::find()->groupBy('period')->asArray()->all(), 'period', 'period'),
-                'filterWidgetOptions'=>[
-                    'pluginOptions'=>['allowClear'=>true],
-                ],
-                'filterInputOptions'=>['placeholder'=>'Any'],
-                'format'=>'raw',
+                'label' => 'Період',
+				'width'=>'110px',
+				'value' => function ($model){
+					return Yii::$app->formatter->asDate($model->period, 'LLLL Y');
+				} ,
                 'pageSummary'=>'Всього',
             ],
             [
@@ -107,7 +101,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'filterInputOptions'=>['placeholder'=>'Any'],
                 'format'=>'raw',
-                'pageSummary'=>'Всього',
             ],
             [
                 'attribute' => 'n_dom',
@@ -115,14 +108,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Будинок',
                 'width'=>'80px',
             ],
+			[
+				'attribute'=>'poslug',
+				'label' => 'Послуга',
+				'vAlign'=>'middle',
+				'width'=>'120px',
+				'value' => 'tipposl.poslug',
+				'filterType'=>GridView::FILTER_SELECT2,
+				'filter'=>ArrayHelper::map(\app\poslug\models\UtTipposl::find()->asArray()->all(), 'poslug', 'poslug'),
+				'filterWidgetOptions'=>[
+					'pluginOptions'=>['allowClear'=>true],
+				],
+				'filterInputOptions'=>['placeholder'=>'Any'],
+				'format'=>'raw',
+			],
 
-
-            [
-                'attribute' => 'poslug',
-                'value' => 'tipposl.poslug',
-                'label' => 'Послуга',
-                'width'=>'80px',
-            ],
             [
                 'attribute' => 'id_vidpokaz',
                 'value' => 'vidpokaz.vid_pokaz',

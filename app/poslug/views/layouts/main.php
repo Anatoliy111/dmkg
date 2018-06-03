@@ -28,6 +28,8 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 <body>
     <div class="container-fluid page-container">
         <?php $this->beginBody() ?>
+
+
         <?php
         NavBar::begin([
             'brandLabel' => Html::label('<h4>Компослуги</h4>'),
@@ -48,8 +50,9 @@ $asset = \app\poslug\assets\AppAsset::register($this);
         ?>
 
 
-
 		<?php
+
+
 			NavBar::begin([
 //				'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
 //				'brandUrl' => ['default/index'],
@@ -59,9 +62,11 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 		<div class="col-xs-12">
 			<div class="col-xs-4 pull-right">
+<!--				<p>--><?//=Yii::$app->formatter->asDate(Yii::$app->session['periodoblik'], 'LLLL Y')?><!--</p>-->
 				<?= PeriodWidget::widget() ?>
 			</div>
 		</div>
+
 
 			<?php
 			echo Nav::widget([
@@ -73,7 +78,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 							['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
 							['label' => 'Рахунки', 'url' => '/poslug/ut-abonent/index'],
 							['label' => 'Види розшифровки тарифів', 'url' => '/poslug/ut-tarifvid/index'],
-//							['label' => 'Вулиці', 'url' => '/poslug/ut-ulica/index'],
+
 //							['label' => 'Місце роботи', 'url' => '/poslug/ut-rabota/index'],
 //							'<li class="divider"></li>',
 //							['label' => 'Види послуг', 'url' => '/poslug/ut-tipposl/index'],

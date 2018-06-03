@@ -25,8 +25,8 @@ class PeriodWidget extends Widget
 	public $dataProvider;
 	public $searchModel;
 	public $columns;
-	public $modelmames;
 	public $model;
+
 
 
 	public function init()
@@ -34,14 +34,10 @@ class PeriodWidget extends Widget
 		parent::init();
 		$ModelPeriod = new Period();
 		$lastperiod = UtTarifplan::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one();
-
+		$ModelPeriod->lastperiod = $lastperiod->period;
 		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 		{
-
-			if (Yii::$app->session['periodoblik']==null)
-			{
-				Yii::$app->session['periodoblik']=$ModelPeriod->periodoblik;
-			}
+//				Yii::$app->session['periodoblik']=$ModelPeriod->periodoblik;
 		}
 		else
 		{
@@ -50,17 +46,22 @@ class PeriodWidget extends Widget
 
 				Yii::$app->session['periodoblik']=$lastperiod->period;
 				$ModelPeriod->periodoblik=$lastperiod->period;
-
-
 			}
 			else
 			{
 				$ModelPeriod->periodoblik=Yii::$app->session['periodoblik'];
 			}
 		}
-		$kk  = ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'], false);
-		$TT  = ArrayHelper::isIn($lastperiod->period, Yii::$app->session['periodspisok']);
-		$value = isset(Yii::$app->session['periodspisok']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'], true) : false ;
+//		$kk  = ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'], false);
+//		$TT  = ArrayHelper::isIn($lastperiod->period, Yii::$app->session['periodspisok']);
+		$yy = ArrayHelper::getValue(Yii::$app->session['periodspisok'], 2018);
+		$ee  = ArrayHelper::map(Yii::$app->session['periodspisok'],2018,'2018-05-01');
+		$qq = ArrayHelper::getColumn(Yii::$app->session['periodspisok'],2018);
+
+
+
+		$value = isset(Yii::$app->session['periodspisok']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
+
 		if (!$value)
 		{
 			$per = [];
@@ -81,21 +82,17 @@ class PeriodWidget extends Widget
 			}
 
 			Yii::$app->session['periodspisok']=$per;
-
 		}
+
+
+
 
 		$this->model = $ModelPeriod;
 
-//		$pp = $this->model->period;
-
-//		return $this->render('views\period', ['model' => $model]);
 
 
-//			if ($this->message === null) {
-//				$this->message = 'Hello World';
-//			}
-//
-//			$this->searchModel
+
+
 
 	}
 
@@ -104,9 +101,9 @@ class PeriodWidget extends Widget
 
 		$form = ActiveForm::begin([
 			'id' => 'period-form',
-			'layout'=>'horizontal',
+			'layout'=>'inline',
 //			'action' => ['index'],
-			'method' => 'get',
+			'method' => 'post',
 			'options' => [
 				'data-pjax' => 1,
 //				'class' => 'form-inline',
@@ -114,21 +111,49 @@ class PeriodWidget extends Widget
 
 		]);
 
-	echo $form->field($this->model, 'periodoblik')->widget(Select2::classname(), [
-	'data' => Yii::$app->session['periodspisok'],
-	'language' => 'uk',
-		'hideSearch' => true,
-	'options' => ['onchange'=>'this.form.submit()',],
 
-	'pluginOptions' => [
-		'allowClear' => true
-	],
-])->label('Період');
 
+
+	echo $form->field($this->model, 'periodoblik')->dropDownList(Yii::$app->session['periodspisok'],
+			[
+
+				'onchange'=>'this.form.submit(),
+				SavePeriod(this.value)',
+				['options' =>
+					 [
+//						 $this->model->periodoblik => ['selected' => true]
+					 ]
+				]
+			])->label('Період');
+
+		if ($this->model->periodoblik==$this->model->lastperiod)
+			echo ' Поточний період ';
+		else
+			echo ' Архів ';
 
  ActiveForm::end();
 
 
 	}
 }
+
+
 ?>
+<script type="text/javascript">
+	function SavePeriod(per)
+	{
+		$.ajax({
+			url: "/poslug/default/saveperiod",
+			type: 'post',
+			data: {	period: per	},
+			success: function(s) {
+//				alert(s);
+			}
+
+		});
+	}
+
+
+</script>
+
+

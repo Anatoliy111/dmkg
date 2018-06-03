@@ -121,6 +121,18 @@ class DefaultController extends Controller
 		]);
 	}
 
+	public function actionSaveperiod()
+	{
+//		Yii::$app->request->Ajax
+		if(\Yii::$app->request->isAjax){
+			$data = Yii::$app->request->post();
+			Yii::$app->session['periodoblik']=$data['period'];
+		}
+
+
+
+	}
+
 
 
 }

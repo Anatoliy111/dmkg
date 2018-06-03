@@ -28,9 +28,9 @@ class SearchUtTarifplan extends UtTarifplan
         return [
 //            [['id', 'id_dom', 'id_tipposl', 'id_vidpokaz'], 'integer'],
 
-            [['period','ulica','n_dom','periodnow','poslug'], 'safe'],
+            [['ulica','n_dom','periodnow','poslug'], 'safe'],
 
-            [['tarifplan'], 'number'],
+//            [['tarifplan'], 'number'],
         ];
     }
 
@@ -52,8 +52,7 @@ class SearchUtTarifplan extends UtTarifplan
      */
     public function search($params)
     {
-        $query = UtTarifplan::find();
-		$session = Yii::$app->session;
+        $query = UtTarifplan::find()->where(['period'=>Yii::$app->session['periodoblik']]);
 
         // add conditions that should always apply here
 

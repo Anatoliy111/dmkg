@@ -14,11 +14,12 @@ namespace app\poslug\models;
 	{
 		public $periodsite;
 		public $periodoblik;
+		public $lastperiod;
 
 		public function rules()
 		{
 			return [
-				[['periodoblik','periodsite'], 'safe'],
+				[['periodoblik','periodsite','lastperiod'], 'safe'],
 			];
 		}
 	}
