@@ -31,8 +31,8 @@
 				'heading'=>'Характеристики будинку',
 				'type'=>DetailView::TYPE_INFO,
 			],
-			'buttons1' => '{update}',
-			'buttons2' => '{save},{view}',
+			'buttons1' => '{view}',
+//			'buttons2' => '{save},{view}',
 			'attributes'=>[
 	'god_eksp',
 	'teh_stan',
@@ -50,55 +50,7 @@
 	'plos_terit',
 	'kol_podval',
 	'kol_kladov',
-//					'label' => Yii::t('easyii', 'Adress'),
-//
-//					'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
-//				],
-//				[
-//					'attribute'=>'ur_fiz',
-//					'label'=>'Юр. чи Фіз.',
-//					'format'=>'raw',
-//					'value'=>$model->ur_fiz==0 ? '<span class="label label-success">Фізична особа</span>' : '<span class="label label-danger">Юридична особа</span>',
-////			        	'type'=>DetailView::TYPE_INFO,
-////			        	'widgetOptions' => [
-////			        		'pluginOptions' => [
-////			        			'0' => 'Yes',
-////			        			'1' => 'No',
-////			        		]
-////			        	],
-//					'valueColOptions'=>['style'=>'width:30%']
-//				],
-//				[
-//					'attribute'=>'pass',
-//					'label'=>'Авторизація',
-//					'format'=>'raw',
-//					'value'=>(!empty($model->status) ? '<span class="label label-success">Авторизований</span>'
-//						: '<span class="label label-danger">Не авторизований</span>') ,
-//
-//				],
-//
-//				[
-//
-//					'label'=>'Пароль',
-//					'format'=>'raw',
-//					'value'=>$pass,
-//				],
-////			        	'valueColOptions'=> array('style' =>'width:30%')),
-//				'telef',
-//				[
-//					'attribute'=>'privat',
-//					'label'=>'Приватизація',
-//					'format'=>'raw',
-//					'value'=>$model->privat==1 ? '<span class="label label-success">Приватизована</span>': $model->privat,
-//					'valueColOptions'=>['style'=>'width:30%']
-//				],
-//
-//
-//				[
-//					'attribute' => 'id_rabota',
-////					'label'=>'Робота',
-//					'value' => $model->getRabota()->asArray()->one()['name'],
-//				],
+
 			]
 		]);
 	?>

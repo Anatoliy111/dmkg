@@ -764,6 +764,7 @@ function importTAR($dbf,$i,$Base)
 				$model->id_vidpokaz = $FindTipPosl->id_vidpokaz;
 				$model->id_dom = $FindDom->id;
 				$model->period = $_SESSION['PeriodBase'];
+				$model->tarifplan = $fields['SUM'];
 				if ($model->validate()) {
 					$model->save();
 					$FindTarifPlan = $model;

@@ -36,7 +36,8 @@ class PeriodSiteWidget extends Widget
 		$ModelPeriod = new Period();
 		$lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one();
 		$ModelPeriod->lastperiod = $lastperiod->period;
-		if ($ModelPeriod->load(Yii::$app->request->queryParams))
+//		if ($ModelPeriod->load(Yii::$app->request->queryParams))
+		if ($ModelPeriod->load(Yii::$app->request->post()))
 		{
 				Yii::$app->session['periodsite']=$ModelPeriod->periodsite;
 		}
@@ -100,7 +101,7 @@ class PeriodSiteWidget extends Widget
 //			'action' => ['index'],
 			'method' => 'post',
 			'options' => [
-				'data-pjax' => 1,
+//				'data-pjax' => 1,
 //				'class' => 'form-inline',
 			]
 

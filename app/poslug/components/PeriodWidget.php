@@ -99,7 +99,7 @@ class PeriodWidget extends Widget
 //			'action' => ['index'],
 			'method' => 'post',
 			'options' => [
-				'data-pjax' => 1,
+//				'data-pjax' => 1,
 //				'class' => 'form-inline',
 			]
 
