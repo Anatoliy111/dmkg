@@ -47,11 +47,11 @@ class PeriodSiteWidget extends Widget
 			{
 
 				Yii::$app->session['periodsite']=$lastperiod->period;
-				$ModelPeriod->periodoblik=$lastperiod->period;
+				$ModelPeriod->periodsite=$lastperiod->period;
 			}
 			else
 			{
-				$ModelPeriod->periodoblik=Yii::$app->session['periodsite'];
+				$ModelPeriod->periodsite=Yii::$app->session['periodsite'];
 			}
 		}
 
