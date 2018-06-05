@@ -75,13 +75,6 @@ class UtDomController extends Controller
 
 		$tarinfo = UtTarifinfo::find();
 		$tarinfo->where(['id_tarif' => $id])->orderBy(['id_tarifvid' => SORT_ASC]);
-//		if ($dominfo==null)
-//		{
-//			$newinfo = new UtDominfo();
-//			$newinfo->id_dom=$model->id;
-//			$newinfo->save();
-//			$dominfo=$newinfo;
-//		}
 //
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 			$model->save();
@@ -99,21 +92,6 @@ class UtDomController extends Controller
 			'newtarinfo' => $newtarinfo,
         ]);
     }
-
-	public function actionCreatetarinfo($id)
-	{
-		$model = new UtTarifinfo();
-		$model->id_tarif = $id;
-
-
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['tarinfo', 'id' => $model->id_tarif]);
-		} else {
-			return $this->render('createtarinfo', [
-				'model' => $model,
-			]);
-		}
-	}
 
 
 	public function actionView($id)
@@ -133,14 +111,14 @@ class UtDomController extends Controller
 			$dominfo->save();
 		}
 
-		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['periodoblik']])->all();
+		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['periodsite']])->all();
         if ($Find<>null)
 		{
 		$domtarif1= UtTarif::find();
 		$domtarif1->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
 		$domtarif1->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 		$domtarif1->where(['ut_tarif.id_dom' => $model->id]);
-		$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['periodoblik']]);
+		$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['periodsite']]);
 		$domtarif1->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
 		}
 		else
@@ -148,7 +126,7 @@ class UtDomController extends Controller
 			$domtarif1= UtTarifplan::find();
 			$domtarif1->select('ut_tarifplan.*,ut_tarifplan.id as val');
 			$domtarif1->where(['ut_tarifplan.id_dom' => $model->id]);
-			$domtarif1->andWhere(['ut_tarifplan.period' => Yii::$app->session['periodoblik']]);
+			$domtarif1->andWhere(['ut_tarifplan.period' => Yii::$app->session['periodsite']]);
 			$domtarif1->orderBy(['ut_tarifplan.id_tipposl' => SORT_ASC]);
 		}
 
@@ -156,7 +134,7 @@ class UtDomController extends Controller
 		$nachdom->leftJoin('ut_abonent','ut_abonent.id = ut_obor.id_abonent');
 		$nachdom->leftJoin('ut_kart','ut_kart.id = ut_abonent.id_kart');
 		$nachdom->where(['ut_kart.id_dom' => $model->id]);
-		$nachdom->andWhere(['ut_obor.period' => Yii::$app->session['periodoblik']]);
+		$nachdom->andWhere(['ut_obor.period' => Yii::$app->session['periodsite']]);
 		$nachdom->andWhere(['!=', '`ut_obor`.`dolg`+`ut_obor`.`nach`+`ut_obor`.`subs`+`ut_obor`.`opl`+`ut_obor`.`sal`', 0]);
 		$nachdom->groupBy('period,tipposl');
 
@@ -199,48 +177,11 @@ class UtDomController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new UtDom();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing UtDom model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-//        $model = $this->findModel($id);
-//
-//
-//            return $this->render('update', [
-//                'model' => $model,
-//            ]);
-
-    }
 
 
 
-    public function actionUpdatespis()
-    {
-        $searchModel = new SearchUtDom();
-        $dataProvider = $searchModel->updspis();
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+
 
     /**
      * Deletes an existing UtDom model.

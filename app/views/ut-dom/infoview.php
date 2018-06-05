@@ -113,8 +113,8 @@
 				'heading'=>'Характеристики будинку',
 				'type'=>DetailView::TYPE_INFO,
 			],
-			'buttons1' => '{update}',
-			'buttons2' => '{save},{view}',
+			'buttons1' => '{view}',
+//			'buttons2' => '{save},{view}',
 			'attributes'=>[
 				'n_dom',
 				'id_ulica',

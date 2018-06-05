@@ -6,6 +6,7 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\NavBar;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
+	use app\poslug\components\PeriodSiteWidget;
 use yii\widgets\DetailView;
 	use yii\widgets\Menu;
 
@@ -20,7 +21,29 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="ut-dom-view">
+
+<div class="well well-large">
+
+	<div class="col-xs-12">
+
+		<div class="col-xs-4 pull-right">
+			<!--				<p>--><?//=Yii::$app->formatter->asDate(Yii::$app->session['periodoblik'], 'LLLL Y')?><!--</p>-->
+			<?= PeriodSiteWidget::widget() ?>
+		</div>
+		<div class="col-xs-4 pull-right">
+			<!--			<h3>--><?//=Yii::$app->formatter->asDate(Yii::$app->session['periodsite'], 'LLLL Y')?><!--</h3>-->
+
+		</div>
+	</div>
+
+
+	<hr/>
+	<hr/>
+	<hr/>
+
+	<div class="ut-kart">
+
+
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -42,14 +65,6 @@ $this->params['breadcrumbs'][] = $this->title;
 			'label'=>'Нарахування',
 			'content'=>$this->render('nachview', ['model' => $model,'dataProvider' => $dPnach]),
 		],
-//    [
-//    'label'=>'Акти витрат',
-//    'content'=>$this->render('aktview', ['model' => $model,'dataProvider' => $dPzatrat]),
-//    ],
-	[
-		'label'=>'Абоненти по будинку',
-		'content'=>$this->render('abview', ['model' => $model,'dataProvider' => $dPabon]),
-	],
     ];
 
 	$postId =  Yii::$app->request->post('UtDominfo');
@@ -92,4 +107,5 @@ $this->params['breadcrumbs'][] = $this->title;
 //        ],
 //    ]) ?>
 
+</div>
 </div>

@@ -21,7 +21,7 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 
-class PeriodWidget extends Widget
+class PeriodSiteWidget extends Widget
 {
 	public $dataProvider;
 	public $searchModel;
@@ -96,7 +96,7 @@ class PeriodWidget extends Widget
 
 		$form = ActiveForm::begin([
 			'id' => 'periodsite-form',
-			'layout'=>'inline',
+//			'layout'=>'inline',
 //			'action' => ['index'],
 			'method' => 'post',
 			'options' => [
