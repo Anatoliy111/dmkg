@@ -21,36 +21,37 @@
 
 
 	<?php Pjax::begin(); ?>
+
 	<?=
 		DetailView::widget([
 			'model'=>$dominfo,
 			'striped'=>true,
 			'hover'=>true,
 			'mode'=>DetailView::MODE_VIEW,
+			'enableEditMode' => false,
 			'panel'=>[
 				'heading'=>'Характеристики будинку',
-				'type'=>DetailView::TYPE_INFO,
+				'type'=>DetailView::TYPE_PRIMARY,
 			],
 			'buttons1' => '{view}',
 //			'buttons2' => '{save},{view}',
 			'attributes'=>[
 	'god_eksp',
-	'teh_stan',
+//	'teh_stan',
 	'kol_etag',
 	'kol_pod',
 	'kol_kv',
-	'kol_kvpriv',
-	'kol_kvkom',
+	'kol_lud',
+//	'kol_kvpriv',
+//	'kol_kvkom',
 	'plos',
 	'plos_kv',
 	'plos_nokv',
-	'kol_lud',
-	'tip_dom',
-	'lift',
 	'plos_terit',
+//	'tip_dom',
+	'lift',
 	'kol_podval',
 	'kol_kladov',
-
 			]
 		]);
 	?>
@@ -61,15 +62,14 @@
 			'striped'=>true,
 			'hover'=>true,
 			'mode'=>DetailView::MODE_VIEW,
+			'enableEditMode' => false,
 			'panel'=>[
-				'heading'=>'Характеристики будинку',
-				'type'=>DetailView::TYPE_INFO,
+//				'heading'=>'Будинок',
+				'type'=>DetailView::TYPE_DEFAULT,
 			],
 			'buttons1' => '{view}',
 //			'buttons2' => '{save},{view}',
 			'attributes'=>[
-				'n_dom',
-				'id_ulica',
 				'note',
 				'image'
 
@@ -77,8 +77,9 @@
 		]);
 	?>
 
-	<?php Pjax::end(); ?>
 
+
+	<?php Pjax::end(); ?>
 
 
 

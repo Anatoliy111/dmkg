@@ -56,9 +56,9 @@
 //			'afterGrid'=>'My fancy content after.',
 		],
 		'panel' => [
-			'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i> Абоненти</h3>',
-			'type'=>'success',
-			'footer'=>true,
+			'heading'=>'<h3 class="panel-title"></i> Абоненти</h3>',
+			'type'=>'primary',
+//			'footer'=>true,
 		],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',

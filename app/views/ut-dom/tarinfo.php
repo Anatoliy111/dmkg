@@ -48,6 +48,7 @@ echo "<div id='modalContentinfo'></div>";
 
 <div class="ut-tarinfo-index">
 
+
 	<?=
 		DetailView::widget([
 			'model'=>$model,

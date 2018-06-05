@@ -9,11 +9,12 @@ use yii\bootstrap\NavBar;
 	use app\poslug\components\PeriodSiteWidget;
 use yii\widgets\DetailView;
 	use yii\widgets\Menu;
+	use yii\widgets\Pjax;
 
 	/* @var $this yii\web\View */
 /* @var $model app\poslug\models\UtDom */
 ?>
-
+<?php Pjax::begin(); ?>
 <?php
 $ul = $model->getUlica()->one();
 $this->title = $ul->ul.' '.$model->n_dom;
@@ -63,12 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		],
     ];
 
-	$postId =  Yii::$app->request->post('UtDominfo');
-
-	if ($postId <> null)
-	{
-		ArrayHelper::setValue($items, '1.active', true);
-	}
 
     echo TabsX::widget([
         'items'=>$items,
@@ -80,5 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 
+	</div>
+
 </div>
-</div>
+<?php Pjax::end(); ?>

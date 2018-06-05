@@ -37,12 +37,12 @@ class PeriodSiteWidget extends Widget
 		$lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one();
 		$ModelPeriod->lastperiod = $lastperiod->period;
 //		if ($ModelPeriod->load(Yii::$app->request->queryParams))
-		if ($ModelPeriod->load(Yii::$app->request->post()))
-		{
-				Yii::$app->session['periodsite']=$ModelPeriod->periodsite;
-		}
-		else
-		{
+//		if ($ModelPeriod->load(Yii::$app->request->post()))
+//		{
+//				Yii::$app->session['periodsite']=$ModelPeriod->periodsite;
+//		}
+//		else
+//		{
 			if (Yii::$app->session['periodsite']==null)
 			{
 
@@ -53,7 +53,7 @@ class PeriodSiteWidget extends Widget
 			{
 				$ModelPeriod->periodsite=Yii::$app->session['periodsite'];
 			}
-		}
+//		}
 
 
 		$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
@@ -96,12 +96,12 @@ class PeriodSiteWidget extends Widget
 	{
 
 		$form = ActiveForm::begin([
-			'id' => 'periodsite-form',
+			'id' => 'Periodform',
 //			'layout'=>'inline',
 //			'action' => ['index'],
-			'method' => 'post',
+//			'method' => 'post',
 			'options' => [
-//				'data-pjax' => 1,
+				'data-pjax' => 1,
 //				'class' => 'form-inline',
 			]
 
@@ -113,16 +113,21 @@ class PeriodSiteWidget extends Widget
 	echo $form->field($this->model, 'periodsite')->dropDownList(Yii::$app->session['periodspisoksite'],
 			[
 
-				'onchange'=>'this.form.submit(),
+				'onchange'=>'Butperiodform.click(),
 				SavePeriod(this.value)',
+//			'onchange'=>'SavePeriod(this.value)',
 				['options' =>
 					 [
 //						 $this->model->periodoblik => ['selected' => true]
 					 ]
 				]
 			])->label('Період');
+?>
 
- ActiveForm::end();
+        <?= Html::submitButton('', ['id'=>'Butperiodform','visible'=>'false']) ?>
+
+
+ <?php ActiveForm::end();
 
 
 	}

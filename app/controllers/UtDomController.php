@@ -100,10 +100,6 @@ class UtDomController extends Controller
 			$dominfo=$newinfo;
 		}
 
-		if ($dominfo->load(Yii::$app->request->post()) && $dominfo->validate()) {
-			$dominfo->save();
-		}
-
 		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['periodsite']])->all();
         if ($Find<>null)
 		{
@@ -131,24 +127,11 @@ class UtDomController extends Controller
 		$nachdom->andWhere(['!=', '`ut_obor`.`dolg`+`ut_obor`.`nach`+`ut_obor`.`subs`+`ut_obor`.`opl`+`ut_obor`.`sal`', 0]);
 		$nachdom->groupBy('period,tipposl');
 
-		$domzatrat= UtDomzatrat::find();
-		$domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
-
-		$domabon= UtAbonent::find();
-		$domabon->joinWith('kart');
-		$domabon->where(['ut_kart.id_dom' => $model->id,])->orderBy(['schet' => SORT_ASC]);
 
 		$dPtarif = new ActiveDataProvider([
 			'query' => $domtarif1,
 		]);
 
-		$dPzatrat = new ActiveDataProvider([
-			'query' => $domzatrat,
-		]);
-
-		$dPabon = new ActiveDataProvider([
-			'query' => $domabon,
-		]);
 
 		$dPnach= new ActiveDataProvider([
 			'query' => $nachdom,
@@ -159,8 +142,6 @@ class UtDomController extends Controller
 			'model' => $model,
 			'dominfo' => $dominfo,
 			'dPtarif' => $dPtarif,
-			'dPzatrat' => $dPzatrat,
-			'dPabon' => $dPabon,
 			'dPnach' => $dPnach,
 		]);
 	}
