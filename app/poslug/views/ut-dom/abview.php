@@ -11,8 +11,6 @@
 ?>
 <div class="ut-abonent-index">
 
-<!--	<h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
-
 
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
