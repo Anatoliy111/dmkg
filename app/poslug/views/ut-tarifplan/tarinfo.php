@@ -107,7 +107,6 @@ echo "<div id='modalContentinfo'></div>";
 //		'filterModel' => $searchModel,
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
-			'id',
 			[
 				'attribute' => 'id_tarifvid',
 				'value' => 'idTarifv.name',

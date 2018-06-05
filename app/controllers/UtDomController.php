@@ -87,6 +87,9 @@ class UtDomController extends Controller
 	public function actionView($id)
 	{
 		$model = $this->findModel($id);
+		if (Yii::$app->session['periodsite']==null)
+			Yii::$app->session['periodsite']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+
 
 		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
 		if ($dominfo==null)
