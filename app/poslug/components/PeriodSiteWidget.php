@@ -38,7 +38,7 @@ class PeriodSiteWidget extends Widget
 		$ModelPeriod->lastperiod = $lastperiod->period;
 		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 		{
-//				Yii::$app->session['periodoblik']=$ModelPeriod->periodoblik;
+				Yii::$app->session['periodsite']=$ModelPeriod->periodsite;
 		}
 		else
 		{
