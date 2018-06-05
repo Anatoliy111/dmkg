@@ -27,12 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="col-xs-12">
 
 		<div class="col-xs-4 pull-right">
-			<!--				<p>--><?//=Yii::$app->formatter->asDate(Yii::$app->session['periodoblik'], 'LLLL Y')?><!--</p>-->
-			<?= PeriodSiteWidget::widget() ?>
-		</div>
-		<div class="col-xs-4 pull-right">
-			<!--			<h3>--><?//=Yii::$app->formatter->asDate(Yii::$app->session['periodsite'], 'LLLL Y')?><!--</h3>-->
 
+			<?= PeriodSiteWidget::widget() ?>
 		</div>
 	</div>
 
@@ -78,34 +74,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'items'=>$items,
         'position'=>TabsX::POS_ABOVE,
         'encodeLabels'=>false,
-//		'height'=>TabsX::SIZE_MEDIUM,
-
-
         'bordered'=>true,
     ]);
 
     ?>
 
-<!--    <p>-->
-<!--        --><?//= Html::a(Yii::t('easyii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-<!--        --><?//= Html::a(Yii::t('easyii', 'Delete'), ['delete', 'id' => $model->id], [
-//            'class' => 'btn btn-danger',
-//            'data' => [
-//                'confirm' => Yii::t('easyii', 'Are you sure you want to delete this item?'),
-//                'method' => 'post',
-//            ],
-//        ]) ?>
-<!--    </p>-->
-<!---->
-<!--    --><?//= DetailView::widget([
-//        'model' => $model,
-//        'attributes' => [
-//            'id',
-//            'n_dom',
-//            'id_ulica',
-//            'note:ntext',
-//        ],
-//    ]) ?>
 
 </div>
 </div>
