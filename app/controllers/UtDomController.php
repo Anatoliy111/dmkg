@@ -62,35 +62,25 @@ class UtDomController extends Controller
     public function actionTarinfo($id)
     {
 
-		$model = $this->findTarif($id);
-		$newtarinfo = new UtTarifinfo;
-		$newtarinfo->id_tarif = $model->id;
-		if ($newtarinfo->load(Yii::$app->request->post()) && $newtarinfo->validate()) {
-			$newtarinfo->save();
-			$newtarinfo = new UtTarifinfo;
-			$newtarinfo->id_tarif = $model->id;
-		}
-
-
+		$model = $this->findTarifplan($id);
 
 		$tarinfo = UtTarifinfo::find();
-		$tarinfo->where(['id_tarif' => $id])->orderBy(['id_tarifvid' => SORT_ASC]);
-//
+		$tarinfo->where(['id_tarifplan' => $id])->orderBy(['id_tarifvid' => SORT_ASC]);
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+			$model->id_vidpokaz = $model->tipposl->id_vidpokaz;
 			$model->save();
 		}
 
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $tarinfo,
-        ]);
+		$dataProvider = new ActiveDataProvider([
+			'query' => $tarinfo,
+		]);
 
 
-        return $this->render('tarinfo', [
+		return $this->renderAjax('tarinfo', [
 			'model' => $model,
 			'dataProvider' => $dataProvider,
-			'newtarinfo' => $newtarinfo,
-        ]);
+		]);
     }
 
 
@@ -215,6 +205,15 @@ class UtDomController extends Controller
 	protected function findTarif($id)
 	{
 		if (($model = UtTarif::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+	}
+
+	protected function findTarifPlan($id)
+	{
+		if (($model = UtTarifplan::findOne($id)) !== null) {
 			return $model;
 		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');

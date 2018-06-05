@@ -71,25 +71,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
 
-<!--    <p>-->
-<!--        --><?//= Html::a(Yii::t('easyii', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-<!--        --><?//= Html::a(Yii::t('easyii', 'Delete'), ['delete', 'id' => $model->id], [
-//            'class' => 'btn btn-danger',
-//            'data' => [
-//                'confirm' => Yii::t('easyii', 'Are you sure you want to delete this item?'),
-//                'method' => 'post',
-//            ],
-//        ]) ?>
-<!--    </p>-->
-<!---->
-<!--    --><?//= DetailView::widget([
-//        'model' => $model,
-//        'attributes' => [
-//            'id',
-//            'n_dom',
-//            'id_ulica',
-//            'note:ntext',
-//        ],
-//    ]) ?>
-
 </div>

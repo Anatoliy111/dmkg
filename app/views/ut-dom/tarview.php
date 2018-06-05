@@ -19,7 +19,22 @@ use yii\helpers\Url;
 ?>
 <div class="ut-dom-view">
 
+	<?php 		Modal::begin([
+		'header' => '<h2>Складові тарифу</h2>',
+		'id'=>'tarinfo-modal',
+		'size'=> 'modal-lg',
+//	'toggleButton' => false,
+//	'options'=>[
+//		'backdrop' => 'static',
+//	],
+		'clientOptions' => ['backdrop' => false],
 
+	]);
+
+
+		echo "<div id='modalContentinfo'></div>";
+
+		Modal::end(); ?>
 
 <?php
     $prev = 0;
@@ -63,7 +78,11 @@ use yii\helpers\Url;
 				'format' => 'raw',
 				'value' =>function ($model, $id) {
 					if ($model->val<>null) {
-						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-tarifplan/tarinfo', 'id' => $model->val])],['class' => 'btn-sm','title'=>'Редагування та складові тарифу']);
+						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm','title'=>'Редагування та складові тарифу',
+																																									  'id' => 'tar-info',
+																																									  'data-toggle' => 'modal',
+																																									  'data-target' => '#tarinfo-modal',
+																																									  'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
 							}
 					else
 						$res = null;
