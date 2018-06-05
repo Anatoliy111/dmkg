@@ -49,18 +49,12 @@ $asset = \app\assets\AppAsset::register($this);
 	<div class="row welcome welcome_details">
 		<div class="col-lg-12 col-md-12">
 			<?php
-				$article1 = Article::get(50);
-
-
-
+				$article1 = Article::get(51);
 					?>
-
-
-
 					<div class="welcome_item">
 						<?= Html::img($article1->thumb(160, 120)) ?>
 						<div class="welcome_info">
-<!--							<h3>--><?//= Html::a($article1->title, ['articles/view', 'slug' => $article1->slug]) ?><!--</h3>-->
+
 							<a href="<?= Url::to(['ut-dom/index']) ?>">
 
 								<p><?= $article1->short ?></p>
