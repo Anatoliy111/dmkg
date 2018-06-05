@@ -78,7 +78,7 @@ use yii\helpers\Url;
 				'format' => 'raw',
 				'value' =>function ($model, $id) {
 					if ($model->val<>null) {
-						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm','title'=>'Редагування та складові тарифу',
+						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
 																																									  'id' => 'tar-info',
 																																									  'data-toggle' => 'modal',
 																																									  'data-target' => '#tarinfo-modal',
