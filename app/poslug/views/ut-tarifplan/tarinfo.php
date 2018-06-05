@@ -44,7 +44,7 @@ echo "<div id='modalContentinfo'></div>";
 
 <div class="ut-tarinfo-index">
 
-<!--	<h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
+
 
 	<?=
 		DetailView::widget([
@@ -98,18 +98,10 @@ echo "<div id='modalContentinfo'></div>";
 		]);
 	?>
 
-<!--	--><?//= Html::a('<span class="glyphicon glyphicon-plus"></span> ' .
-//		Yii::t('easyii', 'Add'), ['createtarinfo','id' => $model->id], [
-//			'id' => 'info-add',
-//			'data-toggle' => 'modal',
-//			'data-target' => '#tar-modal',
-//			'class' => 'btn btn-success',
-//			'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",
-//		]
-//	) ?>
 
 
-<!--	--><?php //Pjax::begin(['id' => 'table_grid_container']) ?>
+
+
 	<?php echo GridView::widget([
 		'dataProvider' => $dataProvider,
 //		'filterModel' => $searchModel,
@@ -141,7 +133,7 @@ echo "<div id='modalContentinfo'></div>";
 
 					return true;
 				},
-//				'viewOptions' => ['button' => '<i class="glyphicon glyphicon-eye-open"></i>'],
+
 				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-pencil"></i>',
 									'id' => 'info-upd',
 									'data-toggle' => 'modal',
@@ -175,14 +167,9 @@ echo "<div id='modalContentinfo'></div>";
 			'{toggleData}',
 		]
 	]); ?>
-<!--	--><?php //Pjax::end()?>
 
-<!--	<script type="text/javascript">-->
-<!--					$(document).find('#tar-modal').modal('hide,function() {-->
-<!--					function () {-->
-<!--						$.pjax.reload({container:'#w0'});-->
-<!--					}');-->
-<!--	</script>-->
+
+
 
 
 </div>
