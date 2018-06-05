@@ -340,11 +340,7 @@ class UtKartController extends Controller
 		$model->pass1 = '';
 		$model->pass2 = '';
 
-//		$session['period'] = UtObor::find()->max('period');
-//		$session['period'] = $model->period();
-//		$session['period'] = $model->lastperiod();
-//		$model->MonthYear = $_SESSION['period'];
-//		$model->MonthYear =  $session['period'];
+
 
 		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
 

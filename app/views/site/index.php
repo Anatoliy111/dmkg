@@ -38,6 +38,43 @@ $asset = \app\assets\AppAsset::register($this);
 
 <hr/>
 
+
+<section class="our_advisor">
+-	<div class="container">
+		<h2>Інформація по будинках</h2>
+</div>
+
+	</br>
+
+	<div class="row welcome welcome_details">
+		<div class="col-lg-12 col-md-12">
+			<?php
+				$article1 = Article::get(50);
+
+
+
+					?>
+
+
+
+					<div class="welcome_item">
+						<?= Html::img($article1->thumb(160, 120)) ?>
+						<div class="welcome_info">
+<!--							<h3>--><?//= Html::a($article1->title, ['articles/view', 'slug' => $article1->slug]) ?><!--</h3>-->
+							<a href="<?= Url::to(['ut-dom/index']) ?>">
+
+								<p><?= $article1->short ?></p>
+							</a>
+						</div>
+					</div>
+
+		</div>
+	</div> <!-- End Row -->
+
+</section>
+
+<hr/>
+
 <section class="our_advisor">
 	<div class="container">
 	<h2>Послуги</h2>
@@ -48,6 +85,7 @@ $asset = \app\assets\AppAsset::register($this);
 		<div class="row welcome welcome_details">
 			<div class="col-lg-12 col-md-12">
 				<?php
+
 				    $articcat = Article::items(['where' => ['category_id' => '5']]);
 					foreach($articcat as $k=>$article)
 					{

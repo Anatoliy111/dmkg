@@ -9,7 +9,8 @@
 namespace app\poslug\components;
 
 use app\poslug\models\Period;
-use app\poslug\models\UtTarifplan;
+	use app\poslug\models\UtTarif;
+	use app\poslug\models\UtTarifplan;
 use kartik\select2\Select2;
 use Yii;
 use yii\base\Widget;
@@ -33,7 +34,7 @@ class PeriodWidget extends Widget
 	{
 		parent::init();
 		$ModelPeriod = new Period();
-		$lastperiod = UtTarifplan::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one();
+		$lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one();
 		$ModelPeriod->lastperiod = $lastperiod->period;
 		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 		{
@@ -41,25 +42,25 @@ class PeriodWidget extends Widget
 		}
 		else
 		{
-			if (Yii::$app->session['periodoblik']==null)
+			if (Yii::$app->session['periodsite']==null)
 			{
 
-				Yii::$app->session['periodoblik']=$lastperiod->period;
+				Yii::$app->session['periodsite']=$lastperiod->period;
 				$ModelPeriod->periodoblik=$lastperiod->period;
 			}
 			else
 			{
-				$ModelPeriod->periodoblik=Yii::$app->session['periodoblik'];
+				$ModelPeriod->periodoblik=Yii::$app->session['periodsite'];
 			}
 		}
 
 
-		$value = isset(Yii::$app->session['periodspisok']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
+		$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
 
 		if (!$value)
 		{
 			$per = [];
-			$ar  = UtTarifplan::find()->groupBy(['period'])->orderBy(['period' => SORT_DESC])->all();
+			$ar  = UtTarif::find()->groupBy(['period'])->orderBy(['period' => SORT_DESC])->all();
 			$dat = ArrayHelper::map($ar, 'period', 'period');
 			foreach ($dat as $dt)
 			{
@@ -75,7 +76,7 @@ class PeriodWidget extends Widget
 				}
 			}
 
-			Yii::$app->session['periodspisok']=$per;
+			Yii::$app->session['periodspisoksite']=$per;
 		}
 
 
@@ -94,7 +95,7 @@ class PeriodWidget extends Widget
 	{
 
 		$form = ActiveForm::begin([
-			'id' => 'period-form',
+			'id' => 'periodsite-form',
 			'layout'=>'inline',
 //			'action' => ['index'],
 			'method' => 'post',
@@ -108,7 +109,7 @@ class PeriodWidget extends Widget
 
 
 
-	echo $form->field($this->model, 'periodoblik')->dropDownList(Yii::$app->session['periodspisok'],
+	echo $form->field($this->model, 'periodsite')->dropDownList(Yii::$app->session['periodspisoksite'],
 			[
 
 				'onchange'=>'this.form.submit(),
@@ -132,7 +133,7 @@ class PeriodWidget extends Widget
 	function SavePeriod(per)
 	{
 		$.ajax({
-			url: "/poslug/default/saveperiod",
+			url: "/poslug/default/saveperiodsite",
 			type: 'post',
 			data: {	period: per	},
 			success: function(s) {

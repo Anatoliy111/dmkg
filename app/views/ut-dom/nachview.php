@@ -40,60 +40,39 @@ use yii\helpers\Url;
 //				'headerOptions' => ['class' => 'kartik-sheet-style'],
 //    			'expandOneOnly' => false
 //],
-
 			[
 				'attribute' => 'period',
 				'label' => 'Період',
 				'format' => ['date', 'php:MY'],
+				'pageSummary' => 'Всього',
+			],
+			'tipposl',
+            [
+				'attribute' => 'dolg',
+				'format'=>['decimal', 2],
+				'pageSummary'=>true,
 			],
 			[
-				'attribute' => 'id_tipposl',
-				'value' => 'tipposl.poslug',
-				'group'=>true,
+				'attribute' => 'nach',
+				'format'=>['decimal', 2],
+				'pageSummary'=>true,
+			],
+			[
+				'attribute' => 'subs',
+				'format'=>['decimal', 2],
+				'pageSummary'=>true,
+			],
+			[
+				'attribute' => 'opl',
+				'format'=>['decimal', 2],
+				'pageSummary'=>true,
+			],
+			[
+				'attribute' => 'sal',
+				'format'=>['decimal', 2],
+				'pageSummary'=>true,
 			],
 
-			[
-				'attribute' => 'id_vidpokaz',
-				'value' => 'vidpokaz.vid_pokaz',
-				'group'=>true,
-			],
-//			'tarifplan',
-			[
-				'attribute' => 'tarifplan',
-				'format' => 'raw',
-				'value' =>function ($model, $id) {
-					if ($model->val<>null) {
-						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-tarifplan/tarinfo', 'id' => $model->val])],['class' => 'btn-sm','title'=>'Редагування та складові тарифу']);
-							}
-					else
-						$res = null;
-					return $res;
-				},
-				'group'=>true,
-			],
-			[
-				'attribute' => 'name',
-				'label'=>'Назва фактичного тарифу'
-			],
-//			'tarifplan',
-			[
-				'attribute' => 'tariffakt',
-			],
-//			[
-//				'attribute' => 'tarifend',
-//			],
-//				'nnorma',
-//				 'activ',
-//								[
-//									'attribute' => 'del',
-//									'class' => '\kartik\grid\BooleanColumn',
-//								],
-
-			// 'note:ntext',
-			// 'ur_fiz',
-			// 'id_dom',
-			// 'privat',
-			// 'id_oldkart',
 
 //			[
 //				'class' => '\kartik\grid\ActionColumn',

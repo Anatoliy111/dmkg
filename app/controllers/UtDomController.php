@@ -1,6 +1,6 @@
 <?php
 
-namespace app\poslug\controllers;
+namespace app\controllers;
 
 use app\models\UtKart;
 use app\poslug\models\UtAbonent;
