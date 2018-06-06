@@ -77,11 +77,10 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 				'options' => ['class' => 'nav navbar-nav navbar-left'],
 				'items' => [
 					[
-						'label' => 'Довідники',
+						'label' => 'Абоненти',
 						'items' => [
 							['label' => 'Картка абонента', 'url' => '/poslug/ut-kart/index'],
 							['label' => 'Рахунки', 'url' => '/poslug/ut-abonent/index'],
-							['label' => 'Види розшифровки тарифів', 'url' => '/poslug/ut-tarifvid/index'],
 
 //							['label' => 'Місце роботи', 'url' => '/poslug/ut-rabota/index'],
 //							'<li class="divider"></li>',
@@ -93,7 +92,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 //							['label' => 'Види льгот', 'url' => '/poslug/ut-vidlgot/index'],
 //							['label' => 'Види утримань', 'url' => '/poslug/ut-vidutrim/index'],
 //							['label' => 'Види показників', 'url' => '/poslug/ut-vidpokaz/index'],
-//							['label' => 'Од. виміру', 'url' => '/poslug/ut-edizm/index'],
+//
 							'<li class="divider"></li>',
 //							'<li class="dropdown-header">Dropdown Header</li>',
 //							['label' => 'Level 1 - Dropdown B', 'url' => '#'],
@@ -108,6 +107,14 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 							],
 					],
 
+					[
+						'label' => 'Довідники',
+						'items' => [
+							['label' => 'Види розшифровки тарифів', 'url' => '/poslug/ut-tarifvid/index'],
+							['label' => 'Од. виміру', 'url' => '/poslug/ut-edizm/index'],
+
+						],
+					],
 
 //					[
 //						'label' => 'Введення даних',
@@ -141,8 +148,12 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 							['label' => 'Зведена відомість по субсидії', 'url' => '/poslug/zvit/zvedsubs'],
 						],
 					],
-
-					['label' => 'Завантаження', 'url' => '/poslug/default/upload'],
+					[
+						'label' => 'Адміністрування',
+						'items' => [
+							['label' => 'Завантаження', 'url' => '/poslug/default/upload'],
+							],
+					],
 				],
 			]);
 			NavBar::end();
