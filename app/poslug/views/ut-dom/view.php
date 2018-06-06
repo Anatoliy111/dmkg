@@ -46,10 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
 //    'label'=>'Акти витрат',
 //    'content'=>$this->render('aktview', ['model' => $model,'dataProvider' => $dPzatrat]),
 //    ],
-	[
-		'label'=>'Абоненти по будинку',
-		'content'=>$this->render('abview', ['model' => $model,'dataProvider' => $dPabon]),
-	],
+//	[
+//		'label'=>'Абоненти по будинку',
+//		'content'=>$this->render('abview', ['model' => $model,'dataProvider' => $dPabon]),
+//	],
     ];
 
 	$postId =  Yii::$app->request->post('UtDominfo');

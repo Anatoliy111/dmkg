@@ -403,7 +403,7 @@ header .bottom_header .address .top-info .icon-box span:after {
 	/*padding: 18px 0;*/
 }
 .mainmenu-area nav > .nav_main_list ul li a {
-	font-family: 'Roboto', sans-serif;
+	/*font-family: 'Roboto', sans-serif;*/
 	font-weight: 700;
 	font-size: 0.9378em;
 	color: #fff;
@@ -427,7 +427,7 @@ header .bottom_header .address .top-info .icon-box span:after {
 }
 .mainmenu-area .find-advisor:hover,
 .mainmenu-area .find-advisor:hover:before {
-	background: #171b20;
+	background: #0c3c7b;
 }
 .mainmenu-area .find-advisor:hover a.advisor {
 	color: #fff;
