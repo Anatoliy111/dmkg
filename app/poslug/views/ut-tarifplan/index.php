@@ -19,46 +19,6 @@ $this->title = Yii::t('easyii', 'Ut Tarifplans');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<!--<div class="col-xs-12">-->
-<!--    <div class="col-xs-4 pull-right">-->
-<!---->
-<!--        --><?php //$form = ActiveForm::begin([
-//            'id' => 'select2-form',
-//            'action' => ['index'],
-//            'method' => 'get',
-//
-//        ]); ?>
-<!---->
-<!--    --><?php
-//
-//
-////			echo $form->field($searchModel, 'period')->dropDownList(Yii::$app->session['dateplan'],
-////				[
-//////            'change' => 'function(e){$(location).attr({href: "index" + ' . $model->id .'&executor_id='.Yii::$app->user->id.'  })}',
-////
-////					'onchange'=>'this.form.submit()',
-//////                    'onchange'=>' $.post( "index")',
-////					['options' =>
-////						 [
-////							 $searchModel->period => ['selected' => true]
-////						 ]
-////					]
-////		]);
-//
-//
-//
-//
-//
-//		?>
-<!---->
-<!--    --><?php //ActiveForm::end();
-//		?>
-<!---->
-<!---->
-<!---->
-<!---->
-<!--    </div>-->
-<!--</div>-->
 <div class="ut-tarifplan-index">
 
 
