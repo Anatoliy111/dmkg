@@ -34,7 +34,10 @@
 			'buttons1' => '{update}',
 			'buttons2' => '{save},{view}',
 			'attributes'=>[
-				'god_eksp',
+				[
+					'attribute'=>'god_eksp',
+					'value'=>$dominfo->god_eksp.' р.',
+				],
 //	'teh_stan',
 				'kol_etag',
 				'kol_pod',
@@ -42,63 +45,26 @@
 				'kol_lud',
 //	'kol_kvpriv',
 //	'kol_kvkom',
-				'plos',
-				'plos_kv',
-				'plos_nokv',
-				'plos_terit',
+				[
+					'attribute'=>'plos',
+					'value'=>$dominfo->plos.' м3',
+				],
+				[
+					'attribute'=>'plos_kv',
+					'value'=>$dominfo->plos_kv.' м3',
+				],
+				[
+					'attribute'=>'plos_nokv',
+					'value'=>$dominfo->plos_nokv.' м3',
+				],
+				[
+					'attribute'=>'plos_terit',
+					'value'=>$dominfo->plos_terit.' м3',
+				],
 //	'tip_dom',
 				'lift',
 				'kol_podval',
 				'kol_kladov',
-//					'label' => Yii::t('easyii', 'Adress'),
-//
-//					'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
-//				],
-//				[
-//					'attribute'=>'ur_fiz',
-//					'label'=>'Юр. чи Фіз.',
-//					'format'=>'raw',
-//					'value'=>$model->ur_fiz==0 ? '<span class="label label-success">Фізична особа</span>' : '<span class="label label-danger">Юридична особа</span>',
-////			        	'type'=>DetailView::TYPE_INFO,
-////			        	'widgetOptions' => [
-////			        		'pluginOptions' => [
-////			        			'0' => 'Yes',
-////			        			'1' => 'No',
-////			        		]
-////			        	],
-//					'valueColOptions'=>['style'=>'width:30%']
-//				],
-//				[
-//					'attribute'=>'pass',
-//					'label'=>'Авторизація',
-//					'format'=>'raw',
-//					'value'=>(!empty($model->status) ? '<span class="label label-success">Авторизований</span>'
-//						: '<span class="label label-danger">Не авторизований</span>') ,
-//
-//				],
-//
-//				[
-//
-//					'label'=>'Пароль',
-//					'format'=>'raw',
-//					'value'=>$pass,
-//				],
-////			        	'valueColOptions'=> array('style' =>'width:30%')),
-//				'telef',
-//				[
-//					'attribute'=>'privat',
-//					'label'=>'Приватизація',
-//					'format'=>'raw',
-//					'value'=>$model->privat==1 ? '<span class="label label-success">Приватизована</span>': $model->privat,
-//					'valueColOptions'=>['style'=>'width:30%']
-//				],
-//
-//
-//				[
-//					'attribute' => 'id_rabota',
-////					'label'=>'Робота',
-//					'value' => $model->getRabota()->asArray()->one()['name'],
-//				],
 			]
 		]);
 	?>
