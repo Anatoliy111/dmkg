@@ -139,7 +139,7 @@ class PeriodSiteWidget extends Widget
 	function SavePeriod(per)
 	{
 		$.ajax({
-			url: "/poslug/default/saveperiodsite",
+			url: "/site/saveperiodsite",
 			type: 'post',
 			data: {	period: per	},
 			success: function(s) {

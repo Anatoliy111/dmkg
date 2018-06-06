@@ -133,18 +133,7 @@ class DefaultController extends Controller
 
 	}
 
-	public function actionSaveperiodsite()
-	{
-//		Yii::$app->request->Ajax
-		if(\Yii::$app->request->isAjax){
-			$data = Yii::$app->request->post();
-			Yii::$app->session['periodsite']=$data['period'];
 
-		}
-
-
-
-	}
 
 
 

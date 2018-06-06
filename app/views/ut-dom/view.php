@@ -64,12 +64,20 @@ $this->params['breadcrumbs'][] = $this->title;
 		],
     ];
 
+//		$postId =  Yii::$app->request->post('UtDominfo');
+//
+//		if ($postId <> null)
+//		{
+//			ArrayHelper::setValue($items, '1.active', true);
+//		}
+
 
     echo TabsX::widget([
         'items'=>$items,
         'position'=>TabsX::POS_ABOVE,
         'encodeLabels'=>false,
         'bordered'=>true,
+		'id'=>'dom-tabs',
     ]);
 
     ?>

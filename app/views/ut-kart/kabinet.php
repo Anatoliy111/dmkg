@@ -117,43 +117,6 @@ use yii\helpers\ArrayHelper;
 			'label'=>'Зведена відомість',
 			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
 		],
-//		[
-//			'label'=>'Архів ',
-//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-
-
-		////////////////////////////////////////////////////////////////////
-
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
-//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-wrench"></i> Послуги',
-//			'content'=>$this->render('poslugview', ['model' => $model,'abonents'=>$abonents[$org->id_org],'dataProvider' => $dppos[$org->id_org]]),
-//		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-flag"></i> Нарахування',
-//			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-usd"></i> Оплата/Утримання',
-//			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'dataProvider2' => $dpuder[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-user"></i> Субсидія',
-//			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-retweet"></i> Зведена відомість',
-//			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-book"></i> Архів ',
-//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-
 	];
 
 	}
@@ -212,13 +175,13 @@ use yii\helpers\ArrayHelper;
 			</div>
 
 
-		<div class="col-xs-12">
-
-			<div class="col-xs-4 pull-right">
-
-				<?= PeriodSiteWidget::widget() ?>
-			</div>
-		</div>
+<!--		<div class="col-xs-12">-->
+<!---->
+<!--			<div class="col-xs-4 pull-right">-->
+<!---->
+<!--				--><?//= PeriodSiteWidget::widget() ?>
+<!--			</div>-->
+<!--		</div>-->
 
 
 		<div class="col-xs-12 .col-sm-6 .col-lg-8">
@@ -232,10 +195,10 @@ use yii\helpers\ArrayHelper;
 						[
 							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
 							'content'=>
-//							'<div class="col-xs-12 .col-sm-6 .col-lg-8">'.
-////							'<h2 class="panel-danger" style="text-align:right">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL-Y').'  '.Html::a('Архів', ['ut-kart/logout'], ['class' => 'btn-lg btn-success']).'</h2>'.
-//							'<h3 class="panel-danger" style="text-align:left">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y').'</h3>'.
-//							'</div>'.
+							'<div class="col-xs-12 .col-sm-6 .col-lg-8">'.
+//							'<h2 class="panel-danger" style="text-align:right">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL-Y').'  '.Html::a('Архів', ['ut-kart/logout'], ['class' => 'btn-lg btn-success']).'</h2>'.
+							'<h3 class="panel-danger" style="text-align:left">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y').'</h3>'.
+							'</div>'.
 								TabsX::widget([
 								'items'=>$items[$org->id_org],
 								'position'=>TabsX::POS_ABOVE,
