@@ -807,7 +807,7 @@ header .bottom_header .address .top-info .icon-box span:after {
 }
 .main .ut-kart .container {
     padding-top: 18px;
-    margin-left: 1px;
+    /*margin-left: 1px;*/
 }
 
 .main .ut-kart h2 {
