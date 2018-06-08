@@ -95,6 +95,9 @@ class PeriodSiteWidget extends Widget
 	public function run()
 	{
 
+
+		$text = $_SESSION['periodsite']==$this->model->lastperiod ? 'Поточний період' : 'Архів' ;
+
 		$form = ActiveForm::begin([
 			'id' => 'Periodform',
 //			'layout'=>'inline',
@@ -121,7 +124,8 @@ class PeriodSiteWidget extends Widget
 //						 $this->model->periodoblik => ['selected' => true]
 					 ]
 				]
-			])->label('Період');
+			])
+//		->label($text);
 ?>
 
         <?= Html::submitButton('', ['id'=>'Butperiodform','visible'=>'false']) ?>

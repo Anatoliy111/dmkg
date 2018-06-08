@@ -176,12 +176,23 @@ use yii\helpers\ArrayHelper;
 
 
 		<div class="col-xs-12">
-			<div class="col-xs-4 pull-left">
+			<div class="col-xs-8">
 
-				<h3 class="panel-danger" style="text-align:left"><?=Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y')?></h3>
+
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h4><?=Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y')?></h4>
+						</div>
+						<div class="panel-body">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+						</div>
+					</div>
+
+
+
 			</div>
 
-			<div class="col-xs-4 pull-right">
+			<div class="col-xs-4">
 
 				<?= PeriodSiteWidget::widget() ?>
 			</div>

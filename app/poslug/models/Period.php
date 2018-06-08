@@ -7,6 +7,7 @@
 	 */
 namespace app\poslug\models;
 
+ use Yii;
  use yii\base\Model;
 
 
@@ -20,6 +21,14 @@ namespace app\poslug\models;
 		{
 			return [
 				[['periodoblik','periodsite','lastperiod'], 'safe'],
+			];
+		}
+
+		public function attributeLabels()
+		{
+			return [
+				'periodsite' => Yii::t('easyii', 'Periodsite'),
+				'periodoblik' => Yii::t('easyii', 'Periodoblik'),
 			];
 		}
 	}

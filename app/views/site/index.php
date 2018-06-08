@@ -27,10 +27,10 @@ $asset = \app\assets\AppAsset::register($this);
 <section class="welcome_sec">
 <!--	<div class="container">-->
 		<div class="row welcome_heading">
-			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+			<div class="col-lg-4 col-md-4 col-sm-12">
 				<h2><span itemprop="name"><?= Text::get('index-welcome-title') ?></span></h2>
 			</div>
-			<div class="col-sm-8">
+			<div class="carousel col-lg-8 col-md-8 col-sm-9">
 				<?= Carousel::widget(800, 420) ?>
 			</div>
 		</div> <!-- End Row -->

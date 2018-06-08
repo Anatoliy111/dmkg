@@ -256,11 +256,12 @@ header .top_header ul li {
  header .bottom_header {
  	padding: 28px 0;
 	 font-size: 16px;
+	 text-align: center;
  }
  header .bottom_header .logo {
  	line-height: 57px;
  }
- header .bottom_header .address p {
+  header .bottom_header .address p {
  	display: inline-block;
  	/*font-family: 'Open Sans', sans-serif;*/
  	font-size: 0.875em;
@@ -798,7 +799,7 @@ header .bottom_header .address .top-info .icon-box span:after {
 }
 
 .main {
-    width: 1200px;
+    /*width: 1200px;*/
     margin-top: 10px;
     margin-right: auto;
     margin-left: auto;

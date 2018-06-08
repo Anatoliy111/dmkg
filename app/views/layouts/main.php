@@ -72,15 +72,14 @@ $search = '';
 
 
 
-		<div class="bottom_header top-bar-gradient">
-			<div class="container clear_fix">
-				<div class="float_left logo">
+		<section class="bottom_header top-bar-gradient">
+
+				<div class="logo col-lg-3 col-md-12">
 					<a href="<?= Url::home() ?>">
 						<img itemprop="image" src="<?= $asset->baseUrl ?>/logo.png" alt="ДМКГ">
 					</a>
 				</div>
-				<div class="padding-top">
-					<div class="float_left address">
+				<div class="address col-lg-9 col-md-12">
 						<div class="top-info">
 							<div class="icon-box">
 								<span class=" icon icon-Pointer"></span>
@@ -105,10 +104,9 @@ $search = '';
 								<p itemprop="name">Пн - Пт 8.00 - 17.00 <br/>Сб. Нд. вихідний</p>
 							</div>
 						</div>
-					</div>
+
 				</div>
-			</div> <!-- end container -->
-		</div> <!-- end bottom_header -->
+		</section> <!-- end bottom_header -->
 
 		<!-- ======= mainmenu-area section ======= -->
 		<section class="mainmenu-area">
