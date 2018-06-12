@@ -44,12 +44,25 @@ class SiteController extends Controller
 		}
 	}
 
-	public function actionSaveperiodsite()
+	public function actionSaveperioddom()
 	{
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
-			Yii::$app->session['periodsite']=$data['period'];
+			Yii::$app->session['perioddom']=$data['period'];
+
+		}
+
+
+
+	}
+
+	public function actionSaveperiodkab()
+	{
+//		Yii::$app->request->Ajax
+		if(\Yii::$app->request->isAjax){
+			$data = Yii::$app->request->post();
+			Yii::$app->session['periodkab']=$data['period'];
 
 		}
 

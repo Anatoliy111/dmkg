@@ -138,6 +138,8 @@ p {
 
 
 
+
+
 /*==================  Stuck menu  ======================*/
 .stuck_container {
   margin-top: 12px;
@@ -805,6 +807,11 @@ header .bottom_header .address .top-info .icon-box span:after {
     margin-left: auto;
     min-height: calc(100vh - 10px);
 }
+button#buttperiod{
+
+    display: none;
+}
+
 .main .ut-kart .container {
     padding-top: 18px;
     /*margin-left: 1px;*/

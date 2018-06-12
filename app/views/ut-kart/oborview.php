@@ -18,7 +18,7 @@
 
 
 
-<div class="utkart-obor-view">
+<div class="utkart-info-view">
 
 
 	<?php
@@ -46,16 +46,16 @@
 		];
 
 			?>
-	<div class="rah"
-	<h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+			<div class="rah">
+				<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
-</div>
+			</div>
 
 			<?php
             $allsum = $dataProvider[$abon->id]->getModels();
 			$layout = <<< HTML
-			<div class="NameTab"
-			     <h3>Зведена відомість</h3>
+			<div class="NameTab">
+			     <h4>Зведена відомість</h4>
 
 			</div>
 {items}

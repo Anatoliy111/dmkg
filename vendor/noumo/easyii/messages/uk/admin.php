@@ -155,7 +155,7 @@ return [
 	'Id Tarifvid' => 'Вид тарифу',
 	'Names' => 'Назва',
 	'Select the poslug...' => 'Виберіть послугу',
-	'Periodsite' => 'Період',
+	'Perioddom' => 'Період',
 
 
 

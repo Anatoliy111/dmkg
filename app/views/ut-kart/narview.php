@@ -17,23 +17,23 @@
 
 
 
-<div class="utkart-info-view">
+<div class="utkart">
 
 
 	<?php
 		foreach ($abonents as $abon) {
 
 	?>
-	<div class="rah"
-	<h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+	<div class="rah">
+	<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 </div>
 
 	<?php
 
 		$layout = <<< HTML
-			<div class="NameTab"
-			     <h3>Нарахування</h3>
+			<div class="NameTab">
+			     <h4>Нарахування</h4>
 
 			</div>
 {items}

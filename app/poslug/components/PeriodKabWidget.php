@@ -21,7 +21,7 @@ use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
 
-class PeriodSiteWidget extends Widget
+class PeriodKabWidget extends Widget
 {
 	public $dataProvider;
 	public $searchModel;
@@ -43,15 +43,15 @@ class PeriodSiteWidget extends Widget
 //		}
 //		else
 //		{
-			if (Yii::$app->session['periodsite']==null)
+			if (Yii::$app->session['periodkab']==null)
 			{
 
-				Yii::$app->session['periodsite']=$lastperiod->period;
-				$ModelPeriod->periodsite=$lastperiod->period;
+				Yii::$app->session['periodkab']=$lastperiod->period;
+				$ModelPeriod->periodkab=$lastperiod->period;
 			}
 			else
 			{
-				$ModelPeriod->periodsite=Yii::$app->session['periodsite'];
+				$ModelPeriod->periodkab=Yii::$app->session['periodkab'];
 			}
 //		}
 
@@ -96,10 +96,10 @@ class PeriodSiteWidget extends Widget
 	{
 
 
-		$text = $_SESSION['periodsite']==$this->model->lastperiod ? 'Поточний період' : 'Архів' ;
+		$text = $_SESSION['periodkab']==$this->model->lastperiod ? 'Поточний період' : 'Архів' ;
 
 		$form = ActiveForm::begin([
-			'id' => 'Periodform',
+			'id' => 'periodform',
 //			'layout'=>'inline',
 //			'action' => ['index'],
 //			'method' => 'post',
@@ -113,10 +113,10 @@ class PeriodSiteWidget extends Widget
 
 
 
-	echo $form->field($this->model, 'periodsite')->dropDownList(Yii::$app->session['periodspisoksite'],
+	echo $form->field($this->model, 'periodkab')->dropDownList(Yii::$app->session['periodspisoksite'],
 			[
 
-				'onchange'=>'Butperiodform.click(),
+				'onchange'=>'buttperiod.click(),
 				SavePeriod(this.value)',
 //			'onchange'=>'SavePeriod(this.value)',
 				['options' =>
@@ -125,10 +125,10 @@ class PeriodSiteWidget extends Widget
 					 ]
 				]
 			])
-//		->label($text);
+		->label($text);
 ?>
 
-        <?= Html::submitButton('', ['id'=>'Butperiodform','visible'=>'false']) ?>
+        <?= Html::submitButton('', ['id'=>'buttperiod']) ?>
 
 
  <?php ActiveForm::end();
@@ -143,7 +143,7 @@ class PeriodSiteWidget extends Widget
 	function SavePeriod(per)
 	{
 		$.ajax({
-			url: "/site/saveperiodsite",
+			url: "/site/saveperiodkab",
 			type: 'post',
 			data: {	period: per	},
 			success: function(s) {

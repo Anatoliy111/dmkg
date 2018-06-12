@@ -1,6 +1,6 @@
 <?php
 
-use app\poslug\components\PeriodSiteWidget;
+use app\poslug\components\PeriodKabWidget;
 use kartik\builder\Form;
 	use kartik\form\ActiveForm;
 	use kartik\growl\Growl;
@@ -83,10 +83,9 @@ use yii\helpers\ArrayHelper;
 	$this->title = $model->fio;
 //$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
-	foreach ($orgs as $k=>$org)
-	{
 
-	$items[$org->id_org] = [
+
+	$items = [
 //		[
 //			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
 ////			'content'=>'dgfdgggggggggggggggggggg',
@@ -99,27 +98,27 @@ use yii\helpers\ArrayHelper;
 //		],
 		[
 			'label'=>'Послуги/Тарифи',
-			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'dataProvider2' => $dptar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos,'dataProvider2' => $dptar,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Нарахування',
-			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Оплата/Утримання',
-			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl[$org->id_org],'dataProvider2' => $dpuder[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Субсидія',
-			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Зведена відомість',
-			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abonents'=>$abonents]),
 		],
 	];
 
-	}
+
 
 ?>
 <div class="ut-kart">
@@ -176,12 +175,12 @@ use yii\helpers\ArrayHelper;
 
 
 		<div class="col-xs-12">
-			<div class="col-xs-8">
+			<div class="col-xs-12">
 
 
 					<div class="panel panel-info">
 						<div class="panel-heading">
-							<h4><?=Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y')?></h4>
+							<h4><?=Yii::$app->formatter->asDate($_SESSION['periodkab'], 'LLLL Y')?></h4>
 						</div>
 						<div class="panel-body">
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
@@ -194,69 +193,16 @@ use yii\helpers\ArrayHelper;
 
 			<div class="col-xs-4">
 
-				<?= PeriodSiteWidget::widget() ?>
+				<?= PeriodKabWidget::widget() ?>
 			</div>
 		</div>
 
 
 		<div class="col-xs-12 .col-sm-6 .col-lg-8">
-		<?php
-			foreach ($orgs as $k=>$org)
-			{
 
-//				if ($k==0)
-//				{
-//					$itemsorg[$org->id_org] =
-//						[
-//							'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
-//							'content'=>
-////							'<div class="col-xs-12 .col-sm-6 .col-lg-8">'.
-//////							'<h2 class="panel-danger" style="text-align:right">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL-Y').'  '.Html::a('Архів', ['ut-kart/logout'], ['class' => 'btn-lg btn-success']).'</h2>'.
-////							'<h3 class="panel-danger" style="text-align:left">'. Yii::$app->formatter->asDate($_SESSION['period'][$org->id_org], 'LLLL Y').'</h3>'.
-//							'</div>'.
-//								TabsX::widget([
-//								'items'=>$items[$org->id_org],
-//								'position'=>TabsX::POS_ABOVE,
-//								'encodeLabels'=>false,
-//								'bordered'=>true,
-//							]),
-//							'active'=>true,
-////					'active'=>true,
-//					];
-//				}
-//				else
-//				{
-//				$itemsorg[$org->id_org] =
-//				[
-//					'label'=>'<i class="glyphicon glyphicon-home"></i>'.' '.Html::encode($org->org->naim).'',
-//					'content'=>
-//						TabsX::widget([
-//						'items'=>$items[$org->id_org],
-//						'position'=>TabsX::POS_ABOVE,
-//						'encodeLabels'=>false,
-//						'bordered'=>true,
-//					]),
-//				];
-//
-//				}
-
-			}
-
-
-
-
-//			echo TabsX::widget([
-//				'items'=>$itemsorg,
-//				'position'=>TabsX::POS_ABOVE,
-//				'encodeLabels'=>false,
-////						'height'=>TabsX::SIZE_MEDIUM,
-//
-//				'bordered'=>true,
-//			]);
-//		?>
 		<?php
 		echo TabsX::widget([
-			'items'=>$items[1],
+			'items'=>$items,
 			'position'=>TabsX::POS_ABOVE,
 			'encodeLabels'=>false,
 //						'height'=>TabsX::SIZE_MEDIUM,

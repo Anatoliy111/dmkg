@@ -23,16 +23,16 @@
 		foreach ($abonents as $abon) {
 
 			?>
-	<div class="rah"
-	<h3>Особовий рахунок <?= Html::encode($abon->schet)?></h3>
+	<div class="rah">
+	<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 </div>
 
 			<?php
 
 				$layout = <<< HTML
-			<div class="NameTab"
-			     <h3>Субсидія</h3>
+			<div class="NameTab">
+			     <h4>Субсидія</h4>
 
 			</div>
 			{items}

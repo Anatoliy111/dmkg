@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\NavBar;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
-	use app\poslug\components\PeriodSiteWidget;
+	use app\poslug\components\PeriodDomWidget;
 use yii\widgets\DetailView;
 	use yii\widgets\Menu;
 	use yii\widgets\Pjax;
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		<div class="col-xs-4 pull-right">
 
-			<?= PeriodSiteWidget::widget() ?>
+			<?= PeriodDomWidget::widget() ?>
 		</div>
 	</div>
 

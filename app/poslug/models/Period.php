@@ -13,7 +13,8 @@ namespace app\poslug\models;
 
 	class Period extends Model
 	{
-		public $periodsite;
+		public $perioddom;
+		public $periodkab;
 		public $periodoblik;
 		public $lastperiod;
 
@@ -27,7 +28,7 @@ namespace app\poslug\models;
 		public function attributeLabels()
 		{
 			return [
-				'periodsite' => Yii::t('easyii', 'Periodsite'),
+				'perioddom' => Yii::t('easyii', 'Perioddom'),
 				'periodoblik' => Yii::t('easyii', 'Periodoblik'),
 			];
 		}

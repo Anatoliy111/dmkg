@@ -44,7 +44,10 @@ class UtDomController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new SearchUtDom();
+
+		Yii::$app->session['perioddom']=null;
+
+		$searchModel = new SearchUtDom();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $doms = $dataProvider->getModels();
         return $this->render('index', [
@@ -87,8 +90,8 @@ class UtDomController extends Controller
 	public function actionView($id)
 	{
 		$model = $this->findModel($id);
-		if (Yii::$app->session['periodsite']==null)
-			Yii::$app->session['periodsite']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+		if (Yii::$app->session['perioddom']==null)
+			Yii::$app->session['perioddom']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 
 		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
@@ -100,14 +103,14 @@ class UtDomController extends Controller
 			$dominfo=$newinfo;
 		}
 
-		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['periodsite']])->all();
+		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['perioddom']])->all();
         if ($Find<>null)
 		{
 		$domtarif1= UtTarif::find();
 		$domtarif1->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
 		$domtarif1->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 		$domtarif1->where(['ut_tarif.id_dom' => $model->id]);
-		$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['periodsite']]);
+		$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['perioddom']]);
 		$domtarif1->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
 		}
 		else
@@ -115,7 +118,7 @@ class UtDomController extends Controller
 			$domtarif1= UtTarifplan::find();
 			$domtarif1->select('ut_tarifplan.*,ut_tarifplan.id as val');
 			$domtarif1->where(['ut_tarifplan.id_dom' => $model->id]);
-			$domtarif1->andWhere(['ut_tarifplan.period' => Yii::$app->session['periodsite']]);
+			$domtarif1->andWhere(['ut_tarifplan.period' => Yii::$app->session['perioddom']]);
 			$domtarif1->orderBy(['ut_tarifplan.id_tipposl' => SORT_ASC]);
 		}
 
@@ -123,7 +126,7 @@ class UtDomController extends Controller
 		$nachdom->leftJoin('ut_abonent','ut_abonent.id = ut_obor.id_abonent');
 		$nachdom->leftJoin('ut_kart','ut_kart.id = ut_abonent.id_kart');
 		$nachdom->where(['ut_kart.id_dom' => $model->id]);
-		$nachdom->andWhere(['ut_obor.period' => Yii::$app->session['periodsite']]);
+		$nachdom->andWhere(['ut_obor.period' => Yii::$app->session['perioddom']]);
 		$nachdom->andWhere(['!=', '`ut_obor`.`dolg`+`ut_obor`.`nach`+`ut_obor`.`subs`+`ut_obor`.`opl`+`ut_obor`.`sal`', 0]);
 		$nachdom->groupBy('period,tipposl');
 
