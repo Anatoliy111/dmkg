@@ -244,8 +244,21 @@ class UtKartController extends Controller
 
 				//-----------------------------------------------------------------------------
 				$tar = UtTarif::find();
+				$tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
 				$tar->joinWith('utTarifabs')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
+				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 
+
+//				$tar= UtTarif::find();
+//				$tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
+//				$tar->joinWith('utTarifabs');
+//				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
+//				$tar->where(['ut_tarif.period' => Yii::$app->session['perioddom']]);
+//				$tar->andWhere(['ut_tarifab.id_abonent' => $abon->id]);
+//				$tar->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
+//
+//                $rrr = $tar->asArray()->all();
+//				$rrr1 = $tar1->asArray()->all();
 
 				$dataProvider6 = new ActiveDataProvider([
 					'query' => $tar,

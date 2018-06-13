@@ -32,9 +32,9 @@ use yii\helpers\Url;
 	]);
 
 
-		echo "<div id='modalContentinfo'></div>";
+	echo "<div id='modalContentinfo'></div>";
 
-		Modal::end(); ?>
+	Modal::end(); ?>
 
 <?php
     $prev = 0;

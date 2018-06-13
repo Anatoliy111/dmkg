@@ -17,6 +17,21 @@ use yii\helpers\ArrayHelper;
 
 	/* @var $this yii\web\View */
 /* @var $model app\models\UtKart */
+//<!--			<div class="col-xs-12">-->
+//<!---->
+//<!---->
+//<!--					<div class="panel panel-info">-->
+//<!--						<div class="panel-heading">-->
+//<!--							<h4>--><?//=Yii::$app->formatter->asDate($_SESSION['periodkab'], 'LLLL Y')?><!--<!--</h4>-->
+<!--<!--						</div>-->
+<!--<!--						<div class="panel-body">-->
+<!--<!--							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>-->
+<!--<!--						</div>-->
+<!--<!--					</div>-->
+<!--<!---->
+<!--<!---->
+<!--<!---->
+<!--<!--			</div>-->
 
 	?>
 	<?php Pjax::begin(); ?>
@@ -156,6 +171,7 @@ use yii\helpers\ArrayHelper;
 //									'heading'=>'Book # ' . $model->id,
 //									'type'=>DetailView::TYPE_INFO,
 //								],
+
 								'attributes' => [
 
 									'fio',
@@ -175,21 +191,7 @@ use yii\helpers\ArrayHelper;
 
 
 		<div class="col-xs-12">
-			<div class="col-xs-12">
 
-
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h4><?=Yii::$app->formatter->asDate($_SESSION['periodkab'], 'LLLL Y')?></h4>
-						</div>
-						<div class="panel-body">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-						</div>
-					</div>
-
-
-
-			</div>
 
 			<div class="col-xs-4">
 
@@ -205,8 +207,6 @@ use yii\helpers\ArrayHelper;
 			'items'=>$items,
 			'position'=>TabsX::POS_ABOVE,
 			'encodeLabels'=>false,
-//						'height'=>TabsX::SIZE_MEDIUM,
-
 			'bordered'=>true,
 		]);
 		?>

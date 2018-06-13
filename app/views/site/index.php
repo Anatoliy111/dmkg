@@ -1,5 +1,6 @@
 <?php
 use yii\bootstrap\Collapse;
+use yii\bootstrap\Modal;
 use yii\easyii\models\Tag;
 	use yii\easyii\models\TagAssign;
 	use yii\easyii\modules\article\api\Article;
@@ -14,6 +15,8 @@ use yii\helpers\Html;
 
 $asset = \app\assets\AppAsset::register($this);
 ?>
+
+
 
 
 <!-- ======= revolution slider section ======= -->

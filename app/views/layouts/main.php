@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
@@ -22,6 +23,10 @@ use yii\widgets\Breadcrumbs;
 $search = '';
 
 ?>
+
+
+
+
 <span itemscope itemtype="http://schema.org/LocalBusiness"><header>
 
 		<?php PaceAsset::register($this);
