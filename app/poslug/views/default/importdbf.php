@@ -576,43 +576,43 @@ function importPokaz($fields,$modelAb,$st)
     return true;
 }
 
-function importNTARIF($dbf,$i,$Base)
-{
-	$fields = dbase_get_record_with_names($dbf,$i);
-	if ($fields['deleted'] <> 1)
-	{
-
-		if (UtTarif::findOne(['kl' => $fields['KL']])== null)
-		{
-
-			$model = new UtTarif();
-			$Find = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
-			if ($Find <> null)
-			{
-				$model->id_tipposl = $Find->id;
-				$model->id_vidpokaz = $Find->id_vidpokaz;
-			}
-
-			$model->kl = $fields['KL'];
-			$model->tarif1 = $fields['TARIF'];
-			$model->id_org = 1;
-			$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
-			if ($model->validate())
-			{
-				$model->save();
-				return true;
-			}
-			else
-			{
-				Flash($Base,$model,$model->name);
-//				die("Error!!!  Insert is $dbf  to UtTarif $model->name");
-//			return false;
-			}
-
-		}
-	}
-	return true;
-}
+//function importNTARIF($dbf,$i,$Base)
+//{
+//	$fields = dbase_get_record_with_names($dbf,$i);
+//	if ($fields['deleted'] <> 1)
+//	{
+//
+//		if (UtTarif::findOne(['kl' => $fields['KL']])== null)
+//		{
+//
+//			$model = new UtTarif();
+//			$Find = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+//			if ($Find <> null)
+//			{
+//				$model->id_tipposl = $Find->id;
+//				$model->id_vidpokaz = $Find->id_vidpokaz;
+//			}
+//
+//			$model->kl = $fields['KL'];
+//			$model->tarif1 = $fields['TARIF'];
+//			$model->id_org = 1;
+//			$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
+//			if ($model->validate())
+//			{
+//				$model->save();
+//				return true;
+//			}
+//			else
+//			{
+//				Flash($Base,$model,$model->name);
+////				die("Error!!!  Insert is $dbf  to UtTarif $model->name");
+////			return false;
+//			}
+//
+//		}
+//	}
+//	return true;
+//}
 
 	function importPOSLTAR($dbf,$i,$Base)
 	{
