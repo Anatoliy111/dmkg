@@ -45,7 +45,7 @@ use yii\base\Event;
 	//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
 ?>
 <div class="results">Ждем ответа</div>
-<div class="base">Ждем ответа</div>
+
 
 <?php
 
@@ -64,13 +64,9 @@ use yii\base\Event;
 	echo $progres;
 
 
-	//	$model = new UploadForm();
-	//	$this->render('ImportProgress', ['model' => $model]);
-
 
 	Modal::end();
 
-//	Pjax::begin(['id' => 'upload']);
 
 	$this->title = $model->title;
 	$this->params['breadcrumbs'][] = $this->title;
@@ -210,23 +206,22 @@ JS;
 
 ?>
 <!--не удалять-->
-<?//=$form->field($model, 'MonthYear')->widget(DatePicker::classname(), [
-//			'options' => ['placeholder' => 'Виберіть місяць...'],
-////			'attribute2'=>'to_date',
-//			'type' => DatePicker::TYPE_INPUT,
-//			'pluginOptions' => [
-//				'autoclose' => true,
-//				'startView'=>'year',
-//				'minViewMode'=>'months',
-//				'format' => 'mm-yyyy'
-//			]
-//			])?>
+<!--//=$form->field($model, 'MonthYear')->widget(DatePicker::classname(), [-->
+<!--//			'options' => ['placeholder' => 'Виберіть місяць...'],-->
+<!--////			'attribute2'=>'to_date',-->
+<!--//			'type' => DatePicker::TYPE_INPUT,-->
+<!--//			'pluginOptions' => [-->
+<!--//				'autoclose' => true,-->
+<!--//				'startView'=>'year',-->
+<!--//				'minViewMode'=>'months',-->
+<!--//				'format' => 'mm-yyyy'-->
+<!--//			]-->
+<!--//			])-->
 
 
 
-<!--    --><?//= $form->field($model, 'Files[]')->fileInput(['multiple' => true, 'accept' => 'zip/zip']) ?>
+
 		<?=$form->field($model, 'File')->widget(FileInput::classname(), [
-//		'options' => ['accept' => 'zip/*.zip'],
 			'pluginOptions' => [
 				'showPreview' => false,
 				'showCaption' => true,
@@ -239,14 +234,12 @@ JS;
 	<?=Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success'])?>
 
 
-<?//= Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success']) ?>
-<?//= Html::a("Refresh", ['upload'], ['class' => 'btn btn-lg btn-primary']);?>
+
 <?= Html::resetButton('Очистити',['class' => 'btn-lg btn-primary']) ?>
-<?//= Html::a('Оновити абонентів', ['index'], ['class' => 'btn-lg btn-success']) ?>
+
 
 <?= Html::a('Назад', ['index'], ['class' => 'btn-lg btn-danger pull-right']) ?>
-<?//= Html::a('Оновити довідники', ['updatesprav'], ['class' => 'btn-lg btn-success']) ?>
-<?//= Html::a('Оновити базу', ['updatebase'], ['class' => 'btn-lg btn-success']) ?>
+
 
 <br/>
 <br/>
@@ -254,7 +247,6 @@ JS;
 
 <?php
 		foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
-//			echo '<div class="info">Імпорт виконано з помилками:</div>';
 			if (gettype($message)=='array')
 			{
 				foreach($message as $mes)
@@ -269,101 +261,6 @@ JS;
 
 <?php ActiveForm::end() ?>
 
-<?//=Event::on ($model::className(), $model::EVENT_AFTER_VALIDATE, function ($event) {
-//	Yii::trace(get_class($event->sender) . ' добавлен');
-//});?>
 
-<?php //Pjax::end() ?>
-
-
-<?//=$form->field($model, 'MonthYear')->widget(DatePicker::classname(), [
-//	'options' => ['placeholder' => 'Виберіть місяць'],
-//	'pluginOptions' => [
-//		'calendarWeeks' => true,
-//		'daysOfWeekDisabled' => [0, 6],
-//		'format' => 'mm-yyyy',
-////				'type' => DatePicker::CALENDAR_ICON,
-//		'value' => Yii::$app->formatter->asDatetime($model->MonthYear),
-////				'format' => 'mm-yyyy',
-//		'autoclose' => true,
-//	]
-//])?>
-
-
-<?//=DateControl::widget([
-//'name'=>'kartik-date',
-//'type'=>DateControl::FORMAT_DATE, // uses DatePicker
-//'displayFormat'=>'d-M-Y', // your display format (can be set globally at module level)
-//'saveFormat'=>'Y-m-d', // your save format (can be set globally at module level)
-//'options'=>[  // this will now become the widget options for DatePicker
-//'pluginOptions'=>['autoclose'=>true],// datepicker plugin options
-//'convertFormat'=>true // autoconvert PHP date to JS date format
-//]
-//]);?>
-
-<?//= $form->field($model, 'MonthYear')->widget(DatePicker::className(),
-//
-//
-//	[
-//
-//		'clientOptions' =>[
-//			'dateFormat' => 'd-m-yy',
-//			'showAnim'=>'fold',
-//			'yearRange' => 'c-25:c+0',
-//			'changeMonth'=> true,
-//			'changeYear'=> true,
-//			'autoSize'=>true,
-//			'showOn'=> "button",
-//			//'buttonImage'=> "images/calendar.gif",
-//			'htmlOptions'=>[
-//				'style'=>'width:80px;',
-//				'font-weight'=>'x-small',
-//			],]]) ?>
-
-
-
-<!--	--><?php
-
-
-	//	echo FileInput::widget([
-	//		'model' => $model,
-	//		'attribute' => 'attachment_1[]',
-	//		'options' => ['multiple' => true]
-	//	]);
-	//		$message = Yii::$app->session->getFlash('success');
-	//
-	//		echo '<div class="info">' . $message . "</div>\n";
-?>
-<?//= yii\helpers\Html::fileInput('File', null, [
-	//	'id' => 'file',
-	////	'class' => 'hidden',
-	//	'multiple' => 'multiple',
-	//])
-	//?>
-<!--	<input type="file" name="file" class="btn-lg btn-success">-->
-<!--</div>-->
-<?php
-	//for($i=1;$i++;$i=100)
-	//{
-	//	echo Progress::widget([
-	//		'label' => 'test',
-	//		'percent' => $i,
-	//		'barOptions' => [
-	//			'class' => 'progress-bar-success'
-	//		],
-	//		'options' => [
-	//			'class' => 'active progress-striped'
-	//		]
-	//	]);
-	//}
-
-
-
-
-
-?>
-
-<?//= Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success']) ?>
-<?//= Html::a('Завантажити', ['index'], ['class' => 'btn-lg btn-danger pull-right']) ?>
 
 
