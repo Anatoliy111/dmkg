@@ -103,7 +103,7 @@ if ($DirFiles<>'')
 		}
 	};
 
-	$process = floor($RowsCount/100);
+	$process = floor($RowsCount/1000);
 
 	$_SESSION['RowsCount'] = $RowsCount;
 	$_SESSION['process'] = $process;

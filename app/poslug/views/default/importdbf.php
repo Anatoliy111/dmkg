@@ -108,7 +108,7 @@ $t = true;
 	    $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
 	    @dbase_pack($dbf);
 	     $rowsCount = dbase_numrecords($dbf);
-		if ($_SESSION['Progress']==100 and $nombase==$endbase)
+		if ($_SESSION['Progress']==1000 and $nombase==$endbase)
 		{
 			$process = $rowsCount-$nomrec;
 		}
@@ -142,7 +142,7 @@ $t = true;
 				$t = false;
 
 
-			if ($_SESSION['Progress']==100)
+			if ($_SESSION['Progress']==1000)
 			{
 				newmes();
 			}

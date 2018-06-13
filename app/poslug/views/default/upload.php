@@ -88,13 +88,13 @@ use yii\base\Event;
 				if (str.indexOf("Error!!!")>=0)
 				   percent = closeImport(str);
 			percent = percent + 1;
-          $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
+          $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1000" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           //$("#message").html(data.message);
           $("#mess").html("<p>" + percent + "</p>");
           // If the process is completed, we should stop the checking process.
 
           if($('#Modalprogress7').is(':visible')){
-            if (percent >= 101) {
+            if (percent >= 1001) {
             $("#mess").html("<p>" + percent + "</p>");
             //window.clearInterval(timer);
             //timer = window.setInterval(completed, 1000);
@@ -138,7 +138,7 @@ use yii\base\Event;
 
        alert("Импорт прерван "+str);
        window.clearInterval(timer);
-       return 100;
+       return 1000;
 
        //location.replace();
       //$("#Modalprogress7").modal('hide');
