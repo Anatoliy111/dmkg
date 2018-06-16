@@ -43,7 +43,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 
 <section class="our_advisor">
--	<div class="container">
+	<div class="container">
 		<h2>Інформація по будинках</h2>
 </div>
 
