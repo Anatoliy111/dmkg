@@ -17,23 +17,8 @@ use yii\helpers\ArrayHelper;
 
 	/* @var $this yii\web\View */
 /* @var $model app\models\UtKart */
-//<!--			<div class="col-xs-12">-->
-//<!---->
-//<!---->
-//<!--					<div class="panel panel-info">-->
-//<!--						<div class="panel-heading">-->
-//<!--							<h4>--><?//=Yii::$app->formatter->asDate($_SESSION['periodkab'], 'LLLL Y')?><!--<!--</h4>-->
-<!--<!--						</div>-->
-<!--<!--						<div class="panel-body">-->
-<!--<!--							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>-->
-<!--<!--						</div>-->
-<!--<!--					</div>-->
-<!--<!---->
-<!--<!---->
-<!--<!---->
-<!--<!--			</div>-->
+?>
 
-	?>
 	<?php Pjax::begin(); ?>
 
 <?php 	Modal::begin([

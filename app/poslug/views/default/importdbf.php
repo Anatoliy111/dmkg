@@ -245,7 +245,7 @@ function importUL($dbf,$i,$Base)
 function importWIDS($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
-	if ($fields['deleted'] <> 1)
+	if ($fields['deleted'] <> 1 && $fields['fl_nonach'] <> 1)
 	{
 		$FindModel = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
 		if ($FindModel== null)
