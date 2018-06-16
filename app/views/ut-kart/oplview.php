@@ -41,7 +41,7 @@
 HTML;
 
 				$layout2 = <<< HTML
-			<div class="NameTab"
+			<div class="NameTab">
 			     <h4>Утримання</h4>
 
 			</div>

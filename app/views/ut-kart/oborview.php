@@ -195,7 +195,8 @@ HTML;
 					],
 				],
 				'striped'=>false,
-				'layout'=>"{items}",
+//				'layout'=>"{items}",
+				'layout' => $layout,
 				'resizableColumns'=>true,
 				'hover'=>true,
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
@@ -209,7 +210,7 @@ HTML;
 				],
 				'panel' => [
 //					'heading'=>'<h3 class="panel-title">'.' Зведена відомість '.'</h3>',
-					'heading'=>'<div class="NameTab"<h3>'.'Зведена відомість'.'</h3></div>',
+//					'heading'=>'<div class="NameTab"<h3>'.'Зведена відомість'.'</h3></div>',
 //					'type'=>'primary',
 //					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
 //					'after'=>function($allsum){

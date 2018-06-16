@@ -160,8 +160,6 @@ class UtDomController extends Controller
 		$nachdom->andWhere(['!=', '`ut_obor`.`dolg`+`ut_obor`.`nach`+`ut_obor`.`subs`+`ut_obor`.`opl`+`ut_obor`.`sal`', 0]);
 		$nachdom->groupBy('period,tipposl');
 
-		$domzatrat= UtDomzatrat::find();
-		$domzatrat->where(['id_dom' => $model->id])->orderBy(['n_akt' => SORT_ASC]);
 
 		$domabon= UtAbonent::find();
 		$domabon->joinWith('kart');
@@ -171,9 +169,6 @@ class UtDomController extends Controller
 			'query' => $domtarif1,
 		]);
 
-		$dPzatrat = new ActiveDataProvider([
-			'query' => $domzatrat,
-		]);
 
 		$dPabon = new ActiveDataProvider([
 			'query' => $domabon,
@@ -188,7 +183,6 @@ class UtDomController extends Controller
 			'model' => $model,
 			'dominfo' => $dominfo,
 			'dPtarif' => $dPtarif,
-			'dPzatrat' => $dPzatrat,
 			'dPabon' => $dPabon,
 			'dPnach' => $dPnach,
 		]);
