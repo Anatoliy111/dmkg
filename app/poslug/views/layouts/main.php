@@ -104,6 +104,10 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 						'items' => [
 							['label' => 'Будинки', 'url' => '/poslug/ut-dom/index'],
 							['label' => 'Планові тарифи', 'url' => '/poslug/ut-tarifplan/index'],
+							['label' => 'Наряд-завдання', 'url' => '/poslug/ut-domnaryad/index'],
+							['label' => 'Роботи без наряду', 'url' => '/poslug/ut-domrab/index'],
+							['label' => 'Списання матеріалів без наряду', 'url' => '/poslug/ut-dommat/index'],
+							['label' => 'Роботи постачальників', 'url' => '/poslug/ut-domakt/index'],
 							],
 					],
 
@@ -112,7 +116,11 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 						'items' => [
 							['label' => 'Види розшифровки тарифів', 'url' => '/poslug/ut-tarifvid/index'],
 							['label' => 'Од. виміру', 'url' => '/poslug/ut-edizm/index'],
-
+							['label' => 'Норми робочого часу', 'url' => '/poslug/ut-normrab/index'],
+							['label' => 'Опис робіт по видам тарифу', 'url' => '/poslug/ut-notevid/index'],
+							['label' => 'Постачальники', 'url' => '/poslug/ut-postach/index'],
+							['label' => 'Співробітники', 'url' => '/poslug/ut-sotr/index'],
+							['label' => 'Матеріали', 'url' => '/poslug/ut-mat/index'],
 						],
 					],
 
