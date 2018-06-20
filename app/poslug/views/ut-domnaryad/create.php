@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+		'DPrabota' => $DPrabota,
+		'DPmat' => $DPmat,
     ]) ?>
-
+	<?=Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']);?>
 </div>

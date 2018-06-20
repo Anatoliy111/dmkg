@@ -19,7 +19,7 @@ namespace app\poslug\components;
 		public $dataProvider;
 		public $searchModel;
 		public $columns;
-		public $modelmames;
+		public $modelnames;
 		public $grid;
 
 
@@ -109,7 +109,6 @@ namespace app\poslug\components;
 					'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 					'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 					'filterRowOptions'=>['class'=>'kartik-sheet-style'],
-					'pjax'=>true, // pjax is set to always true for this demo
 					'toolbar'=> [
 				//			['content'=>
 				//				 Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Book', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.

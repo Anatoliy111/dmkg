@@ -58,7 +58,7 @@ class UtDomnaryad extends \yii\db\ActiveRecord
             'id_org' => Yii::t('easyii', 'Id Org'),
             'period' => Yii::t('easyii', 'Period'),
             'id_tarifvid' => Yii::t('easyii', 'Id Tarifvid'),
-            'id_sotr' => Yii::t('easyii', 'Id Sotr'),
+            'id_sotr' => Yii::t('easyii', 'Mayster'),
             'proveden' => Yii::t('easyii', 'Proveden'),
             'summa' => Yii::t('easyii', 'Summa'),
         ];

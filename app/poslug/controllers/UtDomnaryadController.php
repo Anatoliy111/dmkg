@@ -2,9 +2,12 @@
 
 namespace app\poslug\controllers;
 
+use app\poslug\models\UtDomnaryadmat;
+use app\poslug\models\UtDomrab;
 use Yii;
 use app\poslug\models\UtDomnaryad;
 use app\poslug\models\SearchUtDomnaryad;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,12 +67,28 @@ class UtDomnaryadController extends Controller
     public function actionCreate()
     {
         $model = new UtDomnaryad();
+		$model->id_org = 1;
+		$model->period = Yii::$app->session['periodoblik'];
+
+
+		$rabota = UtDomrab::find()->where(['id_naryad' => $model->id])->all();
+		$DPrabota = new ActiveDataProvider([
+			'query' => $rabota,
+		]);
+
+		$mat = UtDomnaryadmat::find()->where(['id_naryad' => $model->id])->all();
+		$DPmat = new ActiveDataProvider([
+			'query' => $mat,
+		]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+				'DPrabota' => $DPrabota,
+				'DPmat' => $DPmat,
+
             ]);
         }
     }
@@ -85,7 +104,7 @@ class UtDomnaryadController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -19,5 +19,16 @@ $this->params['breadcrumbs'][] = Yii::t('easyii', 'Update');
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
+	<?php
+	if ($model->proveden == null)
+	{
+	?>
+	<?=Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']);?>
+	<?= Html::submitButton('Зберегти та Провести', ['class' => 'btn btn-danger','name' => 'prov-t', 'value' => 'true']) ;?>
+	<?php
+		}
+		else
+	?>
+			  <?=  Html::submitButton('Відмінити проведення', ['class' => 'btn btn-danger','name' => 'prov-f', 'value' => 'true']);?>
 
 </div>

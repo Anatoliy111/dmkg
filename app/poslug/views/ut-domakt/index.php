@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('easyii', 'Create Ut Domakt'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Додати акт', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -26,19 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'id_org',
-            'period',
-            'id_dom',
+//            'id',
+//            'id_org',
+//            'period',
+//            'id_dom',
             'id_postach',
-            // 'id_tarifvid',
-            // 'n_akt',
-            // 'obem',
-            // 'cena',
-            // 'kol',
-            // 'summa',
-            // 'notevid',
-            // 'proveden',
+             'id_tarifvid',
+             'n_akt',
+             'obem',
+             'cena',
+             'kol',
+             'summa',
+             'notevid',
+             'proveden',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
