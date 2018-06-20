@@ -1,34 +1,53 @@
 <?php
 
+use app\poslug\models\UtTarifvid;
+use kartik\form\ActiveForm;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\poslug\models\UtDomnaryad */
 
-$this->title = Yii::t('easyii', 'Update {modelClass}: ', [
+$this->title = Yii::t('easyii', 'Ut Domnaryads', [
     'modelClass' => 'Ut Domnaryad',
-]) . $model->id;
+]) .' №'.$model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Domnaryads'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('easyii', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('easyii', 'Ut Domnaryads').' №'.$model->id;
 ?>
 <div class="ut-domnaryad-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-	<?php
-	if ($model->proveden == null)
-	{
+	<h4><?=Yii::$app->formatter->asDate($model->period, 'LLLL Y')?></h4>
+
+	<?php $form = ActiveForm::begin(); ?>
+
+	<?=	$form->field($model, 'id_tarifvid')->widget(Select2::classname(), [
+		'data' => ArrayHelper::map(UtTarifvid::find()->all(), 'id', 'name'),
+		'language' => 'uk',
+		'options' => ['placeholder' => 'Вид тарифу'],
+		'pluginOptions' => [
+			'allowClear' => true
+		],
+	]);
 	?>
-	<?=Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']);?>
-	<?= Html::submitButton('Зберегти та Провести', ['class' => 'btn btn-danger','name' => 'prov-t', 'value' => 'true']) ;?>
-	<?php
-		}
-		else
+
+	<?=	$form->field($model, 'id_sotr')->widget(Select2::classname(), [
+		'data' => ArrayHelper::map(\app\poslug\models\UtSotr::find()->all(), 'id', 'fio'),
+		'language' => 'uk',
+		'options' => ['placeholder' => 'Співробітник'],
+		'pluginOptions' => [
+			'allowClear' => true
+		],
+	]);
 	?>
-			  <?=  Html::submitButton('Відмінити проведення', ['class' => 'btn btn-danger','name' => 'prov-f', 'value' => 'true']);?>
+
+
+	<div class="form-group">
+		<?= Html::submitButton('Далі', ['class' => 'btn btn-success']) ?>
+	</div>
+
+	<?php ActiveForm::end(); ?>
 
 </div>

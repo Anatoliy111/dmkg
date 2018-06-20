@@ -38,13 +38,28 @@ class UtDomnaryadController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new SearchUtDomnaryad();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        $model = new UtDomnaryad();
+        $model->id_org = 1;
+        $model->period = Yii::$app->session['periodoblik'];
+
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['update', 'id' => $model->id]);
+        }
+        else
+        {
+            $searchModel = new SearchUtDomnaryad();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                'model' => $model,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+
+
     }
 
     /**
@@ -69,26 +84,24 @@ class UtDomnaryadController extends Controller
         $model = new UtDomnaryad();
 		$model->id_org = 1;
 		$model->period = Yii::$app->session['periodoblik'];
+        $model->proveden = 0;
 
 
-		$rabota = UtDomrab::find()->where(['id_naryad' => $model->id])->all();
-		$DPrabota = new ActiveDataProvider([
-			'query' => $rabota,
-		]);
-
-		$mat = UtDomnaryadmat::find()->where(['id_naryad' => $model->id])->all();
-		$DPmat = new ActiveDataProvider([
-			'query' => $mat,
-		]);
+//		$rabota = UtDomrab::find()->where(['id_naryad' => $model->id])->all();
+//		$DPrabota = new ActiveDataProvider([
+//			'query' => $rabota,
+//		]);
+//
+//		$mat = UtDomnaryadmat::find()->where(['id_naryad' => $model->id])->all();
+//		$DPmat = new ActiveDataProvider([
+//			'query' => $mat,
+//		]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-				'DPrabota' => $DPrabota,
-				'DPmat' => $DPmat,
-
             ]);
         }
     }

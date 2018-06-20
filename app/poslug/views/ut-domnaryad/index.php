@@ -2,7 +2,8 @@
 
 	use kartik\dialog\Dialog;
 	use kartik\grid\GridView;
-	use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
 
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
@@ -12,6 +13,21 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('easyii', 'Ut Domnaryads');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php 		Modal::begin([
+	'id'=>'nar-modal',
+	'size'=> 'modal-lg',
+//	'toggleButton' => false,
+//	'options'=>[
+//		'backdrop' => 'static',
+//	],
+	'clientOptions' => ['backdrop' => false],
+
+]);
+ echo $this->render('create', ['model' => $model]);
+
+Modal::end(); ?>
+
+
 <div class="ut-domnaryad-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -37,10 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'id_sotr',
-				'value' => 'Sotr.fio',
+				'value' => 'sotr.fio',
 			],
 			'summa',
-			'proveden',
+			[
+				'attribute' => 'proveden',
+				'label' => 'Проведений',
+				'class' => '\kartik\grid\BooleanColumn',
+
+			],
 			[
 				'class' => '\kartik\grid\ActionColumn',
 				'template' => '{update} {delete}',
@@ -57,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		],
 		'panel' => [
 //			'heading'=>'<h3 class="panel-title"></i>'.' '.$this->title.'</h3>',
-			'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
+			'before'=>Html::a($this->title, ['create'], ['data-toggle' =>'modal', 'data-target' =>'#nar-modal','class'=>'btn btn-success']),
 		],
 //		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 //		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
