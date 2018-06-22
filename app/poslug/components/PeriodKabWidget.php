@@ -125,7 +125,7 @@ class PeriodKabWidget extends Widget
 					 ]
 				]
 			])
-		->label($text);
+		->label('Розшифровка нарахувань за попередні періоди');
 ?>
 
         <?= Html::submitButton('', ['id'=>'buttperiod']) ?>

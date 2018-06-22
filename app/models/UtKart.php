@@ -40,6 +40,7 @@ class UtKart extends \yii\db\ActiveRecord
     public $periodd;
     public $lastperiod;
     public $MonthYear;
+    public $borg;
 
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';

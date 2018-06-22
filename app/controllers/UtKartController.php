@@ -12,6 +12,7 @@ use app\poslug\models\UtPosl;
 use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifab;
+use app\poslug\models\UtTarifplan;
 use app\poslug\models\UtUtrim;
 use Yii;
 use app\models\UtKart;
@@ -169,6 +170,8 @@ class UtKartController extends Controller
 
 		if (Yii::$app->session['periodkab']==null)
 		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+		if (Yii::$app->session['period']==null)
+			Yii::$app->session['period']=UtTarifplan::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 		$model = $this->findModel($id);
 		$session = Yii::$app->session;
