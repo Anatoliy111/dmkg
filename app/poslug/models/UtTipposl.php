@@ -59,7 +59,7 @@ class UtTipposl extends \yii\db\ActiveRecord
 //                                                            }
 //
 //                                                        }],
-            [['id_org', 'id_groupposl', 'id_vidpokaz', 'flag_nar', 'flag_norm', 'flag_lgot', 'flag_dom', 'id_vidpokazprop', 'del','val'], 'integer'],
+            [['id_org', 'id_vidpokaz', 'flag_nar', 'flag_norm', 'flag_lgot', 'flag_dom', 'id_vidpokazprop', 'del','val'], 'integer'],
             [['poslug'], 'string', 'max' => 64],
             [['old_tipusl'], 'string', 'max' => 3],
             [['ed_izm'], 'string', 'max' => 10],
