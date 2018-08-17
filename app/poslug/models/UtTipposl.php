@@ -66,7 +66,6 @@ class UtTipposl extends \yii\db\ActiveRecord
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
             [['id_vidpokazprop'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokazprop' => 'id']],
-            [['id_groupposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtGroupposl::className(), 'targetAttribute' => ['id_groupposl' => 'id']],
         ];
     }
 
