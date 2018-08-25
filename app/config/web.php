@@ -88,10 +88,6 @@ $config = [
                 ],
             ],
         ],
-		'authManager' => [
-			'class' => 'yii\rbac\PhpManager',
-			'defaultRoles' => ['admin', 'BRAND', 'TALENT'], // Здесь нет роли "guest", т.к. эта роль виртуальная и не присутствует в модели UserExt
-		],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
