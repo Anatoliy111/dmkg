@@ -155,15 +155,7 @@ class UtTipposl extends \yii\db\ActiveRecord
         return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokazprop']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGroupposl()
-    {
-        return $this->hasOne(UtGroupposl::className(), ['id' => 'id_groupposl']);
-    }
-
-    /**
+      /**
      * @return \yii\db\ActiveQuery
      */
     public function getUtUtrims()

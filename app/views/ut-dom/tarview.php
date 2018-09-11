@@ -68,10 +68,22 @@ use yii\helpers\Url;
 			],
 
 			[
-				'attribute' => 'id_vidpokaz',
-				'value' => 'vidpokaz.vid_pokaz',
+				'attribute' => 'id_tipposl',
+				'label' => 'Показник',
+				'format' => 'raw',
+				'value' => 'poslvid.vid_pokaz',
 				'group'=>true,
 			],
+
+//			[
+
+
+
+//			[
+//				'attribute' => 'id_vidpokaz',
+//				'value' => 'vidpokaz.vid_pokaz',
+//				'group'=>true,
+//			],
 //			'tarifplan',
 			[
 				'attribute' => 'tarifplan',
@@ -88,12 +100,12 @@ use yii\helpers\Url;
 						$res = null;
 					return $res;
 				},
-				'group'=>true,
+//				'group'=>true,
 			],
-			[
-				'attribute' => 'name',
-				'label'=>'Назва фактичного тарифу'
-			],
+//			[
+//				'attribute' => 'name',
+//				'label'=>'Назва фактичного тарифу'
+//			],
 //			'tarifplan',
 			[
 				'attribute' => 'tariffakt',
