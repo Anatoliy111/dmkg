@@ -110,9 +110,10 @@ use yii\helpers\Url;
 			[
 				'attribute' => 'tariffakt',
 			],
-//			[
-//				'attribute' => 'tarifend',
-//			],
+			[
+				'label' => 'Дії',
+//				'value' => '',
+			],
 //				'nnorma',
 //				 'activ',
 //								[
