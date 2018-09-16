@@ -771,6 +771,7 @@ function importTARINFO($dbf,$i,$Base)
                         $Tarifvid = new UtTarifvid();
                         $Tarifvid->id_tipposl = $FindTipPosl->id;
                         $Tarifvid->name = trim(iconv('CP1251', 'utf-8', $fields['POLNAME']));
+						$Tarifvid->code_servi = $fields['CODE_SERVI'];
                         if ($Tarifvid->validate()) {
                             $Tarifvid->save();
                             $FindTarifvid = $Tarifvid;
