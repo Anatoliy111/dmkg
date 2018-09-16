@@ -100,6 +100,9 @@ echo "<div id='modalContentinfo'></div>";
 				[
 					'attribute' => 'tarifplan',
 				],
+				[
+					'attribute' => 'tariffact',
+				],
 			]
 		]);
 	?>
@@ -118,6 +121,9 @@ echo "<div id='modalContentinfo'></div>";
 			],
 			[
 				'attribute' => 'tarifplan',
+			],
+			[
+				'attribute' => 'tariffact',
 			],
 
 		],

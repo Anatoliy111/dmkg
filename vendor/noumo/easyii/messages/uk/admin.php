@@ -151,6 +151,7 @@ return [
 	'Endtarif' => 'Кінцевий тариф',
 	'Tarifplan' => 'Плановий тариф',
 	'Tariffakt' => 'Фактичний тариф',
+	'Tariffact' => 'Фактичний тариф',
 	'Tarifend' => 'Кінцевий тариф',
 	'Id Tarifvid' => 'Вид тарифу',
 	'Names' => 'Назва',

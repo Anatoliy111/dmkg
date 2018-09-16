@@ -106,12 +106,15 @@ if ($DirFiles<>'')
 		}
 	};
 
-	$process = floor($RowsCount/1000);
+
+    $colround = floor($RowsCount/100);
+	$process = floor($RowsCount/$colround);
 
 	$_SESSION['RowsCount'] = $RowsCount;
 	$_SESSION['process'] = $process;
 	$_SESSION['NameBase'] = $NameBase;
 	$_SESSION['Progress'] = 0;
+	$_SESSION['endprogress'] = $colround;
 	$_SESSION['NomBase']= 0;
 	$_SESSION['NomRec']= 0;
 	$_SESSION['EndCount'] = $RowsCount;

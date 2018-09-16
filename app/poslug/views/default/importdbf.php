@@ -101,14 +101,20 @@ use yii\bootstrap\Modal;
 $t = true;
 
 	while( $t) {
+		if ($nombase>$endbase)
+			echo ("End import!!!");
 		$Base = $_SESSION['NameBase'][$nombase];
 		if ($Base==null)
 			break;
 		$filename = $_SESSION['DirFiles'].'/'.$Base;
+        if (!file_exists($filename)) {
+			$nombase = $nombase + 1;
+			break;
+		}
 	    $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
 	    @dbase_pack($dbf);
 	     $rowsCount = dbase_numrecords($dbf);
-		if ($_SESSION['Progress']==1000 and $nombase==$endbase)
+		if ($_SESSION['Progress']>=$_SESSION['endprogress'] and $nombase==$endbase)
 		{
 			$process = $rowsCount-$nomrec;
 		}
@@ -703,13 +709,17 @@ function importTARPF($dbf,$i,$Base)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
-		$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+		$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['wid']]);
+		if ($FindTipPosl==null)
+		{
+			Flash($Base,null,'нема послуги '.$fields['wid']);
+		}
 		$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
 		if ($FindUL==null)
 		{
-			Flash($Base,null,'вулиця '.$fields['ID_STREET']);
+			Flash($Base,null,'нема вулиці '.$fields['ID_STREET']);
 		}
-		$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP866','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
+		$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
 		if ($FindDom <> null) {
 			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
 			if ($FindTarifPlan == null) {
@@ -729,9 +739,9 @@ function importTARPF($dbf,$i,$Base)
 			return true;
 
 		}
-		else
-			Flash($Base,null,$FindUL->ul.' '.$fields['N_BUD']);
-
+		else {
+			Flash($Base, null, 'нема будинку ' . $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+		}
 	}
 	return true;
 }
@@ -740,23 +750,27 @@ function importTARINFO($dbf,$i,$Base)
 {
     $fields = dbase_get_record_with_names($dbf, $i);
     if ($fields['deleted'] <> 1) {
-        $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+        $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['wid']]);
+		if ($FindTipPosl==null)
+		{
+			Flash($Base,null,'нема послуги '.$fields['wid']);
+		}
         $FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
         if ($FindUL == null) {
             Flash($Base, null, 'вулиця ' . $fields['ID_STREET']);
         } else
         {
-            $FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP866', 'utf-8', $fields['N_BUD'])), 'id_ulica' => $FindUL->id]);
+            $FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])), 'id_ulica' => $FindUL->id]);
             if ($FindDom <> null) {
                 $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
                 if ($FindTarifPlan == null) {
-                    Flash($Base, null, 'План не найден ' . $FindUL->ul . ' ' . $fields['N_BUD']);
+                    Flash($Base, null, 'План не найден ' . $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
                 } else {
                     $FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SERVI']]);
                     if ($FindTarifvid == null) {
                         $Tarifvid = new UtTarifvid();
                         $Tarifvid->id_tipposl = $FindTipPosl->id;
-                        $Tarifvid->name = trim(iconv('CP866', 'utf-8', $fields['POLNAME']));
+                        $Tarifvid->name = trim(iconv('CP1251', 'utf-8', $fields['POLNAME']));
                         if ($Tarifvid->validate()) {
                             $Tarifvid->save();
                             $FindTarifvid = $Tarifvid;
@@ -787,7 +801,7 @@ function importTARINFO($dbf,$i,$Base)
                 }
 
             } else
-                Flash($Base, null, $FindUL->ul . ' ' . $fields['N_BUD']);
+                Flash($Base, null, $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
 
         }
         return true;

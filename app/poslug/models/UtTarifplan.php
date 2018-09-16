@@ -43,7 +43,7 @@ class UtTarifplan extends \yii\db\ActiveRecord
 //            [['period','periodmes'], 'safe'],
 			[['period','periodmes','name','val'], 'safe'],
             [['id_dom', 'id_tipposl', 'id_vidpokaz'], 'integer'],
-            [['tarifplan','tariffakt'], 'number'],
+            [['tarifplan','tariffact'], 'number'],
             [['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
             [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
@@ -62,7 +62,7 @@ class UtTarifplan extends \yii\db\ActiveRecord
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'id_vidpokaz' => Yii::t('easyii', 'Id Vidpokaz'),
             'tarifplan' => Yii::t('easyii', 'Tarifplan'),
-            'tariffakt' => Yii::t('easyii', 'Tariffakt'),
+            'tariffact' => Yii::t('easyii', 'Tariffact'),
         ];
     }
 
