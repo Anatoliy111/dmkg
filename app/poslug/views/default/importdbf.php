@@ -101,8 +101,10 @@ use yii\bootstrap\Modal;
 $t = true;
 
 	while( $t) {
-		if ($nombase>$endbase)
+		if ($nombase>$endbase){
 			echo ("End import!!!");
+			break;
+		}
 		$Base = $_SESSION['NameBase'][$nombase];
 		if ($Base==null)
 			break;
