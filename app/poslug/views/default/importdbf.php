@@ -779,7 +779,7 @@ function importTARINFO($dbf,$i,$Base)
                             $FindTarifvid = $Tarifvid;
                         }
                     }
-                    $FindTarifinfo = UtTarifinfo::find(['id_tarifplan' => $FindTarifPlan->id, 'id_tarifvid' => $FindTarifvid->id])->one();
+                    $FindTarifinfo = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id, 'id_tarifvid' => $FindTarifvid->id]);
 
                     if ($FindTarifinfo == null) {
                         $Tarifinfo = new UtTarifinfo();
