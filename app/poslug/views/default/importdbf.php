@@ -726,6 +726,7 @@ function importDAYS($dbf,$i,$Base)
 		{
 				$model = new UtKortarif();
 				$model->id_tipposl = $FindTipPosl->id;
+			    $model->period = $_SESSION['PeriodBase'];
 				$model->days = $fields['DAYS'];
 				$model->tarif = $fields['TARIF'];
 			    $model->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE'])));

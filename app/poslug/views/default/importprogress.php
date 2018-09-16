@@ -94,6 +94,9 @@ if ($DirFiles<>'')
 				case 'TARPF.DBF':
 					UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					break;
+				case 'DAYS.DBF':
+					UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
 				case 'OBOR.DBF':
 					UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					break;

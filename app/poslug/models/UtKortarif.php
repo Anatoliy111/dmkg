@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $id_tipposl
+ * @property string $period
  * @property string $schet
  * @property string $schet1
  * @property double $days
@@ -37,6 +38,7 @@ class UtKortarif extends \yii\db\ActiveRecord
             [['id_tipposl'], 'required'],
             [['id_tipposl', 'kl_ntar'], 'integer'],
             [['days', 'tarif'], 'number'],
+            [['period'], 'safe'],
             [['schet', 'schet1'], 'string', 'max' => 11],
             [['note'], 'string', 'max' => 50],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
@@ -57,6 +59,7 @@ class UtKortarif extends \yii\db\ActiveRecord
             'tarif' => Yii::t('easyii', 'Tarif'),
             'note' => Yii::t('easyii', 'Note'),
             'kl_ntar' => Yii::t('easyii', 'Kl Ntar'),
+            'period' => Yii::t('easyii', 'period'),
         ];
     }
 
