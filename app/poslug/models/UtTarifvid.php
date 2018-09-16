@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $id_tipposl
+ * @property int $code_servi
  * @property string $name
  *
  * @property UtTipposl $tipposl
@@ -30,7 +31,7 @@ class UtTarifvid extends \yii\db\ActiveRecord
     {
         return [
             [['id_tipposl', 'name'], 'required'],
-            [['id_tipposl'], 'integer'],
+            [['id_tipposl','code_servi'], 'integer'],
             [['name'], 'string', 'max' => 120],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
         ];
@@ -45,6 +46,7 @@ class UtTarifvid extends \yii\db\ActiveRecord
             'id' => Yii::t('easyii', 'ID'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'name' => Yii::t('easyii', 'Names'),
+            'code_servi' => Yii::t('easyii', 'Code Servi'),
         ];
     }
 

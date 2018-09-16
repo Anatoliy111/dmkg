@@ -11,7 +11,7 @@ use Yii;
  * @property int $id_tarifplan
  * @property int $id_tarifvid
  * @property double $tarifplan
- *
+ * @property double $tariffact
  * @property UtTarifvid $idTarifv
  * @property UtTarifplan $tarifplan0
  */
@@ -33,7 +33,7 @@ class UtTarifinfo extends \yii\db\ActiveRecord
         return [
             [['id_tarifplan', 'id_tarifvid'], 'required'],
             [['id_tarifplan', 'id_tarifvid'], 'integer'],
-            [['tarifplan'], 'number'],
+            [['tarifplan','tariffact'], 'number'],
             [['id_tarifvid'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarifvid::className(), 'targetAttribute' => ['id_tarifvid' => 'id']],
             [['id_tarifplan'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarifplan::className(), 'targetAttribute' => ['id_tarifplan' => 'id']],
 //            ['id_tarifvid', 'in', 'range' => UtTarifinfo::find()->select('id_tarifvid')->where(['id_tarifplan' => 'id_tarifplan'])->asArray()->column(),'not'=>true,'message' => 'Такий вид тарифу вже додано !!!'],
@@ -50,6 +50,7 @@ class UtTarifinfo extends \yii\db\ActiveRecord
             'id_tarifplan' => Yii::t('easyii', 'Id Tarifplan'),
             'id_tarifvid' => Yii::t('easyii', 'Id Tarifvid'),
             'tarifplan' => Yii::t('easyii', 'Tarifplan'),
+            'tariffact' => Yii::t('easyii', 'Tariffact'),
         ];
     }
 

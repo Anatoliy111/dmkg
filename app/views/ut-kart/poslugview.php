@@ -1,7 +1,8 @@
 <?php
 
 
-	use kartik\grid\GridView;
+use app\poslug\models\UtKart;
+use kartik\grid\GridView;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -59,7 +60,7 @@ HTML;
 
 				$layout2 = <<< HTML
 			<div class="NameTab">
-			     <h4>Тарифи</h4>
+			     <h4>Тарифи по рухунку</h4>
 
 			</div>
 {items}
@@ -143,6 +144,19 @@ HTML;
 			]);
 
 
+
+
+	?>
+	<div class="col-xs-12">
+
+			<div class="center" style="padding-bottom: 20px; margin-left: auto; margin-right: auto;">
+			<?= Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.$model->getUlica()->one()->ul.' '.$model->dom  , ['/ut-dom/view', 'id' => $model->id_dom], ['class' => 'btn btn-primary btn-block' ]) ?>
+			</div>
+
+	</div>
+
+    <?php
+
 	$prev = 0;
 	echo GridView::widget([
 		'dataProvider' =>  $dataProvider2[$abon->id],
@@ -174,27 +188,35 @@ HTML;
 			],
 
 			[
-				'attribute' => 'id_vidpokaz',
-				'value' => 'vidpokaz.vid_pokaz',
-				'group'=>true,
-			],
-			[
-				'attribute' => 'tarifplan',
+				'attribute' => 'id_tipposl',
+				'label' => 'Показник',
 				'format' => 'raw',
-				'value' =>function ($model, $id) {
-					if ($model->val<>null) {
-						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
-								'id' => 'tar-info',
-								'data-toggle' => 'modal',
-								'data-target' => '#tar-modal',
-								'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
-					}
-					else
-						$res = null;
-					return $res;
-				},
+				'value' => 'poslvid.vid_pokaz',
 				'group'=>true,
 			],
+
+//			[
+//				'attribute' => 'id_vidpokaz',
+//				'value' => 'vidpokaz.vid_pokaz',
+//				'group'=>true,
+//			],
+//			[
+//				'attribute' => 'tarifplan',
+//				'format' => 'raw',
+//				'value' =>function ($model, $id) {
+//					if ($model->val<>null) {
+//						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
+//								'id' => 'tar-info',
+//								'data-toggle' => 'modal',
+//								'data-target' => '#tar-modal',
+//								'onclick' => "$('#tar-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
+//					}
+//					else
+//						$res = null;
+//					return $res;
+//				},
+//				'group'=>true,
+//			],
 			[
 				'attribute' => 'name',
 				'label'=>'Назва фактичного тарифу'

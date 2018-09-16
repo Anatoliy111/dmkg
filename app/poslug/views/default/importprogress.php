@@ -13,7 +13,8 @@
 	use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifab;
-	use app\poslug\models\UtTarifplan;
+use app\poslug\models\UtTarifinfo;
+use app\poslug\models\UtTarifplan;
 	use app\poslug\models\UtUtrim;
 	use kartik\datecontrol\DateControl;
 	use kartik\dialog\Dialog;
@@ -47,7 +48,7 @@ use yii\bootstrap\Alert;
 
 
 
-	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 //		$NameBase = ['POSLTAR.DBF'];
 //$NameBase = ['TAR.DBF','POSLTAR.DBF'];
@@ -73,33 +74,35 @@ if ($DirFiles<>'')
 	for ($i = 0; $i <= count($NameBase)-1; $i++)
 	{
 		$filename = $DirFiles.'/'.$NameBase[$i];
-		$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename");
-		@dbase_pack($dbf);
+		if (file_exists($filename)) {
+			$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename");
+			@dbase_pack($dbf);
 //		$KartCount = dbase_numrecords($dbf);
-		$RowsCount = $RowsCount + dbase_numrecords($dbf);
-		switch ($NameBase[$i]) {
-			case 'POSLTAR.DBF':
-				UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				UtTarifab::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
-			case 'TAR.DBF':
-				UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
-			case 'OBOR.DBF':
-				UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
-			case 'NACH.DBF':
-				UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
-			case 'OPL.DBF':
-				UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
-			case 'SUBS.DBF':
-				UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
-			case 'UDER.DBF':
-				UtUtrim::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-				break;
+			$RowsCount = $RowsCount + dbase_numrecords($dbf);
+			switch ($NameBase[$i]) {
+				case 'POSLTAR.DBF':
+					UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					UtTarifab::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+				case 'TARPF.DBF':
+					UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+				case 'OBOR.DBF':
+					UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+				case 'NACH.DBF':
+					UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+				case 'OPL.DBF':
+					UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+				case 'SUBS.DBF':
+					UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+				case 'UDER.DBF':
+					UtUtrim::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
+					break;
+			}
 		}
 	};
 
