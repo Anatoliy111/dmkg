@@ -32,7 +32,7 @@ class UtTarifvid extends \yii\db\ActiveRecord
         return [
             [['id_tipposl', 'name'], 'required'],
             [['id_tipposl','code_servi'], 'integer'],
-            [['name'], 'string', 'max' => 120],
+            [['name'], 'string', 'max' => 300],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
         ];
     }
