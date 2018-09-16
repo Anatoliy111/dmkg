@@ -48,7 +48,9 @@ use yii\bootstrap\Alert;
 
 
 
-	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+$NameBase = ['TARPF.DBF','TARINFO.DBF'];
+
 
 //		$NameBase = ['POSLTAR.DBF'];
 //$NameBase = ['TAR.DBF','POSLTAR.DBF'];
@@ -81,7 +83,6 @@ if ($DirFiles<>'')
 
 //		$KartCount = dbase_numrecords($dbf);
 			$RowsCount = $RowsCount + dbase_numrecords($dbf);
-			die("Error!!! Opening $filename $dbf $RowsCount");
 			switch ($NameBase[$i]) {
 				case 'POSLTAR.DBF':
 					UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
