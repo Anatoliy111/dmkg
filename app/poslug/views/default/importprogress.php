@@ -74,12 +74,14 @@ if ($DirFiles<>'')
 	for ($i = 0; $i <= count($NameBase)-1; $i++)
 	{
 		$filename = $DirFiles.'/'.$NameBase[$i];
-		die("Error!!! Opening $filename");
+
 		if (file_exists($filename)) {
 			$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename");
 			@dbase_pack($dbf);
+
 //		$KartCount = dbase_numrecords($dbf);
 			$RowsCount = $RowsCount + dbase_numrecords($dbf);
+			die("Error!!! Opening $filename $dbf $RowsCount");
 			switch ($NameBase[$i]) {
 				case 'POSLTAR.DBF':
 					UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
