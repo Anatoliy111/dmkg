@@ -77,7 +77,7 @@ if ($DirFiles<>'')
 	{
 		$filename = $DirFiles.'/'.$NameBase[$i];
 
-		if (file_exists($filename)) {
+//		if (file_exists($filename)) {
 			$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename");
 			@dbase_pack($dbf);
 
@@ -107,7 +107,7 @@ if ($DirFiles<>'')
 					UtUtrim::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					break;
 			}
-		}
+//		}
 	};
 
 
