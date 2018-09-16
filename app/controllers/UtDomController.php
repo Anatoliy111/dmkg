@@ -77,6 +77,7 @@ class UtDomController extends Controller
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $tarinfo,
+			'pagination' => 40,
 		]);
 
 
