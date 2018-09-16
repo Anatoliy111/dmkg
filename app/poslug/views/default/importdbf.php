@@ -738,606 +738,535 @@ function importTARPF($dbf,$i,$Base)
 
 function importTARINFO($dbf,$i,$Base)
 {
-	$fields = dbase_get_record_with_names($dbf,$i);
-	if ($fields['deleted'] <> 1)
-	{
-		$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
-		$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
-		if ($FindUL==null)
-		{
-			Flash($Base,null,'вулиця '.$fields['ID_STREET']);
-		}
-		else
-		{
-		$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP866','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
-		if ($FindDom <> null) {
-			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
-			if ($FindTarifPlan == null) {
-				Flash($Base,null,'План не найден '.$FindUL->ul.' '.$fields['N_BUD']);
-			}
-			else {
-				$FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SERVI']]);
-				if ($FindTarifvid == null) {
-					$Tarifvid = new UtTarifvid();
-					$Tarifvid->id_tipposl = $FindTipPosl->id;
-					$Tarifvid->name = trim(iconv('CP866', 'utf-8', $fields['POLNAME']));
-					if ($Tarifvid->validate()) {
-						$Tarifvid->save();
-						$FindTarifvid = $Tarifvid;
-					}
-				}
-				$FindTarifinfo = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id, 'id_tarifvid' => $FindTarifvid->id]);
-				if ($FindTarifinfo == null) {
-					$Tarifinfo = new UtTarifinfo();
-					$Tarifinfo->id_tarifplan = $FindTarifPlan->id;
-					$Tarifinfo->id_tarifvid = $FindTarifvid->id;
-					$Tarifinfo->tarifplan = $fields['NORM'];
-					$Tarifinfo->tariffact = $fields['FACT'];
-					if ($Tarifinfo->validate()) {
-						$Tarifinfo->save();
-						return true;
-					}
-				} else {
-					$FindTarifinfo->tarifplan = $fields['NORM'];
-					$FindTarifinfo->tariffact = $fields['FACT'];
-					if ($FindTarifinfo->validate()) {
-						$FindTarifinfo->save();
-						return true;
-					}
+    $fields = dbase_get_record_with_names($dbf, $i);
+    if ($fields['deleted'] <> 1) {
+        $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+        $FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
+        if ($FindUL == null) {
+            Flash($Base, null, 'вулиця ' . $fields['ID_STREET']);
+        } else
+        {
+            $FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP866', 'utf-8', $fields['N_BUD'])), 'id_ulica' => $FindUL->id]);
+            if ($FindDom <> null) {
+                $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
+                if ($FindTarifPlan == null) {
+                    Flash($Base, null, 'План не найден ' . $FindUL->ul . ' ' . $fields['N_BUD']);
+                } else {
+                    $FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SERVI']]);
+                    if ($FindTarifvid == null) {
+                        $Tarifvid = new UtTarifvid();
+                        $Tarifvid->id_tipposl = $FindTipPosl->id;
+                        $Tarifvid->name = trim(iconv('CP866', 'utf-8', $fields['POLNAME']));
+                        if ($Tarifvid->validate()) {
+                            $Tarifvid->save();
+                            $FindTarifvid = $Tarifvid;
+                        }
+                    }
+                    $FindTarifinfo = UtTarifinfo::findOne(['id_tarifplan' => $FindTarifPlan->id, 'id_tarifvid' => $FindTarifvid->id]);
+                    if ($FindTarifinfo == null) {
+                        $Tarifinfo = new UtTarifinfo();
+                        $Tarifinfo->id_tarifplan = $FindTarifPlan->id;
+                        $Tarifinfo->id_tarifvid = $FindTarifvid->id;
+                        $Tarifinfo->tarifplan = $fields['NORM'];
+                        $Tarifinfo->tariffact = $fields['FACT'];
+                        if ($Tarifinfo->validate()) {
+                            $Tarifinfo->save();
+                            return true;
+                        }
+                    } else {
+                        $FindTarifinfo->tarifplan = $fields['NORM'];
+                        $FindTarifinfo->tariffact = $fields['FACT'];
+                        if ($FindTarifinfo->validate()) {
+                            $FindTarifinfo->save();
+                            return true;
+                        }
 
-				}
+                    }
 
-				return true;
-			}
+                    return true;
+                }
 
-		}
-		else
-			Flash($Base,null,$FindUL->ul.' '.$fields['N_BUD']);
+            } else
+                Flash($Base, null, $FindUL->ul . ' ' . $fields['N_BUD']);
 
-	}
-	return true;
+        }
+        return true;
+    }
 }
 
-	 function importNach($dbf,$i,$Base)
-	{
-		$fields = dbase_get_record_with_names($dbf,$i);
-		if ($fields['deleted'] <> 1)
-		{
-			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
-			$lgot = encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])));
-			$FindAbon =  UtAbonent::findOne(['schet' => $schet]);
-			$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
-			if ($FindTipPosl<>null and $FindAbon<>null)
-			    $FindPosl = UtPosl::findOne(['id_tipposl' => $FindTipPosl->id,'id_abonent' => $FindAbon->id]);
-			$FindLgot = UtVidlgot::findOne(['lgota' => $lgot]);
-			if ($FindAbon <> null)
-			{
-				$narah = new UtNarah();
+    function importNach($dbf, $i, $Base)
+    {
+        $fields = dbase_get_record_with_names($dbf, $i);
+        if ($fields['deleted'] <> 1) {
+            $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
+            $lgot = encodestr(trim(iconv('CP866', 'utf-8', $fields['LGOTA'])));
+            $FindAbon = UtAbonent::findOne(['schet' => $schet]);
+            $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
+            if ($FindTipPosl <> null and $FindAbon <> null)
+                $FindPosl = UtPosl::findOne(['id_tipposl' => $FindTipPosl->id, 'id_abonent' => $FindAbon->id]);
+            $FindLgot = UtVidlgot::findOne(['lgota' => $lgot]);
+            if ($FindAbon <> null) {
+                $narah = new UtNarah();
 
-				$narah->id_org = 1;
-				$narah->period = $_SESSION['PeriodBase'];
-				$narah->id_abonent = $FindAbon->id;
-				$narah->id_posl = $FindPosl->id;
-				$narah->id_tipposl = $FindTipPosl->id;
-				$narah->tipposl = $FindTipPosl->poslug;
+                $narah->id_org = 1;
+                $narah->period = $_SESSION['PeriodBase'];
+                $narah->id_abonent = $FindAbon->id;
+                $narah->id_posl = $FindPosl->id;
+                $narah->id_tipposl = $FindTipPosl->id;
+                $narah->tipposl = $FindTipPosl->poslug;
 //				$narah->id_vidlgot = trim($fields['LGOTA']) <> '' ? UtVidlgot::findOne(['lgota' => encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])))])->id : null;
-				$narah->lgot = encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])));
-				$narah->tarif = $fields['TARIF'];
-				$narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
-				$narah->vidpokaz = UtVidpokaz::findOne(['id' => $narah->id_vidpokaz])->vid_pokaz;
-				$narah->pokaznik = $fields['RAZN'];
-				$narah->nnorma = $fields['FL_SCH'] == -1 ? $fields['RAZN'] : 0;
+                $narah->lgot = encodestr(trim(iconv('CP866', 'utf-8', $fields['LGOTA'])));
+                $narah->tarif = $fields['TARIF'];
+                $narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
+                $narah->vidpokaz = UtVidpokaz::findOne(['id' => $narah->id_vidpokaz])->vid_pokaz;
+                $narah->pokaznik = $fields['RAZN'];
+                $narah->nnorma = $fields['FL_SCH'] == -1 ? $fields['RAZN'] : 0;
 //			$narah->pokaznik = UtPokaz::findOne(['id_abonent' => $narah->id_abonent,'id_vidpokaz' => $narah->id_vidpokaz ])->pokaznik;
-				$narah->ed_izm = $FindTipPosl->ed_izm;
-				$narah->sum = $fields['SUM'];
+                $narah->ed_izm = $FindTipPosl->ed_izm;
+                $narah->sum = $fields['SUM'];
 
 
-
-				if ($narah->validate())
-				{
-					$narah->save();
-					return true;
-				}
-				else
-					Flash($Base,$narah,$schet.' '.$narah->tipposl);
+                if ($narah->validate()) {
+                    $narah->save();
+                    return true;
+                } else
+                    Flash($Base, $narah, $schet . ' ' . $narah->tipposl);
 //					die("Error!!!  Insert is $dbf  to UtNarah $schet $FindTipPosl->poslug");
-			}
-		}
-		return true;
+            }
+        }
+        return true;
 
-	}
+    }
 
-	function importObor($dbf,$i,$Base)
-	{
-		$fields = dbase_get_record_with_names($dbf,$i);
-		if ($fields['deleted'] <> 1)
-		{
-			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
-			$wid = trim($fields['WID']);
+    function importObor($dbf, $i, $Base)
+    {
+        $fields = dbase_get_record_with_names($dbf, $i);
+        if ($fields['deleted'] <> 1) {
+            $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
+            $wid = trim($fields['WID']);
 //							if ($dom == '8026')
 //							{
 //								$rowsCount = dbase_numrecords($dbf);
 //							}
-			if ($schet<>0 or $schet<>null or $wid<>0 or $wid<>null)
-			{
-				$posl = UtTipposl::findOne(['old_tipusl' => $wid]);
-				$abon = UtAbonent::findOne(['schet' => $schet]);
-				if ($abon <> null && $posl<>null)
-				{
-					$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $posl->id ]);
-					if ($findposl==null)
-					{
-						$abonposl= new UtPosl();
-						$abonposl->id_org = 1;
-						$abonposl->id_abonent=$abon->id;
-						$abonposl->id_tipposl= $posl->id;
-						$abonposl->n_dog = trim($fields['N_DOG']);
-						$abonposl->date_dog = trim($fields['D_DOG'])<>'' ? trim($fields['D_DOG']) : null;
+            if ($schet <> 0 or $schet <> null or $wid <> 0 or $wid <> null) {
+                $posl = UtTipposl::findOne(['old_tipusl' => $wid]);
+                $abon = UtAbonent::findOne(['schet' => $schet]);
+                if ($abon <> null && $posl <> null) {
+                    $findposl = UtPosl::findOne(['id_abonent' => $abon->id, 'id_tipposl' => $posl->id]);
+                    if ($findposl == null) {
+                        $abonposl = new UtPosl();
+                        $abonposl->id_org = 1;
+                        $abonposl->id_abonent = $abon->id;
+                        $abonposl->id_tipposl = $posl->id;
+                        $abonposl->n_dog = trim($fields['N_DOG']);
+                        $abonposl->date_dog = trim($fields['D_DOG']) <> '' ? trim($fields['D_DOG']) : null;
 
-						if ($abonposl->validate() & $abonposl->save())
-						{
-							NewObor($abonposl,$fields);
+                        if ($abonposl->validate() & $abonposl->save()) {
+                            NewObor($abonposl, $fields);
 
-						}
-						else
-						{
-							Flash($Base,$abonposl,$schet);
+                        } else {
+                            Flash($Base, $abonposl, $schet);
 //							die("Error!!! Insert to poslug $wid to abonent $schet");
-						}
-					}
-					else
-					{
+                        }
+                    } else {
 
-						$findposl->n_dog = trim($fields['N_DOG']);
-						$findposl->date_dog = trim($fields['D_DOG'])<>'' ? trim($fields['D_DOG']) : null;
-						$findposl->save();
-						NewObor($findposl,$fields);
+                        $findposl->n_dog = trim($fields['N_DOG']);
+                        $findposl->date_dog = trim($fields['D_DOG']) <> '' ? trim($fields['D_DOG']) : null;
+                        $findposl->save();
+                        NewObor($findposl, $fields);
 
-					}
+                    }
 
 
+                } else
+                    Flash($Base, $abon, $posl);
 
 
-				}
-				else
-					Flash($Base,$abon,$posl);
+            }
 
 
+        }
 
-			}
-
-
-		}
-
-		return true;
+        return true;
 
 
-	}
+    }
 
 
+    function NewObor($findposl, $fields)
 
-	function NewObor($findposl,$fields)
+    {
+        $obor = new UtObor();
 
-{
-	$obor = new UtObor();
+        $obor->id_org = 1;
+        $obor->period = $_SESSION['PeriodBase'];
+        $obor->id_abonent = $findposl->id_abonent;
+        $obor->id_posl = $findposl->id;
+        $obor->tipposl = $findposl->getTipposl()->asArray()->one()['poslug'];
+        $obor->dolg = $fields['DOLG'];
+        $obor->nach = $fields['NACH'];
+        $obor->subs = $fields['SUBS'];
+        $obor->opl = $fields['OPL'] + $fields['UDER'] + $fields['WZMZ'];
+        $obor->pere = $fields['PERE'] + $fields['WOZW'];
+        $obor->sal = $fields['SAL'];
+        if ($obor->validate()) {
+            $obor->save();
+            return true;
+        } else
+            Flash('OBOR.DBF', $obor, $findposl->getAbonent()->asArray()->one()['schet'] . ' ' . $obor->tipposl);
+        return true;
+    }
 
-	$obor->id_org = 1;
-	$obor->period = $_SESSION['PeriodBase'];
-	$obor->id_abonent = $findposl->id_abonent;
-	$obor->id_posl = $findposl->id;
-	$obor->tipposl = $findposl->getTipposl()->asArray()->one()['poslug'];
-	$obor->dolg = $fields['DOLG'];
-	$obor->nach = $fields['NACH'];
-	$obor->subs = $fields['SUBS'];
-	$obor->opl = $fields['OPL']+$fields['UDER']+$fields['WZMZ'];
-	$obor->pere = $fields['PERE']+$fields['WOZW'];
-	$obor->sal = $fields['SAL'];
-	if ($obor->validate())
-	{
-		$obor->save();
-		return true;
-	}
-	else
-		Flash('OBOR.DBF',$obor,$findposl->getAbonent()->asArray()->one()['schet'].' '.$obor->tipposl);
-	return true;
-}
+    function importOPL($dbf, $i, $Base)
 
-	function importOPL($dbf,$i,$Base)
+    {
+        $fields = dbase_get_record_with_names($dbf, $i);
 
-{
-	$fields = dbase_get_record_with_names($dbf,$i);
-
-	if ($fields['deleted'] <> 1)
-	{
-		$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
+        if ($fields['deleted'] <> 1) {
+            $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
 //					$sum = $fields['SUM'];
 //							if ($dom == '8026')
 //							{
 //								$rowsCount = dbase_numrecords($dbf);
 //							}
-		if ($schet<>0 or $schet<>null)
-		{
+            if ($schet <> 0 or $schet <> null) {
 
 
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
-			$abon = UtAbonent::findOne(['schet' => $schet]);
-			if ($abon <> null )
-			{
+                $abon = UtAbonent::findOne(['schet' => $schet]);
+                if ($abon <> null) {
 
-				foreach ($fields as $k => $v )
-				{
-					if ($v<>0)
-					{
-						$tipposl= null;
-						switch ($k) {
-							case 'OPL_EL':
-								$tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
-								break;
-							case 'OPL_KV':
-								$tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
-								break;
-							case 'OPL_OM':
-								$tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
-								break;
-							case 'OPL_OT':
-								$tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
-								break;
-							case 'OPL_SM':
-								$tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
-								break;
-							case 'OPL_HV':
-								$tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
-								break;
-						}
+                    foreach ($fields as $k => $v) {
+                        if ($v <> 0) {
+                            $tipposl = null;
+                            switch ($k) {
+                                case 'OPL_EL':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
+                                    break;
+                                case 'OPL_KV':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
+                                    break;
+                                case 'OPL_OM':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
+                                    break;
+                                case 'OPL_OT':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
+                                    break;
+                                case 'OPL_SM':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
+                                    break;
+                                case 'OPL_HV':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
+                                    break;
+                            }
 
 
-						if ($tipposl<> null)
-						{
-							$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
-							if ($findposl==null)
-							{
+                            if ($tipposl <> null) {
+                                $findposl = UtPosl::findOne(['id_abonent' => $abon->id, 'id_tipposl' => $tipposl->id]);
+                                if ($findposl == null) {
 //								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
 
-								Flash($Base,$findposl,'По абоненту '.$schet.' незнайдено послуги '.$k.' '.$tipposl->poslug);
-							}
-							else
-							{
-								NewOpl($findposl,$tipposl,$fields,$v);
+                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' незнайдено послуги ' . $k . ' ' . $tipposl->poslug);
+                                } else {
+                                    NewOpl($findposl, $tipposl, $fields, $v);
 
 
-							}
-						}
+                                }
+                            }
 
 
+                        }
 
-					}
-
-				}
-
+                    }
 
 
-			}
-		}
+                }
+            }
 
-	}
+        }
 
-	return true;
+        return true;
 
-}
+    }
 
-	function NewOpl($findposl,$tipposl,$fields,$v)
+    function NewOpl($findposl, $tipposl, $fields, $v)
 
-{
-	$narah = new UtOpl();
+    {
+        $narah = new UtOpl();
 
-	$narah->id_org = 1;
-	$narah->period = $_SESSION['PeriodBase'];
-	$narah->id_abonent = $findposl->id_abonent;
-	$narah->id_posl = $findposl->id;
-	$narah->id_tipposl = $findposl->id_tipposl;
-	$narah->tipposl = $tipposl->poslug;
-	$narah->dt = date('Y-m-d',strtotime(substr($fields['DT'],0,4).'-'.substr($fields['DT'],4,2).'-'.substr($fields['DT'],6,2)));
-	$narah->pach = $fields['PACH'];
-	$narah->sum = $v;
-	$narah->note = trim($fields['NOTE']);
-
-
+        $narah->id_org = 1;
+        $narah->period = $_SESSION['PeriodBase'];
+        $narah->id_abonent = $findposl->id_abonent;
+        $narah->id_posl = $findposl->id;
+        $narah->id_tipposl = $findposl->id_tipposl;
+        $narah->tipposl = $tipposl->poslug;
+        $narah->dt = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2)));
+        $narah->pach = $fields['PACH'];
+        $narah->sum = $v;
+        $narah->note = trim($fields['NOTE']);
 
 
-	if ($narah->validate())
-	{
-		$narah->save();
-		return true;
-	}
-	else
-		Flash('OPL.DBF',$narah,$findposl->getAbonent()->asArray()->one()['schet'].' '.$tipposl->tipposl);
-	return true;
-}
+        if ($narah->validate()) {
+            $narah->save();
+            return true;
+        } else
+            Flash('OPL.DBF', $narah, $findposl->getAbonent()->asArray()->one()['schet'] . ' ' . $tipposl->tipposl);
+        return true;
+    }
 
-	function importSUBS($dbf,$i,$Base)
+    function importSUBS($dbf, $i, $Base)
 
-	{
-		$fields = dbase_get_record_with_names($dbf,$i);
+    {
+        $fields = dbase_get_record_with_names($dbf, $i);
 
-		if ($fields['deleted'] <> 1)
-		{
-			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
+        if ($fields['deleted'] <> 1) {
+            $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
 //					$sum = $fields['SUM'];
 //							if ($dom == '8026')
 //							{
 //								$rowsCount = dbase_numrecords($dbf);
 //							}
-			if ($schet<>0 or $schet<>null)
-			{
+            if ($schet <> 0 or $schet <> null) {
 
 
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
-				$abon = UtAbonent::findOne(['schet' => $schet]);
-				if ($abon <> null )
-				{
+                $abon = UtAbonent::findOne(['schet' => $schet]);
+                if ($abon <> null) {
 
-					foreach ($fields as $k => $v )
-					{
-						if ($v<>0)
-						{
-							$tipposl= null;
-							$sum = null;
-							$sum_ob = null;
-							switch ($k) {
-								case 'S_EL':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
-									$sum = $fields['S_EL'];
-									$sum_ob = $fields['OB_EL'];
-									break;
-								case 'S_KV':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
-									$sum = $fields['S_KV'];
-									$sum_ob = $fields['OB_KV'];
-									break;
-								case 'S_OM':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
-									$sum = $fields['S_OM'];
-									$sum_ob = $fields['OB_OM'];
-									break;
-								case 'S_OT':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
-									$sum = $fields['S_OT'];
-									$sum_ob = $fields['OB_OT'];
-									break;
-								case 'S_SM':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
-									$sum = $fields['S_SM'];
-									$sum_ob = $fields['OB_SM'];
-									break;
-								case 'S_HV':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
-									$sum = $fields['S_HV'];
-									$sum_ob = $fields['OB_HV'];
-									break;
-							}
+                    foreach ($fields as $k => $v) {
+                        if ($v <> 0) {
+                            $tipposl = null;
+                            $sum = null;
+                            $sum_ob = null;
+                            switch ($k) {
+                                case 'S_EL':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
+                                    $sum = $fields['S_EL'];
+                                    $sum_ob = $fields['OB_EL'];
+                                    break;
+                                case 'S_KV':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
+                                    $sum = $fields['S_KV'];
+                                    $sum_ob = $fields['OB_KV'];
+                                    break;
+                                case 'S_OM':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
+                                    $sum = $fields['S_OM'];
+                                    $sum_ob = $fields['OB_OM'];
+                                    break;
+                                case 'S_OT':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
+                                    $sum = $fields['S_OT'];
+                                    $sum_ob = $fields['OB_OT'];
+                                    break;
+                                case 'S_SM':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
+                                    $sum = $fields['S_SM'];
+                                    $sum_ob = $fields['OB_SM'];
+                                    break;
+                                case 'S_HV':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
+                                    $sum = $fields['S_HV'];
+                                    $sum_ob = $fields['OB_HV'];
+                                    break;
+                            }
 
 
-							if ($tipposl<> null)
-							{
-								$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
-								if ($findposl==null)
-								{
-									Flash($Base,$findposl,'По абоненту '.$schet.' незнайдено послуги '.$k.' '.$tipposl->poslug);
+                            if ($tipposl <> null) {
+                                $findposl = UtPosl::findOne(['id_abonent' => $abon->id, 'id_tipposl' => $tipposl->id]);
+                                if ($findposl == null) {
+                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' незнайдено послуги ' . $k . ' ' . $tipposl->poslug);
 //									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
-								}
-								else
-								{
-									NewSubs($findposl,$fields,$tipposl,$sum,$sum_ob);
+                                } else {
+                                    NewSubs($findposl, $fields, $tipposl, $sum, $sum_ob);
 
-								}
-							}
+                                }
+                            }
 
 
+                        }
 
-						}
-
-					}
-
+                    }
 
 
-				}
-			}
+                }
+            }
 
-		}
+        }
 
-		return true;
+        return true;
 
-	}
+    }
 
-	function NewSubs($findposl,$fields,$tipposl,$sum,$sum_ob)
+    function NewSubs($findposl, $fields, $tipposl, $sum, $sum_ob)
 
-	{
-		$narah = new UtSubs();
+    {
+        $narah = new UtSubs();
 
-		$narah->id_org = 1;
-		$narah->period = $_SESSION['PeriodBase'];
-		$narah->id_abonent = $findposl->id_abonent;
-		$narah->id_tipposl = $findposl->id_tipposl;
-		$narah->tipposl = $tipposl->poslug;
-	    $narah->sum_ob = $sum_ob;
-		$narah->sum = $sum;
+        $narah->id_org = 1;
+        $narah->period = $_SESSION['PeriodBase'];
+        $narah->id_abonent = $findposl->id_abonent;
+        $narah->id_tipposl = $findposl->id_tipposl;
+        $narah->tipposl = $tipposl->poslug;
+        $narah->sum_ob = $sum_ob;
+        $narah->sum = $sum;
 
-		if ($narah->validate())
-		{
-			$narah->save();
-			return true;
-		}
-		else
-			Flash('SUBS.DBF',$narah,$findposl->getAbonent()->asArray()->one()['schet'].' '.$tipposl->tipposl);
-	return false;
-	}
+        if ($narah->validate()) {
+            $narah->save();
+            return true;
+        } else
+            Flash('SUBS.DBF', $narah, $findposl->getAbonent()->asArray()->one()['schet'] . ' ' . $tipposl->tipposl);
+        return false;
+    }
 
 
-	function importUDER($dbf,$i,$Base)
+    function importUDER($dbf, $i, $Base)
 
-	{
-		$fields = dbase_get_record_with_names($dbf,$i);
+    {
+        $fields = dbase_get_record_with_names($dbf, $i);
 
-		if ($fields['deleted'] <> 1)
-		{
-			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
+        if ($fields['deleted'] <> 1) {
+            $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
 //					$sum = $fields['SUM'];
 //							if ($dom == '8026')
 //							{
 //								$rowsCount = dbase_numrecords($dbf);
 //							}
-			if ($schet<>0 or $schet<>null)
-			{
+            if ($schet <> 0 or $schet <> null) {
 
 
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
-				$abon = UtAbonent::findOne(['schet' => $schet]);
-				if ($abon <> null )
-				{
+                $abon = UtAbonent::findOne(['schet' => $schet]);
+                if ($abon <> null) {
 
-					foreach ($fields as $k => $v )
-					{
-						if ($v<>0)
-						{
-							$tipposl= null;
-							$sum = null;
-							switch ($k) {
-								case 'SUM_EL':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
-									$sum = $fields['SUM_EL'];
-									break;
-								case 'SUM_KV':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
-									$sum = $fields['SUM_KV'];
-									break;
-								case 'SUM_OM':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
-									$sum = $fields['SUM_OM'];
-									break;
-								case 'SUM_OT':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
-									$sum = $fields['SUM_OT'];
-									break;
-								case 'SUM_SM':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
-									$sum = $fields['SUM_SM'];
-									break;
-								case 'SUM_HV':
-									$tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
-									$sum = $fields['SUM_HV'];
-									break;
-							}
+                    foreach ($fields as $k => $v) {
+                        if ($v <> 0) {
+                            $tipposl = null;
+                            $sum = null;
+                            switch ($k) {
+                                case 'SUM_EL':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
+                                    $sum = $fields['SUM_EL'];
+                                    break;
+                                case 'SUM_KV':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
+                                    $sum = $fields['SUM_KV'];
+                                    break;
+                                case 'SUM_OM':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
+                                    $sum = $fields['SUM_OM'];
+                                    break;
+                                case 'SUM_OT':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
+                                    $sum = $fields['SUM_OT'];
+                                    break;
+                                case 'SUM_SM':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
+                                    $sum = $fields['SUM_SM'];
+                                    break;
+                                case 'SUM_HV':
+                                    $tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
+                                    $sum = $fields['SUM_HV'];
+                                    break;
+                            }
 
 
-							if ($tipposl<> null)
-							{
-								$findposl = UtPosl::findOne(['id_abonent' => $abon->id,'id_tipposl' => $tipposl->id]);
-								if ($findposl==null)
-								{
-									Flash($Base,$findposl,'По абоненту '.$schet.' незнайдено послуги '.$k.' '.$tipposl->poslug);
+                            if ($tipposl <> null) {
+                                $findposl = UtPosl::findOne(['id_abonent' => $abon->id, 'id_tipposl' => $tipposl->id]);
+                                if ($findposl == null) {
+                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' незнайдено послуги ' . $k . ' ' . $tipposl->poslug);
 //									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
-								}
-								else
-								{
-									NewUder($findposl,$fields,$tipposl,$sum);
+                                } else {
+                                    NewUder($findposl, $fields, $tipposl, $sum);
 
-								}
-							}
+                                }
+                            }
 
 
+                        }
 
-						}
-
-					}
-
+                    }
 
 
-				}
-			}
+                }
+            }
 
-		}
+        }
 
-		return true;
+        return true;
 
-	}
+    }
 
-	function NewUder($findposl,$fields,$tipposl,$sum)
+    function NewUder($findposl, $fields, $tipposl, $sum)
 
-	{
-		$utrim = new UtUtrim();
+    {
+        $utrim = new UtUtrim();
 
-		$utrim->id_org = 1;
-		$utrim->period = $_SESSION['PeriodBase'];
-		$utrim->id_abonent = $findposl->id_abonent;
-		$utrim->id_tipposl = $findposl->id_tipposl;
-		$utrim->tipposl = $tipposl->poslug;
-		$utrim->summa = $sum;
+        $utrim->id_org = 1;
+        $utrim->period = $_SESSION['PeriodBase'];
+        $utrim->id_abonent = $findposl->id_abonent;
+        $utrim->id_tipposl = $findposl->id_tipposl;
+        $utrim->tipposl = $tipposl->poslug;
+        $utrim->summa = $sum;
 
-		if ($utrim->validate())
-		{
-			$utrim->save();
-			return true;
-		}
-		else
-			Flash('UDER.DBF',$utrim,$findposl->getAbonent()->asArray()->one()['schet'].' '.$tipposl->tipposl);
-		return false;
-	}
+        if ($utrim->validate()) {
+            $utrim->save();
+            return true;
+        } else
+            Flash('UDER.DBF', $utrim, $findposl->getAbonent()->asArray()->one()['schet'] . ' ' . $tipposl->tipposl);
+        return false;
+    }
 
 
-
-	//    $percent1 = 50;
+    //    $percent1 = 50;
 //
 //	echo 'percent1 '.$percent1;
 
 
+    function encodestr($str)
+    {
+        $patterns[0] = "/H/";
+        $patterns[1] = "/h/";
+        $patterns[2] = "/C/";
+        $patterns[3] = "/c/";
+        $patterns[4] = "/I/";
+        $patterns[5] = "/i/";
 
-function encodestr($str)
-{
-	$patterns[0] = "/H/";
-	$patterns[1] = "/h/";
-	$patterns[2] = "/C/";
-	$patterns[3] = "/c/";
-	$patterns[4] = "/I/";
-	$patterns[5] = "/i/";
+        $replacements[0] = "Н";
+        $replacements[1] = "н";
+        $replacements[2] = "С";
+        $replacements[3] = "с";
+        $replacements[4] = "І";
+        $replacements[5] = "і";
 
-	$replacements[0] = "Н";
-	$replacements[1] = "н";
-	$replacements[2] = "С";
-	$replacements[3] = "с";
-	$replacements[4] = "І";
-	$replacements[5] = "і";
+        ksort($patterns);
+        ksort($replacements);
 
-	ksort($patterns);
-	ksort($replacements);
+        return preg_replace($patterns, $replacements, $str);
 
-	return preg_replace($patterns, $replacements, $str);
+    }
 
-}
-
-function Flash($Base,$Model,$str)
-{
-	if ($Model<>null)
-	{
-		$errors = $Model->getErrors();
-		foreach ($errors as $key =>$err) {
-			if (gettype($err)=='array') {
-				foreach ($err as $er) {
-					Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$Model->formName().' '.$str.' '.$er.' '.$Model->getAttribute($key));
-				}
-			}
-			else
-				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$Model->formName().' '.$str.' '.$err.' '.$Model->getAttribute($key));
-		}
-	}
-	else
-		Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$Base.' '.$str);
+    function Flash($Base, $Model, $str)
+    {
+        if ($Model <> null) {
+            $errors = $Model->getErrors();
+            foreach ($errors as $key => $err) {
+                if (gettype($err) == 'array') {
+                    foreach ($err as $er) {
+                        Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту ' . $Base . ' ' . $Model->formName() . ' ' . $str . ' ' . $er . ' ' . $Model->getAttribute($key));
+                    }
+                } else
+                    Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту ' . $Base . ' ' . $Model->formName() . ' ' . $str . ' ' . $err . ' ' . $Model->getAttribute($key));
+            }
+        } else
+            Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту ' . $Base . ' ' . $str);
 
 
-return true;
-}
+        return true;
+    }
 
 ?>
 
