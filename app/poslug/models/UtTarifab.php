@@ -12,6 +12,9 @@ use Yii;
  * @property string $period
  * @property int $id_abonent
  * @property int $id_tarif
+ * @property double $kortarif коригуючий тариф
+ * @property double $sumtarif тариф
+ * @property double $endtarif сумарный тариф
  * @property int $del
  *
  * @property UtAbonent $abonent
@@ -37,6 +40,7 @@ class UtTarifab extends \yii\db\ActiveRecord
             [['id_org','id_abonent','id_tarif'], 'required'],
             [['id_org', 'id_abonent','del','id_tarif'], 'integer'],
 			[['period'], 'safe'],
+            [['kortarif','sumtarif','endtarif'], 'number'],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
 			[['id_tarif'], 'exist', 'skipOnError' => true, 'targetClass' => UtTarif::className(), 'targetAttribute' => ['id_tarif' => 'id']],

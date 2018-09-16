@@ -87,32 +87,27 @@ use yii\helpers\Url;
 //			'tarifplan',
 			[
 				'attribute' => 'tarifplan',
-				'format' => 'raw',
-				'value' =>function ($model, $id) {
-					if ($model->val<>null) {
-						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
-																																									  'id' => 'tar-info',
-																																									  'data-toggle' => 'modal',
-																																									  'data-target' => '#tarinfo-modal',
-																																									  'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
-							}
-					else
-						$res = null;
-					return $res;
-				},
+//				'format' => 'raw',
+//				'value' =>function ($model, $id) {
+//					if ($model->val<>null) {
+//						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
+//																																									  'id' => 'tar-info',
+//																																									  'data-toggle' => 'modal',
+//																																									  'data-target' => '#tarinfo-modal',
+//																																									  'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
+//							}
+//					else
+//						$res = null;
+//					return $res;
+//				},
 //				'group'=>true,
 			],
-//			[
-//				'attribute' => 'name',
-//				'label'=>'Назва фактичного тарифу'
-//			],
-//			'tarifplan',
+
 			[
 				'attribute' => 'tariffakt',
 			],
 			[
-				'label' => 'Дії',
-//				'value' => '',
+				'attribute' => 'norma',
 			],
 //				'nnorma',
 //				 'activ',
@@ -127,26 +122,35 @@ use yii\helpers\Url;
 			// 'privat',
 			// 'id_oldkart',
 
-//			[
-//				'class' => '\kartik\grid\ActionColumn',
-//				'header'=>'Складові тарифу',
-//				'template' => '{tarinfo}',
-//				'buttons' => [
-//					'tarinfo' => function ($name, $model) {
-////						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
-////						if ($prev<>$model->id_tipposl)
-////						{
+			[
+				'class' => '\kartik\grid\ActionColumn',
+				'header'=>'',
+				'template' => '{tarinfo}',
+				'buttons' => [
+					'tarinfo' => function ($name, $model) {
+//						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
+//						if ($prev<>$model->id_tipposl)
+						if ($model->val<>null) {
+							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
+									'id' => 'tar-info',
+									'data-toggle' => 'modal',
+									'data-target' => '#tarinfo-modal',
+									'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
+						}
+						else
+							$res = null;
+						return $res;
 //							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
 ////						}
 //						return $res;
-//					}
-//				],
-////				'viewOptions' => ['label' => '<i class="glyphicon glyphicon-eye-open"> Складові тарифу</i>'],
-//////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh">sdg</i>'],
-//////				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove">sg</i>'],
-////				'dropdown' => true,
-////				'dropdownOptions' => ['class' => 'pull-right'],
-//			]
+					}
+				],
+//				'viewOptions' => ['label' => '<i class="glyphicon glyphicon-eye-open"> Складові тарифу</i>'],
+////				'updateOptions' => ['label' => '<i class="glyphicon glyphicon-refresh">sdg</i>'],
+////				'deleteOptions' => ['label' => '<i class="glyphicon glyphicon-remove">sg</i>'],
+//				'dropdown' => true,
+//				'dropdownOptions' => ['class' => 'pull-right'],
+			]
 		],
 //		'layout' => $layout,
 //				'layout'=>"{items}",

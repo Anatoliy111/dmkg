@@ -48,9 +48,11 @@ use yii\bootstrap\Alert;
 
 
 
-//	$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
-$NameBase = ['TARPF.DBF','TARINFO.DBF'];
 //$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//$NameBase = ['TARPF.DBF','TARINFO.DBF'];
+//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+$NameBase = ['POSLTAR.DBF','DAYS.DBF'];
+
 
 
 //		$NameBase = ['POSLTAR.DBF'];
@@ -112,14 +114,14 @@ if ($DirFiles<>'')
 	};
 
 
-    $colround = floor($RowsCount/100);
-	$process = floor($RowsCount/$colround);
+
+	$process = floor($RowsCount/1000);
 
 	$_SESSION['RowsCount'] = $RowsCount;
 	$_SESSION['process'] = $process;
 	$_SESSION['NameBase'] = $NameBase;
 	$_SESSION['Progress'] = 0;
-	$_SESSION['endprogress'] = $colround;
+//	$_SESSION['endprogress'] = $colround;
 	$_SESSION['NomBase']= 0;
 	$_SESSION['NomRec']= 0;
 	$_SESSION['EndCount'] = $RowsCount;
