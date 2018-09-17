@@ -1011,7 +1011,7 @@ function importTARINFO($dbf,$i,$Base)
                                 if ($findposl == null) {
 //								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
 
-                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' не знайдено послуги ' . $k . ' ' . $tipposl->poslug);
+                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' не знайдено послуги ' . $k . ' ' . $tipposl->poslug .' '. date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2))).' '.$v);
                                 } else {
                                     NewOpl($findposl, $tipposl, $fields, $v);
 
