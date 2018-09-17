@@ -739,7 +739,7 @@ function importTARPF($dbf,$i,$Base)
 		{
 			Flash($Base,null,'нема вулиці '.$fields['ID_STREET']);
 		}
-		
+
 		$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
 		if ($FindDom <> null) {
 			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
