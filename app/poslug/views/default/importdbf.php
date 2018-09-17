@@ -756,9 +756,7 @@ function importTARPF($dbf,$i,$Base)
 					$FindTarifPlan = $model;
 					}
 			}
-
 			return true;
-
 		}
 		else {
 			Flash($Base, null, 'нема будинку ' . $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
