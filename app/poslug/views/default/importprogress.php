@@ -51,7 +51,7 @@ use yii\bootstrap\Alert;
 //$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 //$NameBase = ['TARPF.DBF','TARINFO.DBF'];
 //$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
-$NameBase = ['POSLTAR.DBF','DAYS.DBF'];
+$NameBase = ['POSLTAR.DBF'];
 
 
 
@@ -92,9 +92,6 @@ if ($DirFiles<>'')
 					UtTarifab::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					break;
 				case 'TARPF.DBF':
-					UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'DAYS.DBF':
 					UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					break;
 				case 'OBOR.DBF':

@@ -652,6 +652,12 @@ function importPokaz($fields,$modelAb,$st)
 						$Tarifab->sumtarif = $fields['SUMTARIF'];
 						$Tarifab->kortarif = $fields['KORTARIF'];
 						$Tarifab->endtarif = $fields['ENDTARIF'];
+						$Tarifab->tarif = $fields['TARIF'];
+						$Tarifab->days = $fields['DAYS'];
+						$Tarifab->daymes = $fields['DAYSMES'];
+						$Tarifab->norma = $fields['NORMA'];
+
+
 						if ($Tarifab->validate())
 						{
 							$Tarifab->save();
@@ -676,6 +682,10 @@ function importPokaz($fields,$modelAb,$st)
 					$Tarifab->sumtarif = $fields['SUMTARIF'];
 					$Tarifab->kortarif = $fields['KORTARIF'];
 					$Tarifab->endtarif = $fields['ENDTARIF'];
+					$Tarifab->tarif = $fields['TARIF'];
+					$Tarifab->days = $fields['DAYS'];
+					$Tarifab->daymes = $fields['DAYSMES'];
+					$Tarifab->norma = $fields['NORMA'];
 					if ($Tarifab->validate())
 					{
 						$Tarifab->save();
@@ -712,39 +722,6 @@ function importPokaz($fields,$modelAb,$st)
 		}
 		return true;
 	}
-
-function importDAYS($dbf,$i,$Base)
-{
-	$fields = dbase_get_record_with_names($dbf,$i);
-	if ($fields['deleted'] <> 1)
-	{
-		$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
-		$schet1 = trim(iconv('CP866','utf-8',$fields['SCHET1']));
-
-		$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
-		if ($FindTipPosl<> null)
-		{
-				$model = new UtKortarif();
-				$model->id_tipposl = $FindTipPosl->id;
-			    $model->period = $_SESSION['PeriodBase'];
-				$model->days = $fields['DAYS'];
-				$model->tarif = $fields['TARIF'];
-			    $model->note = encodestr(trim(iconv('CP866','utf-8',$fields['NOTE'])));
-				$model->kl_ntar = $fields['KL_NTAR'];
-				if ($model->validate())
-				{
-					$model->save();
-					return true;
-				}
-				else
-					Flash($Base,$model,'Не создан кориг.тариф '.$schet.' '.$fields['KL_NTAR']);
-		}
-		else
-			return true;
-
-	}
-	return true;
-}
 
 function importTARPF($dbf,$i,$Base)
 {
