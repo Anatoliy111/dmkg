@@ -81,7 +81,13 @@ HTML;
 				'tipposl',
 				'lgot',
 				'tarif',
-                'vidpokaz',
+					[
+						'attribute' => 'id_tipposl',
+						'label' => 'Вид показника',
+						'format' => 'raw',
+						'value' => 'poslvid.vid_pokaz',
+						'group'=>true,
+					],
 				'pokaznik',
 				'ed_izm',
 					[
