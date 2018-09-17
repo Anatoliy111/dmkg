@@ -50,9 +50,9 @@ use yii\bootstrap\Alert;
 
 
 //$NameBase = ['TARPF.DBF','TARINFO.DBF'];
-//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 //$NameBase = ['OPL.DBF','SUBS.DBF'];
-$NameBase = ['UDER.DBF'];
+//$NameBase = ['UDER.DBF'];
 //$NameBase = ['OPL.DBF'];
 
 
