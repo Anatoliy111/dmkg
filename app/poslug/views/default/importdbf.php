@@ -120,10 +120,10 @@ $t = true;
 	    $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
 	    @dbase_pack($dbf);
 	     $rowsCount = dbase_numrecords($dbf);
-		if ($_SESSION['Progress']>=1000 and $nombase==$endbase)
-		{
-			$process = $rowsCount-$nomrec;
-		}
+//		if ($_SESSION['Progress']>=1000 and $nombase==$endbase)
+//		{
+//			$process = $rowsCount-$nomrec;
+//		}
 //	     $countRec = $rowsCount - $_SESSION['NomRec'];
 //	     if ($countRec>$_SESSION['process'])
 //		  $process=$_SESSION['NomRec']+$_SESSION['process'];
@@ -1220,6 +1220,14 @@ function importTARINFO($dbf,$i,$Base)
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
                                     $sum = $fields['SUM_HV'];
                                     break;
+								case 'SUM_SN':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'sn']);
+									$sum = $fields['SUM_SN'];
+									break;
+								case 'SUM_UB':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'ub']);
+									$sum = $fields['SUM_UB'];
+									break;
                             }
 
 

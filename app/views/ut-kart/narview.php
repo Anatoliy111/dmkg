@@ -88,7 +88,13 @@ HTML;
 //						'value' => 'poslvid.vid_pokaz',
 //						'group'=>true,
 //					],
-					'vidpokaz',
+					[
+						'attribute' => 'id_tipposl',
+						'label' => 'Показник',
+						'format' => 'raw',
+						'value' => 'poslvid.vid_pokaz',
+						'group'=>true,
+					],
 				'pokaznik',
 				'ed_izm',
 					[

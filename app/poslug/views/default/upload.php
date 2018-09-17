@@ -79,17 +79,16 @@ use yii\base\Event;
 
 
     // The function to refresh the progress bar.
-    function refreshProgress(percent) {
+    function refreshProgress(percent,formclose) {
       $.ajax({
         url: "importdbf",
         success:function(data,succ,hhh){
            $('.results').html(percent);
-           //$('.base').html(data);
                 str = data;
 				if (str.indexOf("Error!!!")>=0)
-				   percent = closeImport(str);
+				   formclose = closeImport(str);
 				if (str.indexOf("End import!!!")>=0)
-				   percent = 1000;
+				   formclose = 1;
 			percent = percent + 1;
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1000" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           //$("#message").html(data.message);
@@ -97,7 +96,7 @@ use yii\base\Event;
           // If the process is completed, we should stop the checking process.
 
           if($('#Modalprogress7').is(':visible')){
-            if (percent >= 1001) {
+            if (formclose == 1) {
             $("#mess").html("<p>" + percent + "</p>");
             //window.clearInterval(timer);
             //timer = window.setInterval(completed, 1000);
@@ -115,7 +114,7 @@ use yii\base\Event;
 				//location.replace();
 			  }
 			  else {
-				 refreshProgress(percent);
+				 refreshProgress(percent,formclose);
 			  }
             //      alert("Вы почему окно закрыли, а?");
             //window.clearInterval(timer);
@@ -142,7 +141,7 @@ use yii\base\Event;
 
        alert("Импорт прерван "+str);
        window.clearInterval(timer);
-       return 1000;
+       return 1;
 
        //location.replace();
       //$("#Modalprogress7").modal('hide');
@@ -161,6 +160,7 @@ use yii\base\Event;
  	    $('#Modalprogress7').show();
 	    $('#Modalprogress7').modal({backdrop: false});
         percent = 0;
+        formclose = 0;
         $.ajax({
         url: "importprogress",
         success:function(data,succ,hhh){
@@ -168,7 +168,7 @@ use yii\base\Event;
                str = data;
 				if (str.indexOf("Error!!!")<0)
 				{
-					refreshProgress(percent=1);
+					refreshProgress(percent=1,formclose);
 				}
 				else
 				 	closeImport(str);

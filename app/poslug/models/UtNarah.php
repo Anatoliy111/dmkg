@@ -53,6 +53,7 @@ class UtNarah extends \yii\db\ActiveRecord
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
+            [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
         ];
     }
 
@@ -105,7 +106,8 @@ class UtNarah extends \yii\db\ActiveRecord
     public function getPoslvid()
     {
         $posl = $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
-        return $posl->primaryModel['tipposl']->getVidpokaz();
+        $res = $posl->one();
+        return $res->getVidpokaz();
     }
 
     public function getVidpokaz()
