@@ -87,8 +87,6 @@ use yii\base\Event;
 				if (str.indexOf("End import!!!")>=0)
 				   percent = 1000;
 			percent = percent + 1;
-			$('.base').html(data);
-			$('.record').html(data);
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1000" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           //$("#message").html(data.message);
           $("#mess").html("<p>" + percent + "</p>");
