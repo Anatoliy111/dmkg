@@ -246,12 +246,13 @@ class UtKartController extends Controller
 				$dppos[$abon->id] = $dataProvider4;
 
 				//-----------------------------------------------------------------------------
-				$tar = UtTarifab::find();
+				$tar = UtTarif::find();
 				$tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
 				$tar->joinWith('utTarifabs')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
 				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 
 
+				
 //				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
 //				$tar->joinWith('tarif0');
 
