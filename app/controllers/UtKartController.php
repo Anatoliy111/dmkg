@@ -276,6 +276,7 @@ class UtKartController extends Controller
 
 				$sub = UtSubs::find();
 				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_subs.period'=> $session['periodkab']]);
+				$sub->leftJoin('ut_obor')->where(['ut_obor.id' => $abon->id,'ut_subs.period'=> $session['periodkab']]);
 				$dataProvider8 = new ActiveDataProvider([
 					'query' => $sub,
 				]);

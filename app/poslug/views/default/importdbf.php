@@ -780,7 +780,7 @@ function importTARINFO($dbf,$i,$Base)
             Flash($Base, null, 'вулиця ' . $fields['ID_STREET']);
         } else
         {
-            $FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])), 'id_ulica' => $FindUL->id]);
+			$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['NUMBER'])),'id_ulica' => $FindUL->id]);
             if ($FindDom <> null) {
                 $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
                 if ($FindTarifPlan == null) {
@@ -1009,7 +1009,7 @@ function importTARINFO($dbf,$i,$Base)
                                 if ($findposl == null) {
 //								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
 
-                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' незнайдено послуги ' . $k . ' ' . $tipposl->poslug);
+                                    Flash($Base, $findposl, 'По абоненту ' . $schet . ' не знайдено послуги ' . $k . ' ' . $tipposl->poslug);
                                 } else {
                                     NewOpl($findposl, $tipposl, $fields, $v);
 
@@ -1085,32 +1085,32 @@ function importTARINFO($dbf,$i,$Base)
                             switch ($k) {
                                 case 'S_EL':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'el']);
-                                    $sum = $fields['S_EL'];
+//                                    $sum = UtObor::findOne(['old_tipusl' => 'el']);
                                     $sum_ob = $fields['OB_EL'];
                                     break;
                                 case 'S_KV':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'kv']);
-                                    $sum = $fields['S_KV'];
+//                                    $sum = $fields['S_KV'];
                                     $sum_ob = $fields['OB_KV'];
                                     break;
                                 case 'S_OM':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'om']);
-                                    $sum = $fields['S_OM'];
+//                                    $sum = $fields['S_OM'];
                                     $sum_ob = $fields['OB_OM'];
                                     break;
                                 case 'S_OT':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'ot']);
-                                    $sum = $fields['S_OT'];
+//                                    $sum = $fields['S_OT'];
                                     $sum_ob = $fields['OB_OT'];
                                     break;
                                 case 'S_SM':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'sm']);
-                                    $sum = $fields['S_SM'];
+//                                    $sum = $fields['S_SM'];
                                     $sum_ob = $fields['OB_SM'];
                                     break;
                                 case 'S_HV':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
-                                    $sum = $fields['S_HV'];
+//                                    $sum = $fields['S_HV'];
                                     $sum_ob = $fields['OB_HV'];
                                     break;
                             }
@@ -1122,7 +1122,7 @@ function importTARINFO($dbf,$i,$Base)
                                     Flash($Base, $findposl, 'По абоненту ' . $schet . ' незнайдено послуги ' . $k . ' ' . $tipposl->poslug);
 //									die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
                                 } else {
-                                    NewSubs($findposl, $fields, $tipposl, $sum, $sum_ob);
+                                    NewSubs($findposl, $fields, $tipposl, $sum_ob);
 
                                 }
                             }
@@ -1142,7 +1142,7 @@ function importTARINFO($dbf,$i,$Base)
 
     }
 
-    function NewSubs($findposl, $fields, $tipposl, $sum, $sum_ob)
+    function NewSubs($findposl, $fields, $tipposl, $sum_ob)
 
     {
         $narah = new UtSubs();
@@ -1153,7 +1153,9 @@ function importTARINFO($dbf,$i,$Base)
         $narah->id_tipposl = $findposl->id_tipposl;
         $narah->tipposl = $tipposl->poslug;
         $narah->sum_ob = $sum_ob;
-        $narah->sum = $sum;
+		$oborsubs = UtObor::findOne(['id_abonent' => $findposl->id_abonent, 'id_tipposl' => $findposl->id_tipposl, 'ut_obor.period'=> $_SESSION['PeriodBase']])->subs;
+		if ($oborsubs<>null)
+            $narah->sum = $oborsubs;
 
         if ($narah->validate()) {
             $narah->save();
