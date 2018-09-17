@@ -48,22 +48,22 @@ use yii\bootstrap\Alert;
 
 
 
-//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
 //$NameBase = ['TARPF.DBF','TARINFO.DBF'];
-//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
-//$NameBase = ['TARPF.DBF','TARINFO.DBF'];
+//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','TARPF.DBF','TARINFO.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
+$NameBase = ['TARPF.DBF','TARINFO.DBF','OPL.DBF'];
 
 
 
 
-		$NameBase = ['POSLTAR.DBF'];
+//		$NameBase = ['POSLTAR.DBF'];
 //$NameBase = ['TAR.DBF','POSLTAR.DBF'];
 //	$NameBase = [''];
 
-//		$NameBase = ['OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//		$NameBase = ['OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
 
 
-//	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
 
 
 $DirFiles  = $_SESSION['DirFiles'];

@@ -44,7 +44,7 @@ use yii\base\Event;
 	]);
 	//    echo "<script src=".'app/media/js/import-dbf.js'." type=".'text/javascript'."></script>";
 ?>
-<div class="results">Ждем ответа</div>
+<div class="results"><?=$_SESSION['PeriodBase']?></div>
 
 
 <?php
@@ -90,6 +90,8 @@ use yii\base\Event;
 				if (str.indexOf("End import!!!")>=0)
 				   percent = 1000;
 			percent = percent + 1;
+			$('.base').html(data);
+			$('.record').html(data);
           $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1000" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
           //$("#message").html(data.message);
           $("#mess").html("<p>" + percent + "</p>");
@@ -162,7 +164,7 @@ use yii\base\Event;
         $.ajax({
         url: "importprogress",
         success:function(data,succ,hhh){
-               //$('.results').html(data);
+               $('.results').html(data);
                str = data;
 				if (str.indexOf("Error!!!")<0)
 				{

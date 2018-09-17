@@ -49,6 +49,7 @@ use yii\bootstrap\Modal;
 <!--	--><?//= Html::tag('p', Html::encode($Base), ['class' => 'base']) ?>
 <!---->
 <!---->
+<div class="base"><?=$_SESSION['NameBase'][$_SESSION['NomBase']]?></div>
 <?php
 //	$filename = $_SESSION['DirFiles'].'/'.$Base;
 //	$dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
@@ -994,6 +995,12 @@ function importTARINFO($dbf,$i,$Base)
                                 case 'OPL_HV':
                                     $tipposl = UtTipposl::findOne(['old_tipusl' => 'hv']);
                                     break;
+								case 'OPL_UB':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'ub']);
+									break;
+								case 'OPL_SN':
+									$tipposl = UtTipposl::findOne(['old_tipusl' => 'sn']);
+									break;
                             }
 
 
