@@ -100,4 +100,10 @@ class UtNarah extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
     }
+
+    public function getPoslvid()
+    {
+        $posl = $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
+        return $posl->primaryModel['tipposl']->getVidpokaz();
+    }
 }
