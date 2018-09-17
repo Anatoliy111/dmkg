@@ -182,13 +182,13 @@ HTML;
 				'format' => ['date', 'php:MY'],
 			],
 			[
-				'attribute' => 'id_tipposl',
+				'attribute' => 'tarif0.id_tipposl',
 				'value' => 'tipposl.poslug',
 				'group'=>true,
 			],
 
 			[
-				'attribute' => 'id_tipposl',
+				'attribute' => 'tarif0.id_tipposl',
 				'label' => 'Показник',
 				'format' => 'raw',
 				'value' => 'poslvid.vid_pokaz',
@@ -219,10 +219,13 @@ HTML;
 //			],
 			[
 				'attribute' => 'name',
-				'label'=>'Назва фактичного тарифу'
+				'label'=>'Назва тарифу'
 			],
 			[
-				'attribute' => 'tariffakt',
+				'attribute' => 'sumtarif',
+			],
+			[
+				'attribute' => 'norma',
 			],
 
 //			[

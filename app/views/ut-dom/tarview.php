@@ -131,7 +131,8 @@ use yii\helpers\Url;
 //						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
 //						if ($prev<>$model->id_tipposl)
 						if ($model->val<>null) {
-							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
+							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn btn-primary btn-md','title'=>'Cкладові тарифу',
+								    'style'=> 'vertical-align: top',
 									'id' => 'tar-info',
 									'data-toggle' => 'modal',
 									'data-target' => '#tarinfo-modal',

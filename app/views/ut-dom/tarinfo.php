@@ -57,8 +57,8 @@ echo "<div id='modalContentinfo'></div>";
 
 			'mode'=>DetailView::MODE_VIEW,
 			'panel'=>[
-				'heading'=>'Плановий тариф',
-				'type'=>DetailView::TYPE_INFO,
+//				'heading'=>'Плановий тариф',
+				'type'=>DetailView::TYPE_PRIMARY,
 			],
 			'enableEditMode' => false,
 			'buttons1' => '{view}',
@@ -137,9 +137,9 @@ echo "<div id='modalContentinfo'></div>";
 				'id'=>'w3',
 			]
 		],
-		'panel' => [
-			'heading'=>'<h3 class="panel-title"></i>'.' '.$this->title.'</h3>',
-		],
+//		'panel' => [
+//			'heading'=>'<h3 class="panel-title"></i>'.' '.$this->title.'</h3>',
+//		],
 		'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 		'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 		'filterRowOptions'=>['class'=>'kartik-sheet-style'],
