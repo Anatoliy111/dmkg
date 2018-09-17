@@ -108,8 +108,8 @@ class UtNarah extends \yii\db\ActiveRecord
         return $posl->primaryModel['tipposl']->getVidpokaz();
     }
 
-//    public function getVidpokaz()
-//    {
-//        return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokaz']);
-//    }
+    public function getVidpokaz()
+    {
+        return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokaz']);
+    }
 }
