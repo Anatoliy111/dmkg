@@ -49,7 +49,7 @@ use yii\bootstrap\Modal;
 <!--	--><?//= Html::tag('p', Html::encode($Base), ['class' => 'base']) ?>
 <!---->
 <!---->
-<div class="results">Жду ответа</div>
+
 <?php
 //	$filename = $_SESSION['DirFiles'].'/'.$Base;
 //	$dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
