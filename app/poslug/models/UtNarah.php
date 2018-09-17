@@ -52,6 +52,7 @@ class UtNarah extends \yii\db\ActiveRecord
             [['ed_izm'], 'string', 'max' => 11],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
+            [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
         ];
     }
 
@@ -96,10 +97,10 @@ class UtNarah extends \yii\db\ActiveRecord
         return $this->hasOne(UtAbonent::className(), ['id' => 'id_abonent']);
     }
 
-    public function getTipposl()
-    {
-        return $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
-    }
+//    public function getTipposl1()
+//    {
+//        return $this->hasOne(UtTipposl::className(), ['id' => 'id_tipposl']);
+//    }
 
     public function getPoslvid()
     {
@@ -107,8 +108,8 @@ class UtNarah extends \yii\db\ActiveRecord
         return $posl->primaryModel['tipposl']->getVidpokaz();
     }
 
-    public function getVidpokaz()
-    {
-        return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokaz']);
-    }
+//    public function getVidpokaz()
+//    {
+//        return $this->hasOne(UtVidpokaz::className(), ['id' => 'id_vidpokaz']);
+//    }
 }
