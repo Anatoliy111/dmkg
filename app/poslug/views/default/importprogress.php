@@ -51,8 +51,8 @@ use yii\bootstrap\Alert;
 
 //$NameBase = ['TARPF.DBF','TARINFO.DBF'];
 //$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','SUBS.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
-$NameBase = ['OPL.DBF','SUBS.DBF'];
-
+//$NameBase = ['OPL.DBF','SUBS.DBF'];
+$NameBase = ['SUBS.DBF'];
 
 
 
@@ -116,7 +116,7 @@ if ($DirFiles<>'')
 
 
 
-	$process = floor($RowsCount/1000);
+	$process = floor($RowsCount/100);
 
 	$_SESSION['RowsCount'] = $RowsCount;
 	$_SESSION['process'] = $process;

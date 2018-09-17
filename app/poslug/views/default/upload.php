@@ -84,7 +84,7 @@ use yii\base\Event;
         url: "importdbf",
         success:function(data,succ,hhh){
            $('.results').html(percent);
-           $('.base').html(percent);
+           //$('.base').html(data);
                 str = data;
 				if (str.indexOf("Error!!!")>=0)
 				   percent = closeImport(str);
@@ -123,6 +123,7 @@ use yii\base\Event;
           }
           else{
              alert("Импорт прерван");
+             window.clearInterval(timer);
           }
 
 
