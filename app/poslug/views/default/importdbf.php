@@ -1153,7 +1153,7 @@ function importTARINFO($dbf,$i,$Base)
         $narah->id_tipposl = $findposl->id_tipposl;
         $narah->tipposl = $tipposl->poslug;
         $narah->sum_ob = $sum_ob;
-		$oborsubs = UtObor::findOne(['id_abonent' => $findposl->id_abonent, 'id_tipposl' => $findposl->id_tipposl, 'ut_obor.period'=> $_SESSION['PeriodBase']])->subs;
+		$oborsubs = UtObor::findOne(['id_abonent' => $findposl->id_abonent, 'id_posl' => $findposl->id_tipposl, 'ut_obor.period'=> $_SESSION['PeriodBase']])->subs;
 		if ($oborsubs<>null)
             $narah->sum = $oborsubs;
 
