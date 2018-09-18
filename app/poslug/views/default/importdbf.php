@@ -973,7 +973,7 @@ function importTARINFO($dbf,$i,$Base)
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
                 $abon = UtAbonent::findOne(['schet' => $schet]);
-                if ($abon <> null) {
+                if ($abon <> null and $_SESSION['PeriodBase'] = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . '01'))) {
 
                     foreach ($fields as $k => $v) {
                         if ($v <> 0) {
