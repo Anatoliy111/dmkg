@@ -733,10 +733,10 @@ function importTARPF($dbf,$i,$Base)
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
 	{
-		$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['wid']]);
+		$FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
 		if ($FindTipPosl==null)
 		{
-			Flash($Base,null,'нема послуги '.$fields['wid']);
+			Flash($Base,null,'нема послуги '.$fields['WID']);
 		}
 		$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
 		if ($FindUL==null)
