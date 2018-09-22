@@ -94,7 +94,6 @@
 		{
 			if ($this->validate()) {
 				$this->percent = 0;
-				$pers = (100/count($this->Files));
 				foreach ($this->Files as $file) {
 					if ($file->extension == "dbf")
 					{
@@ -143,6 +142,7 @@
 				Alert::end();
 				$this->MonthYear = date('Y-m-d',strtotime(substr($filename->baseName,0,4).'-'.substr($filename->baseName,4,2).'-01'));
 				$_SESSION['DirFiles'] = $uploadPath.$filename->baseName;
+				$_SESSION['DirUpd'] = $uploadPath;
 				$_SESSION['PeriodBase'] = $this->MonthYear;
 				return true;
 

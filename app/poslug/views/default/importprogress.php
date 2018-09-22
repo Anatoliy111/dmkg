@@ -50,10 +50,10 @@ use yii\bootstrap\Alert;
 
 
 //$NameBase = ['TARPF.DBF','TARINFO.DBF'];
-//$NameBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
-//$NameBase = ['OPL.DBF','SUBS.DBF'];
+$ImpBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//$ImpBase = ['OPL.DBF','SUBS.DBF'];
 //$NameBase = ['UDER.DBF'];
-$NameBase = ['OPL.DBF'];
+//$ImpBase = ['OPL.DBF'];
 
 
 
@@ -66,29 +66,37 @@ $NameBase = ['OPL.DBF'];
 
 //	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
 
-
+$t = false;
 $DirFiles  = $_SESSION['DirFiles'];
 
-if ($DirFiles<>'')
+if ($DirFiles<>'') {
+	if (!file_exists($_SESSION['DirUpd'] . 'import.txt')) {
+		$fp = fopen($_SESSION['DirUpd'] . 'import.txt', 'w');
+		$t = true;
+	}
+}
+if ($t)
 {
+
 //					$fields = dbase_get_record_with_names($dbf,50);
 //					$fields1 = dbase_get_record($dbf,50);
 //	UtObor::deleteAll('period = :period', [':period' => $this->MonthYear]);
 
 	$RowsCount = 0;
+$k=0;
 
-
-	for ($i = 0; $i <= count($NameBase)-1; $i++)
+	for ($i = 0; $i <= count($ImpBase)-1; $i++)
 	{
-		$filename = $DirFiles.'/'.$NameBase[$i];
+		$filename = $DirFiles.'/'.$ImpBase[$i];
 
-//		if (file_exists($filename)) {
+		if (file_exists($filename)) {
 			$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename $RowsCount");
 			@dbase_pack($dbf);
 
 //		$KartCount = dbase_numrecords($dbf);
+			$NameBase[$k] = $ImpBase[$i];
 			$RowsCount = $RowsCount + dbase_numrecords($dbf);
-			switch ($NameBase[$i]) {
+			switch ($NameBase[$k]) {
 				case 'POSLTAR.DBF':
 					UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					UtTarifab::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
@@ -112,12 +120,13 @@ if ($DirFiles<>'')
 					UtUtrim::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
 					break;
 			}
-//		}
+			$k=$k+1;
+		}
 	};
 
 
 
-	$process = floor($RowsCount/100);
+	$process = floor($RowsCount/100)==0 ? 1 : floor($RowsCount/100);
 
 	$_SESSION['RowsCount'] = $RowsCount;
 	$_SESSION['process'] = $process;
@@ -129,6 +138,8 @@ if ($DirFiles<>'')
 	$_SESSION['EndCount'] = $RowsCount;
 
 }
+else
+	echo ("Error!!!");
 
 ?>
 

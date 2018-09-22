@@ -105,6 +105,7 @@ $t = true;
 	while( $t) {
 		if ($nombase>$endbase){
 			echo ("End import!!!");
+//			removeDirectory($_SESSION['DirUpd']);
 			break;
 		}
 
@@ -1325,5 +1326,28 @@ function importTARINFO($dbf,$i,$Base)
         return true;
     }
 
+	function cleanDir($dir) {
+		$files = glob($dir."/*");
+		$c = count($files);
+		if (count($files) > 0) {
+			foreach ($files as $file) {
+				if (file_exists($file)) {
+					unlink($file);
+				}
+			}
+		}
+	}
+
+	function removeDirectory($dir) {
+		if ($objs = glob($dir."*")) {
+			foreach($objs as $obj) {
+				if (is_dir($obj))
+					rmdir($obj);
+				else
+					unlink($obj);
+//				is_dir($obj) ? rmdir($obj) : unlink($obj);
+			}
+		}
+	}
 ?>
 

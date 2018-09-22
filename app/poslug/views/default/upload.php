@@ -139,7 +139,7 @@ use yii\base\Event;
 
        $("#Modalprogress7").modal('hide');
 
-       alert("Импорт прерван "+str);
+       alert("Импорт прерван ");
        window.clearInterval(timer);
        return 1;
 
