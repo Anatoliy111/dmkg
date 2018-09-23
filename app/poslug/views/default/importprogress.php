@@ -83,6 +83,7 @@ if ($t)
 //	UtObor::deleteAll('period = :period', [':period' => $this->MonthYear]);
 
 	$RowsCount = 0;
+	$NameBase[0]='';
 $k=0;
 
 	for ($i = 0; $i <= count($ImpBase)-1; $i++)
