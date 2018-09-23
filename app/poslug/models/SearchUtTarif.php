@@ -21,7 +21,7 @@ class SearchUtTarif extends UtTarif
             [['id', 'id_org', 'id_tipposl', 'id_vidpokaz', 'del', 'kl','podezd'], 'integer'],
             [['name'], 'string', 'max' => 25],
             [['period'], 'safe'],
-            [['tarifplan', 'tariffakt', 'tarifend'], 'number'],
+            [['tarifplan', 'tariffakt','tariffaсt', 'tarifend'], 'number'],
         ];
     }
 
@@ -70,6 +70,7 @@ class SearchUtTarif extends UtTarif
             'period' => $this->period,
             'tarifplan' => $this->tarifplan,
             'tariffakt' => $this->tariffakt,
+            'tariffaсt' => $this->tariffaсt,
             'tarifend' => $this->tarifend,
             'del' => $this->del,
         ]);

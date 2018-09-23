@@ -11,7 +11,8 @@ use yii\widgets\Pjax;
 ?>
 <?php
 $this->title = Yii::t('easyii', 'Ut Doms');
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = \app\poslug\models\UtUlica::findOne($searchModel->id_ulica)->ul;
 ?>
 
 <div class="well well-large">

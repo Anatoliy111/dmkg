@@ -18,7 +18,7 @@ use Yii;
  * @property int $podezd
  * @property int $kl ключ
  * @property double $tarifplan тариф
- * @property double $tariffakt тариф
+ * @property double $tariffact тариф
  * @property double $norma
  * @property int $del активна
  *
@@ -37,6 +37,8 @@ class UtTarif extends \yii\db\ActiveRecord
         return 'ut_tarif';
     }
 
+    public $tariffact;
+
     /**
      * @inheritdoc
      */
@@ -47,7 +49,7 @@ class UtTarif extends \yii\db\ActiveRecord
             [['id_org', 'id_tipposl', 'id_vidpokaz', 'kl','podezd'], 'integer'],
 			[['name'], 'string', 'max' => 25],
             [['period'], 'safe'],
-            [['tarifplan', 'tariffakt', 'norma'], 'number'],
+            [['tarifplan', 'tariffakt', 'tariffact','norma'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
             [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
@@ -72,6 +74,7 @@ class UtTarif extends \yii\db\ActiveRecord
 			'name' => Yii::t('easyii', 'Nametarif'),
             'tarifplan' => Yii::t('easyii', 'Tarifplan'),
             'tariffakt' => Yii::t('easyii', 'Tariffakt'),
+            'tariffaсt' => Yii::t('easyii', 'Tariffaсt'),
             'norma' => Yii::t('easyii', 'Norma'),
             'del' => Yii::t('easyii', 'Del'),
             'podezd' => Yii::t('easyii', 'podezd'),

@@ -68,12 +68,12 @@ $ImpBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF'
 
 $t = false;
 $DirFiles  = $_SESSION['DirFiles'];
-
+//
 if ($DirFiles<>'') {
-	if (!file_exists($_SESSION['DirUpd'] . 'import.txt')) {
-		$fp = fopen($_SESSION['DirUpd'] . 'import.txt', 'w');
+//	if (!file_exists($_SESSION['DirUpd'] . 'import.txt')) {
+//		$fp = fopen($_SESSION['DirUpd'] . 'import.txt', 'w');
 		$t = true;
-	}
+//	}
 }
 if ($t)
 {

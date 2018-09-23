@@ -738,14 +738,21 @@ function importTARPF($dbf,$i,$Base)
 		{
 			Flash($Base,null,'нема послуги '.$fields['WID']);
 		}
-		$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
-		if ($FindUL==null)
-		{
-			Flash($Base,null,'нема вулиці '.$fields['ID_STREET']);
+		$FindDom = UtDom::findOne(['id_house' => $fields['ID_HOUSE']]);
+		if ($FindDom == null) {
+			$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
+			if ($FindUL == null) {
+				Flash($Base, null, 'нема вулиці ' . $fields['ID_STREET']);
+			}
+			else
+				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
 		}
-
-		$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
 		if ($FindDom <> null) {
+			if ($FindDom->id_house == 0)
+			{
+				$FindDom->id_house = $fields['ID_HOUSE'];
+				$FindDom->save();
+			}
 			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
 			if ($FindTarifPlan == null) {
 				$model = new UtTarifplan();
@@ -763,7 +770,7 @@ function importTARPF($dbf,$i,$Base)
 			return true;
 		}
 		else {
-			Flash($Base, null, 'нема будинку ' . $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+			Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['STREET'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
 		}
 	}
 	return true;
@@ -773,21 +780,24 @@ function importTARINFO($dbf,$i,$Base)
 {
     $fields = dbase_get_record_with_names($dbf, $i);
     if ($fields['deleted'] <> 1) {
-        $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['wid']]);
+        $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
 		if ($FindTipPosl==null)
 		{
-			Flash($Base,null,'нема послуги '.$fields['wid']);
+			Flash($Base,null,'нема послуги '.$fields['WID']);
 		}
-        $FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
-        if ($FindUL == null) {
-            Flash($Base, null, 'вулиця ' . $fields['ID_STREET']);
-        } else
-        {
-			$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['NUMBER'])),'id_ulica' => $FindUL->id]);
+		$FindDom = UtDom::findOne(['id_house' => $fields['ID_HOUSE']]);
+		if ($FindDom == null) {
+			$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
+			if ($FindUL == null) {
+				Flash($Base, null, 'нема вулиці ' . $fields['ID_STREET']);
+			}
+			else
+				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
+		}
             if ($FindDom <> null) {
                 $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
                 if ($FindTarifPlan == null) {
-                    Flash($Base, null, 'План не найден ' . $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+                    Flash($Base, null, 'План не найден ' . trim(iconv('CP1251','utf-8',$fields['STREET'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
                 } else {
                     $FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SERVI']]);
                     if ($FindTarifvid == null) {
@@ -826,11 +836,10 @@ function importTARINFO($dbf,$i,$Base)
                 }
 
             } else
-                Flash($Base, null, $FindUL->ul . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+				Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['STREET'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
 
         }
         return true;
-    }
 }
 
     function importNach($dbf, $i, $Base)
@@ -1338,16 +1347,16 @@ function importTARINFO($dbf,$i,$Base)
 		}
 	}
 
-	function removeDirectory($dir) {
-		if ($objs = glob($dir."*")) {
-			foreach($objs as $obj) {
-				if (is_dir($obj))
-					rmdir($obj);
-				else
-					unlink($obj);
-//				is_dir($obj) ? rmdir($obj) : unlink($obj);
-			}
-		}
-	}
+//	function removeDirectory($dir) {
+//		if ($objs = glob($dir."*")) {
+//			foreach($objs as $obj) {
+//				if (is_dir($obj))
+//					rmdir($obj);
+//				else
+//					unlink($obj);
+////				is_dir($obj) ? rmdir($obj) : unlink($obj);
+//			}
+//		}
+//	}
 ?>
 

@@ -67,11 +67,22 @@ class DefaultController extends Controller
 			if(isset($_FILES['UploadForm']['name']['File']))
 			{
 				$model->File = UploadedFile::getInstance($model, 'File');
-				if ($model->uploadFile()) {
-					if ($model->UnZIP($model->File)) {
-						$model->progress = true;
+				if ($model->remDir()) {
+					if ($model->uploadFile()) {
+						if ($model->UnZIP($model->File)) {
+							$model->progress = true;
+						}
+						//					return $this->redirect(['upload', 'model' => $model]);
 					}
-//					return $this->redirect(['upload', 'model' => $model]);
+				}
+				else
+				{
+					Alert::begin(['options' => ['class' => 'alert-warning'],]);
+
+
+					echo "Невдалося очистити папку DBF";
+
+					Alert::end();
 				}
 
 			}

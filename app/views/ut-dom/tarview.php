@@ -40,7 +40,6 @@ use yii\helpers\Url;
     $prev = 0;
 	echo GridView::widget([
 		'dataProvider' =>  $dataProvider,
-
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
 //			[
@@ -74,37 +73,17 @@ use yii\helpers\Url;
 				'value' => 'poslvid.vid_pokaz',
 				'group'=>true,
 			],
-
-//			[
-
-
-
-//			[
-//				'attribute' => 'id_vidpokaz',
-//				'value' => 'vidpokaz.vid_pokaz',
-//				'group'=>true,
-//			],
-//			'tarifplan',
 			[
 				'attribute' => 'tarifplan',
-//				'format' => 'raw',
-//				'value' =>function ($model, $id) {
-//					if ($model->val<>null) {
-//						$res = $model->tarifplan . ' ' . Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $model->val])],['class' => 'btn-sm btn-outline btn-warning','title'=>'Cкладові тарифу',
-//																																									  'id' => 'tar-info',
-//																																									  'data-toggle' => 'modal',
-//																																									  'data-target' => '#tarinfo-modal',
-//																																									  'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
-//							}
-//					else
-//						$res = null;
-//					return $res;
-//				},
-//				'group'=>true,
 			],
-
+			[
+				'attribute' => 'tariffact',
+				'label' => 'Фактичний тариф',
+				'format' => 'raw',
+			],
 			[
 				'attribute' => 'tariffakt',
+
 			],
 			[
 				'attribute' => 'norma',
@@ -124,7 +103,7 @@ use yii\helpers\Url;
 
 			[
 				'class' => '\kartik\grid\ActionColumn',
-				'header'=>'',
+				'header'=>'Складові тарифу',
 				'template' => '{tarinfo}',
 				'buttons' => [
 					'tarinfo' => function ($name, $model) {

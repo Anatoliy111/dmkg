@@ -90,6 +90,40 @@
 			}
 		}
 
+		public function remDir() {
+			$dir = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+            $this->removeDir($dir);
+			if (!is_dir($dir)) {
+				return mkdir($dir);
+			}
+			return true;
+		}
+
+
+
+		private function removeDir($dir) {
+			if (!file_exists($dir)) {
+				return true;
+			}
+
+			if (!is_dir($dir)) {
+				return unlink($dir);
+			}
+
+			foreach (scandir($dir) as $item) {
+				if ($item == '.' || $item == '..') {
+					continue;
+				}
+
+				if (!$this->removeDir($dir . DIRECTORY_SEPARATOR . $item)) {
+					return false;
+				}
+
+			}
+
+			return rmdir($dir);
+		}
+
 		public function uploadFiles()
 		{
 			if ($this->validate()) {
