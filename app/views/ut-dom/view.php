@@ -19,6 +19,7 @@ use yii\widgets\DetailView;
 $ul = $model->getUlica()->one();
 $this->title = $ul->ul.' '.$model->n_dom;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $ul->ul, 'url' => ['index', 'SearchUtDom'=>['id_ulica' => $ul->id]]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
