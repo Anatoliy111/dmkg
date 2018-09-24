@@ -32,12 +32,15 @@ class UtTarif extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $tariffact;
+
     public static function tableName()
     {
         return 'ut_tarif';
     }
 
-    public $tariffact;
+
 
     /**
      * @inheritdoc
@@ -74,7 +77,7 @@ class UtTarif extends \yii\db\ActiveRecord
 			'name' => Yii::t('easyii', 'Nametarif'),
             'tarifplan' => Yii::t('easyii', 'Tarifplan'),
             'tariffakt' => Yii::t('easyii', 'Tariffakt'),
-            'tariffaсt' => Yii::t('easyii', 'Tariffaсt'),
+            'tariffact' => Yii::t('easyii', 'Tariffact'),
             'norma' => Yii::t('easyii', 'Norma'),
             'del' => Yii::t('easyii', 'Del'),
             'podezd' => Yii::t('easyii', 'podezd'),

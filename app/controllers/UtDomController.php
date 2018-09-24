@@ -79,6 +79,7 @@ class UtDomController extends Controller
 
 		$dataProvider = new ActiveDataProvider([
 			'query' => $tarinfo,
+			'sort' => false,
 			'pagination' => [
 				'pageSize' => 40,
 			],
@@ -112,7 +113,7 @@ class UtDomController extends Controller
         if ($Find<>null)
 		{
 		$domtarif1= UtTarif::find();
-		$domtarif1->select('ut_tarif.period,ut_tarif.id_tipposl,ut_tarif.norma,sum(ut_tarif.tariffakt) as tariffakt,ut_tarifplan.tarifplan,ut_tarifplan.tariffact,ut_tarifplan.id as val');
+		$domtarif1->select('ut_tarif.period,ut_tarif.id_tipposl,ut_tarif.norma,sum(ut_tarif.tariffakt) as tariffakt,ut_tarifplan.tarifplan,ut_tarifplan.tariffact as tariffact,ut_tarifplan.id as val');
 //		$domtarif1->select('ut_tarif.period,ut_tarif.id_tipposl,ut_tarifplan.tariffact,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
 		$domtarif1->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 		$domtarif1->where(['ut_tarif.id_dom' => $model->id]);
@@ -140,11 +141,13 @@ class UtDomController extends Controller
 
 		$dPtarif = new ActiveDataProvider([
 			'query' => $domtarif1,
+			'sort' => false,
 		]);
 
 
 		$dPnach= new ActiveDataProvider([
 			'query' => $nachdom,
+			'sort' => false,
 		]);
 
 

@@ -78,8 +78,6 @@ use yii\helpers\Url;
 			],
 			[
 				'attribute' => 'tariffact',
-				'label' => 'Фактичний тариф',
-				'format' => 'raw',
 			],
 			[
 				'attribute' => 'tariffakt',
