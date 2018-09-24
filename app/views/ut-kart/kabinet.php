@@ -1,9 +1,11 @@
 <?php
 
 use app\poslug\components\PeriodKabWidget;
+use app\poslug\models\UtTarif;
 use kartik\builder\Form;
 	use kartik\form\ActiveForm;
-	use kartik\growl\Growl;
+use kartik\grid\GridView;
+use kartik\growl\Growl;
 	use kartik\helpers\Html;
 	use kartik\select2\Select2;
 	use kartik\tabs\TabsX;
@@ -15,6 +17,9 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 	use yii\widgets\Pjax;
 
+        $lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+//        $period = $lastperiod->modify('+1 month');;
+        $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 ?>
 
 	<?php Pjax::begin(); ?>
@@ -177,9 +182,96 @@ use yii\helpers\ArrayHelper;
 
 
 		<div class="col-xs-12">
-
-
+			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
+		</div>
+		<div class="col-xs-12">
 			<div class="col-xs-4">
+			<h4>Борг на початок місяця</h4>
+				<?php
+				if (round($summa,2)<500){
+					?>
+					<div class="summa" style="color: #2e8e5a;">
+						<h3><?= round($summa, 2) ?></h3>
+					</div>
+
+				<?php
+				}
+				if (round($summa,2)>=500 and round($summa,2)<1000){
+					?>
+					<div class="summa" style="color: #a937c9;">
+						<h3><?= round($summa, 2) ?></h3>
+					</div>
+					<?php
+
+				?>
+					<?php
+				}
+				if (round($summa,2)>=1000) {
+					?>
+					<div class="summa" style="color: #c91017;">
+						<h3><?= round($summa, 2) ?></h3>
+					</div>
+					<?php
+				}
+				?>
+			</div>
+			<div class="col-xs-12 .col-sm-6 .col-lg-8">
+					<?php
+					foreach ($abonents as $abon) {
+
+						echo GridView::widget([
+							'dataProvider' =>  $dpobor[$abon->id],
+
+		//				'showPageSummary' => true,
+							'columns' => [
+//								['class' => '\kartik\grid\SerialColumn'],
+								'tipposl',
+								[
+									'attribute' => 'sal',
+									'label'=>'Борг на початок'
+		//									'format'=>['decimal', 2],
+		//									'pageSummary'=>true,
+								],
+								[
+									'attribute' => 'opl',
+									'label' => 'Оплата',
+//										'format'=>['decimal', 2],
+//										'pageSummary'=>true,
+								],
+		//				['class' => 'yii\grid\ActionColumn'],
+							],
+
+							'striped'=>false,
+						'layout'=>"{items}",
+		//					'layout' => $layout,
+							'resizableColumns'=>true,
+//							'hover'=>true,
+							'pjax'=>true,
+							'pjaxSettings'=>[
+								'neverTimeout'=>true,
+
+							],
+							'panel' => [
+//								'after'=>'',
+		//					'footer'=>true,
+
+							],
+
+//							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+							'toolbar'=> [
+		//						'{export}',
+//								'{toggleData}',
+							]
+						]);
+					}
+					?>
+			</div>
+
+
+
+		</div>
+		<div class="col-xs-12">
+			<div class="col-lg-4 .col-sm-4 .col-md-4">
 
 				<?= PeriodKabWidget::widget() ?>
 			</div>

@@ -916,6 +916,13 @@ button#buttperiod{
     margin-bottom: 10px;
 }
 
+.main .ut-kart .summa h3 {
+	margin-top: 12px;
+	/* letter-spacing: .35em; */
+	font-size: 54px;
+
+}
+
 .container-fluid .page-container a.read-more {
 	text-transform: uppercase;
 	/*display: inline-block;*/

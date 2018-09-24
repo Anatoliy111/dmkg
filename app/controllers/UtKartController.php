@@ -203,7 +203,7 @@ class UtKartController extends Controller
 
 
 
-
+        $summa = 0;
 
 			$dpinfo = new ActiveDataProvider([
 				'query' => $abonen,
@@ -220,6 +220,15 @@ class UtKartController extends Controller
 					'query' => $obor,
 				]);
 				$dpobor[$abon->id] = $dataProvider1;
+				//-----------------------------------------------------------------------------
+				$oborsum= UtObor::find();
+				$oborsum->select('sum(ut_obor.sal) as summ');
+//				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+				$oborsum->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
+				$ss = $oborsum->asArray()->all();
+				$summa = $summa + $ss[0]['summ'];
+
 				//-----------------------------------------------------------------------------
 				$opl = UtOpl::find();
 				$opl->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_opl.period'=> $session['periodkab']]);
@@ -313,6 +322,7 @@ class UtKartController extends Controller
 			'dptar' => $dptar,
 			'dpsub' => $dpsub,
 			'dpuder' => $dpuder,
+			'summa' => $summa,
 		]);
 	}
 

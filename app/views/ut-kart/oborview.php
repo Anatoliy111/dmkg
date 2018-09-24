@@ -224,6 +224,7 @@ HTML;
 //						}
 //						return $summ;
 //					},
+					'after'=>'',
 //					'footer'=>true,
 				],
 //		'panelBeforeTemplate' => [
