@@ -873,7 +873,7 @@ button#buttperiod{
     color: #fdf9f9;
 }
 
-.main .ut-kart .table th {
+.main .ut-kart .table thead th {
 	/*margin-top: 18px;*/
 	text-align: center;
 	color: #fdf9f9;
