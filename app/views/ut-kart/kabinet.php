@@ -215,12 +215,12 @@ use yii\helpers\ArrayHelper;
 				}
 				?>
 			</div>
-			<div class="col-xs-12 .col-sm-6 .col-lg-8">
+			<div class="col-lg-8">
 					<?php
 					foreach ($abonents as $abon) {
 
 						echo GridView::widget([
-							'dataProvider' =>  $dpobor[$abon->id],
+							'dataProvider' =>  $dpdolg[$abon->id],
 
 		//				'showPageSummary' => true,
 							'columns' => [
@@ -232,12 +232,12 @@ use yii\helpers\ArrayHelper;
 		//									'format'=>['decimal', 2],
 		//									'pageSummary'=>true,
 								],
-								[
-									'attribute' => 'opl',
-									'label' => 'Оплата',
-//										'format'=>['decimal', 2],
-//										'pageSummary'=>true,
-								],
+//								[
+//									'attribute' => 'opl',
+//									'label' => 'Оплата',
+////										'format'=>['decimal', 2],
+////										'pageSummary'=>true,
+//								],
 		//				['class' => 'yii\grid\ActionColumn'],
 							],
 

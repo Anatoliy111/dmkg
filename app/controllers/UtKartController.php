@@ -213,7 +213,7 @@ class UtKartController extends Controller
 
 				//-----------------------------------------------------------------------------
 				$obor= UtObor::find();
-//				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+//			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
 //				$ff = ArrayHelper::toArray($obor);
 				$dataProvider1 = new ActiveDataProvider([
@@ -221,10 +221,19 @@ class UtKartController extends Controller
 				]);
 				$dpobor[$abon->id] = $dataProvider1;
 				//-----------------------------------------------------------------------------
+				$dolg= UtObor::find();
+//			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+				$dolg->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+//				$ff = ArrayHelper::toArray($obor);
+				$dataProvider11 = new ActiveDataProvider([
+					'query' => $dolg,
+				]);
+				$dpdolg[$abon->id] = $dataProvider11;
+				//-----------------------------------------------------------------------------
 				$oborsum= UtObor::find();
 				$oborsum->select('sum(ut_obor.sal) as summ');
 //				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				$oborsum->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+				$oborsum->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
 				$ss = $oborsum->asArray()->all();
 				$summa = $summa + $ss[0]['summ'];
@@ -322,6 +331,7 @@ class UtKartController extends Controller
 			'dptar' => $dptar,
 			'dpsub' => $dpsub,
 			'dpuder' => $dpuder,
+			'dpdolg' => $dpdolg,
 			'summa' => $summa,
 		]);
 	}
