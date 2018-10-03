@@ -201,7 +201,7 @@ class UtKartController extends Controller
 		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
 
 
-
+		
 
         $summa = 0;
 
