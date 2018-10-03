@@ -235,7 +235,7 @@ class UtKartController extends Controller
 //				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 				$oborsum->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
-//				$ss = $oborsum->asArray()->all();
+				$ss = $oborsum->asArray()->all();
 //				$summa = $summa + $ss[0]['summ'];
 
 				//-----------------------------------------------------------------------------
