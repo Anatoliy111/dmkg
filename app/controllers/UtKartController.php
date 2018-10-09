@@ -232,13 +232,10 @@ class UtKartController extends Controller
 				//-----------------------------------------------------------------------------
 				$oborsum= UtObor::find();
 				$oborsum->select('sum(ut_obor.sal) as summ');
-//				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-//				$oborsum->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
 				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
 				$summa = $summa + $oborsum->asArray()->all()[0]['summ'];
-//				$summa = $summa + $ss[0]['summ'];
 
 				//-----------------------------------------------------------------------------
 				$opl = UtOpl::find();
