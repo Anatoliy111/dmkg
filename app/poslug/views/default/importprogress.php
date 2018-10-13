@@ -126,9 +126,10 @@ $k=0;
 	};
 
 
+//	$process = floor($RowsCount/100)==0 ? 1 : floor($RowsCount/100);
 
-	$process = floor($RowsCount/100)==0 ? 1 : floor($RowsCount/100);
 
+	$process = 100;
 	$_SESSION['RowsCount'] = $RowsCount;
 	$_SESSION['process'] = $process;
 	$_SESSION['NameBase'] = $NameBase;
@@ -140,7 +141,7 @@ $k=0;
 
 }
 else
-	echo ("Error 55555555555555!!!");
+	echo ("Error !!!");
 
 ?>
 

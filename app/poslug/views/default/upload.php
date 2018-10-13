@@ -164,7 +164,7 @@ use yii\base\Event;
         $.ajax({
         url: "importprogress",
         success:function(data,succ,hhh){
-               $('.results').html(data);
+               //$('.results').html(data);
                str = data;
 				if (str.indexOf("Error!!!")<0)
 				{

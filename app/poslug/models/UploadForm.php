@@ -19,7 +19,8 @@
 		/**
 		 * @var UploadedFile
 		 */
-		public static $UPLOADS_DIR = 'uploads/dbf';
+		public static $UPLOADS_DIR = 'uploads/import';
+		public static $arc_DIR = 'uploads/arc';
 
 		public $dbf;
 		public $fields;
