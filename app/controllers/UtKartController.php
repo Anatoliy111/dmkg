@@ -234,8 +234,9 @@ class UtKartController extends Controller
 				$oborsum->select('sum(ut_obor.sal) as summ');
 				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
 				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+//				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> "2018-10-01"]);
 				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
-				$rrr = isset($oborsum->asArray()->all()[0]['summ']) ? $oborsum->asArray()->all()[0]['summ'] : 0;
+				$rrr = is_null($oborsum->asArray()->all()[0]['summ']) ? 0.00 : $oborsum->asArray()->all()[0]['summ'];
 				$summa = $summa + $rrr;
 
 				//-----------------------------------------------------------------------------

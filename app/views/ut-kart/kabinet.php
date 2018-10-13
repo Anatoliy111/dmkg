@@ -191,7 +191,7 @@ use yii\helpers\ArrayHelper;
 				if (round($summa,2)<500){
 					?>
 					<div class="summa" style="color: #2e8e5a;">
-						<h3><?= round($summa, 2) ?></h3>
+						<h3><?= number_format(round($summa, 2), 2, '.', '') ?></h3>
 					</div>
 
 				<?php
@@ -199,7 +199,7 @@ use yii\helpers\ArrayHelper;
 				if (round($summa,2)>=500 and round($summa,2)<1000){
 					?>
 					<div class="summa" style="color: #a937c9;">
-						<h3><?= round($summa, 2) ?></h3>
+						<h3><?= number_format(round($summa, 2), 2, '.', '')  ?></h3>
 					</div>
 					<?php
 
@@ -209,7 +209,7 @@ use yii\helpers\ArrayHelper;
 				if (round($summa,2)>=1000) {
 					?>
 					<div class="summa" style="color: #c91017;">
-						<h3><?= round($summa, 2) ?></h3>
+						<h3><?= number_format(round($summa, 2), 2, '.', '')  ?></h3>
 					</div>
 					<?php
 				}
