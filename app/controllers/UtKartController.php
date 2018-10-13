@@ -170,7 +170,7 @@ class UtKartController extends Controller
 
 		if (Yii::$app->session['periodkab']==null)
 		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
-		if (Yii::$app->session['period']==null)
+//		if (Yii::$app->session['period']==null)
 			Yii::$app->session['period']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 		$model = $this->findModel($id);
