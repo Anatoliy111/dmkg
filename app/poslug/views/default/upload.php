@@ -235,7 +235,9 @@ JS;
 		]);?>
 
 
-	<?=Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success'])?>
+<?=Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success'])?>
+
+<?= Html::a('Імпорт', ['import'], ['class' => 'btn-lg btn-danger']) ?>
 
 
 

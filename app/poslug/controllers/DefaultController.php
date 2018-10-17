@@ -67,14 +67,15 @@ class DefaultController extends Controller
 			if(isset($_FILES['UploadForm']['name']['File']))
 			{
 				$model->File = UploadedFile::getInstance($model, 'File');
-				if ($model->remDir()) {
+//				if ($model->remDir()) {
 					if ($model->uploadFile()) {
-						if ($model->UnZIP($model->File)) {
-							$model->progress = true;
-						}
+						$model->UnZIP($model->File);
+//						if ($model->UnZIP($model->File)) {
+//
+//						}
 						//					return $this->redirect(['upload', 'model' => $model]);
 					}
-				}
+//				}
 				else
 				{
 					Alert::begin(['options' => ['class' => 'alert-warning'],]);
@@ -89,6 +90,14 @@ class DefaultController extends Controller
 
 		}
 
+		return $this->render('upload', ['model' => $model,
+		]);
+	}
+
+	public function actionImport()
+	{
+		$model = new UploadForm();
+		$model->progress = true;
 		return $this->render('upload', ['model' => $model,
 		]);
 	}

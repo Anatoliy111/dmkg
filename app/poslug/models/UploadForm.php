@@ -38,8 +38,8 @@
 		{
 			return [
 //				[['Files'], 'file', 'maxFiles' => 100],
-				[['File'], 'file','skipOnEmpty' => false, 'extensions' => 'ZIP'],
-				[['File'],'validateNameFile1'],
+//				[['File'], 'file','skipOnEmpty' => false, 'extensions' => 'ZIP, dbf '],
+//				[['File'],'validateNameFile1'],
 //				[['Files'], 'file', 'extensions' => 'DBF, dbf'],
 //			    [['File','MonthYear'], 'required'],
 //				[['MonthYear'], 'required'],
