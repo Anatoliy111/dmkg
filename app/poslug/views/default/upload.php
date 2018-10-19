@@ -9,7 +9,8 @@
 
 	use app\poslug\models\UploadForm;
 	use kartik\datecontrol\DateControl;
-	use yii\bootstrap\Html;
+use kartik\grid\GridView;
+use yii\bootstrap\Html;
 //	use yii\helpers\Html;
 //	use yii\;
 	use yii\bootstrap\Progress;
@@ -18,7 +19,8 @@ use yii\easyii\widgets\DateTimePicker;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 	use yii\widgets\ActiveForm;
-	use yii\widgets\Pjax;
+use yii\widgets\ListView;
+use yii\widgets\Pjax;
 use kartik\date\DatePicker;
 use kartik\file\FileInput;
 use yii\bootstrap\Modal;
@@ -236,11 +238,6 @@ JS;
 
 
 <?=Html::submitButton('Завантажити', ['class' => 'btn-lg btn-success'])?>
-
-<?= Html::a('Імпорт', ['import'], ['class' => 'btn-lg btn-danger']) ?>
-
-
-
 <?= Html::resetButton('Очистити',['class' => 'btn-lg btn-primary']) ?>
 
 
@@ -249,7 +246,6 @@ JS;
 
 <br/>
 <br/>
-
 
 <?php
 		foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
@@ -268,5 +264,114 @@ JS;
 <?php ActiveForm::end() ?>
 
 
+<?php
 
+echo GridView::widget([
+	'dataProvider' =>  $provider,
+
+	'columns' => [
+		['class' => '\kartik\grid\SerialColumn'],
+		[
+			'class' => 'kartik\grid\CheckboxColumn',
+			'headerOptions' => ['class' => 'kartik-sheet-style'],
+//			'rowSelectedClass'=>GridView::TYPE_DEFAULT,
+			'checkboxOptions' => function ($model, $key, $index, $column) {
+				if (!substr(strrchr($model, '.'), 1)) {
+//					return Html::a($data, ['/poslug/ut-kart/view', 'id' => 1]);
+//					$column->noWrap = true;
+//					$column->hidden = true;
+//					$column->visible = false;
+////					return ['value' => $model];
+//					return ['hidden'=>'true','rowHighlight'=>'false','rowSelectedClass'=>GridView::TYPE_DEFAULT];
+//					return ['rowSelectedClass'=>GridView::TYPE_SUCCESS];
+//					return ['hidden'=>'true','rowSelectedClass'=>'GridView::TYPE_SUCCESS'];
+//					return ['disabled' => 'true'];
+
+				}
+//				else
+//					return ['checked'=>"checked"];
+
+			}
+		],
+		[
+			'attribute' => 'FileName',
+			'format' => 'raw',
+			'value' => function ($data,$id,$key) {
+                if (!substr(strrchr($data, '.'), 1)) {
+//					return Html::a($data, ['/poslug/ut-kart/view', 'id' => 1]);
+					return Html::a($data, 'upload');
+				}
+				return $data;
+			},
+		],
+
+	],
+//		'layout' => $layout,
+//				'layout'=>"{items}",
+	'resizableColumns'=>true,
+
+//		'pjax'=>false,
+	'striped'=>true,
+	'panel' => [
+//		'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.$this->title.'</h3>',
+		'heading'=>$uploadDir,
+		'type'=>'success',
+//		'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
+//		'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+		'footer'=>false
+	],
+
+	'floatHeaderOptions'=>['scrollingTop'=>'50'],
+
+	'toolbar'=> [
+
+	]
+]);
+
+?>
+
+<?= Html::a('Імпорт', ['import'], ['class' => 'btn-lg btn-success']) ?>
+<?= Html::a('Видалити', ['import'], ['class' => 'btn-lg btn-danger']) ?>
+
+<?php echo Html::a(Yii::t('easyii', 'Delete'), [], [
+	'class' => 'btn btn-danger',
+	'onclick' => "deletefile()",
+    ])
+?>
+
+<?php //echo Html::a(Yii::t('easyii', 'Delete'), ['delete', 'path' => $uploadPath], [
+//	'class' => 'btn btn-danger',
+//	'data' => [
+//		'confirm' => 'Ви впевненні що хочете видалити ці рядки?',
+//		'method' => 'post',
+//	],
+//]) ?>
+
+
+<script type="text/javascript">
+	function deletefile()
+	{
+
+//	     alert("Button 3 clicked");
+//		confirm("Press a button!");
+		var hi= confirm("Ви впевненні що хочете видалити ці рядки?");
+		if (hi== true){
+			alert("hi");
+		}else{
+			alert("Meany!!!");
+		}
+
+//		$.ajax({
+//			url: "/site/saveperioddom",
+//			type: 'post',
+//			data: {	period: per	},
+//			success: function(s) {
+////				alert(s);
+//			}
+//
+//		});
+	}
+
+
+</script>
 

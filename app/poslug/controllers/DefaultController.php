@@ -5,15 +5,15 @@ namespace app\poslug\controllers;
 //use app\models\UploadForm;
 use app\poslug\models\UploadForm;
 
-use app\poslug\models\UtOldkart;
-use app\poslug\models\UtOldorg;
 use Yii;
 use yii\bootstrap\Alert;
 use yii\bootstrap\Progress;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\Session;
+use yii\filters\VerbFilter;
 
 /**
  * Default controller for the `poslug` module
@@ -26,6 +26,19 @@ class DefaultController extends Controller
      */
 //	public $dir;
 //	public $files;
+	public function behaviors()
+	{
+		return [
+			'verbs' => [
+				'class' => VerbFilter::className(),
+				'actions' => [
+					'delete' => ['POST'],
+				],
+			],
+		];
+	}
+
+
 
     public function actionIndex()
     {
@@ -68,29 +81,43 @@ class DefaultController extends Controller
 			{
 				$model->File = UploadedFile::getInstance($model, 'File');
 //				if ($model->remDir()) {
-					if ($model->uploadFile()) {
-						$model->UnZIP($model->File);
+					if (!$model->uploadFile()) {
+//						$model->UnZIP($model->File);
 //						if ($model->UnZIP($model->File)) {
 //
 //						}
 						//					return $this->redirect(['upload', 'model' => $model]);
+						Alert::begin(['options' => ['class' => 'alert-warning'],]);
+
+
+						echo "Невдалося завантажити файл";
+
+						Alert::end();
 					}
 //				}
 				else
 				{
-					Alert::begin(['options' => ['class' => 'alert-warning'],]);
 
-
-					echo "Невдалося очистити папку DBF";
-
-					Alert::end();
 				}
 
 			}
 
 		}
 
+		$uploadDir = $model->uploadDir();
+		$uploadPath = $model->uploadPath();
+		$files = scandir($uploadPath);
+		array_shift($files); // удаляем из массива '.'
+		array_shift($files); // удаляем из массива '..'
+		$provider = new ArrayDataProvider([
+			'allModels' => $files,
+		]);
+
+
 		return $this->render('upload', ['model' => $model,
+			'provider' => $provider,
+			'uploadPath' => $uploadPath,
+			'uploadDir' => $uploadDir,
 		]);
 	}
 
@@ -100,6 +127,13 @@ class DefaultController extends Controller
 		$model->progress = true;
 		return $this->render('upload', ['model' => $model,
 		]);
+	}
+
+	public function actionDelete($path)
+	{
+//		$this->findModel($id)->delete();
+
+		return $this->redirect(['upload']);
 	}
 
 

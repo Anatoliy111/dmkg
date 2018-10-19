@@ -158,6 +158,7 @@ return [
 	'Names' => 'Назва',
 	'Select the poslug...' => 'Виберіть послугу',
 	'Perioddom' => 'Період',
+	'Are you sure you want to delete this item'=>'Ви впевненні що хочете видалити ці рядки?',
 
 
 

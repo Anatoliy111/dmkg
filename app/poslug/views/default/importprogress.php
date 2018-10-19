@@ -49,22 +49,8 @@ use yii\bootstrap\Alert;
 
 
 
-//$NameBase = ['TARPF.DBF','TARINFO.DBF'];
-$ImpBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
-//$ImpBase = ['OPL.DBF','SUBS.DBF'];
-//$NameBase = ['UDER.DBF'];
-//$ImpBase = ['OPL.DBF'];
 
-
-
-//		$NameBase = ['POSLTAR.DBF'];
-//$NameBase = ['TAR.DBF','POSLTAR.DBF'];
-//	$NameBase = [''];
-
-//		$NameBase = ['OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
-
-
-//	$NameBase = ['UL.DBF','ORGAN.DBF','KART.DBF','NTARIF.DBF','POSLTAR.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','UDER.DBF'];
+$ZipBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 $t = false;
 $DirFiles  = $_SESSION['DirFiles'];
@@ -86,16 +72,16 @@ if ($t)
 	$NameBase[0]='';
 $k=0;
 
-	for ($i = 0; $i <= count($ImpBase)-1; $i++)
+	for ($i = 0; $i <= count($ZipBase)-1; $i++)
 	{
-		$filename = $DirFiles.'/'.$ImpBase[$i];
+		$filename = $DirFiles.'/'.$ZipBase[$i];
 
 		if (file_exists($filename)) {
 			$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename $RowsCount");
 			@dbase_pack($dbf);
 
 //		$KartCount = dbase_numrecords($dbf);
-			$NameBase[$k] = $ImpBase[$i];
+			$NameBase[$k] = $ZipBase[$i];
 			$RowsCount = $RowsCount + dbase_numrecords($dbf);
 			switch ($NameBase[$k]) {
 				case 'POSLTAR.DBF':

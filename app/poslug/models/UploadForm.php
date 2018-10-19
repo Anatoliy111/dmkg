@@ -38,7 +38,7 @@
 		{
 			return [
 //				[['Files'], 'file', 'maxFiles' => 100],
-//				[['File'], 'file','skipOnEmpty' => false, 'extensions' => 'ZIP, dbf '],
+//				[['File'], 'file','skipOnEmpty' => false, 'extensions' => 'dbf'],
 //				[['File'],'validateNameFile1'],
 //				[['Files'], 'file', 'extensions' => 'DBF, dbf'],
 //			    [['File','MonthYear'], 'required'],
@@ -78,10 +78,13 @@
 			if ($this->File && $this->validate()) {
 
 				$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+				if (!is_dir($uploadPath)) {
+					mkdir($uploadPath);
+				}
 
 				$this->File->saveAs($uploadPath . $this->File->baseName . '.' . $this->File->extension);
 				$this->File->name = mb_strtolower($this->File->name);
-				Yii::$app->session->setFlash($this->File->name, "Завантажено файл - ".$this->File->name."");
+				Yii::$app->session->addFlash($this->File->name, "Завантажено файл - ".$this->File->name."");
 
 //                $this->ImportDbf($this->File);
 
@@ -90,6 +93,23 @@
 				return false;
 			}
 		}
+
+		public function uploadPath()
+		{
+			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+			if (!is_dir($uploadPath)) {
+				mkdir($uploadPath);
+			}
+			return $uploadPath;
+		}
+
+		public function uploadDir()
+		{
+			$uploadDir = DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+			return $uploadDir;
+		}
+
+
 
 		public function remDir() {
 			$dir = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
