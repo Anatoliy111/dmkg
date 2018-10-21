@@ -273,37 +273,44 @@ echo GridView::widget([
 		['class' => '\kartik\grid\SerialColumn'],
 		[
 			'class' => 'kartik\grid\CheckboxColumn',
-			'headerOptions' => ['class' => 'kartik-sheet-style'],
+//			'headerOptions' => ['class' => 'kartik-sheet-style'],
 //			'rowSelectedClass'=>GridView::TYPE_DEFAULT,
+//			'checkboxOptions' => function ($model, $key, $index, $column) {
+//				if (!substr(strrchr($model, '.'), 1)) {
+////					return Html::a($data, ['/poslug/ut-kart/view', 'id' => 1]);
+////					$column->noWrap = true;
+////					$column->hidden = true;
+////					$column->visible = false;
+//////					return ['value' => $model];
+////					return ['hidden'=>'true','rowHighlight'=>'false','rowSelectedClass'=>GridView::TYPE_DEFAULT];
+////					return ['rowSelectedClass'=>GridView::TYPE_SUCCESS];
+////					return ['hidden'=>'true','rowSelectedClass'=>'GridView::TYPE_SUCCESS'];
+////					return ['disabled' => 'true'];
+//
+//				}
+////				else
+////					return ['checked'=>"checked"];
+//
+//			}
+
 			'checkboxOptions' => function ($model, $key, $index, $column) {
-				if (!substr(strrchr($model, '.'), 1)) {
-//					return Html::a($data, ['/poslug/ut-kart/view', 'id' => 1]);
-//					$column->noWrap = true;
-//					$column->hidden = true;
-//					$column->visible = false;
-////					return ['value' => $model];
-//					return ['hidden'=>'true','rowHighlight'=>'false','rowSelectedClass'=>GridView::TYPE_DEFAULT];
-//					return ['rowSelectedClass'=>GridView::TYPE_SUCCESS];
-//					return ['hidden'=>'true','rowSelectedClass'=>'GridView::TYPE_SUCCESS'];
-//					return ['disabled' => 'true'];
-
-				}
-//				else
-//					return ['checked'=>"checked"];
-
+				return ['value' => $model->id];
 			}
+
 		],
-		[
-			'attribute' => 'FileName',
-			'format' => 'raw',
-			'value' => function ($data,$id,$key) {
-                if (!substr(strrchr($data, '.'), 1)) {
-//					return Html::a($data, ['/poslug/ut-kart/view', 'id' => 1]);
-					return Html::a($data, 'upload');
-				}
-				return $data;
-			},
-		],
+//		[
+//			'attribute' => 'id',
+//			'format' => 'raw',
+//			'value' => function ($data,$id,$key) {
+//                if (!substr(strrchr($data, '.'), 1)) {
+////					return Html::a($data, ['/poslug/ut-kart/view', 'id' => 1]);
+//					return Html::a($data, 'upload');
+//				}
+//				return $data;
+//			},
+//		],
+
+		'id',
 
 	],
 //		'layout' => $layout,
@@ -330,22 +337,18 @@ echo GridView::widget([
 
 ?>
 
-<?= Html::a('Імпорт', ['import'], ['class' => 'btn-lg btn-success']) ?>
-<?= Html::a('Видалити', ['import'], ['class' => 'btn-lg btn-danger']) ?>
+<?php //echo Html::button('Імпорт', [
+//	'class' => 'btn btn-success',
+//	'onclick' => "importfile()",
+//])
+//?>
 
-<?php echo Html::a(Yii::t('easyii', 'Delete'), [], [
+
+<?php echo Html::button(Yii::t('easyii', 'Delete'), [
 	'class' => 'btn btn-danger',
 	'onclick' => "deletefile()",
     ])
 ?>
-
-<?php //echo Html::a(Yii::t('easyii', 'Delete'), ['delete', 'path' => $uploadPath], [
-//	'class' => 'btn btn-danger',
-//	'data' => [
-//		'confirm' => 'Ви впевненні що хочете видалити ці рядки?',
-//		'method' => 'post',
-//	],
-//]) ?>
 
 
 <script type="text/javascript">
@@ -354,23 +357,40 @@ echo GridView::widget([
 
 //	     alert("Button 3 clicked");
 //		confirm("Press a button!");
+		var keys = $('#w0').yiiGridView('getSelectedRows');
 		var hi= confirm("Ви впевненні що хочете видалити ці рядки?");
 		if (hi== true){
-			alert("hi");
-		}else{
-			alert("Meany!!!");
+		$.ajax({
+			url: "/poslug/default/delfile",
+			type: 'post',
+			data: {	key: keys},
+			success: function(s) {
+//				alert(s);
+			}
+
+		});
+//			alert("ttttttttt!!!");
+		}
+		else{
+//			alert("Meany!!!");
 		}
 
-//		$.ajax({
-//			url: "/site/saveperioddom",
-//			type: 'post',
-//			data: {	period: per	},
-//			success: function(s) {
-////				alert(s);
-//			}
-//
-//		});
+
 	}
+
+//	function importfile()
+//	{
+//
+//			$.ajax({
+//				url: "Impfile",
+//				type: 'post',
+//				data: {	period: per	},
+//				success: function(s) {
+////				alert(s);
+//				}
+//
+//
+//	}
 
 
 </script>

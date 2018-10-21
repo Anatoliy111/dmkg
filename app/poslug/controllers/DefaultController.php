@@ -106,11 +106,15 @@ class DefaultController extends Controller
 
 		$uploadDir = $model->uploadDir();
 		$uploadPath = $model->uploadPath();
-		$files = scandir($uploadPath);
+		$array = scandir($uploadPath);
+		for ($i = 0; $i < count($array); $i++) {
+			$files[] = ['id' => $array[$i]];
+		};
 		array_shift($files); // удаляем из массива '.'
 		array_shift($files); // удаляем из массива '..'
 		$provider = new ArrayDataProvider([
 			'allModels' => $files,
+			'key'=>'id',
 		]);
 
 
@@ -147,40 +151,38 @@ class DefaultController extends Controller
 		return $this->render('importdbf');
 	}
 
-
-	public function actionOldkart()
-	{
-		$model = new UtOldkart();
-		$dataProvider = new ActiveDataProvider([
-			'query' => UtOldkart::find(),
-		]);
-
-		return $this->render('grid', [
-			'dataProvider' => $dataProvider,
-			'model' => $model,
-		]);
-	}
-
-
-	public function actionOldorg()
-	{
-		$model = new UtOldorg();
-		$dataProvider = new ActiveDataProvider([
-			'query' => UtOldorg::find(),
-		]);
-
-		return $this->render('grid', [
-			'dataProvider' => $dataProvider,
-			'model' => $model,
-		]);
-	}
-
 	public function actionSaveperiod()
 	{
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
 			Yii::$app->session['periodoblik']=$data['period'];
+		}
+
+
+
+	}
+
+	public function actionImpfile()
+	{
+//		Yii::$app->request->Ajax
+		if(\Yii::$app->request->isAjax){
+			$data = Yii::$app->request->post();
+//			Yii::$app->session['perioddom']=$data['period'];
+
+		}
+
+
+
+	}
+
+	public function actionDelfile()
+	{
+//		Yii::$app->request->Ajax
+		if(\Yii::$app->request->isAjax){
+			$data = Yii::$app->request->post();
+//			Yii::$app->session['perioddom']=$data['period'];
+
 		}
 
 
