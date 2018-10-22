@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\Session;
 use yii\filters\VerbFilter;
+use ZipArchive;
 
 /**
  * Default controller for the `poslug` module
@@ -106,6 +107,7 @@ class DefaultController extends Controller
 
 		$uploadDir = $model->uploadDir();
 		$uploadPath = $model->uploadPath();
+		$_SESSION['uploadPath'] = $uploadPath;
 		$array = scandir($uploadPath);
 		for ($i = 0; $i < count($array); $i++) {
 			$files[] = ['id' => $array[$i]];
@@ -168,7 +170,42 @@ class DefaultController extends Controller
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
-//			Yii::$app->session['perioddom']=$data['period'];
+			$uploadPath=$_SESSION['uploadPath'];
+			$datafiles = array();
+			foreach ($data['keys'] as $file) {
+				if (is_dir($uploadPath.$file."/"))
+				{
+//					$datafiles["$uploadPath/$file"] = array();
+					$files = array_diff(scandir("$uploadPath/$file"), array('.','..'));
+					foreach ($files as $file1) {
+						if (mb_strtolower(substr(strrchr($file1, '.'), 1))=="dbf")
+						  $datafiles[$uploadPath.$file."/"][] = $file1;
+					}
+				}
+				else
+					if (mb_strtolower(substr(strrchr($file, '.'), 1))=="dbf")
+					    $datafiles[$uploadPath][] = $file;
+      				if (mb_strtolower(substr(strrchr($file, '.'), 1))=="zip") {
+//			$zip = new PclZip("arch.zip");
+						$zip = new ZipArchive();
+						$filename = $file;
+						$dirname = mb_strtolower(substr($file,0,strpos($file, '.')));
+//						$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+						$res = $zip->open($uploadPath . $filename);
+						if ($res === TRUE) {
+							$zip->extractTo($uploadPath . $dirname);
+							$zip->close();
+							$files = array_diff(scandir($uploadPath . $dirname), array('.', '..'));
+							foreach ($files as $file1) {
+								if (mb_strtolower(substr(strrchr($file1, '.'), 1)) == "dbf")
+									$datafiles[$uploadPath . $dirname . "/"][] = $file1;
+							}
+						}
+					}
+
+			}
+			$_SESSION['DirFiles'] = $datafiles;
+			return $this->redirect(['upload']);
 
 		}
 
@@ -181,12 +218,23 @@ class DefaultController extends Controller
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
-//			Yii::$app->session['perioddom']=$data['period'];
+			$uploadPath=$_SESSION['uploadPath'];
+			foreach ($data['keys'] as $file) {
+				is_dir("$uploadPath/$file") ? $this->delFolder("$uploadPath/$file") : unlink("$uploadPath/$file");
+			}
 
 		}
 
+		return $this->redirect(['upload']);
+	}
 
-
+	function delFolder($dir)
+	{
+		$files = array_diff(scandir($dir), array('.','..'));
+		foreach ($files as $file) {
+			(is_dir("$dir/$file")) ? $this->delFolder("$dir/$file") : unlink("$dir/$file");
+		}
+		return rmdir($dir);
 	}
 
 

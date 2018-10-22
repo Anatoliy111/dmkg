@@ -267,6 +267,7 @@ JS;
 <?php
 
 echo GridView::widget([
+	'id'=>'gridfile',
 	'dataProvider' =>  $provider,
 
 	'columns' => [
@@ -337,11 +338,11 @@ echo GridView::widget([
 
 ?>
 
-<?php //echo Html::button('Імпорт', [
-//	'class' => 'btn btn-success',
-//	'onclick' => "importfile()",
-//])
-//?>
+<?php echo Html::button('Імпорт', [
+	'class' => 'btn btn-success',
+	'onclick' => "importfile()",
+])
+?>
 
 
 <?php echo Html::button(Yii::t('easyii', 'Delete'), [
@@ -357,13 +358,13 @@ echo GridView::widget([
 
 //	     alert("Button 3 clicked");
 //		confirm("Press a button!");
-		var keys = $('#w0').yiiGridView('getSelectedRows');
-		var hi= confirm("Ви впевненні що хочете видалити ці рядки?");
+		var keys = $('#gridfile').yiiGridView('getSelectedRows');
+		var hi= confirm("Ви впевненні що хочете видалити ці файли?");
 		if (hi== true){
 		$.ajax({
 			url: "/poslug/default/delfile",
 			type: 'post',
-			data: {	key: keys},
+			data: {keys},
 			success: function(s) {
 //				alert(s);
 			}
@@ -378,19 +379,20 @@ echo GridView::widget([
 
 	}
 
-//	function importfile()
-//	{
-//
-//			$.ajax({
-//				url: "Impfile",
-//				type: 'post',
-//				data: {	period: per	},
-//				success: function(s) {
-////				alert(s);
-//				}
-//
-//
-//	}
+	function importfile()
+	{
+		var keys = $('#gridfile').yiiGridView('getSelectedRows');
+			$.ajax({
+				url: "/poslug/default/impfile",
+				type: 'post',
+				data: {keys},
+				success: function(s) {
+//				alert(s);
+				}
+
+
+			});
+	}
 
 
 </script>
