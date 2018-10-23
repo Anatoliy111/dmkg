@@ -388,6 +388,7 @@ echo GridView::widget([
 				data: {keys},
 				success: function(s) {
 //				alert(s);
+					$('.Modalprogress7').show();
 				}
 
 

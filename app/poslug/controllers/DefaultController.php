@@ -168,6 +168,7 @@ class DefaultController extends Controller
 	public function actionImpfile()
 	{
 //		Yii::$app->request->Ajax
+		$model = new UploadForm();
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
 			$uploadPath=$_SESSION['uploadPath'];
@@ -205,11 +206,12 @@ class DefaultController extends Controller
 
 			}
 			$_SESSION['DirFiles'] = $datafiles;
-			return $this->redirect(['upload']);
+//			$this->registerJs('Import()',\yii\web\View::POS_READY);
+//			return $this->redirect(['upload']);
 
 		}
 
-
+    return true;
 
 	}
 
@@ -236,7 +238,6 @@ class DefaultController extends Controller
 		}
 		return rmdir($dir);
 	}
-
 
 
 
