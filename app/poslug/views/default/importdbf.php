@@ -772,7 +772,7 @@ function importTR($dbf,$i,$Base)
 			if ($FindUL == null) {
 				$FindUL = UtUlica::findOne(['kl' => $fields['KL_UL']]);
 				if ($FindUL == null) {
-					Flash($Base, null, 'нема вулиці ' . trim(iconv('CP1251','utf-8',$fields['UL'])));
+					Flash($Base, null, 'нема вулиці ' . trim(iconv('CP866','utf-8',$fields['UL'])));
 				}
 				else{
 					$FindUL->id_impul = $fields['ID_UL'];
@@ -781,7 +781,7 @@ function importTR($dbf,$i,$Base)
 				
 			}
 			if ($FindUL != null)
-				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['DOM'])),'id_ulica' => $FindUL->id]);
+				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP866','utf-8',$fields['DOM'])),'id_ulica' => $FindUL->id]);
 		}
 		if ($FindDom != null) {
 			if ($FindDom->id_impdom == null){
@@ -810,7 +810,7 @@ function importTR($dbf,$i,$Base)
 			return true;
 		}
 		else {
-			Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['DOM'])));
+			Flash($Base, null, 'нема будинку ' . trim(iconv('CP866','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP866','utf-8',$fields['DOM'])));
 		}
 	}
 	return true;
@@ -829,21 +829,21 @@ function importIN($dbf,$i,$Base)
 		if ($FindDom == null) {
 			$FindUL = UtUlica::findOne(['id_impul' => $fields['ID_UL']]);
 			if ($FindUL == null) {
-					Flash($Base, null, 'нема вулиці ' . trim(iconv('CP1251','utf-8',$fields['UL'])));
+					Flash($Base, null, 'нема вулиці ' . trim(iconv('CP866','utf-8',$fields['UL'])));
 			}
 			if ($FindUL != null)
-				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['DOM'])),'id_ulica' => $FindUL->id]);
+				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP866','utf-8',$fields['DOM'])),'id_ulica' => $FindUL->id]);
 		}
             if ($FindDom <> null) {
                 $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $GLOBALS["period"], 'id_tipposl' => $FindTipPosl->id]);
                 if ($FindTarifPlan == null) {
-                    Flash($Base, null, 'План не найден ' . trim(iconv('CP1251','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['DOM'])));
+                    Flash($Base, null, 'План не найден ' . trim(iconv('CP866','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP866','utf-8',$fields['DOM'])));
                 } else {
                     $FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SER']]);
                     if ($FindTarifvid == null) {
                         $Tarifvid = new UtTarifvid();
                         $Tarifvid->id_tipposl = $FindTipPosl->id;
-                        $Tarifvid->name = trim(iconv('CP1251', 'utf-8', $fields['NAME']));
+                        $Tarifvid->name = trim(iconv('CP866', 'utf-8', $fields['NAME']));
 						$Tarifvid->code_servi = $fields['CODE_SER'];
                         if ($Tarifvid->validate()) {
                             $Tarifvid->save();
@@ -876,7 +876,7 @@ function importIN($dbf,$i,$Base)
                 }
 
             } else
-				Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['DOM'])));
+				Flash($Base, null, 'нема будинку ' . trim(iconv('CP866','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP866','utf-8',$fields['DOM'])));
 
         }
         return true;
