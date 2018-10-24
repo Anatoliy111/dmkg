@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property int $kl
  * @property int $val
+ * @property int $id_impul ключ з програми по тарифам
  * @property string $ul вулиця
  * @property string $st_ul стара вулиця
  *
@@ -37,7 +38,7 @@ class UtUlica extends \yii\db\ActiveRecord
     {
         return [
             [['ul'], 'required'],
-			[['kl','val'], 'integer'],
+			[['kl','val','id_impul'], 'integer'],
             [['ul', 'st_ul'], 'string', 'max' => 64],
         ];
     }

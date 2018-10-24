@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $n_dom номер будинку
  * @property int $id_ulica вулиця
+ * @property int $id_impdom ключ з програми по тарифам
  * @property int $id_house дом из softproekt
  * @property string $note нотатки
  * @property string $image фото
@@ -36,7 +37,7 @@ class UtDom extends \yii\db\ActiveRecord
     {
         return [
             [['n_dom', 'id_ulica'], 'required'],
-            [['id_ulica','id_house'], 'integer'],
+            [['id_ulica','id_house','id_impdom'], 'integer'],
             [['note','image'], 'string'],
             [['n_dom'], 'string', 'max' => 11],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],

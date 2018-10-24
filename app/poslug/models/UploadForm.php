@@ -96,7 +96,7 @@
 
 		public function uploadPath()
 		{
-			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
+			$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR;
 			if (!is_dir($uploadPath)) {
 				mkdir($uploadPath);
 			}

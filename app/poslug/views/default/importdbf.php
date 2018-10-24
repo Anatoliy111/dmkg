@@ -10,7 +10,6 @@
 	use app\poslug\models\UtDom;
 use app\poslug\models\UtDominfo;
 use app\poslug\models\UtKart;
-use app\poslug\models\UtKortarif;
 use app\poslug\models\UtNarah;
 	use app\poslug\models\UtObor;
 	use app\poslug\models\UtOpl;
@@ -33,6 +32,7 @@ use yii\bootstrap\Modal;
 	use yii\bootstrap\Progress;
 	use yii\helpers\Html;
 
+global $period;
 
 
 	//	$_SESSION['RowsCount'] = $RowsCount;
@@ -96,7 +96,7 @@ use yii\bootstrap\Modal;
 	$nomrec = $_SESSION['NomRec'];
 	$nombase = $_SESSION['NomBase'];
 	$start = 0;
-	$endbase = count($_SESSION['NameBase'])-1;
+	$endbase = $_SESSION['countBase'];
 	//newmes();
 
 
@@ -111,9 +111,12 @@ $t = true;
 
 		$Base = $_SESSION['NameBase'][$nombase];
 		echo($Base);
-		if ($Base==null)
+		if ($Base==null){
+			$nombase = $nombase + 1;
 			break;
-		$filename = $_SESSION['DirFiles'].'/'.$Base;
+		}
+
+		$filename = key($Base).'/'.current($Base);
         if (!file_exists($filename)) {
 			$nombase = $nombase + 1;
 			break;
@@ -121,6 +124,31 @@ $t = true;
 	    $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
 	    @dbase_pack($dbf);
 	     $rowsCount = dbase_numrecords($dbf);
+		$GLOBALS["period"]="";
+		$fname = '';
+		$dirname = mb_strtolower(substr(strrchr(key($Base), '/'), -6));
+		if (intval($dirname)>201801){
+			$GLOBALS["period"] = date('Y-m-d',strtotime(substr($name,0,4).'-'.substr($name,4,2).'-01'));
+			$fname = current($Base);
+		}
+		else{
+
+			$datename = '';
+			if ($dirname=='import'){
+				$datename = mb_strtolower(substr(current($Base), 0,6));
+				if (intval($datename)>201801){
+					$GLOBALS["period"] = date('Y-m-d',strtotime(substr($datename,0,4).'-'.substr($datename,4,2).'-01'));
+					$fname = mb_strtoupper(substr(current($Base), 6));
+				}
+			}
+		}
+
+		if ($GLOBALS["period"]==""){
+			$nombase = $nombase + 1;
+			break;
+		}
+
+
 //		if ($_SESSION['Progress']>=1000 and $nombase==$endbase)
 //		{
 //			$process = $rowsCount-$nomrec;
@@ -129,14 +157,14 @@ $t = true;
 //	     if ($countRec>$_SESSION['process'])
 //		  $process=$_SESSION['NomRec']+$_SESSION['process'];
 //	     else $process=$rowsCount;
-		$functionname = 'import'.strstr($Base, '.', true);
+		$functionname = 'import'.strstr($fname, '.', true);
 
 		if (function_exists($functionname)) {
 
 			for ($i = $start+1; $i <= $process; $i++)
 			{
 				$nomrec = $nomrec +1;
-				if (!$functionname($dbf,$nomrec,$Base))
+				if (!$functionname($dbf,$nomrec,current($Base)))
 					  Yii::$app->session->AddFlash('alert-danger', 'Return to false '.$functionname);
 //				      die("Error!!!  Return to false $functionname");
 
@@ -625,7 +653,7 @@ function importPokaz($fields,$modelAb,$st)
 					else
 						return true;
 				}
-				$FindTarif = UtTarif::findOne(['id_dom' => $FindKart->id_dom,'period' => $_SESSION['PeriodBase'],'kl' => $fields['KL_NTAR']]);
+				$FindTarif = UtTarif::findOne(['id_dom' => $FindKart->id_dom,'period' => $GLOBALS["period"],'kl' => $fields['KL_NTAR']]);
 				if ($FindTarif == null)
 				{
 					$model = new UtTarif();
@@ -633,7 +661,7 @@ function importPokaz($fields,$modelAb,$st)
 					$model->id_tipposl = $FindTipPosl->id;
 					$model->id_vidpokaz = $FindTipPosl->id_vidpokaz;
 					$model->id_dom = $FindKart->id_dom;
-					$model->period = $_SESSION['PeriodBase'];
+					$model->period = $GLOBALS["period"];
 					$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 					$model->kl = $fields['KL_NTAR'];
 					$model->tariffakt = $fields['TARIF'];
@@ -652,7 +680,7 @@ function importPokaz($fields,$modelAb,$st)
 						$Tarifab = new UtTarifab();
 						$Tarifab->id_org = 1;
 						$Tarifab->id_abonent = $FindAbon->id;
-						$Tarifab->period = $_SESSION['PeriodBase'];
+						$Tarifab->period = $GLOBALS["period"];
 						$Tarifab->id_tarif = $model->id;
 						$Tarifab->sumtarif = $fields['SUMTARIF'];
 						$Tarifab->kortarif = $fields['KORTARIF'];
@@ -682,7 +710,7 @@ function importPokaz($fields,$modelAb,$st)
 					$Tarifab = new UtTarifab();
 					$Tarifab->id_org = 1;
 					$Tarifab->id_abonent = $FindAbon->id;
-					$Tarifab->period = $_SESSION['PeriodBase'];
+					$Tarifab->period = $GLOBALS["period"];
 					$Tarifab->id_tarif = $FindTarif->id;
 					$Tarifab->sumtarif = $fields['SUMTARIF'];
 					$Tarifab->kortarif = $fields['KORTARIF'];
@@ -728,7 +756,7 @@ function importPokaz($fields,$modelAb,$st)
 		return true;
 	}
 
-function importTARPF($dbf,$i,$Base)
+function importTR($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
 	if ($fields['deleted'] <> 1)
@@ -738,29 +766,41 @@ function importTARPF($dbf,$i,$Base)
 		{
 			Flash($Base,null,'нема послуги '.$fields['WID']);
 		}
-		$FindDom = UtDom::findOne(['id_house' => $fields['ID_HOUSE']]);
+		$FindDom = UtDom::findOne(['id_impdom' => $fields['ID_DOM']]);
 		if ($FindDom == null) {
-			$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
+			$FindUL = UtUlica::findOne(['id_impul' => $fields['ID_UL']]);
 			if ($FindUL == null) {
-				Flash($Base, null, 'нема вулиці ' . $fields['ID_STREET']);
+				$FindUL = UtUlica::findOne(['kl' => $fields['KL_UL']]);
+				if ($FindUL == null) {
+					Flash($Base, null, 'нема вулиці ' . trim(iconv('CP1251','utf-8',$fields['UL'])));
+				}
+				else{
+					$FindUL->id_impul = $fields['ID_UL'];
+					$FindUL->save();
+				}
+				
 			}
-			else
-				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
+			if ($FindUL != null)
+				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['DOM'])),'id_ulica' => $FindUL->id]);
 		}
-		if ($FindDom <> null) {
+		if ($FindDom != null) {
+			if ($FindDom->id_impdom == null){
+				$FindDom->id_impdom=$fields['ID_DOM'];
+				$FindDom->save();
+			}
 			if ($FindDom->id_house == 0)
 			{
 				$FindDom->id_house = $fields['ID_HOUSE'];
 				$FindDom->save();
 			}
-			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
-			if ($FindTarifPlan == null) {
+			$FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $GLOBALS["period"], 'id_tipposl' => $FindTipPosl->id]);
+			if ($FindTarifPlan == null && $fields['PLAN']<>0) {
 				$model = new UtTarifplan();
 				$model->id_tipposl = $FindTipPosl->id;
 				$model->id_vidpokaz = $FindTipPosl->id_vidpokaz;
 				$model->id_dom = $FindDom->id;
-				$model->period = $_SESSION['PeriodBase'];
-				$model->tarifplan = $fields['NORM'];
+				$model->period = $GLOBALS["period"];
+				$model->tarifplan = $fields['PLAN'];
 				$model->tariffact = $fields['FACT'];
 				if ($model->validate()) {
 					$model->save();
@@ -770,13 +810,13 @@ function importTARPF($dbf,$i,$Base)
 			return true;
 		}
 		else {
-			Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['STREET'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+			Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['DOM'])));
 		}
 	}
 	return true;
 }
 
-function importTARINFO($dbf,$i,$Base)
+function importIN($dbf,$i,$Base)
 {
     $fields = dbase_get_record_with_names($dbf, $i);
     if ($fields['deleted'] <> 1) {
@@ -785,26 +825,26 @@ function importTARINFO($dbf,$i,$Base)
 		{
 			Flash($Base,null,'нема послуги '.$fields['WID']);
 		}
-		$FindDom = UtDom::findOne(['id_house' => $fields['ID_HOUSE']]);
+		$FindDom = UtDom::findOne(['id_impdom' => $fields['ID_DOM']]);
 		if ($FindDom == null) {
-			$FindUL = UtUlica::findOne(['id_street' => $fields['ID_STREET']]);
+			$FindUL = UtUlica::findOne(['id_impul' => $fields['ID_UL']]);
 			if ($FindUL == null) {
-				Flash($Base, null, 'нема вулиці ' . $fields['ID_STREET']);
+					Flash($Base, null, 'нема вулиці ' . trim(iconv('CP1251','utf-8',$fields['UL'])));
 			}
-			else
-				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['N_BUD'])),'id_ulica' => $FindUL->id]);
+			if ($FindUL != null)
+				$FindDom = UtDom::findOne(['n_dom' => trim(iconv('CP1251','utf-8',$fields['DOM'])),'id_ulica' => $FindUL->id]);
 		}
             if ($FindDom <> null) {
-                $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $_SESSION['PeriodBase'], 'id_tipposl' => $FindTipPosl->id]);
+                $FindTarifPlan = UtTarifplan::findOne(['id_dom' => $FindDom->id, 'period' => $GLOBALS["period"], 'id_tipposl' => $FindTipPosl->id]);
                 if ($FindTarifPlan == null) {
-                    Flash($Base, null, 'План не найден ' . trim(iconv('CP1251','utf-8',$fields['STREET'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+                    Flash($Base, null, 'План не найден ' . trim(iconv('CP1251','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['DOM'])));
                 } else {
-                    $FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SERVI']]);
+                    $FindTarifvid = UtTarifvid::findOne(['id_tipposl' => $FindTipPosl->id, 'code_servi' => $fields['CODE_SER']]);
                     if ($FindTarifvid == null) {
                         $Tarifvid = new UtTarifvid();
                         $Tarifvid->id_tipposl = $FindTipPosl->id;
-                        $Tarifvid->name = trim(iconv('CP1251', 'utf-8', $fields['POLNAME']));
-						$Tarifvid->code_servi = $fields['CODE_SERVI'];
+                        $Tarifvid->name = trim(iconv('CP1251', 'utf-8', $fields['NAME']));
+						$Tarifvid->code_servi = $fields['CODE_SER'];
                         if ($Tarifvid->validate()) {
                             $Tarifvid->save();
                             $FindTarifvid = $Tarifvid;
@@ -816,14 +856,14 @@ function importTARINFO($dbf,$i,$Base)
                         $Tarifinfo = new UtTarifinfo();
                         $Tarifinfo->id_tarifplan = $FindTarifPlan->id;
                         $Tarifinfo->id_tarifvid = $FindTarifvid->id;
-                        $Tarifinfo->tarifplan = $fields['NORM'];
+                        $Tarifinfo->tarifplan = $fields['PLAN'];
                         $Tarifinfo->tariffact = $fields['FACT'];
                         if ($Tarifinfo->validate()) {
                             $Tarifinfo->save();
                             return true;
                         }
                     } else {
-                        $FindTarifinfo->tarifplan = $fields['NORM'];
+                        $FindTarifinfo->tarifplan = $fields['PLAN'];
                         $FindTarifinfo->tariffact = $fields['FACT'];
                         if ($FindTarifinfo->validate()) {
                             $FindTarifinfo->save();
@@ -836,7 +876,7 @@ function importTARINFO($dbf,$i,$Base)
                 }
 
             } else
-				Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['STREET'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['N_BUD'])));
+				Flash($Base, null, 'нема будинку ' . trim(iconv('CP1251','utf-8',$fields['UL'])) . ' ' . trim(iconv('CP1251','utf-8',$fields['DOM'])));
 
         }
         return true;
@@ -857,7 +897,7 @@ function importTARINFO($dbf,$i,$Base)
                 $narah = new UtNarah();
 
                 $narah->id_org = 1;
-                $narah->period = $_SESSION['PeriodBase'];
+                $narah->period = $GLOBALS["period"];
                 $narah->id_abonent = $FindAbon->id;
                 $narah->id_posl = $FindPosl->id;
                 $narah->id_tipposl = $FindTipPosl->id;
@@ -947,7 +987,7 @@ function importTARINFO($dbf,$i,$Base)
         $obor = new UtObor();
 
         $obor->id_org = 1;
-        $obor->period = $_SESSION['PeriodBase'];
+        $obor->period = $GLOBALS["period"];
         $obor->id_abonent = $findposl->id_abonent;
         $obor->id_posl = $findposl->id;
         $obor->tipposl = $findposl->getTipposl()->asArray()->one()['poslug'];
@@ -983,7 +1023,7 @@ function importTARINFO($dbf,$i,$Base)
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
                 $abon = UtAbonent::findOne(['schet' => $schet]);
-                if ($abon <> null and $_SESSION['PeriodBase'] = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . '01'))) {
+                if ($abon <> null and $GLOBALS["period"] = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . '01'))) {
 
                     foreach ($fields as $k => $v) {
                         if ($v <> 0) {
@@ -1050,7 +1090,7 @@ function importTARINFO($dbf,$i,$Base)
         $narah = new UtOpl();
 
         $narah->id_org = 1;
-        $narah->period = $_SESSION['PeriodBase'];
+        $narah->period = $GLOBALS["period"];
         $narah->id_abonent = $findposl->id_abonent;
         $narah->id_posl = $findposl->id;
         $narah->id_tipposl = $findposl->id_tipposl;
@@ -1160,14 +1200,14 @@ function importTARINFO($dbf,$i,$Base)
         $narah = new UtSubs();
 
         $narah->id_org = 1;
-        $narah->period = $_SESSION['PeriodBase'];
+        $narah->period = $GLOBALS["period"];
         $narah->id_abonent = $findposl->id_abonent;
         $narah->id_tipposl = $findposl->id_tipposl;
         $narah->tipposl = $tipposl->poslug;
         $narah->sum_ob = $sum_ob;
-//		$oborsubs = UtObor::findOne(['id_abonent' => $findposl->id_abonent,'period'=> $_SESSION['PeriodBase']]);
+//		$oborsubs = UtObor::findOne(['id_abonent' => $findposl->id_abonent,'period'=> $GLOBALS["period"]]);
 		$oborsubs = UtObor::find();
-		$oborsubs->joinWith('posl')->where(['ut_posl.id_tipposl' => $findposl->id_tipposl,'ut_obor.id_abonent' => $findposl->id_abonent,'ut_obor.period'=> $_SESSION['PeriodBase']]);
+		$oborsubs->joinWith('posl')->where(['ut_posl.id_tipposl' => $findposl->id_tipposl,'ut_obor.id_abonent' => $findposl->id_abonent,'ut_obor.period'=> $GLOBALS["period"]]);
 		$res = $oborsubs->one();
 		if ($res<>null)
             $narah->sum = $res->subs;
@@ -1273,7 +1313,7 @@ function importTARINFO($dbf,$i,$Base)
         $utrim = new UtUtrim();
 
         $utrim->id_org = 1;
-        $utrim->period = $_SESSION['PeriodBase'];
+        $utrim->period = $GLOBALS["period"];
         $utrim->id_abonent = $findposl->id_abonent;
         $utrim->id_tipposl = $findposl->id_tipposl;
         $utrim->tipposl = $tipposl->poslug;

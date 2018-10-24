@@ -174,32 +174,48 @@ class DefaultController extends Controller
 			$uploadPath=$_SESSION['uploadPath'];
 			$datafiles = array();
 			foreach ($data['keys'] as $file) {
-				if (is_dir($uploadPath.$file."/"))
+				if (is_dir($uploadPath."/".$file))
 				{
 //					$datafiles["$uploadPath/$file"] = array();
 					$files = array_diff(scandir("$uploadPath/$file"), array('.','..'));
 					foreach ($files as $file1) {
-						if (mb_strtolower(substr(strrchr($file1, '.'), 1))=="dbf")
-						  $datafiles[$uploadPath.$file."/"][] = $file1;
+						if (mb_strtolower(substr(strrchr($file1, '.'), 1))=="dbf"){
+							if (file_exists("$uploadPath/$file/$file1"))
+							   $datafiles[$uploadPath."/".$file][] = $file1;
+							else{
+								exit;
+							}
+
+						}
 					}
 				}
 				else
-					if (mb_strtolower(substr(strrchr($file, '.'), 1))=="dbf")
-					    $datafiles[$uploadPath][] = $file;
+					if (mb_strtolower(substr(strrchr($file, '.'), 1))=="dbf"){
+						if (file_exists($uploadPath."/".$file))
+							$datafiles[$uploadPath][] = $file;
+						else{
+							exit;
+						}
+
+					}
       				if (mb_strtolower(substr(strrchr($file, '.'), 1))=="zip") {
 //			$zip = new PclZip("arch.zip");
 						$zip = new ZipArchive();
 						$filename = $file;
 						$dirname = mb_strtolower(substr($file,0,strpos($file, '.')));
 //						$uploadPath = Yii::getAlias('@webroot').DIRECTORY_SEPARATOR.self::$UPLOADS_DIR.DIRECTORY_SEPARATOR;
-						$res = $zip->open($uploadPath . $filename);
+						$res = $zip->open($uploadPath ."/". $filename);
 						if ($res === TRUE) {
-							$zip->extractTo($uploadPath . $dirname);
+							$zip->extractTo($uploadPath ."/". $dirname);
 							$zip->close();
-							$files = array_diff(scandir($uploadPath . $dirname), array('.', '..'));
+							$files = array_diff(scandir($uploadPath ."/". $dirname), array('.', '..'));
 							foreach ($files as $file1) {
 								if (mb_strtolower(substr(strrchr($file1, '.'), 1)) == "dbf")
-									$datafiles[$uploadPath . $dirname . "/"][] = $file1;
+									if (file_exists($uploadPath ."/". $dirname . "/".$file1))
+									$datafiles[$uploadPath ."/". $dirname][] = $file1;
+									else{
+										exit;
+									}
 							}
 						}
 					}

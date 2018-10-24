@@ -77,107 +77,39 @@ jQuery(document).on('ready', function() {
 //
 //});
 
-function Import () {
-
-    $(function ($){
-        //var win = $('#Modalprogress7');
-        //var url = "'.Url::toRoute('default/upload').'";
-        //$('#Modalprogress7').modal({backdrop: false});
-        //$.ajax({url: "importprogress"});
-        $('.Modalprogress7').show();
-        $('.Modalprogress7').modal({backdrop: false});
-        percent = 0;
-        formclose = 0;
-        $.ajax({
-            url: "importprogress",
-            success:function(data,succ,hhh){
-                //$('.results').html(data);
-                str = data;
-                if (str.indexOf("Error!!!")<0)
-                {
-                    refreshProgress(percent=1,formclose);
-                }
-                else
-                    closeImport(str);
-            }
-        });
-
-
-        //timer = window.setInterval(refreshProgress, 1000);
-        //refreshProgress(percent);
-    });
-
-
+//function Import () {
+//
+//    $(function ($){
+//        //var win = $('#Modalprogress7');
+//        //var url = "'.Url::toRoute('default/upload').'";
+//        //$('#Modalprogress7').modal({backdrop: false});
+//        //$.ajax({url: "importprogress"});
+//        $('.Modalprogress7').show();
+//        $('.Modalprogress7').modal({backdrop: false});
+//        percent = 0;
+//        formclose = 0;
+//        $.ajax({
+//            url: "importprogress",
+//            success:function(data,succ,hhh){
+//                //$('.results').html(data);
+//                str = data;
+//                if (str.indexOf("Error!!!")<0)
+//                {
+//                    refreshProgress(percent=1,formclose);
+//                }
+//                else
+//                    closeImport(str);
+//            }
+//        });
+//
+//
+//        //timer = window.setInterval(refreshProgress, 1000);
+//        //refreshProgress(percent);
+//    });
 
 
-    function refreshProgress(percent,formclose) {
-        $.ajax({
-            url: "importdbf",
-            success:function(data,succ,hhh){
-                $('.results').html(percent);
-                str = data;
-                if (str.indexOf("Error!!!")>=0)
-                    formclose = closeImport(str);
-                if (str.indexOf("End import!!!")>=0)
-                    formclose = 1;
-                percent = percent + 1;
-                $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1000" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
-                //$("#message").html(data.message);
-                $("#mess").html("<p>" + percent + "</p>");
-                // If the process is completed, we should stop the checking process.
-
-                if($('#Modalprogress7').is(':visible')){
-                    if (formclose == 1) {
-                        $("#mess").html("<p>" + percent + "</p>");
-                        //window.clearInterval(timer);
-                        //timer = window.setInterval(completed, 1000);
-                        //$('#Modalprogress7').modal('close');
-                        //$('#Modalprogress7').removeClass('show');
 
 
-                        $("#Modalprogress7").modal('hide');
-
-                        //$('#Modalprogress7').modal({show: false});
-                        //$('#Modalprogress7').remove();
-
-                        alert("Импорт завершен");
-                        window.location.href = url;
-                        //location.replace();
-                    }
-                    else {
-                        refreshProgress(percent,formclose);
-                    }
-                    //      alert("Вы почему окно закрыли, а?");
-                    //window.clearInterval(timer);
-                    //timer = window.setInterval(completed, 1000);
-                }
-                else{
-                    alert("Импорт прерван");
-                    window.clearInterval(timer);
-                }
-
-
-            }
-        });
-    }
-
-    function completed() {
-        $("#message").html("Completed");
-        window.clearInterval(timer);
-    }
-
-    function closeImport(str) {
-
-        $("#Modalprogress7").modal('hide');
-
-        alert("Импорт прерван ");
-        window.clearInterval(timer);
-        return 1;
-
-        //location.replace();
-        //$("#Modalprogress7").modal('hide');
-
-    }
 
 
 
@@ -186,7 +118,7 @@ function Import () {
 
 
 
-}
+
 
 //$(document).ready(function() {
 //    setInterval(function(){

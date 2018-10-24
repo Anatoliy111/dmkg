@@ -50,7 +50,6 @@ use yii\bootstrap\Alert;
 
 
 
-$ZipBase = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TARPF.DBF','TARINFO.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 $t = false;
 $DirFiles  = $_SESSION['DirFiles'];
@@ -69,46 +68,72 @@ if ($t)
 //	UtObor::deleteAll('period = :period', [':period' => $this->MonthYear]);
 
 	$RowsCount = 0;
-	$NameBase[0]='';
-$k=0;
+	$NameBase=array();
+	$d=0;
 
-	for ($i = 0; $i <= count($ZipBase)-1; $i++)
+
+	foreach ($DirFiles as $dir=>$files)
 	{
-		$filename = $DirFiles.'/'.$ZipBase[$i];
+		$period="";
+		$dirname = mb_strtolower(substr(strrchr($dir, '/'), -6));
+		if (intval($dirname)>201801){
+			$period = date('Y-m-d',strtotime(substr($name,0,4).'-'.substr($name,4,2).'-01'));
+	    }
 
-		if (file_exists($filename)) {
-			$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename $RowsCount");
-			@dbase_pack($dbf);
+		foreach ($files as $file) {
+			$fname = '';
+			$filename = $dir . '/' . $file;
+			if ($dirname=='import'){
+				$fname = mb_strtolower(substr($file, 0,6));
+				if (intval($fname)>201801){
+					$period = date('Y-m-d',strtotime(substr($fname,0,4).'-'.substr($fname,4,2).'-01'));
+				}
+			}
+
+			if ($period=="")
+				continue;
+
+			$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+
+
+			if (file_exists($filename) && in_array(mb_strtoupper($file), $Base)) {
+				$dbf = @dbase_open($filename, 0) or die("Error!!! Opening $filename $RowsCount");
+				@dbase_pack($dbf);
 
 //		$KartCount = dbase_numrecords($dbf);
-			$NameBase[$k] = $ZipBase[$i];
-			$RowsCount = $RowsCount + dbase_numrecords($dbf);
-			switch ($NameBase[$k]) {
-				case 'POSLTAR.DBF':
-					UtTarif::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					UtTarifab::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'TARPF.DBF':
-					UtTarifplan::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'OBOR.DBF':
-					UtObor::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'NACH.DBF':
-					UtNarah::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'OPL.DBF':
-					UtOpl::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'SUBS.DBF':
-					UtSubs::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
-				case 'UDER.DBF':
-					UtUtrim::deleteAll('period = :period', [':period' => $_SESSION['PeriodBase']]);
-					break;
+				$key = array_search(mb_strtoupper($file), $Base);
+				if ($key!==null)
+				   $NameBase[$key] = [$dir => $file];
+
+				$RowsCount = $RowsCount + dbase_numrecords($dbf);
+				switch ($file) {
+					case 'POSLTAR.DBF':
+						UtTarif::deleteAll('period = :period', [':period' => $period]);
+						UtTarifab::deleteAll('period = :period', [':period' => $period]);
+						break;
+					case $fname.'tr.DBF':
+						UtTarifplan::deleteAll('period = :period', [':period' => $period]);
+						break;
+					case 'OBOR.DBF':
+						UtObor::deleteAll('period = :period', [':period' => $period]);
+						break;
+					case 'NACH.DBF':
+						UtNarah::deleteAll('period = :period', [':period' => $period]);
+						break;
+					case 'OPL.DBF':
+						UtOpl::deleteAll('period = :period', [':period' => $period]);
+						break;
+					case 'SUBS.DBF':
+						UtSubs::deleteAll('period = :period', [':period' => $period]);
+						break;
+					case 'UDER.DBF':
+						UtUtrim::deleteAll('period = :period', [':period' => $period]);
+						break;
+				}
+				$d = $d + 1;
 			}
-			$k=$k+1;
 		}
+
 	};
 
 
@@ -124,6 +149,7 @@ $k=0;
 	$_SESSION['NomBase']= 0;
 	$_SESSION['NomRec']= 0;
 	$_SESSION['EndCount'] = $RowsCount;
+	$_SESSION['countBase'] = count($Base)-1;
 
 }
 else
