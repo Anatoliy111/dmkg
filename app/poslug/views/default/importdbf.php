@@ -116,7 +116,7 @@ $t = true;
 		}
 
 		$Base = $_SESSION['NameBase'][$nombase];
-		echo($Base);
+
 
 		$filename = key($Base).'/'.current($Base);
         if (!file_exists($filename)) {
