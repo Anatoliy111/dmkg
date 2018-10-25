@@ -110,7 +110,7 @@ $t = true;
 		}
 
 
-		if (isset($_SESSION['NameBase'][$nombase])){
+		if (empty($_SESSION['NameBase'][$nombase])){
 			$nombase = $nombase + 1;
 			break;
 		}
