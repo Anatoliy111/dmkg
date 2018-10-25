@@ -73,125 +73,6 @@ use yii\base\Event;
 	$this->title = $model->title;
 	$this->params['breadcrumbs'][] = $this->title;
 
-	if ($model->progress)
-	{
-		$js1 = <<< JS
-		   var timer;
-		   var url = 'upload';
-
-
-    // The function to refresh the progress bar.
-    function refreshProgress(percent,formclose) {
-      $.ajax({
-        url: "importdbf",
-        success:function(data,succ,hhh){
-           $('.results').html(percent);
-                str = data;
-				if (str.indexOf("Error!!!")>=0)
-				   formclose = closeImport(str);
-				if (str.indexOf("End import!!!")>=0)
-				   formclose = 1;
-			percent = percent + 1;
-          $("#upprogress").html('<div class="progress-bar-success progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="1000" style="width:'+ percent +'%"><span class="sr-only">'+ percent +'% Complete</span></div>');
-          //$("#message").html(data.message);
-          $("#mess").html("<p>" + percent + "</p>");
-          // If the process is completed, we should stop the checking process.
-
-          if($('#Modalprogress7').is(':visible')){
-            if (formclose == 1) {
-            $("#mess").html("<p>" + percent + "</p>");
-            //window.clearInterval(timer);
-            //timer = window.setInterval(completed, 1000);
-            //$('#Modalprogress7').modal('close');
-            //$('#Modalprogress7').removeClass('show');
-
-
-            $("#Modalprogress7").modal('hide');
-
-            //$('#Modalprogress7').modal({show: false});
-             //$('#Modalprogress7').remove();
-
-				alert("Импорт завершен");
-				window.location.href = url
-				//location.replace();
-			  }
-			  else {
-				 refreshProgress(percent,formclose);
-			  }
-            //      alert("Вы почему окно закрыли, а?");
-            //window.clearInterval(timer);
-            //timer = window.setInterval(completed, 1000);
-          }
-          else{
-             alert("Импорт прерван");
-             window.clearInterval(timer);
-          }
-
-
-        }
-      });
-    }
-
-    function completed() {
-      $("#message").html("Completed");
-      window.clearInterval(timer);
-    }
-
-    function closeImport(str) {
-
-       $("#Modalprogress7").modal('hide');
-
-       alert("Импорт прерван ");
-       window.clearInterval(timer);
-       return 1;
-
-       //location.replace();
-      //$("#Modalprogress7").modal('hide');
-
-    }
-
-
-
-				//$("#upprogress").append("I");
-
-	//$(function (){
-	//    //var win = $('#Modalprogress7');
-	//    //var url = "'.Url::toRoute('default/upload').'";
-     //   //$('#Modalprogress7').modal({backdrop: false});
-     //   //$.ajax({url: "importprogress"});
- 	//    $('#Modalprogress7').show();
-	//    $('#Modalprogress7').modal({backdrop: false});
-     //   percent = 0;
-     //   formclose = 0;
-     //   $.ajax({
-     //   url: "importprogress",
-     //   success:function(data,succ,hhh){
-     //          //$('.results').html(data);
-     //          str = data;
-	//			if (str.indexOf("Error!!!")<0)
-	//			{
-	//				refreshProgress(percent=1,formclose);
-	//			}
-	//			else
-	//			 	closeImport(str);
-     //   }
-     //   });
-
-
-       //timer = window.setInterval(refreshProgress, 1000);
-       //refreshProgress(percent);
-	//});
-//								       									$("#Modalprogress7").on('hidden.bs.modal', function(){
-//											alert("Modal window has been completely closed.");
-//										});
-
-JS;
-
-//		$this->registerJs($js1,\yii\web\View::POS_READY);
-
-//		$model->progress = false;
-	}
-
 ?>
 
 
@@ -294,9 +175,9 @@ echo GridView::widget([
 //
 //			}
 
-			'checkboxOptions' => function ($model, $key, $index, $column) {
-				return ['value' => $model->id];
-			}
+//			'checkboxOptions' => function ($model, $key, $index, $column) {
+//				return ['value' => $model->id];
+//			}
 
 		],
 //		[
@@ -321,11 +202,8 @@ echo GridView::widget([
 //		'pjax'=>false,
 	'striped'=>true,
 	'panel' => [
-//		'heading'=>'<h3 class="panel-title"><i class="glyphicon glyphicon-asterisk"></i>'.' '.$this->title.'</h3>',
 		'heading'=>$uploadDir,
 		'type'=>'success',
-//		'before'=>Html::a(Yii::t('easyii', 'Create').' '.$this->title, ['create'], ['class' => 'btn btn-success']),
-//		'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
 		'footer'=>false
 	],
 
@@ -356,8 +234,6 @@ echo GridView::widget([
 	function deletefile()
 	{
 
-//	     alert("Button 3 clicked");
-//		confirm("Press a button!");
 		var keys = $('#gridfile').yiiGridView('getSelectedRows');
 		if (keys.length != 0){
 			var hi= confirm("Ви впевненні що хочете видалити ці файли?");
@@ -371,10 +247,7 @@ echo GridView::widget([
 				}
 
 			});
-	//			alert("ttttttttt!!!");
-			}
-			else{
-	//			alert("Meany!!!");
+
 			}
 		}
 
@@ -427,27 +300,19 @@ echo GridView::widget([
 							if ($('#Modalprogress7').is(':visible')) {
 								if (formclose == 1) {
 									$("#mess").html("<p>" + percent + "</p>");
-									//window.clearInterval(timer);
-									//timer = window.setInterval(completed, 1000);
-									//$('#Modalprogress7').modal('close');
-									//$('#Modalprogress7').removeClass('show');
 
 
 									$("#Modalprogress7").modal('hide');
 
-									//$('#Modalprogress7').modal({show: false});
-									//$('#Modalprogress7').remove();
 
 									alert("Импорт завершен");
 									window.location.href = url
-									//location.replace();
+
 								}
 								else {
 									refreshProgress(percent, formclose);
 								}
-								//      alert("Вы почему окно закрыли, а?");
-								//window.clearInterval(timer);
-								//timer = window.setInterval(completed, 1000);
+
 							}
 							else {
 								alert("Импорт прерван");
