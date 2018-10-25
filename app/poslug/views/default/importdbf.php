@@ -109,12 +109,14 @@ $t = true;
 			break;
 		}
 
-		$Base = $_SESSION['NameBase'][$nombase]==null ? null : $_SESSION['NameBase'][$nombase];
-		echo($Base);
-		if ($Base==null){
+
+		if ($_SESSION['NameBase'][$nombase]==null){
 			$nombase = $nombase + 1;
 			break;
 		}
+
+		$Base = $_SESSION['NameBase'][$nombase];
+		echo($Base);
 
 		$filename = key($Base).'/'.current($Base);
         if (!file_exists($filename)) {
