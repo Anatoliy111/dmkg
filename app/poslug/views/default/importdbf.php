@@ -130,7 +130,7 @@ $t = true;
 		$fname = '';
 		$dirname = mb_strtolower(substr(strrchr(key($Base), '/'), -6));
 		if (intval($dirname)>201801){
-			$GLOBALS["period"] = date('Y-m-d',strtotime(substr($name,0,4).'-'.substr($name,4,2).'-01'));
+			$GLOBALS["period"] = date('Y-m-d',strtotime(substr($dirname,0,4).'-'.substr($dirname,4,2).'-01'));
 			$fname = current($Base);
 		}
 		else{
