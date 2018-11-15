@@ -134,7 +134,6 @@ $t = true;
 			$fname = current($Base);
 		}
 		else{
-
 			$datename = '';
 			if ($dirname=='import'){
 				$datename = mb_strtolower(substr(current($Base), 0,6));
