@@ -77,7 +77,7 @@ if ($t)
 		$period="";
 		$dirname = mb_strtolower(substr(strrchr($dir, '/'), -6));
 		if (intval($dirname)>201801){
-			$period = date('Y-m-d',strtotime(substr($name,0,4).'-'.substr($name,4,2).'-01'));
+			$period = date('Y-m-d',strtotime(substr($dirname,0,4).'-'.substr($dirname,4,2).'-01'));
 	    }
 
 		foreach ($files as $file) {
