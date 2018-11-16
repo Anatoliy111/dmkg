@@ -93,8 +93,8 @@ if ($t)
 			if ($period=="")
 				continue;
 
-//			$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
-			$Base = ['POSLTAR.DBF'];
+			$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//			$Base = ['POSLTAR.DBF'];
 
 
 			if (file_exists($filename) && in_array(mb_strtoupper($file), $Base)) {
