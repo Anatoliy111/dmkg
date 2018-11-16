@@ -666,7 +666,7 @@ function importPokaz($fields,$modelAb,$st)
 					$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 					$model->kl = $fields['KL_NTAR'];
 					$model->tariffakt = $fields['TARIF'];
-					$model->norma = $fields['NORMA'];
+					$model->norma = !empty($fields['NORMA']) ? $fields['NORMA'] : 0;
 //					$model->tariffakt = $fields['KORTARIF'];
 //					if ($fields['KORTARIF']<>0)
 //					{
@@ -689,7 +689,7 @@ function importPokaz($fields,$modelAb,$st)
 						$Tarifab->tarif = $fields['TARIF'];
 						$Tarifab->days = $fields['DAYS'];
 						$Tarifab->daymes = $fields['DAYSMES'];
-						$Tarifab->norma = $fields['NORMA'];
+						$Tarifab->norma = !empty($fields['NORMA']) ? $fields['NORMA'] : 0;
 
 
 						if ($Tarifab->validate())
@@ -719,7 +719,7 @@ function importPokaz($fields,$modelAb,$st)
 					$Tarifab->tarif = $fields['TARIF'];
 					$Tarifab->days = $fields['DAYS'];
 					$Tarifab->daymes = $fields['DAYSMES'];
-					$Tarifab->norma = $fields['NORMA'];
+					$Tarifab->norma = !empty($fields['NORMA']) ? $fields['NORMA'] : 0;
 					if ($Tarifab->validate())
 					{
 						$Tarifab->save();
