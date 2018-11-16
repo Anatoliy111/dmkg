@@ -37,7 +37,7 @@ global $period;
 
 	//	$_SESSION['RowsCount'] = $RowsCount;
 //	$process = $_SESSION['process'];
-	$_SESSION['Progress'] = $_SESSION['Progress'] + 1;
+//	$_SESSION['Progress'] = $_SESSION['Progress'] + 1;
 
 //	$_SESSION['NameBase'] = $NameBase;
 //	$_SESSION['NomBase']= 0;
