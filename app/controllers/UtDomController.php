@@ -118,7 +118,8 @@ class UtDomController extends Controller
 		$domtarif1->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 		$domtarif1->where(['ut_tarif.id_dom' => $model->id]);
 		$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['perioddom']]);
-		$domtarif1->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
+//		$domtarif1->orderBy(['ut_tarif.id_tipposl,ut_tarif.id']);
+		$domtarif1->orderBy(['ut_tarif.id_tipposl' => SORT_ASC,'ut_tarif.id' => SORT_ASC]);
 //		$domtarif1->groupBy('ut_tarif.period,ut_tarif.id_tipposl,ut_tarifplan.tarifplan,ut_tarifplan.tariffact,ut_tarifplan.id');
 
 
