@@ -17,7 +17,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 	use yii\widgets\Pjax;
 
-        $lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+//        $lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 //        $period = $lastperiod->modify('+1 month');;
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 ?>

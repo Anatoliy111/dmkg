@@ -9,6 +9,7 @@
 namespace app\poslug\components;
 
 use app\poslug\models\Period;
+use app\poslug\models\UtPeriod;
 use app\poslug\models\UtTarifplan;
 use kartik\select2\Select2;
 use Yii;
@@ -33,7 +34,7 @@ class PeriodWidget extends Widget
 	{
 		parent::init();
 		$ModelPeriod = new Period();
-		$lastperiod = UtTarifplan::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one();
+		$lastperiod = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one();
 		$ModelPeriod->lastperiod = $lastperiod->period;
 		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 		{
@@ -59,7 +60,7 @@ class PeriodWidget extends Widget
 		if (!$value)
 		{
 			$per = [];
-			$ar  = UtTarifplan::find()->groupBy(['period'])->orderBy(['period' => SORT_DESC])->all();
+			$ar  = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->all();
 			$dat = ArrayHelper::map($ar, 'period', 'period');
 			foreach ($dat as $dt)
 			{

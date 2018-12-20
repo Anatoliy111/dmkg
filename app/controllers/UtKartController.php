@@ -8,6 +8,7 @@ use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
 use app\poslug\models\UtOrg;
+use app\poslug\models\UtPeriod;
 use app\poslug\models\UtPosl;
 use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarif;
@@ -169,9 +170,14 @@ class UtKartController extends Controller
 //		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
 
 		if (Yii::$app->session['periodkab']==null)
-		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+    		Yii::$app->session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
 //		if (Yii::$app->session['period']==null)
-			Yii::$app->session['period']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+			Yii::$app->session['period']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
+
+//		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+////		if (Yii::$app->session['period']==null)
+//		Yii::$app->session['period']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+
 
 		$model = $this->findModel($id);
 		$session = Yii::$app->session;
@@ -334,6 +340,7 @@ class UtKartController extends Controller
 			'dpuder' => $dpuder,
 			'dpdolg' => $dpdolg,
 			'summa' => $summa,
+			'lastperiod' => $session['period'],
 		]);
 	}
 
