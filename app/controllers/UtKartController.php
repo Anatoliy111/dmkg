@@ -221,6 +221,13 @@ class UtKartController extends Controller
 				$obor= UtObor::find();
 //			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+				foreach($obor->asArray()->all() as $obb)
+				{
+					if ($obb['sal']>0)
+					{
+						$summa = $summa + $obb['sal'];
+					}
+				}
 //				$ff = ArrayHelper::toArray($obor);
 				$dataProvider1 = new ActiveDataProvider([
 					'query' => $obor,
@@ -236,14 +243,22 @@ class UtKartController extends Controller
 				]);
 				$dpdolg[$abon->id] = $dataProvider11;
 				//-----------------------------------------------------------------------------
-				$oborsum= UtObor::find();
-				$oborsum->select('sum(ut_obor.sal) as summ');
-				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
-				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
-//				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> "2018-10-01"]);
-				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
-				$rrr = is_null($oborsum->asArray()->all()[0]['summ']) ? 0.00 : $oborsum->asArray()->all()[0]['summ'];
-				$summa = $summa + $rrr;
+//				$oborsum= UtObor::find();
+//				$oborsum->select('sum(ut_obor.sal) as summ');
+//				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
+//				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+////				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> "2018-10-01"]);
+////				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
+//				$rrr = is_null($oborsum->asArray()->all()[0]['summ']) ? 0.00 : $oborsum->asArray()->all()[0]['summ'];
+//				foreach($oborsum->asArray()->all() as $obb)
+//				{
+//					if ($obb['summ']>0)
+//					{
+//						$summa = $summa + $obb['summ'];
+//					}
+//				}
+
+
 
 				//-----------------------------------------------------------------------------
 				$opl = UtOpl::find();
@@ -299,8 +314,16 @@ class UtKartController extends Controller
 				$tt = ArrayHelper::toArray($tar);
 				$dptar[$abon->id] = $dataProvider6;
 
-				$sub = UtSubs::find();
-				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_subs.period'=> $session['periodkab']]);
+				$sub= UtObor::find();
+//			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+				$sub->andWhere(['<>','ut_obor.subs', 0]);
+
+
+//				$sub = UtSubs::find();
+//				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_subs.period'=> $session['periodkab']]);
+
+
 				$dataProvider8 = new ActiveDataProvider([
 					'query' => $sub,
 				]);

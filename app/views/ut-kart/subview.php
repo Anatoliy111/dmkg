@@ -52,15 +52,15 @@ HTML;
 								],
 				'tipposl',
 								[
-									'attribute' => 'sum',
+									'attribute' => 'subs',
 									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
-								[
-									'attribute' => 'sum_ob',
-									'format'=>['decimal', 2],
-									'pageSummary'=>true,
-								],
+//								[
+//									'attribute' => 'sum_ob',
+//									'format'=>['decimal', 2],
+//									'pageSummary'=>true,
+//								],
 
 //				['class' => 'yii\grid\ActionColumn'],
 				],

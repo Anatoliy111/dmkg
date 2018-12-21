@@ -186,7 +186,7 @@ use yii\helpers\ArrayHelper;
 		</div>
 		<div class="col-xs-12">
 			<div class="col-xs-4">
-			<h4>Борг на початок місяця</h4>
+			<h4>Сума до сплати</h4>
 				<?php
 				if (round($summa,2)<500){
 					?>
