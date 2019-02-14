@@ -71,6 +71,7 @@ if ($t)
 	$NameBase=array();
 	$d=0;
 
+	$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 	foreach ($DirFiles as $dir=>$files)
 	{
