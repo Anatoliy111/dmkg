@@ -163,16 +163,18 @@ $search = '';
 			<p class="float_left">Copyright &copy; DMKG 2017. All rights reserved. </p>
 <!--			<p class="float_right">Created by: Bondyuk</p>-->
 			<div id="qoo-counter">
-				<!-- HostCiti.net --><a href="http://hostciti.net/" title="hostciti.net" target="_blank" onclick="this.href='http://hostciti.net/stat/?ch=stat'+'&r='+escape(window.location.href.slice(7));" >
-					<script type="text/javascript" language="javascript">
-							Coun='<img src="http://hostciti.net/stat/stat.php?i=2&col=4d95bf&tc=ffffff';
-						iD=document; Coun+='&d='+(screen.colorDepth?screen.colorDepth:screen.pixelDepth)
-							+"&w="+screen.width+'&h='+screen.height;
-						iH=window.location.href.slice(7);
-						Coun+='&r='+escape(iH);
-						Coun+='&n='+escape(iD.referrer.slice(7));
-						iD.write(Coun+'" width="88" height="31" border="0" />');
-					</script></a><!-- End of HostCiti.net counter -->
+				<!--LiveInternet counter--><script type="text/javascript">
+					document.write("<a href='//www.liveinternet.ru/click' "+
+						"target=_blank><img src='//counter.yadro.ru/hit?t18.6;r"+
+						escape(document.referrer)+((typeof(screen)=="undefined")?"":
+						";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+							screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+						";h"+escape(document.title.substring(0,150))+";"+Math.random()+
+						"' alt='' title='LiveInternet: показано число просмотров за 24"+
+						" часа, посетителей за 24 часа и за сегодня' "+
+						"border='0' width='88' height='31'><\/a>")
+				</script><!--/LiveInternet-->
+
 			</div>
 
 
