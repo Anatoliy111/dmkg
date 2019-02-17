@@ -55,7 +55,7 @@ class PeriodWidget extends Widget
 		}
 		$value=false;
 
-        if (ArrayHelper::keyExists(\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y'), Yii::$app->session['periodspisok'], false)<>null)
+		if (isset(Yii::$app->session['periodspisoksite']))
 		    $value = isset(Yii::$app->session['periodspisok']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
 
 
