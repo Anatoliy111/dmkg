@@ -47,9 +47,9 @@ use yii\bootstrap\Alert;
 
 //$fname='';
 
-//$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','TR.DBF','IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
-$Base=array();
+//$Base=array();
 
 
 
@@ -91,7 +91,7 @@ if ($t)
 					continue;
 				else
 				{
-					array_push($Base, $file);
+//					array_push($Base, $file);
 				}
 			}
 			else
@@ -103,11 +103,17 @@ if ($t)
 						continue;
 					else
 					{
-						array_push($Base, $file);
+						$key = array_search(mb_strtoupper(substr($file, 6, 6)), $Base);
+						if ($key!==null)
+							$Base[$key] = mb_strtoupper($file);
+						else
+							continue;
+
+//						array_push($Base, $file);
+//						$Base[]=mb_strtoupper($file);
 					}
 				}
 			}
-
 
 //			if ($dirname=='import') {
 //				$fname = mb_strtolower(substr($file, 0, 6));
