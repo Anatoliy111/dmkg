@@ -192,6 +192,8 @@ $t = true;
 
 
 		}
+		else
+			$nombase = $nombase + 1;
 	}
 
 	$_SESSION['NomBase'] = $nombase;
@@ -403,7 +405,8 @@ function importKART($dbf,$i,$Base)
 //						die("Error!!! Insert is $dbf  to UtKart $schet $modelKt->fio $Abon->schet");
 					}
 				}
-				else//if ($Abon->val != $fields['VAL'])
+				else//
+					if ($Abon->val != $fields['VAL'])
 				{
 					$modelKt = UtKart::findOne(['id' => $Abon->id_kart]);
 					$modelKt = NewUpKart($fields,$modelKt);
@@ -891,37 +894,39 @@ function importIN($dbf,$i,$Base)
             $lgot = encodestr(trim(iconv('CP866', 'utf-8', $fields['LGOTA'])));
             $FindAbon = UtAbonent::findOne(['schet' => $schet]);
             $FindTipPosl = UtTipposl::findOne(['old_tipusl' => $fields['WID']]);
-            if ($FindTipPosl <> null and $FindAbon <> null)
-                $FindPosl = UtPosl::findOne(['id_tipposl' => $FindTipPosl->id, 'id_abonent' => $FindAbon->id]);
-            $FindLgot = UtVidlgot::findOne(['lgota' => $lgot]);
-            if ($FindAbon <> null) {
-                $narah = new UtNarah();
+            if ($FindTipPosl <> null and $FindAbon <> null) {
 
-                $narah->id_org = 1;
-                $narah->period = $GLOBALS["period"];
-                $narah->id_abonent = $FindAbon->id;
-                $narah->id_posl = $FindPosl->id;
-                $narah->id_tipposl = $FindTipPosl->id;
-                $narah->tipposl = $FindTipPosl->poslug;
-//				$narah->id_vidlgot = trim($fields['LGOTA']) <> '' ? UtVidlgot::findOne(['lgota' => encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])))])->id : null;
-                $narah->lgot = encodestr(trim(iconv('CP866', 'utf-8', $fields['LGOTA'])));
-                $narah->tarif = $fields['TARIF'];
-                $narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
-                $narah->vidpokaz = UtVidpokaz::findOne(['id' => $narah->id_vidpokaz])->vid_pokaz;
-                $narah->pokaznik = $fields['RAZN'];
-                $narah->nnorma = $fields['FL_SCH'] == -1 ? $fields['RAZN'] : 0;
-//			$narah->pokaznik = UtPokaz::findOne(['id_abonent' => $narah->id_abonent,'id_vidpokaz' => $narah->id_vidpokaz ])->pokaznik;
-                $narah->ed_izm = $FindTipPosl->ed_izm;
-                $narah->sum = $fields['SUM'];
+				$FindPosl = UtPosl::findOne(['id_tipposl' => $FindTipPosl->id, 'id_abonent' => $FindAbon->id]);
+				$FindLgot = UtVidlgot::findOne(['lgota' => $lgot]);
+				if ($FindPosl <> null) {
+					$narah = new UtNarah();
+
+					$narah->id_org = 1;
+					$narah->period = $GLOBALS["period"];
+					$narah->id_abonent = $FindAbon->id;
+					$narah->id_posl = $FindPosl->id;
+					$narah->id_tipposl = $FindTipPosl->id;
+					$narah->tipposl = $FindTipPosl->poslug;
+					//				$narah->id_vidlgot = trim($fields['LGOTA']) <> '' ? UtVidlgot::findOne(['lgota' => encodestr(trim(iconv('CP866','utf-8',$fields['LGOTA'])))])->id : null;
+					$narah->lgot = encodestr(trim(iconv('CP866', 'utf-8', $fields['LGOTA'])));
+					$narah->tarif = $fields['TARIF'];
+					$narah->id_vidpokaz = $fields['FL_SCH'] == -1 ? 13 : $FindTipPosl->id_vidpokaz;
+					$narah->vidpokaz = UtVidpokaz::findOne(['id' => $narah->id_vidpokaz])->vid_pokaz;
+					$narah->pokaznik = $fields['RAZN'];
+					$narah->nnorma = $fields['FL_SCH'] == -1 ? $fields['RAZN'] : 0;
+					//			$narah->pokaznik = UtPokaz::findOne(['id_abonent' => $narah->id_abonent,'id_vidpokaz' => $narah->id_vidpokaz ])->pokaznik;
+					$narah->ed_izm = $FindTipPosl->ed_izm;
+					$narah->sum = $fields['SUM'];
 
 
-                if ($narah->validate()) {
-                    $narah->save();
-                    return true;
-                } else
-                    Flash($Base, $narah, $schet . ' ' . $narah->tipposl);
-//					die("Error!!!  Insert is $dbf  to UtNarah $schet $FindTipPosl->poslug");
-            }
+					if ($narah->validate()) {
+						$narah->save();
+						return true;
+					} else
+						Flash($Base, $narah, $schet . ' ' . $narah->tipposl);
+					//					die("Error!!!  Insert is $dbf  to UtNarah $schet $FindTipPosl->poslug");
+				}
+			}
         }
         return true;
 

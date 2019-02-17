@@ -45,9 +45,11 @@ use yii\bootstrap\Alert;
 //	]
 //]);
 
+//$fname='';
 
+//$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
-
+$Base=array();
 
 
 
@@ -71,32 +73,57 @@ if ($t)
 	$NameBase=array();
 	$d=0;
 
-	$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','201901TR.DBF','201901IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//	$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','201901TR.DBF','201901IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 	foreach ($DirFiles as $dir=>$files)
 	{
 		$period="";
 		$dirname = mb_strtolower(substr(strrchr($dir, '/'), -6));
-		if (intval($dirname)>201801){
-			$period = date('Y-m-d',strtotime(substr($dirname,0,4).'-'.substr($dirname,4,2).'-01'));
-	    }
+
 
 		foreach ($files as $file) {
 			$fname = '';
 			$filename = $dir . '/' . $file;
-			if ($dirname=='import'){
-				$fname = mb_strtolower(substr($file, 0,6));
-				if (intval($fname)>201801){
-					$period = date('Y-m-d',strtotime(substr($fname,0,4).'-'.substr($fname,4,2).'-01'));
+
+			if (intval($dirname)>201801){
+				$period = date('Y-m-d',strtotime(substr($dirname,0,4).'-'.substr($dirname,4,2).'-01'));
+				if ($period=="")
+					continue;
+				else
+				{
+					array_push($Base, $file);
+				}
+			}
+			else
+			{
+				$fname = mb_strtolower(substr($file, 0, 6));
+				if (intval($fname) > 201801) {
+					$period = date('Y-m-d', strtotime(substr($fname, 0, 4) . '-' . substr($fname, 4, 2) . '-01'));
+					if ($period=="")
+						continue;
+					else
+					{
+						array_push($Base, $file);
+					}
 				}
 			}
 
-			if ($period=="")
-				continue;
+
+//			if ($dirname=='import') {
+//				$fname = mb_strtolower(substr($file, 0, 6));
+//				if (intval($fname) > 201801) {
+//					$period = date('Y-m-d', strtotime(substr($fname, 0, 4) . '-' . substr($fname, 4, 2) . '-01'));
+//				}
+//			}
+//			else
+//			{
+//
+//			}
+
 
 //			$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF',$fname.'TR.DBF',$fname.'IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 //			$Base = ['POSLTAR.DBF'];
-			$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','201901TR.DBF','201901IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
+//			$Base = ['WIDS.DBF','UL.DBF','ORGAN.DBF','KART.DBF','POSLTAR.DBF','201901TR.DBF','201901IN.DBF','OBOR.DBF','NACH.DBF','OPL.DBF','SUBS.DBF','UDER.DBF'];
 
 
 
@@ -142,7 +169,10 @@ if ($t)
 
 
 //	$process = floor($RowsCount/100)==0 ? 1 : floor($RowsCount/100);
-
+if (count($Base)==0)
+{
+	die("Error!!! Opening $filename");
+}
 
 	$process = 100;
 	$_SESSION['RowsCount'] = $RowsCount;
