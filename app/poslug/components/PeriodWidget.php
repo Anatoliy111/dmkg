@@ -53,9 +53,12 @@ class PeriodWidget extends Widget
 				$ModelPeriod->periodoblik=Yii::$app->session['periodoblik'];
 			}
 		}
+		$value=false;
+
+        if (ArrayHelper::keyExists(\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y'), Yii::$app->session['periodspisok'], false))
+		    $value = isset(Yii::$app->session['periodspisok']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
 
 
-		$value = isset(Yii::$app->session['periodspisok']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisok'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
 
 		if (!$value)
 		{

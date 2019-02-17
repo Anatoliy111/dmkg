@@ -50,7 +50,7 @@ class UtTarif extends \yii\db\ActiveRecord
         return [
             [['id_org', 'id_tipposl', 'kl', 'name','period'], 'required'],
             [['id_org', 'id_tipposl', 'id_vidpokaz', 'kl','podezd'], 'integer'],
-			[['name'], 'string', 'max' => 25],
+			[['name'], 'string', 'max' => 50],
             [['period'], 'safe'],
             [['tarifplan', 'tariffakt', 'tariffact','norma'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],

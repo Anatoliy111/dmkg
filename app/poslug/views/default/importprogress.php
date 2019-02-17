@@ -148,6 +148,10 @@ if ($t)
 						UtTarif::deleteAll('period = :period', [':period' => $period]);
 						UtTarifab::deleteAll('period = :period', [':period' => $period]);
 						break;
+					case $fname.'POSLTAR.DBF':
+						UtTarif::deleteAll('period = :period', [':period' => $period]);
+						UtTarifab::deleteAll('period = :period', [':period' => $period]);
+						break;
 					case $fname.'tr.DBF':
 						UtTarifplan::deleteAll('period = :period', [':period' => $period]);
 						break;
