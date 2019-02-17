@@ -34,7 +34,7 @@ class PeriodWidget extends Widget
 	{
 		parent::init();
 		$ModelPeriod = new Period();
-		$lastperiod = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orderBy(['period' => SORT_DESC])->one();
+		$lastperiod = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
 		$ModelPeriod->lastperiod = $lastperiod->period;
 		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 		{
