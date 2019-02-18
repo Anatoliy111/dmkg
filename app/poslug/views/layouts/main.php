@@ -1,5 +1,6 @@
 <?php
-	use yii\bootstrap\ActiveForm;
+use app\poslug\models\UtPeriod;
+use yii\bootstrap\ActiveForm;
 	use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
@@ -13,6 +14,7 @@ use yii\helpers\Url;
 
 $asset = yii\gii\GiiAsset::register($this);
 $asset = \app\poslug\assets\AppAsset::register($this);
+$period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period.' +1 month'));
 //	C:\OpenServer\domains\DMKGtest\vendor\bower\eonasdan-bootstrap-datetimepicker\build\js\bootstrap-datetimepicker.min.js
 ?>
 <?php $this->beginPage() ?>
@@ -62,15 +64,20 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 		<div class="col-xs-12">
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> refs/remotes/origin/master
 			<div class="col-xs-4 pull-left">
-				<h3><?=Yii::$app->formatter->asDate(Yii::$app->session['period'], 'LLLL Y')?></h3>
+				<h4>Поточний період</h4>
+				<h3><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h3>
 
 			</div>
 		</div>
 
 
 			<?php
+
 			echo Nav::widget([
 				'options' => ['class' => 'nav navbar-nav navbar-left'],
 				'items' => [
