@@ -220,7 +220,7 @@ class UtKartController extends Controller
 				//-----------------------------------------------------------------------------
 				$obor= UtObor::find();
 //			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 				foreach($obor->asArray()->all() as $obb)
 				{
 					if ($obb['sal']>0)
