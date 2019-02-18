@@ -62,9 +62,7 @@ $asset = \app\poslug\assets\AppAsset::register($this);
 
 		<div class="col-xs-12">
 
-			<div class="col-xs-4 pull-right">
-				<?= PeriodWidget::widget() ?>
-			</div>
+
 			<div class="col-xs-4 pull-left">
 				<h3><?=Yii::$app->formatter->asDate(Yii::$app->session['period'], 'LLLL Y')?></h3>
 
