@@ -143,7 +143,7 @@ if ($t)
 				   $NameBase[$key] = [$dir => $file];
 
 				$RowsCount = $RowsCount + dbase_numrecords($dbf);
-				switch ($file) {
+				switch (mb_strtoupper($file)) {
 					case 'POSLTAR.DBF':
 						UtTarif::deleteAll('period = :period', [':period' => $period]);
 						UtTarifab::deleteAll('period = :period', [':period' => $period]);

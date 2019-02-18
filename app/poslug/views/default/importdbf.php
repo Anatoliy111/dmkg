@@ -669,6 +669,7 @@ function importPokaz($fields,$modelAb,$st)
 					$model->name = encodestr(trim(iconv('CP866','utf-8',$fields['NAME'])));
 					$model->kl = $fields['KL_NTAR'];
 					$model->tariffakt = $fields['TARIF'];
+
 					$model->norma = !empty($fields['NORMA']) ? $fields['NORMA'] : 0;
 //					$model->tariffakt = $fields['KORTARIF'];
 //					if ($fields['KORTARIF']<>0)
