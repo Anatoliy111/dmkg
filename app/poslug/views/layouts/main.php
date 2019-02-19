@@ -179,8 +179,8 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
             <?= $content ?>
 
 
-        </div>
-<!--		--><?php //Pjax::end(); ?>
+       </div>
+
         <div class="footer-fix"></div>
     </div>
     <footer class="footer">
