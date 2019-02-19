@@ -55,6 +55,62 @@ use yii\helpers\ArrayHelper;
 
 <?php Modal::end(); ?>
 
+
+<?php 	Modal::begin([
+	'header' => '<h2>Оплата</h2>',
+	'id' => 'paymodal',
+	'size' => 'modal-md',
+
+]);
+?>
+
+
+<h1><?= Html::encode($this->title) ?></h1>
+
+
+<?php
+//echo GridView::widget([
+//	'dataProvider' =>  $dpdolg[$abon->id],
+//
+//	'columns' => [
+//
+//		'tipposl',
+//		[
+//			'attribute' => 'sal',
+//			'label'=>'Борг на початок'
+//
+//		],
+//
+//	],
+//
+//	'striped'=>false,
+//	'layout'=>"{items}",
+//	//					'layout' => $layout,
+//	'resizableColumns'=>true,
+////							'hover'=>true,
+//	'pjax'=>true,
+//	'pjaxSettings'=>[
+//		'neverTimeout'=>true,
+//
+//	],
+//	'panel' => [
+////								'after'=>'',
+//		//					'footer'=>true,
+//
+//	],
+//
+////							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+//	'toolbar'=> [
+//		//						'{export}',
+////								'{toggleData}',
+//	]
+//]);
+?>
+
+<?php Modal::end(); ?>
+
+
+
 <div class="row">
 	<?php
 
@@ -184,92 +240,113 @@ use yii\helpers\ArrayHelper;
 		<div class="col-xs-12">
 			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
 		</div>
-		<div class="col-xs-12">
-			<div class="col-xs-4">
-			<h4>Сума до сплати</h4>
-				<?php
-				if (round($summa,2)<500){
-					?>
-					<div class="summa" style="color: #2e8e5a;">
-						<h3><?= number_format(round($summa, 2), 2, '.', '') ?></h3>
-					</div>
+<!--		<div class="col-xs-12">-->
 
-				<?php
-				}
-				if (round($summa,2)>=500 and round($summa,2)<1000){
-					?>
-					<div class="summa" style="color: #a937c9;">
-						<h3><?= number_format(round($summa, 2), 2, '.', '')  ?></h3>
-					</div>
-					<?php
-
-				?>
-					<?php
-				}
-				if (round($summa,2)>=1000) {
-					?>
-					<div class="summa" style="color: #c91017;">
-						<h3><?= number_format(round($summa, 2), 2, '.', '')  ?></h3>
-					</div>
-					<?php
-				}
-				?>
-			</div>
-			<div class="col-lg-8">
 					<?php
 					foreach ($abonents as $abon) {
 
-						echo GridView::widget([
-							'dataProvider' =>  $dpdolg[$abon->id],
-
-		//				'showPageSummary' => true,
-							'columns' => [
-//								['class' => '\kartik\grid\SerialColumn'],
-								'tipposl',
-								[
-									'attribute' => 'sal',
-									'label'=>'Борг на початок'
-		//									'format'=>['decimal', 2],
-		//									'pageSummary'=>true,
-								],
-//								[
-//									'attribute' => 'opl',
-//									'label' => 'Оплата',
-////										'format'=>['decimal', 2],
-////										'pageSummary'=>true,
-//								],
-		//				['class' => 'yii\grid\ActionColumn'],
-							],
-
-							'striped'=>false,
-						'layout'=>"{items}",
-		//					'layout' => $layout,
-							'resizableColumns'=>true,
-//							'hover'=>true,
-							'pjax'=>true,
-							'pjaxSettings'=>[
-								'neverTimeout'=>true,
-
-							],
-							'panel' => [
-//								'after'=>'',
-		//					'footer'=>true,
-
-							],
-
-//							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
-							'toolbar'=> [
-		//						'{export}',
-//								'{toggleData}',
-							]
-						]);
-					}
 					?>
+			<div class="schet col-xs-12">
+				<div class="rah">
+					<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
+
+				</div>
+					<div class="col-xs-4">
+						<h4>Сума до сплати</h4>
+						<?php
+						if (round($summa[$abon->id],2)<500){
+							?>
+							<div class="summa" style="color: #2e8e5a;">
+								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '') ?></h3>
+							</div>
+
+							<?php
+						}
+						if (round($summa[$abon->id],2)>=500 and round($summa[$abon->id],2)<1000){
+							?>
+							<div class="summa" style="color: #a937c9;">
+								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '')  ?></h3>
+							</div>
+							<?php
+
+							?>
+							<?php
+						}
+						if (round($summa[$abon->id],2)>=1000) {
+							?>
+							<div class="summa" style="color: #c91017;">
+								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '')  ?></h3>
+							</div>
+							<?php
+						}
+						?>
+
+						<?= Html::a("Оплата", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#paymodal','class'=>'btn btn-success btn-lg btn-block glyphicon-plus'])?>
+						<?= Html::a("Статус платежів", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#paymodal','class'=>'btn-warning btn-sm'])?>
+
+
+					</div>
+
+
+					<div class="col-lg-8">
+
+						<?php
+								echo GridView::widget([
+									'dataProvider' =>  $dpdolg[$abon->id],
+
+				//				'showPageSummary' => true,
+									'columns' => [
+		//								['class' => '\kartik\grid\SerialColumn'],
+										'tipposl',
+										[
+											'attribute' => 'sal',
+											'label'=>'Борг на початок'
+				//									'format'=>['decimal', 2],
+				//									'pageSummary'=>true,
+										],
+		//								[
+		//									'attribute' => 'opl',
+		//									'label' => 'Оплата',
+		////										'format'=>['decimal', 2],
+		////										'pageSummary'=>true,
+		//								],
+				//				['class' => 'yii\grid\ActionColumn'],
+									],
+
+									'striped'=>false,
+								'layout'=>"{items}",
+				//					'layout' => $layout,
+									'resizableColumns'=>true,
+		//							'hover'=>true,
+									'pjax'=>true,
+									'pjaxSettings'=>[
+										'neverTimeout'=>true,
+
+									],
+									'panel' => [
+		//								'after'=>'',
+				//					'footer'=>true,
+
+									],
+
+		//							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+									'toolbar'=> [
+				//						'{export}',
+		//								'{toggleData}',
+									]
+								]);
+						?>
+					</div>
 			</div>
 
+				<?php
+					}
+					?>
 
+	</div>
+	<div class="mywell well-large2 container">
 
-		</div>
+<!--		</div>-->
 		<div class="col-xs-12">
 			<div class="col-lg-4 .col-sm-4 .col-md-4">
 

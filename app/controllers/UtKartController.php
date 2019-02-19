@@ -209,7 +209,7 @@ class UtKartController extends Controller
 
 
 
-        $summa = 0;
+        $summa = array();
 
 			$dpinfo = new ActiveDataProvider([
 				'query' => $abonen,
@@ -225,7 +225,7 @@ class UtKartController extends Controller
 				{
 					if ($obb['sal']>0)
 					{
-						$summa = $summa + $obb['sal'];
+						$summa[$abon->id] = $summa[$abon->id] + $obb['sal'];
 					}
 				}
 //				$ff = ArrayHelper::toArray($obor);
