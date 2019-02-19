@@ -216,28 +216,61 @@ class UtKartController extends Controller
 			]);
 			$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->all();
 			foreach ($abonents as $abon) {
-
+				$summa[$abon->id]=0;
 				//-----------------------------------------------------------------------------
-				$obor= UtObor::find();
+				$obor= UtObor::find()
 //			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
-				foreach($obor->asArray()->all() as $obb)
-				{
-					if ($obb['sal']>0)
-					{
-						$summa[$abon->id] = $summa[$abon->id] + $obb['sal'];
-					}
-				}
+				->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+
+
+
+
+
 //				$ff = ArrayHelper::toArray($obor);
 				$dataProvider1 = new ActiveDataProvider([
 					'query' => $obor,
 				]);
 				$dpobor[$abon->id] = $dataProvider1;
 				//-----------------------------------------------------------------------------
-				$dolg= UtObor::find();
-//			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				$dolg->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+
+				$oboropl= UtObor::find();
+//  			    $obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+
+
+				$oplab=UtOpl::find()
+						->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+						->where(['ut_opl.id_abonent'=> $abon->id])
+					    ->andwhere(['>', 'ut_opl.period', $session['period']])
+						->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
+					    ->asArray();
+
+				$dolg= UtObor::find()
+//					->select('ut_obor.id_abonent, ut_obor.period, ut_obor.id_posl, "(ut_obor.sal-COALESCE(b.summ,0))" as dolgopl, ut_obor.sal,b.summ')
+					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","(ut_obor.sal-COALESCE(b.summ,0)) as dolgopl"])
+					->where(['ut_obor.id_abonent'=> $abon->id,'ut_obor.period'=> $session['period']])
+					->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`');
+
+
+
+//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_abonent`=`ut_obor`.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
+//				$oboropl->asArray();
+
+
+
+//				$dolg= UtObor::find();
+////			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+//				$dolg->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 //				$ff = ArrayHelper::toArray($obor);
+
+				foreach($dolg->asArray()->all() as $obb)
+				{
+					if ($obb['dolgopl']>0)
+					{
+						$summa[$abon->id] = $summa[$abon->id] + $obb['dolgopl'];
+					}
+				}
+
+
 				$dataProvider11 = new ActiveDataProvider([
 					'query' => $dolg,
 				]);
