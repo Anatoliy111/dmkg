@@ -1,13 +1,12 @@
 <?php
 use app\poslug\models\UtPeriod;
-use yii\bootstrap\ActiveForm;
 	use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 	use yii\widgets\Breadcrumbs;
-	use yii\widgets\Pjax;
-	use app\poslug\components\PeriodWidget;
-use yii\helpers\Url;
+
+
+
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -61,15 +60,10 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 				'options' => ['class' => 'navbar-default','style'=>'padding-top: 80px'],
 			]);
 			?>
-
 		<div class="col-xs-12">
 
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/master
 			<div class="col-xs-4 pull-left">
-				<h4>Поточний період</h4>
+				<h4>Поточний період 1111111111111111111111111</h4>
 				<h3><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h3>
 
 			</div>
