@@ -177,8 +177,6 @@ if ($t)
 
 	};
 
-
-//	$process = floor($RowsCount/100)==0 ? 1 : floor($RowsCount/100);
 if (count($Base)==0)
 {
 	die("Error!!! Opening $filename");
