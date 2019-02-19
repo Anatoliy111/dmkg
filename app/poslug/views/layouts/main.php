@@ -60,15 +60,8 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 			?>
 
 		<div class="col-xs-12">
-
-
 			<div class="col-xs-4 pull-left">
-
-
-
-
-
-				<h4>Поточний період1111111111111111111111111111</h4>
+				<h4>Поточний період</h4>
 				<h3><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h3>
 			</div>
 		</div>
