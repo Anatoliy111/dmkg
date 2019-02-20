@@ -15,14 +15,15 @@ use kartik\growl\Growl;
 	use kartik\detail\DetailView;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
-	use yii\widgets\Pjax;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 //        $lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 //        $period = $lastperiod->modify('+1 month');;
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 ?>
 
-	<?php Pjax::begin(); ?>
+<!--	--><?php //Pjax::begin(); ?>
 
 <?php 	Modal::begin([
 			'header' => '<h2>Змінити код доступу</h2>',
@@ -54,6 +55,19 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <?php Modal::end(); ?>
+
+<?php
+yii\bootstrap\Modal::begin([
+	'header' => 'Оформить заказ',
+	'id' => 'modalpay',
+	'size' => 'modal-md',
+]);
+?>
+<div id='modal-content'>Загружаю...</div>
+
+<?php yii\bootstrap\Modal::end(); ?>
+
+
 
 
 <?php 	Modal::begin([
@@ -281,8 +295,8 @@ use yii\helpers\ArrayHelper;
 						}
 						?>
 
-						<?= Html::a("Оплата", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#paymodal','class'=>'btn btn-success btn-lg btn-block glyphicon-plus'])?>
-						<?= Html::a("Статус платежів", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#paymodal','class'=>'btn-warning btn-sm'])?>
+<!--						--><?//= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>['/ut-kart/order', 'id' => $abon->id],'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
+						<?= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
 
 
 					</div>
@@ -300,9 +314,21 @@ use yii\helpers\ArrayHelper;
 										'tipposl',
 										[
 											'attribute' => 'sal',
-											'label'=>'Борг на початок'
+											'label'=>'Борг'
 				//									'format'=>['decimal', 2],
 				//									'pageSummary'=>true,
+										],
+										[
+											'attribute' => 'summ',
+											'label'=>'Оплата'
+											//									'format'=>['decimal', 2],
+											//									'pageSummary'=>true,
+										],
+										[
+											'attribute' => 'dolgopl',
+											'label'=>'Борг після оплати'
+											//									'format'=>['decimal', 2],
+											//									'pageSummary'=>true,
 										],
 		//								[
 		//									'attribute' => 'opl',
@@ -371,5 +397,5 @@ use yii\helpers\ArrayHelper;
 
 
     </div>
-	<?php Pjax::end(); ?>
+<!--	--><?php //Pjax::end(); ?>
 </div>

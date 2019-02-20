@@ -42,4 +42,13 @@ $(function(){
     });
 })(jQuery);
 ;
+/* Modal Pay
+ ========================================================*/
+(function ($) {
+    $('#btn-mod-pay').on('click', function() {
+        $('#modalpay').find('#modal-content')
+            .load($(this).attr('action'));
+    });
+})(jQuery);
+;
 
