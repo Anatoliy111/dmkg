@@ -44,11 +44,26 @@ $(function(){
 ;
 /* Modal Pay
  ========================================================*/
-(function ($) {
-    $('#btn-mod-pay').on('click', function() {
-        $('#modalpay').find('#modal-content')
-            .load($(this).attr('action'));
-    });
-})(jQuery);
-;
+//(function ($) {
+//    $('#btn-mod-pay').on('click', function() {
+//        $('#modalpay').find('#modal-content')
+//            .load($(this).attr('action'));
+//    });
+//})(jQuery);
+//;
+
+jQuery(document).on('ready', function() {
+    (function ($) {
+
+
+        $('#btn-mod-pay').on('click', function() {
+            $('#modalpay').modal('show').find('.modal-content')
+                .load($(this).attr('href'));
+        });
+
+
+
+    })(jQuery);
+
+});
 

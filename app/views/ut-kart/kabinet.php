@@ -296,7 +296,8 @@ yii\bootstrap\Modal::begin([
 						?>
 
 <!--						--><?//= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>['/ut-kart/order', 'id' => $abon->id],'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
-						<?= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
+<!--						--><?//= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
+						<?= Html::a("Оплата", ['/ut-kart/order', 'id' => $abon->id], ['id'=>'btn-mod-pay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
 
 
 					</div>
