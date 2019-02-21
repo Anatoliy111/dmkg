@@ -42,10 +42,10 @@ use yii\widgets\Pjax;
                     'pageSummary' => true,
                     'readonly' => false,
                     'value' => 'sendopl',
-                    'content' => function($data,$model){return '<div class="text_content">'.htmlentities($data->userProfiles->company).'</div>';},
+//                    'content' => function($data,$model){return '<div class="text_content">'.htmlentities($data->userProfiles->company).'</div>';},
                     'editableOptions' => [
                         'header' => 'Оплата',
-                        'inputType' => TabularForm::INPUT_TEXT,
+                        'inputType' => \kartik\editable\Editable::INPUT_TEXT,
                         'options' => [
                             'pluginOptions' => ['min' => 0]
                         ]
@@ -54,12 +54,12 @@ use yii\widgets\Pjax;
                 [
                     'class' => 'kartik\grid\EditableColumn',
                     'attribute' => 'sendopl',
-                    'readonly' => function($model, $key, $index, $widget) {
-                        return (!$model->status); // do not allow editing of inactive records
-                    },
+//                    'readonly' => function($model, $key, $index, $widget) {
+//                        return (!$model->status); // do not allow editing of inactive records
+//                    },
                     'editableOptions' => [
                         'header' => 'Оплата',
-                        'inputType' => \kartik\editable\Editable::INPUT_SPIN,
+                        'inputType' => \kartik\editable\Editable::INPUT_TEXT,
                         'options' => [
                             'pluginOptions' => ['min' => 0]
                         ]
