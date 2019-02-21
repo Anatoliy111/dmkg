@@ -29,6 +29,10 @@ class UtObor extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $dolgopl;
+    public $sendopl;
+
+
     public static function tableName()
     {
         return 'ut_obor';
@@ -44,7 +48,7 @@ class UtObor extends \yii\db\ActiveRecord
             [['id_org', 'id_abonent', 'id_posl'], 'integer'],
             [['period'], 'safe'],
 			[['tipposl'], 'string', 'max' => 64],
-            [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal'], 'number'],
+            [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal','dolgopl','sendopl'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_posl'], 'exist', 'skipOnError' => true, 'targetClass' => UtPosl::className(), 'targetAttribute' => ['id_posl' => 'id']],

@@ -31,7 +31,7 @@ $(function(){
         });
     }
 })(jQuery);
-;
+
 /* Modal Pass
  ========================================================*/
 (function ($) {
@@ -41,29 +41,46 @@ $(function(){
             .load($(this).attr('data-target'));
     });
 })(jQuery);
-;
 /* Modal Pay
  ========================================================*/
 //(function ($) {
 //    $('#btn-mod-pay').on('click', function() {
-//        $('#modalpay').find('#modal-content')
-//            .load($(this).attr('action'));
+//        var textBlock = $(this).prev('.block').text();
+//        alert(textBlock);
+//        //$('#modalpay').find('#modal-content')
+//        //    .load($(this).attr('action'));
 //    });
 //})(jQuery);
 //;
+//jQuery(document).on('click', function() {
+//    (function ($) {
+//
+//        $("#btn-mod-pay").click(function(){
+//            // нужный блок выбирается относительно this как предыдущий (prev)
+//            var textBlock = $(this).prev('.block').text();
+//            alert(textBlock);
+//        });
+//
+//
+//        //$('.btn-mod-pay').on('click', function() {
+//        //    var textBlock = $(this).prev('.block').text();
+//        //    alert(textBlock);
+//        //    //$('#modalpay').modal('show').find('.modal-content')
+//        //    //    .load($(this).attr('href'));
+//        //});
+//
+//
+//
+//    })(jQuery);
+//});
 
-jQuery(document).on('ready', function() {
-    (function ($) {
 
-
-        $('#btn-mod-pay').on('click', function() {
-            $('#modalpay').modal('show').find('.modal-content')
-                .load($(this).attr('href'));
-        });
-
-
-
-    })(jQuery);
-
-});
+//$(document).ready(function(){
+//    $(".btn-mod-pay").click(function(){
+//        // нужный блок выбирается относительно this как предыдущий (prev)
+//        var textBlock = $(this).prev('.block').text();
+//        alert(textBlock);
+//    });
+//
+//});/*end  ready*/
 

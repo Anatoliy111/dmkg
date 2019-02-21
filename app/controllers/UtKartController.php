@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\LiqPay;
+use app\models\UtPay;
 use app\poslug\models\UtAbonent;
 use app\models\UtAuth;
 use app\poslug\models\UtNarah;
@@ -15,12 +17,14 @@ use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifab;
 use app\poslug\models\UtTarifplan;
 use app\poslug\models\UtUtrim;
+use DateTime;
 use Yii;
 use app\models\UtKart;
 use app\models\SearchUtKart;
 use yii\bootstrap\Alert;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -66,13 +70,70 @@ class UtKartController extends Controller
      * Lists all UtKart models.
      * @return mixed
      */
-	public function actionOrder($id)
+	public function actionPay()
 	{
-		$model = $this->findAbonent($id);
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect('/site/confirm');
+		$public_key='i26177975911';
+        $private_key='MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
+		$session = Yii::$app->session;
+		$model = new UtPay();
+
+		if(\Yii::$app->request->isAjax){
+			$data = Yii::$app->request->post();
+//			$model = $this->findAbonent($data['id']);
+			$fl_modal=1;
+
+			$model->id_abonent = $this->findAbonent($data['id'])['id'];
+			$model->id_kart = $session['model']->id;
+
+
+			$oplab=UtOpl::find()
+				->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+				->where(['ut_opl.id_abonent'=> $model->id_abonent])
+				->andwhere(['>', 'ut_opl.period', $session['period']])
+				->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
+				->asArray();
+
+
+			$dolg= UtObor::find();
+			$dolg->select(["ut_obor.*","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl","case when (ut_obor.sal-COALESCE(b.summ,0)) > 0 then round((ut_obor.sal-COALESCE(b.summ,0)),2) else 0  end as sendopl"]);
+			$dolg->where(['ut_obor.id_abonent'=> $model->id_abonent,'ut_obor.period'=> $session['period']]);
+			$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+
+
+			$dataProvider = new ActiveDataProvider([
+				'query' => $dolg,
+			]);
+
+ 			return $this->renderAjax('pay', [
+				'model' => $model,
+				'dp' => $dataProvider
+			]);
 		}
-		return $this->renderAjax('pay', ['model' => $model]);
+
+		if ($model->load(Yii::$app->request->post())) {
+			$model->datepay = new DateTime();
+			if ($model->save()){
+				$liqpay = new LiqPay($public_key, $private_key);
+				$html = $liqpay->cnb_form(array(
+					'action'         => 'pay',
+					'amount'         => $model->summ,
+					'currency'       => 'UAH',
+					'description'    => $model->textpay,
+					'order_id'       => $model->id,
+					'version'        => '3',
+					'language'       =>  'uk',
+					'result_url'     => Url::toRoute(['/ut-kart']),
+					'sandbox'        => 1
+				));
+				return $this->redirect($html);
+			}
+
+
+		}
+
+
+	return $this->redirect('/ut-kart');
+
 	}
 
 

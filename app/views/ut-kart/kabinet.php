@@ -23,7 +23,19 @@ use yii\widgets\Pjax;
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 ?>
 
-<!--	--><?php //Pjax::begin(); ?>
+<!--<script type="text/javascript">-->
+<!--	function ($)({-->
+<!--		$("#btn-mod-pay").click(function(){-->
+<!--			// нужный блок выбирается относительно this как предыдущий (prev)-->
+<!--			var textBlock = $(this).prev('#block').text();-->
+<!--			alert(textBlock);-->
+<!--		});-->
+<!---->
+<!--	})/*end  ready*/-->
+<!--</script>-->
+
+
+	<?php Pjax::begin(); ?>
 
 <?php 	Modal::begin([
 			'header' => '<h2>Змінити код доступу</h2>',
@@ -58,70 +70,15 @@ use yii\widgets\Pjax;
 
 <?php
 yii\bootstrap\Modal::begin([
-	'header' => 'Оформить заказ',
+	'header' => 'Формування платежу',
 	'id' => 'modalpay',
 	'size' => 'modal-md',
 ]);
 ?>
+
 <div id='modal-content'>Загружаю...</div>
 
 <?php yii\bootstrap\Modal::end(); ?>
-
-
-
-
-<?php 	Modal::begin([
-	'header' => '<h2>Оплата</h2>',
-	'id' => 'paymodal',
-	'size' => 'modal-md',
-
-]);
-?>
-
-
-<h1><?= Html::encode($this->title) ?></h1>
-
-
-<?php
-//echo GridView::widget([
-//	'dataProvider' =>  $dpdolg[$abon->id],
-//
-//	'columns' => [
-//
-//		'tipposl',
-//		[
-//			'attribute' => 'sal',
-//			'label'=>'Борг на початок'
-//
-//		],
-//
-//	],
-//
-//	'striped'=>false,
-//	'layout'=>"{items}",
-//	//					'layout' => $layout,
-//	'resizableColumns'=>true,
-////							'hover'=>true,
-//	'pjax'=>true,
-//	'pjaxSettings'=>[
-//		'neverTimeout'=>true,
-//
-//	],
-//	'panel' => [
-////								'after'=>'',
-//		//					'footer'=>true,
-//
-//	],
-//
-////							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
-//	'toolbar'=> [
-//		//						'{export}',
-////								'{toggleData}',
-//	]
-//]);
-?>
-
-<?php Modal::end(); ?>
 
 
 
@@ -295,9 +252,16 @@ yii\bootstrap\Modal::begin([
 						}
 						?>
 
-<!--						--><?//= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>['/ut-kart/order', 'id' => $abon->id],'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
+						<?= Html::a("Оплата", ['#'], ['id'=>'btnmod','data-target'=>'#modalpay','data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
+<!--						<div class="block">Блок--><?//=$abon->id?><!--</div>-->
 <!--						--><?//= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
-						<?= Html::a("Оплата", ['/ut-kart/order', 'id' => $abon->id], ['id'=>'btn-mod-pay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
+						<?php echo Html::button("Оплата", [
+							'class' => 'btn btn-danger',
+							'onclick' => "PrePay($abon->id)",
+						])
+						?>
+
+<!--						--><?//= Html::a("Оплата", ['/ut-kart/order', 'id' => $abon->id], ['id'=>'btn-mod-pay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
 
 
 					</div>
@@ -398,5 +362,37 @@ yii\bootstrap\Modal::begin([
 
 
     </div>
-<!--	--><?php //Pjax::end(); ?>
+	<?php Pjax::end(); ?>
 </div>
+
+
+<script type="text/javascript">
+	function PrePay(id)
+	{
+
+//		var keys = $('#gridfile').yiiGridView('getSelectedRows');
+//		if (keys.length != 0){
+//			var hi= confirm("Ви впевненні що хочете видалити ці файли?");
+//			if (hi== true){
+				$.ajax({
+					url: "/ut-kart/pay",
+					type: 'post',
+					data: {id},
+					success: function(s) {
+						//				alert(s);
+					$('#modalpay').modal('show').modal({backdrop: false});
+					$('#modal-content').html(s);
+//						.load($(this).attr('href'));
+
+					}
+
+				});
+
+//			}
+//		}
+
+
+	}
+
+
+</script>
