@@ -1,10 +1,16 @@
 <?php
 /**
- * These are the Yii core requirements for the [[YiiRequirementChecker]] instance.
- * These requirements are mandatory for any Yii application.
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
  */
 
 /* @var $this YiiRequirementChecker */
+
+/**
+ * These are the Yii core requirements for the [[YiiRequirementChecker]] instance.
+ * These requirements are mandatory for any Yii application.
+ */
 return array(
     array(
         'name' => 'PHP version',
@@ -100,7 +106,7 @@ return array(
     array(
         'name' => 'IPv6 support',
         'mandatory' => false,
-        'condition' => defined('AF_INET6'),
+        'condition' => strlen(@inet_pton('2001:db8::1')) === 16,
         'by' => 'IPv6 expansion in <a href="http://www.yiiframework.com/doc-2.0/yii-validators-ipvalidator.html">IpValidator</a>',
         'memo' => 'When <a href="http://www.yiiframework.com/doc-2.0/yii-validators-ipvalidator.html#$expandIPv6-detail">IpValidator::expandIPv6</a>
         property is set to <code>true</code>, PHP must support IPv6 protocol stack. Currently PHP constant <code>AF_INET6</code> is not defined

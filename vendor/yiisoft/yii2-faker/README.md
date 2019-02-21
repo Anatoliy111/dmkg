@@ -1,5 +1,10 @@
-Faker Extension for Yii 2
-=========================
+<p align="center">
+    <a href="https://github.com/yiisoft" target="_blank">
+        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
+    </a>
+    <h1 align="center">Faker Extension for Yii 2</h1>
+    <br>
+</p>
 
 This extension provides a [`Faker`](https://github.com/fzaninotto/Faker) fixture command for the [Yii framework 2.0](http://www.yiiframework.com).
 
@@ -7,8 +12,8 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 Documentation is at [docs/guide/README.md](docs/guide/README.md).
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-faker/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-faker)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-faker/downloads.png)](https://packagist.org/packages/yiisoft/yii2-faker)
+[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-faker.svg)](https://packagist.org/packages/yiisoft/yii2-faker)
+[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-faker.svg)](https://packagist.org/packages/yiisoft/yii2-faker)
 [![Build Status](https://travis-ci.org/yiisoft/yii2-faker.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-faker)
 
 

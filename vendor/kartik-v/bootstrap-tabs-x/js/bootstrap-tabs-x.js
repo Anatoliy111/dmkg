@@ -1,6 +1,6 @@
 /*!
- * @copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2017
- * @version 1.3.3
+ * @copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
+ * @version 1.3.2
  *
  * Bootstrap Tabs Extended - Extended Bootstrap Tabs with ability to align tabs 
  * in multiple ways, add borders, rotated titles, and more.
@@ -8,23 +8,22 @@
  * For more JQuery/Bootstrap plugins and demos visit http://plugins.krajee.com
  * For more Yii related demos visit http://demos.krajee.com
  */
-(function (factory) {
-    "use strict";
-    //noinspection JSUnresolvedVariable
-    if (typeof define === 'function' && define.amd) { // jshint ignore:line
-        define(['jquery'], factory); // jshint ignore:line
-    } else { // noinspection JSUnresolvedVariable
-        if (typeof module === 'object' && module.exports) { // jshint ignore:line
-            // noinspection JSUnresolvedVariable
-            module.exports = factory(require('jquery')); // jshint ignore:line
-        } else {
-            factory(window.jQuery);
-        }
-    }
-}(function ($) {
+(function ($) {
     "use strict";
     var isEmpty = function (value, trim) {
             return value === null || value === undefined || value.length === 0 || (trim && $.trim(value) === '');
+        },
+        kvTabsCache = {
+            timeout: 300000,
+            data: {},
+            exist: function (key) {
+                return !!kvTabsCache.data[key] &&
+                ((new Date().getTime() - kvTabsCache.data[key]) < kvTabsCache.timeout);
+            },
+            set: function (key) {
+                delete kvTabsCache.data[key];
+                kvTabsCache.data[key] = new Date().getTime();
+            }
         },
         TabsX = function (element, options) {
             var self = this;
@@ -33,19 +32,18 @@
             self.listen();
         };
 
-    //noinspection JSUnusedGlobalSymbols
     TabsX.prototype = {
         constructor: TabsX,
         init: function (options) {
-            var self = this, $el = self.$element;
+            var self = this, $el = self.$element, chk;
             $.each(options, function (key, val) {
                 self[key] = val;
             });
-            self.initCache();
-            self.enableCache = !!self.enableCache;
+            chk = self.enableCache;
             if (!isEmpty(self.addCss) && !$el.hasClass(self.addCss)) {
                 $el.addClass(self.addCss);
             }
+            self.enableCache = chk === true || chk === "true" || parseInt(chk) === 1;
             self.$pane = $el.find('.tab-pane.active');
             self.$content = $el.find('.tab-content');
             self.$tabs = $el.find('.nav-tabs');
@@ -54,6 +52,7 @@
             if (self.isVertical) {
                 self.$content.css('min-height', self.$tabs.outerHeight() + 1 + 'px');
             }
+            kvTabsCache.timeout = self.cacheTimeout;
         },
         setTitle: function ($el) {
             var self = this, txt = $.trim($el.text()), isVertical = self.isVertical,
@@ -80,8 +79,8 @@
                         return;
                     }
                     var vUrl = $(this).attr("data-url"), vHash = this.hash, cacheKey = vUrl + vHash, settings;
-                    if (isEmpty(vUrl) || (self.enableCache && self.cache.exist(cacheKey))) {
-                        $el.trigger('tabsX:click');
+                    if (isEmpty(vUrl) || self.enableCache && kvTabsCache.exist(cacheKey)) {
+                        $el.trigger('tabsX.click');
                         return;
                     }
                     e.preventDefault();
@@ -93,14 +92,14 @@
                     if (!isEmpty($element.attr('class'))) {
                         $paneHeader = $element.find('.dropdown-toggle');
                     }
-                    settings = $.extend(true, {}, {
+                    settings = $.extend({
                         type: 'post',
                         dataType: 'json',
                         url: vUrl,
                         beforeSend: function (jqXHR, settings) {
                             $tab.html('<br><br><br>');
                             $paneHeader.removeClass(css).addClass(css);
-                            $el.trigger('tabsX:beforeSend', [jqXHR, settings]);
+                            $el.trigger('tabsX.beforeSend', [jqXHR, settings]);
                         },
                         success: function (data, status, jqXHR) {
                             setTimeout(function () {
@@ -108,74 +107,48 @@
                                 $pane.tab('show');
                                 $paneHeader.removeClass(css);
                                 if (self.enableCache) {
-                                    self.cache.set(cacheKey);
+                                    kvTabsCache.set(cacheKey);
                                 }
                                 if (cbSuccess && typeof cbSuccess === "function") {
                                     cbSuccess(data, status, jqXHR);
                                 }
-                                $el.trigger('tabsX:success', [data, status, jqXHR]);
+                                $el.trigger('tabsX.success', [data, status, jqXHR]);
                             }, 300);
                         },
                         error: function (jqXHR, status, message) {
                             if (cbError && typeof cbError === "function") {
                                 cbError(jqXHR, status, message);
                             }
-                            $el.trigger('tabsX:error', [jqXHR, status, message]);
+                            $el.trigger('tabsX.error', [jqXHR, status, message]);
                         },
                         complete: function (jqXHR, status) {
-                            $el.trigger('tabsX:click', [jqXHR, status]);
+                            $el.trigger('tabsX.click', [jqXHR, status]);
                         }
                     }, self.ajaxSettings);
                     $.ajax(settings);
                 });
             });
-        },
-        initCache: function() {
-            var self = this, t = parseFloat(self.cacheTimeout);
-            if (isNaN(t)) {
-                t = 0;
-            }
-            self.cache = {
-                data: {},
-                create: function() {
-                    return (new Date().getTime());
-                },
-                exist: function (key) {
-                    return !!self.cache.data[key] && ((self.cache.create() - self.cache.data[key]) < t);
-                },
-                set: function (key) {
-                    self.cache.data[key] = self.cache.create();
-                }
-            };
-        },
-        flushCache: function () {
-            var self = this;
-            self.cache.data = {};
         }
     };
 
     $.fn.tabsX = function (option) {
-        var args = Array.apply(null, arguments), retvals = [];
+        var args = Array.apply(null, arguments);
         args.shift();
-        this.each(function () {
-            var self = $(this), data = self.data('tabsX'), options = typeof option === 'object' && option;
+        return this.each(function () {
+            var $this = $(this),
+                data = $this.data('tabsX'),
+                options = typeof option === 'object' && option;
             if (!data) {
-                data = new TabsX(this, $.extend(true, {}, $.fn.tabsX.defaults, options, $(this).data()));
-                self.data('tabsX', data);
+                data = new TabsX(this, $.extend({}, $.fn.tabsX.defaults, options, $(this).data()));
+                $this.data('tabsX', data);
             }
             if (typeof option === 'string') {
-                retvals.push(data[option].apply(data, args));
+                data[option].apply(data, args);
             }
         });
-        switch (retvals.length) {
-            case 0:
-                return this;
-            case 1:
-                return retvals[0];
-            default:
-                return retvals;
-        }
     };
+
+    $.fn.tabsX.Constructor = TabsX;
 
     $.fn.tabsX.defaults = {
         enableCache: true,
@@ -187,9 +160,7 @@
         addCss: 'tabs-krajee'
     };
 
-    $.fn.tabsX.Constructor = TabsX;
-
     $(document).on('ready', function () {
         $('.tabs-x').tabsX({});
     });
-}));
+}(window.jQuery));

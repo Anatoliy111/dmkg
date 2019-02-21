@@ -9,7 +9,7 @@ namespace yii\data;
 
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 /**
  * BaseDataProvider provides a base class that implements the [[DataProviderInterface]].
@@ -46,13 +46,17 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
     public $id;
 
     private $_sort;
+    /**
+     * @var Pagination|false
+     */
     private $_pagination;
     private $_keys;
     private $_models;
     private $_totalCount;
 
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -182,14 +186,19 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
 
     /**
      * Returns the pagination object used by this data provider.
-     * Note that you should call [[prepare()]] or [[getModels()]] first to get correct values
-     * of [[Pagination::totalCount]] and [[Pagination::pageCount]].
      * @return Pagination|false the pagination object. If this is false, it means the pagination is disabled.
      */
     public function getPagination()
     {
         if ($this->_pagination === null) {
             $this->setPagination([]);
+        }
+
+        if (($this->_pagination !== false) && ($this->_pagination->totalCount === null)) {
+            if ($this->_totalCount === null) {
+                $this->setTotalCount($this->prepareTotalCount());
+            }
+            $this->_pagination->totalCount = $this->_totalCount;
         }
 
         return $this->_pagination;
@@ -205,7 +214,7 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
      * - an instance of [[Pagination]] or its subclass
      * - false, if pagination needs to be disabled.
      *
-     * @throws InvalidParamException
+     * @throws InvalidArgumentException
      */
     public function setPagination($value)
     {
@@ -219,7 +228,7 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
         } elseif ($value instanceof Pagination || $value === false) {
             $this->_pagination = $value;
         } else {
-            throw new InvalidParamException('Only Pagination instance, configuration array or false is allowed.');
+            throw new InvalidArgumentException('Only Pagination instance, configuration array or false is allowed.');
         }
     }
 
@@ -246,7 +255,7 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
      * - an instance of [[Sort]] or its subclass
      * - false, if sorting needs to be disabled.
      *
-     * @throws InvalidParamException
+     * @throws InvalidArgumentException
      */
     public function setSort($value)
     {
@@ -259,7 +268,7 @@ abstract class BaseDataProvider extends Component implements DataProviderInterfa
         } elseif ($value instanceof Sort || $value === false) {
             $this->_sort = $value;
         } else {
-            throw new InvalidParamException('Only Sort instance, configuration array or false is allowed.');
+            throw new InvalidArgumentException('Only Sort instance, configuration array or false is allowed.');
         }
     }
 

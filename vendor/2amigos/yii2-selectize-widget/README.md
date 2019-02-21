@@ -7,7 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/2amigos/yii2-selectize-widget.svg?style=flat-square)](https://scrutinizer-ci.com/g/2amigos/yii2-selectize-widget)
 [![Total Downloads](https://img.shields.io/packagist/dt/2amigos/yii2-selectize-widget.svg?style=flat-square)](https://packagist.org/packages/2amigos/yii2-selectize-widget)
 
-[Selectize](http://brianreavis.github.io/selectize.js/) is an extensible jQuery-based custom &lt;select&gt; UI control. It's useful for tagging, contact lists, country selectors, and so on. It clocks in at around ~7kb (gzipped). The goal is to provide a solid & usable experience with a clean and powerful API.
+[Selectize](https://selectize.github.io/selectize.js/) is an extensible jQuery-based custom &lt;select&gt; UI control. It's useful for tagging, contact lists, country selectors, and so on. It clocks in at around ~7kb (gzipped). The goal is to provide a solid & usable experience with a clean and powerful API.
 
 ## Installation
 
@@ -76,7 +76,6 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## Credits
 
 - [Antonio Ramirez](https://github.com/tonydspaniard)
-- [Alexander Kochetov](https://github.com/creocoder)
 - [All Contributors](https://github.com/2amigos/yii2-selectize-widget/graphs/contributors)
 
 ## License

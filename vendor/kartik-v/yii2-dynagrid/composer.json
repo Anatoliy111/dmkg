@@ -26,19 +26,19 @@
         }
     ],
     "require": {
-        "kartik-v/yii2-grid": "~3.0",
+        "kartik-v/yii2-grid": "~3.1",
         "kartik-v/yii2-widget-activeform": "~1.4",
         "kartik-v/yii2-widget-select2": "~2.0",
         "kartik-v/yii2-sortable": "~1.2"
     },
     "autoload": {
         "psr-4": {
-            "kartik\\dynagrid\\": ""
+            "kartik\\dynagrid\\": "src"
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.4.x-dev"
+            "dev-master": "1.5.x-dev"
         }
     }
 }
