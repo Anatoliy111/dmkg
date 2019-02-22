@@ -28,6 +28,10 @@
 jQuery(document).on('ready', function() {
     (function ($) {
 
+        $('#modalpay').on('click', function() {
+            alert("1");
+        });
+
 
         $('#modal-btn').on('click', function() {
             $('#passmodal').modal('show')

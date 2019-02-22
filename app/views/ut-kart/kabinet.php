@@ -395,4 +395,36 @@ yii\bootstrap\Modal::begin([
 	}
 
 
+//		$("#pay-form").on("submit", function (event) {
+//			alert("1");
+//			event.preventDefault();
+//			var $this = $(this);
+//			var frmValues = $this.serialize();
+//			$.ajax({
+//					type: $this.attr('method'),
+//					url: $this.attr('action'),
+//					data: frmValues
+//				})
+//				.done(function () {
+//					$("#para").text("Done!" + frmValues);
+//				})
+//				.fail(function () {
+//					$("#para").text("An error occured!");
+//				});
+//		});
+//
+//
+//
+//
+//		$(document).on('click', '#modalpay', function (e) {
+//				e.modalWindow = true;
+//			})
+//			.on('click', function (e) {
+//				if (!e.modalWindow) {
+//					console.log('Это — не моя клетка!');
+//				}
+//			});
+
+
+
 </script>

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\poslug\models\UtAbonent;
+use kartik\builder\TabularForm;
 use Yii;
 
 /**
@@ -65,4 +66,7 @@ class UtPay extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtKart::className(), ['id' => 'id_kart']);
     }
+
+
+
 }

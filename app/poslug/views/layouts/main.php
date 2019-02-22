@@ -117,6 +117,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 							['label' => 'Постачальники', 'url' => '/poslug/ut-postach/index'],
 							['label' => 'Співробітники', 'url' => '/poslug/ut-sotr/index'],
 							['label' => 'Матеріали', 'url' => '/poslug/ut-mat/index'],
+							['label' => 'Вул', 'url' => '/poslug/ut-ulica/index'],
 						],
 					],
 
