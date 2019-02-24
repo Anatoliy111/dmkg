@@ -22,6 +22,7 @@
  */
 
 namespace app\models;
+use InvalidArgumentException;
 
 /**
  * Payment method liqpay process

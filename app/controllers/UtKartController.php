@@ -28,6 +28,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use DateTimeInterface;
 use yii\filters\AccessControl;
 
 /**
@@ -72,66 +73,67 @@ class UtKartController extends Controller
      */
 	public function actionPay()
 	{
-		$public_key='i26177975911';
-        $private_key='MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
+		$public_key = 'i26177975911';
+		$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
 		$session = Yii::$app->session;
 		$model = new UtPay();
 
-		if(\Yii::$app->request->isAjax){
-			$data = Yii::$app->request->post();
-//			$model = $this->findAbonent($data['id']);
-			$fl_modal=1;
-
-			$model->id_abonent = $this->findAbonent($data['id'])['id'];
-			$model->id_kart = $session['model']->id;
+		if (\Yii::$app->request->isAjax) {
+			if (array_key_exists('payid_abonent', Yii::$app->request->post())) {
 
 
-			$oplab=UtOpl::find()
-				->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-				->where(['ut_opl.id_abonent'=> $model->id_abonent])
-				->andwhere(['>', 'ut_opl.period', $session['period']])
-				->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
-				->asArray();
+				$model->id_abonent = Yii::$app->request->post()['payid_abonent'];
+				$model->id_kart = $session['model']->id;
 
 
-			$dolg= UtObor::find();
-			$dolg->select(["ut_obor.*","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl","case when (ut_obor.sal-COALESCE(b.summ,0)) > 0 then round((ut_obor.sal-COALESCE(b.summ,0)),2) else 0  end as sendopl"]);
-			$dolg->where(['ut_obor.id_abonent'=> $model->id_abonent,'ut_obor.period'=> $session['period']]);
-			$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+				$oplab = UtOpl::find()
+					->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+					->where(['ut_opl.id_abonent' => $model->id_abonent])
+					->andwhere(['>', 'ut_opl.period', $session['period']])
+					->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
+					->asArray();
 
 
-			$dataProvider = new ActiveDataProvider([
-				'query' => $dolg,
-			]);
+				$dolg = UtObor::find();
+				$dolg->select(["ut_obor.*", "round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl", "case when (ut_obor.sal-COALESCE(b.summ,0)) > 0 then round((ut_obor.sal-COALESCE(b.summ,0)),2) else 0  end as sendopl"]);
+				$dolg->where(['ut_obor.id_abonent' => $model->id_abonent, 'ut_obor.period' => $session['period']]);
+				$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
 
- 			return $this->renderAjax('pay', [
-				'model' => $model,
-				'dp' => $dataProvider
-			]);
+
+				$dataProvider = new ActiveDataProvider([
+					'query' => $dolg,
+				]);
+
+				return $this->renderAjax('pay', [
+					'model' => $model,
+					'dp' => $dataProvider
+				]);
+			} else
+				if ($model->load(Yii::$app->request->post())) {
+					$my_date = new \DateTime("now", new \DateTimeZone('Asia/Manila'));
+
+					$model->datepay = $my_date->format('Y-m-d H:i:s');
+					if ($model->save()) {
+						$liqpay = new LiqPay($public_key, $private_key);
+						$html = $liqpay->cnb_form(array(
+							'action' => 'pay',
+							'amount' => $model->summ,
+							'currency' => 'UAH',
+							'description' => 'dfgsdf',
+							'order_id' => $model->id,
+							'version' => '3',
+							'language' => 'uk',
+							'result_url' => yii::$app->request->referrer,
+							'sandbox' => 1
+						));
+//						return $this->redirect($html);
+						return $html;
+					}
+
+
+				}
+
 		}
-
-		if ($model->load(Yii::$app->request->post())) {
-			$model->datepay = new DateTime();
-			if ($model->save()){
-				$liqpay = new LiqPay($public_key, $private_key);
-				$html = $liqpay->cnb_form(array(
-					'action'         => 'pay',
-					'amount'         => $model->summ,
-					'currency'       => 'UAH',
-					'description'    => $model->textpay,
-					'order_id'       => $model->id,
-					'version'        => '3',
-					'language'       =>  'uk',
-					'result_url'     => Url::toRoute(['/ut-kart']),
-					'sandbox'        => 1
-				));
-				return $this->redirect($html);
-			}
-
-
-		}
-
-
 	return $this->redirect('/ut-kart');
 
 	}

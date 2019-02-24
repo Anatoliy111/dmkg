@@ -252,17 +252,11 @@ yii\bootstrap\Modal::begin([
 						}
 						?>
 
-						<?= Html::a("Оплата", ['#'], ['id'=>'btnmod','data-target'=>'#modalpay','data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
-<!--						<div class="block">Блок--><?//=$abon->id?><!--</div>-->
-<!--						--><?//= Html::a("Оплата", ['#'], ['id'=>'btn-mod-pay','data-target'=>'#modalpay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
-						<?php echo Html::button("Оплата", [
-							'class' => 'btn btn-danger',
+						<?php echo Html::button("Сплатити", [
+							'class' => 'btn btn-success btn-lg btn-block',
 							'onclick' => "PrePay($abon->id)",
 						])
 						?>
-
-<!--						--><?//= Html::a("Оплата", ['/ut-kart/order', 'id' => $abon->id], ['id'=>'btn-mod-pay','action'=>Url::toRoute(['/ut-kart/order', 'id' => $abon->id]),'data-toggle' =>'modal','class'=>'btn btn-success btn-lg btn-block'])?>
-
 
 					</div>
 
@@ -369,15 +363,16 @@ yii\bootstrap\Modal::begin([
 <script type="text/javascript">
 	function PrePay(id)
 	{
-
+     var payid_abonent = id;
 //		var keys = $('#gridfile').yiiGridView('getSelectedRows');
 //		if (keys.length != 0){
 //			var hi= confirm("Ви впевненні що хочете видалити ці файли?");
 //			if (hi== true){
+
 				$.ajax({
 					url: "/ut-kart/pay",
 					type: 'post',
-					data: {id},
+					data: {payid_abonent},
 					success: function(s) {
 						//				alert(s);
 					$('#modalpay').modal('show').modal({backdrop: false});

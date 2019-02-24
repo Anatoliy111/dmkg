@@ -9,6 +9,7 @@ use kartik\builder\TabularForm;
 use kartik\grid\GridView;
 use kartik\form\ActiveForm;
 use yii\bootstrap\Html;
+use yii\widgets\MaskedInput;
 use yii\widgets\Pjax;
 
 ?>
@@ -98,20 +99,31 @@ use yii\widgets\Pjax;
                 'tipposl'=>[
                     'type'=>TabularForm::INPUT_STATIC,
                     'label'=>'Послуга',
-                    'columnOptions'=>['hAlign'=>GridView::ALIGN_RIGHT, 'width'=>'90px']
+                    'columnOptions'=>['hAlign'=>GridView::ALIGN_LEFT, 'width'=>'140px']
                 ],
                 'dolgopl'=>[
                     'type'=>TabularForm::INPUT_STATIC,
                     'label'=>'Борг',
-                    'columnOptions'=>['hAlign'=>GridView::ALIGN_RIGHT, 'width'=>'90px']
+                    'columnOptions'=>['hAlign'=>GridView::ALIGN_RIGHT, 'width'=>'90px'],
+                    'format'=>['decimal', 2],
                 ],
                 'sendopl'=>[
-                    'label'=>'Сума оплати',
-                    'type'=>TabularForm::INPUT_TEXT,
-                    'pageSummary' => true,
-                    'value' => function ($model, $key){
-                        $www=$key;
-                    },
+                    'label'=>'Сума до сплати',
+                    'type'=>TabularForm::INPUT_WIDGET,
+                    'widgetClass'=>MaskedInput::className(),
+                    'options'=>[
+                        'clientOptions' => [
+
+                          'alias' => 'decimal',
+                          'digits' => 2,
+                          'removeMaskOnSubmit' => true,
+                        ],
+                           ],
+//                    'type'=>MaskedInput::className(), [
+//                        'mask' => '9999',
+//                    ],
+
+
                 ],
             ],
             'actionColumn' => false,
@@ -120,6 +132,7 @@ use yii\widgets\Pjax;
         'pjax' => true,
         //    	'floatHeader'=>true,
         'panel'=>[
+        'footer'=>false,
         'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-usd"></i>'.' '.$this->title.'</h3>',
         'type' => GridView::TYPE_PRIMARY,
 //        'after'=> Html::a('<i class="glyphicon glyphicon-plus"></i> Add New', '#', ['class'=>'btn btn-success']) . ' ' .
@@ -133,19 +146,18 @@ use yii\widgets\Pjax;
         ]);
                ?>
 
+        <?=	 $form->field($model, 'summ')->hiddenInput()->label(false) ?>
+        <?=	 $form->field($model, 'id_abonent')->hiddenInput()->label(false)?>
+        <?=	 $form->field($model, 'id_kart')->hiddenInput()->label(false)?>
 
-        <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
+        <div class="summa" style="color: #0d0c66;">
+
+            <h3>Всього: <div id='paysumm'>0</div></h3>
+        </div>
+
+
+        <?= Html::submitButton('Оплата', ['class' => 'btn btn-primary']) ?>
     </div>
 <?php ActiveForm::end(); ?>
 
-<script type="text/javascript">
-    function ($)
-    {
-        $("pay-form").on("submit", function(){
-            return false;
-        })
-    }
-
-
-</script>
 

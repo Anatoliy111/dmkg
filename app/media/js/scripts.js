@@ -45,11 +45,7 @@ $(function(){
 
 /* not Enter for input form
  ========================================================*/
-(function ($) {
-    $("pay-form").on("submit", function(){
-        return false;
-    })
-})(jQuery);
+
 
 jQuery(function($){
     $("#pay-form").on("submit", function (event) {
@@ -72,20 +68,6 @@ jQuery(function($){
 });
 
 
-(function ($) {
-    $(document).on('click', '#modalpay', function (e) {
-            e.modalWindow = true;
-        })
-        .on('click', function (e) {
-            if (!e.modalWindow) {
-                console.log('Это — не моя клетка!');
-            }
-        });
-})(jQuery);
-
-
-
-
 /* Modal Pay
  ========================================================*/
 //(function ($) {
@@ -97,91 +79,96 @@ jQuery(function($){
 //    });
 //})(jQuery);
 //;
-jQuery(document).on('click', '#pay-form', function() {
-    var rows = document.getElementsByTagName("input");
-//     var innp =rows.getElementsById("utobor-234838-sendopl");
-    var totalSum = 0;
-    //$( "#pay-form" )
-    ////    .submit(function( event ) {
-    ////    event.preventDefault();
-    ////})
-    //.keypress(function (event) {
-    //        if (event.which == '13') {
-    //            event.preventDefault();
-    //        }})
-    //    .click(function (event) {
-    //        if (event.which == '13') {
-    //            event.preventDefault();
-    //        }});
+(function () {
 
-    $('input').keypress(function (event) {
-        if (event.which == '13') {
-            event.preventDefault();
-        }});
+    //при открытии модального окна
+    $('#modalpay').on('shown.bs.modal', function () {
+        var sum = 0;
+        // will only come inside after the modal is shown
+        $("form#pay-form :input").each(function () {
+            if (this.id != "" && this.id != "utpay-summ" && this.id != "utpay-id_abonent" && this.id != "utpay-id_kart")
+                sum += Number($(this).val());
+        });
 
+        document.getElementById('paysumm').innerHTML = sum.toFixed(2);
+        document.getElementById('utpay-summ').value = sum.toFixed(2);
+    });
 
+    //при клик или кнопка в форме модального окна
+    $(document).
+    on('keypress click', '#pay-form', function() {
+        var sum = 0;
 
+        $("form#pay-form :input").each(function () {
+            if (this.id != "" && this.id != "utpay-summ" && this.id != "utpay-id_abonent" && this.id != "utpay-id_kart")
+                sum += Number($(this).val());
+        });
 
+        //alert(sum.toFixed(2));
 
+        //нажатие кнопки в поле ввода - если ентер ничего не делать
+        $('input').keypress(function (event) {
+            if (event.which == '13') {
+                event.preventDefault();
+            }});
 
-
-
-
-
-    //$(document).on('submit', function (e) {
+        document.getElementById('paysumm').innerHTML = sum.toFixed(2);
+        document.getElementById('utpay-summ').value = sum.toFixed(2);
+    })
+    // .on('submit', function (e) {
     //
+    //    $.ajax({
+    //        url: "/ut-kart/pay",
+    //        type: 'post',
+    //        data: {},
+    //        success: function(s) {
     //
-    //    alert('nosubmit');
-    //    e.preventDefault();
+    //        }
     //
-    //})
-});
-
-
-
-    //(function ($) {
-    //
-    //    $(document).on('submit', '#pay-form', function (e) {
-    //                alert('nosubmit');
-    //            //alert('submit');
-    //            e.preventDefault();
-    //            //e.modalWindow = true;
-    //        })
-    //        //.on('click', function (e) {
-    //        //    if (!e.modalWindow) {
-    //        //        alert(321);
-    //        //        console.log('Это — не моя клетка!');
-    //        //    }
-    //        //}
-    //        //)
-    //    ;
-    //
-    //    $("#btn-mod-pay").click(function(){
-    //        // нужный блок выбирается относительно this как предыдущий (prev)
-    //        var textBlock = $(this).prev('.block').text();
-    //        alert(textBlock);
     //    });
     //
     //
-    //    //$('.btn-mod-pay').on('click', function() {
-    //    //    var textBlock = $(this).prev('.block').text();
-    //    //    alert(textBlock);
-    //    //    //$('#modalpay').modal('show').find('.modal-content')
-    //    //    //    .load($(this).attr('href'));
-    //    //});
     //
+    //    //alert('nosubmit');
+    //    //e.preventDefault();
     //
-    //
-    //})(jQuery);
+    //})
+    //после субмита
+        .on('beforeSubmit','#pay-form', function(){
+            //загружает модели формы и передает пост
+            if (document.getElementById('utpay-summ').value <= 0){
+                alert('Введіть корректну суму платежу!!!');
+                return false;
+            }
+            var data = $(this).serialize();
+
+            $.ajax({
+                url: '/ut-kart/pay',
+                type: 'POST',
+                data: data,
+                success: function(res){
+                    //console.log(res);
+                $('#modal-content').html(res);
+                },
+                error: function(){
+                    alert('Error!');
+                }
+            });
+            return false;
+        });
 
 
 
-//$(document).ready(function(){
-//    $(".btn-mod-pay").click(function(){
-//        // нужный блок выбирается относительно this как предыдущий (prev)
-//        var textBlock = $(this).prev('.block').text();
-//        alert(textBlock);
-//    });
-//
-//});/*end  ready*/
+
+
+
+
+
+})(jQuery);
+
+
+
+
+
+
 
