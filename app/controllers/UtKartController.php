@@ -77,6 +77,8 @@ class UtKartController extends Controller
 		$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
 		$session = Yii::$app->session;
 		$model = new UtPay();
+		$textpay='';
+		$post = Yii::$app->request->post();
 
 		if (\Yii::$app->request->isAjax) {
 			if (array_key_exists('payid_abonent', Yii::$app->request->post())) {
@@ -111,15 +113,25 @@ class UtKartController extends Controller
 			} else
 				if ($model->load(Yii::$app->request->post())) {
 					$my_date = new \DateTime("now", new \DateTimeZone('Asia/Manila'));
-
 					$model->datepay = $my_date->format('Y-m-d H:i:s');
+					$schet = UtAbonent::findOne($model->id_abonent)['schet'];
+					$textpay='Оплата по рахунку '.$schet.' за послуги:';
+					foreach ($post['UtObor'] as $idobor=>$impopl)
+					{
+						if ($impopl['sendopl']!=0)
+							$textpay=$textpay.UtObor::findOne($idobor)['tipposl'].':'.$impopl['sendopl'].' ';
+					}
+
 					if ($model->save()) {
 						$liqpay = new LiqPay($public_key, $private_key);
+//						$api =$liqpay->api()
+
+
 						$html = $liqpay->cnb_form(array(
 							'action' => 'pay',
 							'amount' => $model->summ,
 							'currency' => 'UAH',
-							'description' => 'dfgsdf',
+							'description' => $textpay,
 							'order_id' => $model->id,
 							'version' => '3',
 							'language' => 'uk',
@@ -127,7 +139,34 @@ class UtKartController extends Controller
 							'sandbox' => 1
 						));
 //						return $this->redirect($html);
-						return $html;
+						return sprintf('
+								<div class="col-xs-12">
+
+
+										<center><h4>Сума до сплати</h4></center>
+										<div class="summa" style="color: #0a660c;">
+										    <center><h2>%s</h2></center>
+										</div>
+
+									<div class="panel panel-success">
+										<div class="panel-heading">
+											Призначення платежу
+										</div>
+										<div class="panel-body">
+											<p>%s</p>
+										</div>
+								    </div>
+
+
+
+
+
+								</div>
+            ',
+							$model->summ,
+							$textpay
+
+						).$html;
 					}
 
 
@@ -137,7 +176,6 @@ class UtKartController extends Controller
 	return $this->redirect('/ut-kart');
 
 	}
-
 
 
     public function actionIndex()

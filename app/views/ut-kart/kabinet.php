@@ -70,7 +70,7 @@ use yii\widgets\Pjax;
 
 <?php
 yii\bootstrap\Modal::begin([
-	'header' => 'Формування платежу',
+	'header' => '<h2>Формування платежу</h2>',
 	'id' => 'modalpay',
 	'size' => 'modal-md',
 ]);

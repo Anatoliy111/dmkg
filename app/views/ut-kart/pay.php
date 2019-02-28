@@ -156,7 +156,7 @@ use yii\widgets\Pjax;
         </div>
 
 
-        <?= Html::submitButton('Оплата', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Зформувати платіж', ['class' => 'btn btn-primary']) ?>
     </div>
 <?php ActiveForm::end(); ?>
 
