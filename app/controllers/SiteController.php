@@ -57,6 +57,13 @@ class SiteController extends Controller
 
 	}
 
+
+	public function actionLiqpaystat()
+	{
+		return $this->render('download');
+	}
+
+
 	public function actionSaveperiodkab()
 	{
 //		Yii::$app->request->Ajax

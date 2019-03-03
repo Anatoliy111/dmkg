@@ -136,6 +136,7 @@ class UtKartController extends Controller
 							'version' => '3',
 							'language' => 'uk',
 							'result_url' => yii::$app->request->referrer,
+							'server_url'    => 'http://dmkg.com.ua/site/liqpaystat',
 							'sandbox' => 1
 						));
 //						return $this->redirect($html);
@@ -143,9 +144,9 @@ class UtKartController extends Controller
 								<div class="col-xs-12">
 
 
-										<center><h4>Сума до сплати</h4></center>
+										<h4>Сума до сплати</h4>
 										<div class="summa" style="color: #0a660c;">
-										    <center><h2>%s</h2></center>
+										    <h2>%s</h2>
 										</div>
 
 									<div class="panel panel-success">
