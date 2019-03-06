@@ -57,7 +57,7 @@ use yii\grid\GridView;
 					'type' => Growl::TYPE_DANGER,
 					'title' => 'Помилка!',
 					'icon' => 'glyphicon glyphicon-remove-sign',
-					'body' => 'Невірний код доступу !!!',
+					'body' => 'Не вірний код доступу !!!',
 					'showSeparator' => true,
 					'delay' => false,
 					'pluginOptions' => [

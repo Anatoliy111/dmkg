@@ -136,7 +136,7 @@ class UtKartController extends Controller
 							'version' => '3',
 							'language' => 'uk',
 							'result_url' => yii::$app->request->referrer,
-							'server_url'    => 'http://dmkg.com.ua/site/liqpaystat',
+							'server_url'    => 'http://dmkg.com.ua/site/callback',
 							'sandbox' => 1
 						));
 //						return $this->redirect($html);

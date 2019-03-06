@@ -58,7 +58,7 @@ class SiteController extends Controller
 	}
 
 
-	public function actionLiqpaystat()
+	public function actionCallback()
 	{
 		return $this->render('download');
 	}
