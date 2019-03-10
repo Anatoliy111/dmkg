@@ -251,12 +251,14 @@ yii\bootstrap\Modal::begin([
 							<?php
 						}
 						?>
-
-<!--						--><?php //echo Html::button("Сплатити", [
-//							'class' => 'btn btn-success btn-lg btn-block',
-//							'onclick' => "PrePay($abon->id)",
-//						])
-//						?>
+						<?php
+						if ($abon->id==2071) {
+							echo Html::button("Сплатити", [
+								'class' => 'btn btn-success btn-lg btn-block',
+								'onclick' => "PrePay($abon->id)",
+							]);
+						}
+						?>
 
 					</div>
 
