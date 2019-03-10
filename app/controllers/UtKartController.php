@@ -2,8 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\LiqPay;
-use app\models\UtPay;
 use app\poslug\models\UtAbonent;
 use app\models\UtAuth;
 use app\poslug\models\UtNarah;
@@ -17,18 +15,15 @@ use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifab;
 use app\poslug\models\UtTarifplan;
 use app\poslug\models\UtUtrim;
-use DateTime;
 use Yii;
 use app\models\UtKart;
 use app\models\SearchUtKart;
 use yii\bootstrap\Alert;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use DateTimeInterface;
 use yii\filters\AccessControl;
 
 /**
@@ -71,114 +66,6 @@ class UtKartController extends Controller
      * Lists all UtKart models.
      * @return mixed
      */
-	public function actionPay()
-	{
-		$public_key = 'i26177975911';
-		$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
-		$session = Yii::$app->session;
-		$model = new UtPay();
-		$textpay='';
-		$post = Yii::$app->request->post();
-
-		if (\Yii::$app->request->isAjax) {
-			if (array_key_exists('payid_abonent', Yii::$app->request->post())) {
-
-
-				$model->id_abonent = Yii::$app->request->post()['payid_abonent'];
-				$model->id_kart = $session['model']->id;
-
-
-				$oplab = UtOpl::find()
-					->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-					->where(['ut_opl.id_abonent' => $model->id_abonent])
-					->andwhere(['>', 'ut_opl.period', $session['period']])
-					->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
-					->asArray();
-
-
-				$dolg = UtObor::find();
-				$dolg->select(["ut_obor.*", "round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl", "case when (ut_obor.sal-COALESCE(b.summ,0)) > 0 then round((ut_obor.sal-COALESCE(b.summ,0)),2) else 0  end as sendopl"]);
-				$dolg->where(['ut_obor.id_abonent' => $model->id_abonent, 'ut_obor.period' => $session['period']]);
-				$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-
-
-				$dataProvider = new ActiveDataProvider([
-					'query' => $dolg,
-				]);
-
-				return $this->renderAjax('pay', [
-					'model' => $model,
-					'dp' => $dataProvider
-				]);
-			} else
-				if ($model->load(Yii::$app->request->post())) {
-					$my_date = new \DateTime("now", new \DateTimeZone('Asia/Manila'));
-					$model->datepay = $my_date->format('Y-m-d H:i:s');
-					$schet = UtAbonent::findOne($model->id_abonent)['schet'];
-					$textpay='Оплата по рахунку '.$schet.' за послуги:';
-					foreach ($post['UtObor'] as $idobor=>$impopl)
-					{
-						if ($impopl['sendopl']!=0)
-							$textpay=$textpay.UtObor::findOne($idobor)['tipposl'].':'.$impopl['sendopl'].' ';
-					}
-
-					if ($model->save()) {
-						$liqpay = new LiqPay($public_key, $private_key);
-//						$api =$liqpay->api()
-
-
-						$html = $liqpay->cnb_form(array(
-							'action' => 'pay',
-							'amount' => $model->summ,
-							'currency' => 'UAH',
-							'description' => $textpay,
-							'order_id' => $model->id,
-							'version' => '3',
-							'language' => 'uk',
-							'result_url' => yii::$app->request->referrer,
-							'server_url'    => 'http://dmkg.com.ua/site/callback',
-							'sandbox' => 1
-						));
-//						return $this->redirect($html);
-						return sprintf('
-								<div class="col-xs-12">
-
-
-										<h4>Сума до сплати</h4>
-										<div class="summa" style="color: #0a660c;">
-										    <h2>%s</h2>
-										</div>
-
-									<div class="panel panel-success">
-										<div class="panel-heading">
-											Призначення платежу
-										</div>
-										<div class="panel-body">
-											<p>%s</p>
-										</div>
-								    </div>
-
-
-
-
-
-								</div>
-            ',
-							$model->summ,
-							$textpay
-
-						).$html;
-					}
-
-
-				}
-
-		}
-	return $this->redirect('/ut-kart');
-
-	}
-
-
     public function actionIndex()
     {
 		$session = Yii::$app->session;
@@ -322,88 +209,39 @@ class UtKartController extends Controller
 
 
 
-        $summa = array();
+        $summa = 0;
 
 			$dpinfo = new ActiveDataProvider([
 				'query' => $abonen,
 			]);
 			$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->all();
 			foreach ($abonents as $abon) {
-				$summa[$abon->id]=0;
+
 				//-----------------------------------------------------------------------------
-				$obor= UtObor::find()
+				$obor= UtObor::find();
 //			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
-
-
-
-
-
+				$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+				foreach($obor->asArray()->all() as $obb)
+				{
+					if ($obb['sal']>0)
+					{
+						$summa = $summa + $obb['sal'];
+					}
+				}
 //				$ff = ArrayHelper::toArray($obor);
 				$dataProvider1 = new ActiveDataProvider([
 					'query' => $obor,
 				]);
 				$dpobor[$abon->id] = $dataProvider1;
 				//-----------------------------------------------------------------------------
-
-				$oboropl= UtObor::find();
-//  			    $obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-
-
-				$oplab=UtOpl::find()
-						->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-						->where(['ut_opl.id_abonent'=> $abon->id])
-					    ->andwhere(['>', 'ut_opl.period', $session['period']])
-						->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
-					    ->asArray();
-
-				$subQuery = (new \yii\db\Query())
-					->from('ut_opl')
-					->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-					->where(['ut_opl.id_abonent'=> $abon->id])
-					->andwhere(['>', 'ut_opl.period', $session['period']])
-					->groupBy('ut_opl.id_abonent, ut_opl.id_posl');
-
-
-
 				$dolg= UtObor::find();
-//					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-					$dolg->select(["ut_obor.id_abonent as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
-//  				    $dolg->select('ut_obor.*,b.summ,');
-     				$dolg->where(['ut_obor.id_abonent'=> $abon->id,'ut_obor.period'=> $session['period']]);
-    				$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-//				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`');
-//				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_abonent` = ut_obor.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
-
-
-
-
-//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_abonent`=`ut_obor`.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
-//				$oboropl->asArray();
-
-				foreach($dolg->asArray()->all() as $obb)
-				{
-					if ($obb['dolgopl']>0)
-					{
-						$summa[$abon->id] = $summa[$abon->id] + $obb['dolgopl'];
-					}
-				}
-
-//				$dolg= UtObor::find();
-////			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-//				$dolg->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
+//			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+				$dolg->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 //				$ff = ArrayHelper::toArray($obor);
-
 				$dataProvider11 = new ActiveDataProvider([
 					'query' => $dolg,
 				]);
 				$dpdolg[$abon->id] = $dataProvider11;
-
-
-
-
-
-
 				//-----------------------------------------------------------------------------
 //				$oborsum= UtObor::find();
 //				$oborsum->select('sum(ut_obor.sal) as summ');

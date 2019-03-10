@@ -55,7 +55,6 @@ class DefaultController extends Controller
 		return $this->render('download');
 	}
 
-
 	public function actionError()
 	{
 		return $this->render('error');

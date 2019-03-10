@@ -2,7 +2,6 @@
 
 namespace app\poslug\models;
 
-use kartik\builder\TabularForm;
 use Yii;
 
 /**
@@ -30,10 +29,6 @@ class UtObor extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public $dolgopl;
-    public $sendopl;
-
-
     public static function tableName()
     {
         return 'ut_obor';
@@ -49,7 +44,7 @@ class UtObor extends \yii\db\ActiveRecord
             [['id_org', 'id_abonent', 'id_posl'], 'integer'],
             [['period'], 'safe'],
 			[['tipposl'], 'string', 'max' => 64],
-            [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal','dolgopl','sendopl'], 'number'],
+            [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_posl'], 'exist', 'skipOnError' => true, 'targetClass' => UtPosl::className(), 'targetAttribute' => ['id_posl' => 'id']],
@@ -105,75 +100,5 @@ class UtObor extends \yii\db\ActiveRecord
     {
         $this->orderBy(['period' => SORT_DESC]);
         return $this;
-    }
-
-    public function getFormAttribs() {
-        return [
-            // primary key column
-//			'id'=>[ // primary key attribute
-//				'type'=>TabularForm::INPUT_HIDDEN,
-//				'columnOptions'=>['hidden'=>true]
-//			],'st_ul'
-            'dolgopl'=>['type'=>TabularForm::INPUT_TEXT],
-            'sendopl'=>['type'=>TabularForm::INPUT_TEXT],
-//			'publish_date'=>[
-//				'type' => function($model, $key, $index, $widget) {
-//					return ($key % 2 === 0) ? TabularForm::INPUT_HIDDEN : TabularForm::INPUT_WIDGET;
-//				},
-//				'widgetClass'=>\kartik\widgets\DatePicker::classname(),
-//				'options'=> function($model, $key, $index, $widget) {
-//					return ($key % 2 === 0) ? [] :
-//						[
-//							'pluginOptions'=>[
-//								'format'=>'yyyy-mm-dd',
-//								'todayHighlight'=>true,
-//								'autoclose'=>true
-//							]
-//						];
-//				},
-//				'columnOptions'=>['width'=>'170px']
-//			],
-//			'color'=>[
-//				'type'=>TabularForm::INPUT_WIDGET,
-//				'widgetClass'=>\kartik\widgets\ColorInput::classname(),
-//				'options'=>[
-//					'showDefaultPalette'=>false,
-//					'pluginOptions'=>[
-//						'preferredFormat'=>'name',
-//						'palette'=>[
-//							[
-//								"white", "black", "grey", "silver", "gold", "brown",
-//							],
-//							[
-//								"red", "orange", "yellow", "indigo", "maroon", "pink"
-//							],
-//							[
-//								"blue", "green", "violet", "cyan", "magenta", "purple",
-//							],
-//						]
-//					]
-//				],
-//				'columnOptions'=>['width'=>'150px'],
-//			],
-//
-//			'author_id'=>[
-//				'type'=>TabularForm::INPUT_DROPDOWN_LIST,
-//				'items'=>ArrayHelper::map(Author::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
-//				'columnOptions'=>['width'=>'185px']
-//			],
-            /*
-            'buy_amount'=>[
-                'type'=>TabularForm::INPUT_TEXT,
-                'label'=>'Buy',
-                'options'=>['class'=>'form-control text-right'],
-                'columnOptions'=>['hAlign'=>GridView::ALIGN_RIGHT, 'width'=>'90px']
-            ],
-            */
-//			'sell_amount'=>[
-//				'type'=>TabularForm::INPUT_STATIC,
-//				'label'=>'Sell',
-//				'columnOptions'=>['hAlign'=>GridView::ALIGN_RIGHT, 'width'=>'90px']
-//			],
-        ];
     }
 }

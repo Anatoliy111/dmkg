@@ -9,12 +9,12 @@ namespace yii\widgets;
 
 use Yii;
 use yii\base\InvalidCallException;
-use yii\base\Model;
 use yii\base\Widget;
+use yii\base\Model;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
  * ActiveForm is a widget that builds an interactive HTML form for one or multiple data models.
@@ -26,17 +26,6 @@ use yii\helpers\Url;
  */
 class ActiveForm extends Widget
 {
-    /**
-     * Add validation state class to container tag
-     * @since 2.0.14
-     */
-    const VALIDATION_STATE_ON_CONTAINER = 'container';
-    /**
-     * Add validation state class to input tag
-     * @since 2.0.14
-     */
-    const VALIDATION_STATE_ON_INPUT = 'input';
-
     /**
      * @var array|string the form action URL. This parameter will be processed by [[\yii\helpers\Url::to()]].
      * @see method for specifying the HTTP method for this form.
@@ -108,13 +97,6 @@ class ActiveForm extends Widget
      */
     public $validatingCssClass = 'validating';
     /**
-     * @var string where to render validation state class
-     * Could be either "container" or "input".
-     * Default is "container".
-     * @since 2.0.14
-     */
-    public $validationStateOn = self::VALIDATION_STATE_ON_CONTAINER;
-    /**
      * @var bool whether to enable client-side data validation.
      * If [[ActiveField::enableClientValidation]] is set, its value will take precedence for that input field.
      */
@@ -129,7 +111,6 @@ class ActiveForm extends Widget
      * This property must be set `true` if you want to support client validation and/or AJAX validation, or if you
      * want to take advantage of the `yii.activeForm` plugin. When this is `false`, the form will not generate
      * any JavaScript.
-     * @see registerClientScript
      */
     public $enableClientScript = true;
     /**
@@ -201,7 +182,6 @@ class ActiveForm extends Widget
      */
     public function init()
     {
-        parent::init();
         if (!isset($this->options['id'])) {
             $this->options['id'] = $this->getId();
         }
@@ -211,7 +191,7 @@ class ActiveForm extends Widget
 
     /**
      * Runs the widget.
-     * This registers the necessary JavaScript code and renders the form open and close tags.
+     * This registers the necessary JavaScript code and renders the form close tag.
      * @throws InvalidCallException if `beginField()` and `endField()` calls are not matching.
      */
     public function run()
@@ -221,29 +201,19 @@ class ActiveForm extends Widget
         }
 
         $content = ob_get_clean();
-        $html = Html::beginForm($this->action, $this->method, $this->options);
-        $html .= $content;
+        echo Html::beginForm($this->action, $this->method, $this->options);
+        echo $content;
 
         if ($this->enableClientScript) {
-            $this->registerClientScript();
+            $id = $this->options['id'];
+            $options = Json::htmlEncode($this->getClientOptions());
+            $attributes = Json::htmlEncode($this->attributes);
+            $view = $this->getView();
+            ActiveFormAsset::register($view);
+            $view->registerJs("jQuery('#$id').yiiActiveForm($attributes, $options);");
         }
 
-        $html .= Html::endForm();
-        return $html;
-    }
-
-    /**
-     * This registers the necessary JavaScript code.
-     * @since 2.0.12
-     */
-    public function registerClientScript()
-    {
-        $id = $this->options['id'];
-        $options = Json::htmlEncode($this->getClientOptions());
-        $attributes = Json::htmlEncode($this->attributes);
-        $view = $this->getView();
-        ActiveFormAsset::register($view);
-        $view->registerJs("jQuery('#$id').yiiActiveForm($attributes, $options);");
+        echo Html::endForm();
     }
 
     /**
@@ -263,7 +233,6 @@ class ActiveForm extends Widget
             'ajaxDataType' => $this->ajaxDataType,
             'scrollToError' => $this->scrollToError,
             'scrollToErrorOffset' => $this->scrollToErrorOffset,
-            'validationStateOn' => $this->validationStateOn,
         ];
         if ($this->validationUrl !== null) {
             $options['validationUrl'] = Url::to($this->validationUrl);
@@ -281,7 +250,6 @@ class ActiveForm extends Widget
             'ajaxDataType' => 'json',
             'scrollToError' => true,
             'scrollToErrorOffset' => 0,
-            'validationStateOn' => self::VALIDATION_STATE_ON_CONTAINER,
         ]);
     }
 
@@ -327,7 +295,6 @@ class ActiveForm extends Widget
         if (!isset($config['class'])) {
             $config['class'] = $this->fieldClass;
         }
-
         return Yii::createObject(ArrayHelper::merge($config, $options, [
             'model' => $model,
             'attribute' => $attribute,
@@ -365,9 +332,9 @@ class ActiveForm extends Widget
         $field = array_pop($this->_fields);
         if ($field instanceof ActiveField) {
             return $field->end();
+        } else {
+            throw new InvalidCallException('Mismatching endField() call.');
         }
-
-        throw new InvalidCallException('Mismatching endField() call.');
     }
 
     /**

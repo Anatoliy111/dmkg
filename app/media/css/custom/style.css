@@ -815,15 +815,7 @@ button#buttperiod{
 .main .ut-kart .container {
     padding-top: 18px;
     /*margin-left: 1px;*/
-
 }
-
-.main .ut-kart .well-large2 {
-
-	min-height: 900px;
-}
-
-
 
 .main .ut-kart h2 {
     font-family: 'Raleway', sans-serif;
@@ -860,11 +852,6 @@ button#buttperiod{
     padding-top: 10px;
     font-size: 1.30em;
     color: rgba(0,0,0,0.5);
-
-}
-
-.main .ut-kart .schet {
-	border-bottom: 1px solid #ccc;
 
 }
 

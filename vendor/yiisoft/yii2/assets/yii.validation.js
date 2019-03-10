@@ -236,18 +236,13 @@ yii.validation = (function ($) {
             }
         },
 
-        trim: function ($form, attribute, options, value) {
+        trim: function ($form, attribute, options) {
             var $input = $form.find(attribute.input);
-            if ($input.is(':checkbox, :radio')) {
-                return value;
-            }
-
-            value = $input.val();
+            var value = $input.val();
             if (!options.skipOnEmpty || !pub.isEmpty(value)) {
                 value = $.trim(value);
                 $input.val(value);
             }
-
             return value;
         },
 
@@ -268,7 +263,7 @@ yii.validation = (function ($) {
             }
         },
 
-        compare: function (value, messages, options, $form) {
+        compare: function (value, messages, options) {
             if (options.skipOnEmpty && pub.isEmpty(value)) {
                 return;
             }
@@ -278,16 +273,12 @@ yii.validation = (function ($) {
             if (options.compareAttribute === undefined) {
                 compareValue = options.compareValue;
             } else {
-                var $target = $('#' + options.compareAttribute);
-                if (!$target.length) {
-                    $target = $form.find('[name="' + options.compareAttributeName + '"]');
-                }
-                compareValue = $target.val();
+                compareValue = $('#' + options.compareAttribute).val();
             }
 
             if (options.type === 'number') {
-                value = value ? parseFloat(value) : 0;
-                compareValue = compareValue ? parseFloat(compareValue) : 0;
+                value = parseFloat(value);
+                compareValue = parseFloat(compareValue);
             }
             switch (options.operator) {
                 case '==':
@@ -376,15 +367,7 @@ yii.validation = (function ($) {
             return [];
         }
 
-        var fileInput = $(attribute.input, attribute.$form).get(0);
-
-        // Skip validation if file input does not exist
-        // (in case file inputs are added dynamically and no file input has been added to the form)
-        if (typeof fileInput === "undefined") {
-            return [];
-        }
-
-        var files = fileInput.files;
+        var files = $(attribute.input, attribute.$form).get(0).files;
         if (!files) {
             messages.push(options.message);
             return [];
@@ -394,7 +377,6 @@ yii.validation = (function ($) {
             if (!options.skipOnEmpty) {
                 messages.push(options.uploadRequired);
             }
-
             return [];
         }
 

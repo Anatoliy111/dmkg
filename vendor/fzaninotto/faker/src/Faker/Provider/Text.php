@@ -128,7 +128,7 @@ abstract class Text extends Base
     protected static function validStart($word)
     {
         $isValid = true;
-        if (static::$textStartsWithUppercase) {
+        if (self::$textStartsWithUppercase) {
             $isValid = preg_match('/^\p{Lu}/u', $word);
         }
         return $isValid;
@@ -136,6 +136,6 @@ abstract class Text extends Base
 
     protected static function appendEnd($text)
     {
-        return preg_replace("/([ ,-:;\x{2013}\x{2014}]+$)/us", '', $text).'.';
+        return rtrim($text, ',— ').'.';
     }
 }

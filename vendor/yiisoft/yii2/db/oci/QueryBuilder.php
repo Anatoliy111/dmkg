@@ -7,14 +7,10 @@
 
 namespace yii\db\oci;
 
-use yii\base\InvalidArgumentException;
+use yii\base\InvalidParamException;
 use yii\db\Connection;
-use yii\db\Constraint;
 use yii\db\Exception;
 use yii\db\Expression;
-use yii\db\Query;
-use yii\helpers\StringHelper;
-use yii\db\ExpressionInterface;
 
 /**
  * QueryBuilder is the query builder for Oracle databases.
@@ -35,7 +31,6 @@ class QueryBuilder extends \yii\db\QueryBuilder
         Schema::TYPE_CHAR => 'CHAR(1)',
         Schema::TYPE_STRING => 'VARCHAR2(255)',
         Schema::TYPE_TEXT => 'CLOB',
-        Schema::TYPE_TINYINT => 'NUMBER(3)',
         Schema::TYPE_SMALLINT => 'NUMBER(5)',
         Schema::TYPE_INTEGER => 'NUMBER(10)',
         Schema::TYPE_BIGINT => 'NUMBER(20)',
@@ -51,20 +46,23 @@ class QueryBuilder extends \yii\db\QueryBuilder
         Schema::TYPE_MONEY => 'NUMBER(19,4)',
     ];
 
-
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    protected function defaultExpressionBuilders()
-    {
-        return array_merge(parent::defaultExpressionBuilders(), [
-            'yii\db\conditions\InCondition' => 'yii\db\oci\conditions\InConditionBuilder',
-            'yii\db\conditions\LikeCondition' => 'yii\db\oci\conditions\LikeConditionBuilder',
-        ]);
-    }
+    protected $likeEscapeCharacter = '!';
+    /**
+     * `\` is initialized in [[buildLikeCondition()]] method since
+     * we need to choose replacement value based on [[\yii\db\Schema::quoteValue()]].
+     * @inheritdoc
+     */
+    protected $likeEscapingReplacements = [
+        '%' => '!%',
+        '_' => '!_',
+        '!' => '!!',
+    ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildOrderByAndLimit($sql, $orderBy, $limit, $offset)
     {
@@ -136,40 +134,33 @@ EOD;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function executeResetSequence($table, $value = null)
+    public function resetSequence($table, $value = null)
     {
         $tableSchema = $this->db->getTableSchema($table);
         if ($tableSchema === null) {
-            throw new InvalidArgumentException("Unknown table: $table");
+            throw new InvalidParamException("Unknown table: $table");
         }
         if ($tableSchema->sequenceName === null) {
-            throw new InvalidArgumentException("There is no sequence associated with table: $table");
+            return '';
         }
 
         if ($value !== null) {
             $value = (int) $value;
         } else {
-            if (count($tableSchema->primaryKey)>1) {
-                throw new InvalidArgumentException("Can't reset sequence for composite primary key in table: $table");
-            }
             // use master connection to get the biggest PK value
             $value = $this->db->useMaster(function (Connection $db) use ($tableSchema) {
-                return $db->createCommand(
-                    'SELECT MAX("' . $tableSchema->primaryKey[0] . '") FROM "'. $tableSchema->name . '"'
-                )->queryScalar();
+                return $db->createCommand("SELECT MAX(\"{$tableSchema->primaryKey}\") FROM \"{$tableSchema->name}\"")->queryScalar();
             }) + 1;
         }
 
-        //Oracle needs at least two queries to reset sequence (see adding transactions and/or use alter method to avoid grants' issue?)
-        $this->db->createCommand('DROP SEQUENCE "' . $tableSchema->sequenceName . '"')->execute();
-        $this->db->createCommand('CREATE SEQUENCE "' . $tableSchema->sequenceName . '" START WITH ' . $value
-            . ' INCREMENT BY 1 NOMAXVALUE NOCACHE')->execute();
+        return "DROP SEQUENCE \"{$tableSchema->name}_SEQ\";"
+            . "CREATE SEQUENCE \"{$tableSchema->name}_SEQ\" START WITH {$value} INCREMENT BY 1 NOMAXVALUE NOCACHE";
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function addForeignKey($name, $table, $columns, $refTable, $refColumns, $delete = null, $update = null)
     {
@@ -189,93 +180,54 @@ EOD;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    protected function prepareInsertValues($table, $columns, $params = [])
+    public function insert($table, $columns, &$params)
     {
-        list($names, $placeholders, $values, $params) = parent::prepareInsertValues($table, $columns, $params);
-        if (!$columns instanceof Query && empty($names)) {
-            $tableSchema = $this->db->getSchema()->getTableSchema($table);
-            if ($tableSchema !== null) {
+        $schema = $this->db->getSchema();
+        if (($tableSchema = $schema->getTableSchema($table)) !== null) {
+            $columnSchemas = $tableSchema->columns;
+        } else {
+            $columnSchemas = [];
+        }
+        $names = [];
+        $placeholders = [];
+        $values = ' DEFAULT VALUES';
+        if ($columns instanceof \yii\db\Query) {
+            list($names, $values, $params) = $this->prepareInsertSelectSubQuery($columns, $schema, $params);
+        } else {
+            foreach ($columns as $name => $value) {
+                $names[] = $schema->quoteColumnName($name);
+                if ($value instanceof Expression) {
+                    $placeholders[] = $value->expression;
+                    foreach ($value->params as $n => $v) {
+                        $params[$n] = $v;
+                    }
+                } elseif ($value instanceof \yii\db\Query) {
+                    list($sql, $params) = $this->build($value, $params);
+                    $placeholders[] = "($sql)";
+                } else {
+                    $phName = self::PARAM_PREFIX . count($params);
+                    $placeholders[] = $phName;
+                    $params[$phName] = !is_array($value) && isset($columnSchemas[$name]) ? $columnSchemas[$name]->dbTypecast($value) : $value;
+                }
+            }
+            if (empty($names) && $tableSchema !== null) {
                 $columns = !empty($tableSchema->primaryKey) ? $tableSchema->primaryKey : [reset($tableSchema->columns)->name];
                 foreach ($columns as $name) {
-                    $names[] = $this->db->quoteColumnName($name);
+                    $names[] = $schema->quoteColumnName($name);
                     $placeholders[] = 'DEFAULT';
                 }
             }
         }
-        return [$names, $placeholders, $values, $params];
-    }
 
-    /**
-     * {@inheritdoc}
-     * @see https://docs.oracle.com/cd/B28359_01/server.111/b28286/statements_9016.htm#SQLRF01606
-     */
-    public function upsert($table, $insertColumns, $updateColumns, &$params)
-    {
-        /** @var Constraint[] $constraints */
-        list($uniqueNames, $insertNames, $updateNames) = $this->prepareUpsertColumns($table, $insertColumns, $updateColumns, $constraints);
-        if (empty($uniqueNames)) {
-            return $this->insert($table, $insertColumns, $params);
-        }
-
-        $onCondition = ['or'];
-        $quotedTableName = $this->db->quoteTableName($table);
-        foreach ($constraints as $constraint) {
-            $constraintCondition = ['and'];
-            foreach ($constraint->columnNames as $name) {
-                $quotedName = $this->db->quoteColumnName($name);
-                $constraintCondition[] = "$quotedTableName.$quotedName=\"EXCLUDED\".$quotedName";
-            }
-            $onCondition[] = $constraintCondition;
-        }
-        $on = $this->buildCondition($onCondition, $params);
-        list(, $placeholders, $values, $params) = $this->prepareInsertValues($table, $insertColumns, $params);
-        if (!empty($placeholders)) {
-            $usingSelectValues = [];
-            foreach ($insertNames as $index => $name) {
-                $usingSelectValues[$name] = new Expression($placeholders[$index]);
-            }
-            $usingSubQuery = (new Query())
-                ->select($usingSelectValues)
-                ->from('DUAL');
-            list($usingValues, $params) = $this->build($usingSubQuery, $params);
-        }
-        $mergeSql = 'MERGE INTO ' . $this->db->quoteTableName($table) . ' '
-            . 'USING (' . (isset($usingValues) ? $usingValues : ltrim($values, ' ')) . ') "EXCLUDED" '
-            . "ON ($on)";
-        $insertValues = [];
-        foreach ($insertNames as $name) {
-            $quotedName = $this->db->quoteColumnName($name);
-            if (strrpos($quotedName, '.') === false) {
-                $quotedName = '"EXCLUDED".' . $quotedName;
-            }
-            $insertValues[] = $quotedName;
-        }
-        $insertSql = 'INSERT (' . implode(', ', $insertNames) . ')'
-            . ' VALUES (' . implode(', ', $insertValues) . ')';
-        if ($updateColumns === false) {
-            return "$mergeSql WHEN NOT MATCHED THEN $insertSql";
-        }
-
-        if ($updateColumns === true) {
-            $updateColumns = [];
-            foreach ($updateNames as $name) {
-                $quotedName = $this->db->quoteColumnName($name);
-                if (strrpos($quotedName, '.') === false) {
-                    $quotedName = '"EXCLUDED".' . $quotedName;
-                }
-                $updateColumns[$name] = new Expression($quotedName);
-            }
-        }
-        list($updates, $params) = $this->prepareUpdateSets($table, $updateColumns, $params);
-        $updateSql = 'UPDATE SET ' . implode(', ', $updates);
-        return "$mergeSql WHEN MATCHED THEN $updateSql WHEN NOT MATCHED THEN $insertSql";
+        return 'INSERT INTO ' . $schema->quoteTableName($table)
+            . (!empty($names) ? ' (' . implode(', ', $names) . ')' : '')
+            . (!empty($placeholders) ? ' VALUES (' . implode(', ', $placeholders) . ')' : $values);
     }
 
     /**
      * Generates a batch INSERT SQL statement.
-     *
      * For example,
      *
      * ```php
@@ -290,10 +242,10 @@ EOD;
      *
      * @param string $table the table that new rows will be inserted into.
      * @param array $columns the column names
-     * @param array|\Generator $rows the rows to be batch inserted into the table
+     * @param array $rows the rows to be batch inserted into the table
      * @return string the batch INSERT SQL statement
      */
-    public function batchInsert($table, $columns, $rows, &$params = [])
+    public function batchInsert($table, $columns, $rows)
     {
         if (empty($rows)) {
             return '';
@@ -310,20 +262,15 @@ EOD;
         foreach ($rows as $row) {
             $vs = [];
             foreach ($row as $i => $value) {
-                if (isset($columns[$i], $columnSchemas[$columns[$i]])) {
+                if (isset($columns[$i], $columnSchemas[$columns[$i]]) && !is_array($value)) {
                     $value = $columnSchemas[$columns[$i]]->dbTypecast($value);
                 }
                 if (is_string($value)) {
                     $value = $schema->quoteValue($value);
-                } elseif (is_float($value)) {
-                    // ensure type cast always has . as decimal separator in all locales
-                    $value = StringHelper::floatToString($value);
                 } elseif ($value === false) {
                     $value = 0;
                 } elseif ($value === null) {
                     $value = 'NULL';
-                } elseif ($value instanceof ExpressionInterface) {
-                    $value = $this->buildExpression($value, $params);
                 }
                 $vs[] = $value;
             }
@@ -344,7 +291,7 @@ EOD;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @since 2.0.8
      */
     public function selectExists($rawSql)
@@ -353,7 +300,7 @@ EOD;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @since 2.0.8
      */
     public function dropCommentFromColumn($table, $column)
@@ -362,11 +309,26 @@ EOD;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @since 2.0.8
      */
     public function dropCommentFromTable($table)
     {
         return 'COMMENT ON TABLE ' . $this->db->quoteTableName($table) . " IS ''";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function buildLikeCondition($operator, $operands, &$params)
+    {
+        if (!isset($this->likeEscapingReplacements['\\'])) {
+            /*
+             * Different pdo_oci8 versions may or may not implement PDO::quote(), so
+             * yii\db\Schema::quoteValue() may or may not quote \.
+             */
+            $this->likeEscapingReplacements['\\'] = substr($this->db->quoteValue('\\'), 1, -1);
+        }
+        return parent::buildLikeCondition($operator, $operands, $params);
     }
 }

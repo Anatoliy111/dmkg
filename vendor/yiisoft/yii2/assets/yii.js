@@ -57,7 +57,7 @@ window.yii = (function ($) {
          * The selector for clickable elements that need to support confirmation and form submission.
          */
         clickableSelector: 'a, button, input[type="submit"], input[type="button"], input[type="reset"], ' +
-            'input[type="image"]',
+        'input[type="image"]',
         /**
          * The selector for changeable elements that need to support confirmation and form submission.
          */
@@ -160,28 +160,12 @@ window.yii = (function ($) {
                 pjax = $e.data('pjax'),
                 usePjax = pjax !== undefined && pjax !== 0 && $.support.pjax,
                 pjaxContainer,
-                pjaxOptions = {},
-                conflictParams = ['submit', 'reset', 'elements', 'length', 'name', 'acceptCharset',
-                    'action', 'enctype', 'method', 'target'];
-
-            // Forms and their child elements should not use input names or ids that conflict with properties of a form,
-            // such as submit, length, or method.
-            $.each(conflictParams, function (index, param) {
-                if (areValidParams && params.hasOwnProperty(param)) {
-                    console.error("Parameter name '" + param + "' conflicts with a same named form property. " +
-                        "Please use another name.");
-                }
-            });
+                pjaxOptions = {};
 
             if (usePjax) {
-                pjaxContainer = $e.data('pjax-container');
-                if (pjaxContainer === undefined || !pjaxContainer.length) {
-                    pjaxContainer = $e.closest('[data-pjax-container]').attr('id')
-                        ? ('#' + $e.closest('[data-pjax-container]').attr('id'))
-                        : '';
-                }
+                pjaxContainer = $e.data('pjax-container') || $e.closest('[data-pjax-container]');
                 if (!pjaxContainer.length) {
-                    pjaxContainer = 'body';
+                    pjaxContainer = $('body');
                 }
                 pjaxOptions = {
                     container: pjaxContainer,
@@ -264,7 +248,7 @@ window.yii = (function ($) {
 
             $form.trigger('submit');
 
-            $.when($form.data('yiiSubmitFinalizePromise')).done(function () {
+            $.when($form.data('yiiSubmitFinalizePromise')).then(function () {
                 if (newForm) {
                     $form.remove();
                     return;
@@ -310,7 +294,6 @@ window.yii = (function ($) {
                     params[name].push(value || '');
                 }
             }
-
             return params;
         },
 
@@ -483,7 +466,7 @@ window.yii = (function ($) {
                 return true;
             }
 
-            if (message !== undefined && message !== false && message !== '') {
+            if (message !== undefined) {
                 $.proxy(pub.confirm, this)(message, function () {
                     pub.handleAction($this, event);
                 });

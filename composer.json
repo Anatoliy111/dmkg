@@ -11,7 +11,6 @@
         "issues": "https://github.com/noumo/easyii-shop/issues"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": ">=5.4.0",
         "noumo/easyii": "dev-master",
@@ -28,8 +27,7 @@
         "phpnt/yii2-pace": "*",
         "kartik-v/yii2-tabs-x": "*",
         "kartik-v/yii2-widget-switchinput": "*",
-        "kartik-v/yii2-widget-growl": "*",
-        "kartik-v/yii2-editable": "dev-master"
+        "kartik-v/yii2-widget-growl": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

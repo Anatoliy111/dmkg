@@ -103,7 +103,7 @@ class SqlDataProvider extends BaseDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function prepareModels()
     {
@@ -138,7 +138,7 @@ class SqlDataProvider extends BaseDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function prepareKeys($models)
     {
@@ -159,13 +159,10 @@ class SqlDataProvider extends BaseDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function prepareTotalCount()
     {
-        return (new Query([
-            'from' => ['sub' => "({$this->sql})"],
-            'params' => $this->params,
-        ]))->count('*', $this->db);
+        return (new Query())->from(['sub' => "({$this->sql})"])->count('*', $this->db);
     }
 }

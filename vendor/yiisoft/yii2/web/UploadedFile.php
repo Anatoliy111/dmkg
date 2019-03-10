@@ -7,7 +7,7 @@
 
 namespace yii\web;
 
-use yii\base\BaseObject;
+use yii\base\Object;
 use yii\helpers\Html;
 
 /**
@@ -28,7 +28,7 @@ use yii\helpers\Html;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class UploadedFile extends BaseObject
+class UploadedFile extends Object
 {
     /**
      * @var string the original name of the file being uploaded
@@ -76,7 +76,7 @@ class UploadedFile extends BaseObject
      * @param \yii\base\Model $model the data model
      * @param string $attribute the attribute name. The attribute name may contain array indexes.
      * For example, '[1]file' for tabular file uploading; and 'file[1]' for an element in a file array.
-     * @return null|UploadedFile the instance of the uploaded file.
+     * @return UploadedFile the instance of the uploaded file.
      * Null is returned if no file is uploaded for the specified model attribute.
      * @see getInstanceByName()
      */
@@ -134,7 +134,6 @@ class UploadedFile extends BaseObject
                 $results[] = new static($file);
             }
         }
-
         return $results;
     }
 
@@ -166,7 +165,6 @@ class UploadedFile extends BaseObject
                 return copy($this->tempName, $file);
             }
         }
-
         return false;
     }
 
@@ -211,7 +209,6 @@ class UploadedFile extends BaseObject
                 }
             }
         }
-
         return self::$_files;
     }
 
@@ -230,7 +227,7 @@ class UploadedFile extends BaseObject
             foreach ($names as $i => $name) {
                 self::loadFilesRecursive($key . '[' . $i . ']', $name, $tempNames[$i], $types[$i], $sizes[$i], $errors[$i]);
             }
-        } elseif ((int) $errors !== UPLOAD_ERR_NO_FILE) {
+        } elseif ((int)$errors !== UPLOAD_ERR_NO_FILE) {
             self::$_files[$key] = [
                 'name' => $names,
                 'tempName' => $tempNames,

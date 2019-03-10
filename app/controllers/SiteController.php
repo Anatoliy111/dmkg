@@ -57,13 +57,6 @@ class SiteController extends Controller
 
 	}
 
-
-	public function actionCallback()
-	{
-		return $this->render('download');
-	}
-
-
 	public function actionSaveperiodkab()
 	{
 //		Yii::$app->request->Ajax

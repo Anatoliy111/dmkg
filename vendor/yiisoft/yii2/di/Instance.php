@@ -116,12 +116,7 @@ class Instance
                 $container = Yii::$container;
             }
             unset($reference['class']);
-            $component = $container->get($class, [], $reference);
-            if ($type === null || $component instanceof $type) {
-                return $component;
-            }
-
-            throw new InvalidConfigException('Invalid data type: ' . $class . '. ' . $type . ' is expected.');
+            return $container->get($class, [], $reference);
         } elseif (empty($reference)) {
             throw new InvalidConfigException('The required component is not specified.');
         }
@@ -140,9 +135,9 @@ class Instance
             }
             if ($type === null || $component instanceof $type) {
                 return $component;
+            } else {
+                throw new InvalidConfigException('"' . $reference->id . '" refers to a ' . get_class($component) . " component. $type is expected.");
             }
-
-            throw new InvalidConfigException('"' . $reference->id . '" refers to a ' . get_class($component) . " component. $type is expected.");
         }
 
         $valueType = is_object($reference) ? get_class($reference) : gettype($reference);
@@ -162,13 +157,13 @@ class Instance
         }
         if (Yii::$app && Yii::$app->has($this->id)) {
             return Yii::$app->get($this->id);
+        } else {
+            return Yii::$container->get($this->id);
         }
-
-        return Yii::$container->get($this->id);
     }
 
     /**
-     * Restores class state after using `var_export()`.
+     * Restores class state after using `var_export()`
      *
      * @param array $state
      * @return Instance

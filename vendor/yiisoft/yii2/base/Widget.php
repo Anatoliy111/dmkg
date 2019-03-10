@@ -7,8 +7,8 @@
 
 namespace yii\base;
 
-use ReflectionClass;
 use Yii;
+use ReflectionClass;
 
 /**
  * Widget is the base class for widgets.
@@ -87,7 +87,7 @@ class Widget extends Component implements ViewContextInterface
         $config['class'] = get_called_class();
         /* @var $widget Widget */
         $widget = Yii::createObject($config);
-        self::$stack[] = $widget;
+        static::$stack[] = $widget;
 
         return $widget;
     }
@@ -101,8 +101,8 @@ class Widget extends Component implements ViewContextInterface
      */
     public static function end()
     {
-        if (!empty(self::$stack)) {
-            $widget = array_pop(self::$stack);
+        if (!empty(static::$stack)) {
+            $widget = array_pop(static::$stack);
             if (get_class($widget) === get_called_class()) {
                 /* @var $widget Widget */
                 if ($widget->beforeRun()) {
@@ -110,14 +110,13 @@ class Widget extends Component implements ViewContextInterface
                     $result = $widget->afterRun($result);
                     echo $result;
                 }
-
                 return $widget;
+            } else {
+                throw new InvalidCallException('Expecting end() of ' . get_class($widget) . ', found ' . get_called_class());
             }
-
-            throw new InvalidCallException('Expecting end() of ' . get_class($widget) . ', found ' . get_called_class());
+        } else {
+            throw new InvalidCallException('Unexpected ' . get_called_class() . '::end() call. A matching begin() is not found.');
         }
-
-        throw new InvalidCallException('Unexpected ' . get_called_class() . '::end() call. A matching begin() is not found.');
     }
 
     /**
@@ -213,10 +212,9 @@ class Widget extends Component implements ViewContextInterface
 
     /**
      * Renders a view.
-     *
      * The view to be rendered can be specified in one of the following formats:
      *
-     * - [path alias](guide:concept-aliases) (e.g. "@app/views/site/index");
+     * - path alias (e.g. "@app/views/site/index");
      * - absolute path within application (e.g. "//site/index"): the view name starts with double slashes.
      *   The actual view file will be looked for under the [[Application::viewPath|view path]] of the application.
      * - absolute path within module (e.g. "/site/index"): the view name starts with a single slash.
@@ -229,7 +227,7 @@ class Widget extends Component implements ViewContextInterface
      * @param string $view the view name.
      * @param array $params the parameters (name-value pairs) that should be made available in the view.
      * @return string the rendering result.
-     * @throws InvalidArgumentException if the view file does not exist.
+     * @throws InvalidParamException if the view file does not exist.
      */
     public function render($view, $params = [])
     {
@@ -238,10 +236,10 @@ class Widget extends Component implements ViewContextInterface
 
     /**
      * Renders a view file.
-     * @param string $file the view file to be rendered. This can be either a file path or a [path alias](guide:concept-aliases).
+     * @param string $file the view file to be rendered. This can be either a file path or a path alias.
      * @param array $params the parameters (name-value pairs) that should be made available in the view.
      * @return string the rendering result.
-     * @throws InvalidArgumentException if the view file does not exist.
+     * @throws InvalidParamException if the view file does not exist.
      */
     public function renderFile($file, $params = [])
     {

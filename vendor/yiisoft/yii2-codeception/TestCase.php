@@ -82,6 +82,7 @@ class TestCase extends Test
     {
         parent::setUp();
         $this->mockApplication();
+        $this->unloadFixtures();
         $this->loadFixtures();
     }
 
@@ -90,7 +91,6 @@ class TestCase extends Test
      */
     protected function tearDown()
     {
-        $this->unloadFixtures();
         $this->destroyApplication();
         parent::tearDown();
     }

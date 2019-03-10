@@ -8,31 +8,15 @@ yii2-nav-x
 [![Monthly Downloads](https://poser.pugx.org/kartik-v/yii2-nav-x/d/monthly)](https://packagist.org/packages/kartik-v/yii2-nav-x)
 [![Daily Downloads](https://poser.pugx.org/kartik-v/yii2-nav-x/d/daily)](https://packagist.org/packages/kartik-v/yii2-nav-x)
 
-An extended bootstrap Nav widget for Yii Framework 2 with submenu drilldown. This widget extends the `\yii\bootstrap\Nav` widget for Bootstrap 3.x and 
-`\yii\bootstrap4\Nav` widget for Bootstrap 4.x with some additional controls and adding the CSS Styles for enabling a submenu drilldown. The dropdown menu style 
-is optimized for both desktop and mobile devices. The drilldown is triggered on `active` instead of `hover` so that it works equally well on mobile devices. The
-extension uses the one of the following Dropdown Class extensions by default for rendering dropdown navigation, but this can be overridden:
-
-- `\kartik\dropdown\DropdownX`  for Bootstrap 3.x
-- `\kartik\bs4dropdown\Dropdown`  for Bootstrap 4.x
+An extended bootstrap Nav widget for Yii Framework 2 with submenu drilldown. This widget extends the `\yii\bootstrap\Nav` widget
+with some additional controls and adding the CSS Styles for enabling a submenu drilldown. The dropdown menu style is optimized for both 
+desktop and mobile devices. The drilldown is triggered on `active` instead of `hover` so that it works equally well on mobile devices. The
+extension uses the `\kartik\dropdown\DropdownX` extension by default for rendering dropdown navigation, but this can be overridden.
 
 ### Demo
 You can see detailed [documentation](http://demos.krajee.com/nav-x) on usage of the extension.
 
 ## Installation
-
-Install the dependencies depending on the Bootstrap version used in your app:
-
-1. For Bootstrap 3.x install `kartik-v/yii2-dropdown-x`
-
-```
-$ php composer.phar require kartik-v/yii2-dropdown-x "@dev"
-```
-
-2. For Bootstrap 4.x install `kartik-v/yii2-bootstrap4-dropdown`
-```
-$ php composer.phar require kartik-v/yii2-bootstrap4-dropdown "@dev"
-```
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -41,13 +25,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-$ php composer.phar require kartik-v/yii2-nav-x "@dev"
+$ php composer.phar require kartik-v/yii2-nav-x "dev-master"
 ```
 
 or add
 
 ```
-"kartik-v/yii2-nav-x": "@dev"
+"kartik-v/yii2-nav-x": "dev-master"
 ```
 
 to the ```require``` section of your `composer.json` file.
@@ -77,4 +61,4 @@ echo NavX::widget([
 
 ## License
 
-**yii2-nav-x** is released under the BSD-3-Clause License. See the bundled `LICENSE.md` for details.
+**yii2-nav-x** is released under the BSD 3-Clause License. See the bundled `LICENSE.md` for details.
