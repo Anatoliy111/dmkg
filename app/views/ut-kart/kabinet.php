@@ -15,12 +15,25 @@ use kartik\growl\Growl;
 	use kartik\detail\DetailView;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
-	use yii\widgets\Pjax;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 //        $lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 //        $period = $lastperiod->modify('+1 month');;
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 ?>
+
+<!--<script type="text/javascript">-->
+<!--	function ($)({-->
+<!--		$("#btn-mod-pay").click(function(){-->
+<!--			// нужный блок выбирается относительно this как предыдущий (prev)-->
+<!--			var textBlock = $(this).prev('#block').text();-->
+<!--			alert(textBlock);-->
+<!--		});-->
+<!---->
+<!--	})/*end  ready*/-->
+<!--</script>-->
+
 
 	<?php Pjax::begin(); ?>
 
@@ -54,6 +67,20 @@ use yii\helpers\ArrayHelper;
 ?>
 
 <?php Modal::end(); ?>
+
+<?php
+yii\bootstrap\Modal::begin([
+	'header' => '<h2>Формування платежу</h2>',
+	'id' => 'modalpay',
+	'size' => 'modal-md',
+]);
+?>
+
+<div id='modal-content'>Загружаю...</div>
+
+<?php yii\bootstrap\Modal::end(); ?>
+
+
 
 <div class="row">
 	<?php
@@ -184,92 +211,127 @@ use yii\helpers\ArrayHelper;
 		<div class="col-xs-12">
 			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
 		</div>
-		<div class="col-xs-12">
-			<div class="col-xs-4">
-			<h4>Сума до сплати</h4>
-				<?php
-				if (round($summa,2)<500){
-					?>
-					<div class="summa" style="color: #2e8e5a;">
-						<h3><?= number_format(round($summa, 2), 2, '.', '') ?></h3>
-					</div>
+<!--		<div class="col-xs-12">-->
 
-				<?php
-				}
-				if (round($summa,2)>=500 and round($summa,2)<1000){
-					?>
-					<div class="summa" style="color: #a937c9;">
-						<h3><?= number_format(round($summa, 2), 2, '.', '')  ?></h3>
-					</div>
-					<?php
-
-				?>
-					<?php
-				}
-				if (round($summa,2)>=1000) {
-					?>
-					<div class="summa" style="color: #c91017;">
-						<h3><?= number_format(round($summa, 2), 2, '.', '')  ?></h3>
-					</div>
-					<?php
-				}
-				?>
-			</div>
-			<div class="col-lg-8">
 					<?php
 					foreach ($abonents as $abon) {
 
-						echo GridView::widget([
-							'dataProvider' =>  $dpdolg[$abon->id],
-
-		//				'showPageSummary' => true,
-							'columns' => [
-//								['class' => '\kartik\grid\SerialColumn'],
-								'tipposl',
-								[
-									'attribute' => 'sal',
-									'label'=>'Борг на початок'
-		//									'format'=>['decimal', 2],
-		//									'pageSummary'=>true,
-								],
-//								[
-//									'attribute' => 'opl',
-//									'label' => 'Оплата',
-////										'format'=>['decimal', 2],
-////										'pageSummary'=>true,
-//								],
-		//				['class' => 'yii\grid\ActionColumn'],
-							],
-
-							'striped'=>false,
-						'layout'=>"{items}",
-		//					'layout' => $layout,
-							'resizableColumns'=>true,
-//							'hover'=>true,
-							'pjax'=>true,
-							'pjaxSettings'=>[
-								'neverTimeout'=>true,
-
-							],
-							'panel' => [
-//								'after'=>'',
-		//					'footer'=>true,
-
-							],
-
-//							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
-							'toolbar'=> [
-		//						'{export}',
-//								'{toggleData}',
-							]
-						]);
-					}
 					?>
+			<div class="schet col-xs-12">
+				<div class="rah">
+					<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
+
+				</div>
+					<div class="col-xs-4">
+						<h4>Сума до сплати</h4>
+						<?php
+						if (round($summa[$abon->id],2)<500){
+							?>
+							<div class="summa" style="color: #2e8e5a;">
+								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '') ?></h3>
+							</div>
+
+							<?php
+						}
+						if (round($summa[$abon->id],2)>=500 and round($summa[$abon->id],2)<1000){
+							?>
+							<div class="summa" style="color: #a937c9;">
+								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '')  ?></h3>
+							</div>
+							<?php
+
+							?>
+							<?php
+						}
+						if (round($summa[$abon->id],2)>=1000) {
+							?>
+							<div class="summa" style="color: #c91017;">
+								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '')  ?></h3>
+							</div>
+							<?php
+						}
+						?>
+
+<!--						--><?php //echo Html::button("Сплатити", [
+//							'class' => 'btn btn-success btn-lg btn-block',
+//							'onclick' => "PrePay($abon->id)",
+//						])
+//						?>
+
+					</div>
+
+
+					<div class="col-lg-8">
+
+						<?php
+								echo GridView::widget([
+									'dataProvider' =>  $dpdolg[$abon->id],
+
+				//				'showPageSummary' => true,
+									'columns' => [
+		//								['class' => '\kartik\grid\SerialColumn'],
+										'tipposl',
+										[
+											'attribute' => 'sal',
+											'label'=>'Борг'
+				//									'format'=>['decimal', 2],
+				//									'pageSummary'=>true,
+										],
+										[
+											'attribute' => 'summ',
+											'label'=>'Оплата'
+											//									'format'=>['decimal', 2],
+											//									'pageSummary'=>true,
+										],
+										[
+											'attribute' => 'dolgopl',
+											'label'=>'Борг після оплати'
+											//									'format'=>['decimal', 2],
+											//									'pageSummary'=>true,
+										],
+		//								[
+		//									'attribute' => 'opl',
+		//									'label' => 'Оплата',
+		////										'format'=>['decimal', 2],
+		////										'pageSummary'=>true,
+		//								],
+				//				['class' => 'yii\grid\ActionColumn'],
+									],
+
+									'striped'=>false,
+								'layout'=>"{items}",
+				//					'layout' => $layout,
+									'resizableColumns'=>true,
+		//							'hover'=>true,
+									'pjax'=>true,
+									'pjaxSettings'=>[
+										'neverTimeout'=>true,
+
+									],
+									'panel' => [
+		//								'after'=>'',
+				//					'footer'=>true,
+
+									],
+
+		//							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
+									'toolbar'=> [
+				//						'{export}',
+		//								'{toggleData}',
+									]
+								]);
+						?>
+					</div>
 			</div>
 
+				<?php
+					}
+					?>
 
+	</div>
+	<div class="mywell well-large2 container">
 
-		</div>
+<!--		</div>-->
 		<div class="col-xs-12">
 			<div class="col-lg-4 .col-sm-4 .col-md-4">
 
@@ -296,3 +358,68 @@ use yii\helpers\ArrayHelper;
     </div>
 	<?php Pjax::end(); ?>
 </div>
+
+
+<script type="text/javascript">
+	function PrePay(id)
+	{
+     var payid_abonent = id;
+//		var keys = $('#gridfile').yiiGridView('getSelectedRows');
+//		if (keys.length != 0){
+//			var hi= confirm("Ви впевненні що хочете видалити ці файли?");
+//			if (hi== true){
+
+				$.ajax({
+					url: "/ut-kart/pay",
+					type: 'post',
+					data: {payid_abonent},
+					success: function(s) {
+						//				alert(s);
+					$('#modalpay').modal('show').modal({backdrop: false});
+					$('#modal-content').html(s);
+//						.load($(this).attr('href'));
+
+					}
+
+				});
+
+//			}
+//		}
+
+
+	}
+
+
+//		$("#pay-form").on("submit", function (event) {
+//			alert("1");
+//			event.preventDefault();
+//			var $this = $(this);
+//			var frmValues = $this.serialize();
+//			$.ajax({
+//					type: $this.attr('method'),
+//					url: $this.attr('action'),
+//					data: frmValues
+//				})
+//				.done(function () {
+//					$("#para").text("Done!" + frmValues);
+//				})
+//				.fail(function () {
+//					$("#para").text("An error occured!");
+//				});
+//		});
+//
+//
+//
+//
+//		$(document).on('click', '#modalpay', function (e) {
+//				e.modalWindow = true;
+//			})
+//			.on('click', function (e) {
+//				if (!e.modalWindow) {
+//					console.log('Это — не моя клетка!');
+//				}
+//			});
+
+
+
+</script>

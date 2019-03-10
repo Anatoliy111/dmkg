@@ -79,7 +79,7 @@ HTML;
 //											'mergeColumns'=>[[1,2]], // columns to merge in summary
 											'content'=>[             // content to show in each summary cell
 //												1=>'Summary (' . $model->period . ')',
-												1=>"tt"."yyyxdfggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+												1=>"Всього",
 												3=>GridView::F_SUM,
 												4=>GridView::F_SUM,
 												5=>GridView::F_SUM,
@@ -97,7 +97,7 @@ HTML;
 												8=>['format'=>'number', 'decimals'=>2],
 											],
 											'contentOptions'=>[      // content html attributes for each summary cell
-												1=>['style'=>'font-variant:small-caps'],
+//												1=>['style'=>'font-variant:small-caps'],
 												3=>['style'=>'text-align:right'],
 												4=>['style'=>'text-align:right'],
 												5=>['style'=>'text-align:right'],
@@ -209,6 +209,8 @@ HTML;
 //			'afterGrid'=>'My fancy content after.',
 				],
 				'panel' => [
+
+
 //					'heading'=>'<h3 class="panel-title">'.' Зведена відомість '.'</h3>',
 //					'heading'=>'<div class="NameTab"<h3>'.'Зведена відомість'.'</h3></div>',
 //					'type'=>'primary',
@@ -233,8 +235,10 @@ HTML;
 				'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
 //				'headerRowOptions'=>['class'=>'kartik-sheet-style'],
 //				'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+
 				'toolbar'=> [
 //					['content'=>
+
 //				 Html::button('<i class="glyphicon glyphicon-plus"></i>', ['type'=>'button', 'title'=>'Add Book', 'class'=>'btn btn-success', 'onclick'=>'alert("This will launch the book creation form.\n\nDisabled for this demo!");']) . ' '.
 //				 Html::a('<i class="glyphicon glyphicon-repeat"></i>', ['grid-demo'], ['data-pjax'=>0, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
 //						 Html::a(Yii::t('easyii', 'Update'), ['updateall'], ['class' => 'btn btn-danger'])

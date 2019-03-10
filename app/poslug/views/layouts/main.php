@@ -6,8 +6,6 @@ use yii\helpers\Html;
 	use yii\widgets\Breadcrumbs;
 
 
-
-
 /* @var $this \yii\web\View */
 /* @var $content string */
 
@@ -60,12 +58,11 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 				'options' => ['class' => 'navbar-default','style'=>'padding-top: 80px'],
 			]);
 			?>
+
 		<div class="col-xs-12">
-
 			<div class="col-xs-4 pull-left">
-				<h4>Поточний період 1111111111111111111111111</h4>
+				<h4>Поточний період</h4>
 				<h3><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h3>
-
 			</div>
 		</div>
 
@@ -120,6 +117,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 							['label' => 'Постачальники', 'url' => '/poslug/ut-postach/index'],
 							['label' => 'Співробітники', 'url' => '/poslug/ut-sotr/index'],
 							['label' => 'Матеріали', 'url' => '/poslug/ut-mat/index'],
+							['label' => 'Вул', 'url' => '/poslug/ut-ulica/index'],
 						],
 					],
 
@@ -181,8 +179,8 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
             <?= $content ?>
 
 
-        </div>
-<!--		--><?php //Pjax::end(); ?>
+       </div>
+
         <div class="footer-fix"></div>
     </div>
     <footer class="footer">
