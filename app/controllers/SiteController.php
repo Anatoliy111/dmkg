@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\UtPay;
 use Yii;
+use yii\bootstrap\Alert;
 use yii\easyii\modules\page\models\Page;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -64,7 +65,15 @@ class SiteController extends Controller
 
 		$pay = new UtPay();
 		$post = Yii::$app->request->post();
-		die($post);
+
+		$messageLog = [
+			'status' => 'Платеж не прошел.',
+			'post' => $post
+		];
+
+		Yii::info($messageLog, 'payment_fail');
+
+//		return $this->redirect('/ut-kart');
 //		if (isset($_POST["operation_xml"]) && !empty($_POST["operation_xml"])) {
 
 //			$xml = base64_decode($_POST['operation_xml']);

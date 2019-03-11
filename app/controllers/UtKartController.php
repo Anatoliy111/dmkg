@@ -30,6 +30,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use DateTimeInterface;
 use yii\filters\AccessControl;
+use yii\httpclient\Client;
 
 /**
  * UtKartController implements the CRUD actions for UtKart model.
@@ -139,6 +140,20 @@ class UtKartController extends Controller
 							'server_url'    => 'http://dmkg.com.ua/site/callback',
 							'sandbox' => 1
 						));
+
+//						$client = new Client();
+//						$response = $client->createRequest()
+//							->setMethod('post')
+//							->setUrl('http://example.com/api/1.0/users')
+//							->setData(['name' => 'John Doe', 'email' => 'johndoe@domain.com'])
+//							->send();
+//						if ($response->isOk) {
+//							$newUserId = $response->data['id'];
+//						}
+
+
+
+
 //						return $this->redirect($html);
 						return sprintf('
 								<div class="col-xs-12">

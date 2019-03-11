@@ -95,6 +95,12 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+				[
+					'class' => 'yii\log\FileTarget', //в файл
+					'categories' => ['payment_fail'], //категория логов
+					'logFile' => '@runtime/logs/pay.log', //куда сохранять
+					'logVars' => [] //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
+				],
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
