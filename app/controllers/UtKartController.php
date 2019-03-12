@@ -113,7 +113,7 @@ class UtKartController extends Controller
 				]);
 			} else
 				if ($model->load(Yii::$app->request->post())) {
-					$my_date = new \DateTime("now", new \DateTimeZone('Asia/Manila'));
+					$my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
 					$model->datepay = $my_date->format('Y-m-d H:i:s');
 					$schet = UtAbonent::findOne($model->id_abonent)['schet'];
 					$textpay='Оплата по рахунку '.$schet.' за послуги:';

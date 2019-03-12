@@ -16,6 +16,7 @@ use Yii;
  * @property string $datestat
  * @property double $summ
  * @property string $textpay
+ * @property string $status
  */
 class UtPay extends \yii\db\ActiveRecord
 {
@@ -37,7 +38,7 @@ class UtPay extends \yii\db\ActiveRecord
             [['id_kart', 'id_abonent'], 'integer'],
             [['datepay', 'datestat'], 'safe'],
             [['summ'], 'number'],
-            [['textpay'], 'string', 'max' => 200],
+            [['textpay','status'], 'string', 'max' => 200],
         ];
     }
 
@@ -54,6 +55,7 @@ class UtPay extends \yii\db\ActiveRecord
             'datestat' => Yii::t('easyii', 'Datestat'),
             'summ' => Yii::t('easyii', 'Summ'),
             'textpay' => Yii::t('easyii', 'Textpay'),
+            'status' => Yii::t('easyii', 'Status'),
         ];
     }
 

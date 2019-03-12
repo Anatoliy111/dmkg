@@ -66,12 +66,43 @@ class SiteController extends Controller
 		$pay = new UtPay();
 		$post = Yii::$app->request->post();
 
-		$messageLog = [
-			'status' => 'Платеж не прошел.',
-			'post' => $post
-		];
+		if( isset($post['data']) && isset($post['signature'])){
+			$public_key = 'i26177975911';
+			$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
 
-		Yii::info($messageLog, 'payment_fail');
+			$sign = base64_encode( sha1(
+				$private_key .
+				$post['data'] .
+				$private_key
+				, 1 ));
+
+			if ($post['signature']==$sign ){
+				$result= json_decode( base64_decode($post['data']) );
+				// данные вернуться в base64 формат JSON
+				$pay->findOne($result->order_id);
+
+				$pay->status = $result->status;
+				$pay->datestat = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));;
+				$pay->save();
+				$messageLog = [
+					'status' => 'Платеж прошел.',
+					'post' => $post,
+					'payment' =>$pay->id.' '.$pay->status,
+				];
+
+				Yii::error($messageLog, 'payment_success');
+
+			}
+		}
+		else{
+			$messageLog = [
+				'status' => 'Платеж не прошел.',
+				'post' => $post
+			];
+
+			Yii::error($messageLog, 'payment_fail');
+		}
+
 
 //		return $this->redirect('/ut-kart');
 //		if (isset($_POST["operation_xml"]) && !empty($_POST["operation_xml"])) {
