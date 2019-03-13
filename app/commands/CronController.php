@@ -29,7 +29,7 @@ class CronController extends Controller
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      */
-    public static $UPLOADS_DIR = 'uploads/import/cron';
+    public static $UPLOADS_DIR = 'uploads/cron';
 
     public $lastperiod;
 
