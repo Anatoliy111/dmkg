@@ -73,7 +73,7 @@ class CronController extends Controller
                 if ($i==$prr){
                     $prr=$prr+$pr;
                     $n=$n+1;
-                    echo 'Выпонено '.$n .'%'. "\n";
+                    echo 'Success '.$n .'%'. "\n";
                 }
 
 //                        Yii::$app->session->AddFlash('alert-danger', 'Return to false ' . $functionname);
