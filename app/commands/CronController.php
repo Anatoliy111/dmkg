@@ -7,6 +7,7 @@
 namespace app\commands;
 use app\poslug\models\UtAbonent;
 use app\poslug\models\UtOpl;
+use app\poslug\models\UtPeriod;
 use app\poslug\models\UtPosl;
 use app\poslug\models\UtTipposl;
 use Yii;
@@ -19,6 +20,9 @@ use yii\console\Controller;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
+
+
+
 class CronController extends Controller
 {
     /**
@@ -26,6 +30,8 @@ class CronController extends Controller
      * @param string $message the message to be echoed.
      */
     public static $UPLOADS_DIR = 'uploads/import/cron';
+
+    public $lastperiod;
 
     public function actionIndex($message = 'hello00000000000000 world')
     {
@@ -36,15 +42,21 @@ class CronController extends Controller
     {
 //        echo $message . "\n";
         $nomrec = 0;
+        $period = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
+
+        $this->lastperiod =date('Y-m-d', strtotime($period->period.' +1 month'));
 
         $uploadPath = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::$UPLOADS_DIR . DIRECTORY_SEPARATOR;
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath);
+        echo $uploadPath . "\n";
+        if (!file_exists($uploadPath)) {
+//            mkdir(Yii::getPathOfAlias('webroot').'/assets/empresas/'.$carpeta, 0644, true);
+            mkdir($uploadPath, 0644, true);
         }
 
         $filename = $uploadPath . '/OPL.DBF';
         if (file_exists($filename)) {
 
+            UtOpl::deleteAll('period = :period', [':period' => $this->lastperiod]);
 
             $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
             @dbase_pack($dbf);
@@ -52,32 +64,39 @@ class CronController extends Controller
 //            $functionname = 'import' . strstr($fname, '.', true);
 
 
-
-                for ($i = 1; $i <= $rowsCount; $i++) {
-                    //                $nomrec = $nomrec +1;
-                    $this->importOPL($dbf, $nomrec);
+            $pr = floor($rowsCount/100);
+            $prr = $pr;
+            $n=0;
+            for ($i = 1; $i <= $rowsCount; $i++) {
+                //                $nomrec = $nomrec +1;
+                $this->importOPL($dbf, $i);
+                if ($i==$prr){
+                    $prr=$prr+$pr;
+                    $n=$n+1;
+                    echo 'Выпонено '.$n .'%'. "\n";
+                }
 
 //                        Yii::$app->session->AddFlash('alert-danger', 'Return to false ' . $functionname);
-                    //				      die("Error!!!  Return to false $functionname");
+                //				      die("Error!!!  Return to false $functionname");
 
-                    //                if ($nomrec==$rowsCount)
-                    //                {
-                    //                    break;
-                    //                }
-                }
+                //                if ($nomrec==$rowsCount)
+                //                {
+                //                    break;
+                //                }
+            }
 
 
 
         }
         else{
             $messageLog = [
-                'status' => 'Помилка імпорту',
+                'status' => 'Error for import',
                 'Base' => 'opl.dbf',
-                'Error' => 'Файл не знайдено',
+                'Error' => 'file opl.dbf not found',
             ];
 
             Yii::error($messageLog, 'import_err');
-            echo 'Файл opl.dbf не знайдено' . "\n";
+            echo 'file opl.dbf not found' . "\n";
 
         }
 
@@ -101,7 +120,7 @@ class CronController extends Controller
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
                 $abon = UtAbonent::findOne(['schet' => $schet]);
-                if ($abon <> null and $GLOBALS["period"] = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . '01'))) {
+                if ($abon <> null ) {
 
                     foreach ($fields as $k => $v) {
                         if ($v <> 0) {
@@ -139,34 +158,34 @@ class CronController extends Controller
                                 if ($findposl == null) {
 //								die("Error!!!  Not find is $dbf  to UtPosl $schet $k");
                                     $messageLog = [
-                                        'status' => 'Помилка імпорту',
+                                        'status' => 'Error for import ',
                                         'Base' => 'opl.dbf',
                                         'Poslug' => $findposl,
                                         'schet' => $schet,
-                                        'Error' => 'По абоненту ' . $schet . ' не знайдено послуги ' . $k . ' ' . $tipposl->poslug .' '. date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2))).' '.$v,
+                                        'Error' => 'Schet ' . $schet . ' not found poslug ' . $k . ' ' . $tipposl->poslug .' '. date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2))).' '.$v,
                                     ];
 
                                     Yii::error($messageLog, 'import_err');
 
 
                                 } else {
-                                    if (NewOpl($findposl, $tipposl, $fields, $v)){
-                                        echo 'По платежу ' . $schet . ' імпорт виконано ' . $k . ' ' . $tipposl->poslug .' '. date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2))).' '.$v . "\n";
+                                    if ($this->NewOpl($findposl, $tipposl, $fields, $v)){
+//										echo 'Schet ' . $schet . ' import success ' . $k . ' ' . $tipposl->poslug .' '. date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2))).' '.$v . "\n";
                                     }
                                 }
 
 
-                                }
                             }
-
-
                         }
+
 
                     }
 
-
                 }
+
+
             }
+        }
 
 
 
@@ -180,7 +199,7 @@ class CronController extends Controller
         $narah = new UtOpl();
 
         $narah->id_org = 1;
-        $narah->period = $GLOBALS["period"];
+        $narah->period = $this->lastperiod;
         $narah->id_abonent = $findposl->id_abonent;
         $narah->id_posl = $findposl->id;
         $narah->id_tipposl = $findposl->id_tipposl;
@@ -197,7 +216,7 @@ class CronController extends Controller
             return true;
         } else{
             $messageLog = [
-                'status' => 'Помилка імпорту (валідація)',
+                'status' => 'Errror for import (validation)',
                 'Base' => 'OPL.DBF',
                 'Poslug' => $findposl,
                 'Error' => $findposl->getAbonent()->asArray()->one()['schet'] . ' ' . $tipposl->tipposl,

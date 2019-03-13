@@ -1030,7 +1030,12 @@ function importIN($dbf,$i,$Base)
 //						$tipposl = UtTipposl::findOne(['old_tipusl' => $wid]);
 
                 $abon = UtAbonent::findOne(['schet' => $schet]);
-                if ($abon <> null and $GLOBALS["period"] = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . '01'))) {
+				if ($schet=='0014001'){
+					$ss=$schet;
+				}
+
+
+                if ($abon <> null and $GLOBALS["period"] == date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . '01'))) {
 
                     foreach ($fields as $k => $v) {
                         if ($v <> 0) {

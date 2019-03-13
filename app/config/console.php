@@ -12,6 +12,9 @@ return [
     'vendorPath' => $webroot . '/vendor',
     'bootstrap' => ['log', 'gii'],
     'controllerNamespace' => 'app\commands',
+    'aliases' => [
+        '@webroot' => $webroot,
+    ],
     'modules' => [
         'gii' => 'yii\gii\Module',
     ],

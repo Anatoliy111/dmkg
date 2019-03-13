@@ -16,6 +16,7 @@ use app\poslug\models\UtSubs;
 use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifab;
 use app\poslug\models\UtTarifplan;
+use app\poslug\models\UtTipposl;
 use app\poslug\models\UtUtrim;
 use DateTime;
 use Yii;
@@ -30,7 +31,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use DateTimeInterface;
 use yii\filters\AccessControl;
-use yii\httpclient\Client;
+
 
 /**
  * UtKartController implements the CRUD actions for UtKart model.
@@ -40,6 +41,11 @@ class UtKartController extends Controller
     /**
      * @inheritdoc
      */
+
+	public $lastperiod;
+	public static $UPLOADS_DIR = 'uploads/import/cron';
+
+
     public function behaviors()
     {
         return [
