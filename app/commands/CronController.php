@@ -50,12 +50,13 @@ class CronController extends Controller
         echo $uploadPath . "\n";
         if (!file_exists($uploadPath)) {
 //            mkdir(Yii::getPathOfAlias('webroot').'/assets/empresas/'.$carpeta, 0644, true);
-            mkdir($uploadPath, 0644, true);
+            mkdir($uploadPath, 0777, true);
         }
 
         $filename = $uploadPath . '/OPL.DBF';
+        echo 'file '.$filename . "\n";
         if (file_exists($filename)) {
-
+            echo 'file exist '."\n";
             UtOpl::deleteAll('period = :period', [':period' => $this->lastperiod]);
 
             $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
@@ -63,7 +64,7 @@ class CronController extends Controller
             $rowsCount = dbase_numrecords($dbf);
 //            $functionname = 'import' . strstr($fname, '.', true);
 
-
+            echo 'rowsCount '.$rowsCount."\n";
             $pr = floor($rowsCount/100);
             $prr = $pr;
             $n=0;
@@ -84,6 +85,8 @@ class CronController extends Controller
                 //                    break;
                 //                }
             }
+
+
 
 
 
