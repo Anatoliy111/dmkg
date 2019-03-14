@@ -13,7 +13,8 @@ use app\poslug\models\UtKart;
 use app\poslug\models\UtNarah;
 	use app\poslug\models\UtObor;
 	use app\poslug\models\UtOpl;
-	use app\poslug\models\UtPokaz;
+use app\poslug\models\UtPeriod;
+use app\poslug\models\UtPokaz;
 	use app\poslug\models\UtPosl;
 	use app\poslug\models\UtRabota;
 	use app\poslug\models\UtSubs;
@@ -104,8 +105,10 @@ $t = true;
 
 	while( $t) {
 		if ($nombase>$endbase){
-			echo ("End import!!!");
+
 //			removeDirectory($_SESSION['DirUpd']);
+
+			echo ("End import!!!");
 			break;
 		}
 
@@ -144,9 +147,31 @@ $t = true;
 			}
 		}
 
-		if ($GLOBALS["period"]==""){
+		if (empty($GLOBALS["period"])){
 			$nombase = $nombase + 1;
 			break;
+		}
+		else{
+
+				$date = DateTime::createFromFormat('Y-m-d', $GLOBALS["period"]);
+				if ($date){
+					$per = UtPeriod::findOne(['period' => $GLOBALS["period"]]);
+					if ($per== null)
+					{
+						$model = new UtPeriod();
+						$model->period = $GLOBALS["period"];
+						$model->imp_km = 1;
+						if ($model->validate())
+						{
+							$model->save();
+						}
+//					   else
+//					   {
+//     					   Flash($Base,$model,$model->ul);
+//					   }
+					}
+				}
+
 		}
 
 
@@ -171,6 +196,8 @@ $t = true;
 
 				if ($nomrec==$rowsCount)
 				{
+
+
 					$nombase = $nombase + 1;
 					$nomrec = 0;
 					if ($i==$process)
