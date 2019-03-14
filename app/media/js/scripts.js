@@ -42,6 +42,21 @@ $(function(){
     });
 })(jQuery);
 
+/* delete file import
+ ========================================================*/
+
+
+/* import file
+ ========================================================*/
+
+(function ($) {
+    $('#btn-imp').on('click', function() {
+        $('#passmodal').modal('show')
+            .find('#modal-content')
+            .load($(this).attr('data-target'));
+    });
+})(jQuery);
+
 
 /* not Enter for input form
  ========================================================*/

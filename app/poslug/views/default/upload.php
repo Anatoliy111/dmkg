@@ -216,16 +216,18 @@ echo GridView::widget([
 
 ?>
 
-<?php echo Html::button('Імпорт', [
+<?php
+echo Html::button('Імпорт', [
+	'id' => 'btn-imp',
 	'class' => 'btn btn-success',
-	'onclick' => "importfile()",
-])
+
+]);
 ?>
 
 
 <?php echo Html::button(Yii::t('easyii', 'Delete'), [
+	'id' => 'btn-delimp',
 	'class' => 'btn btn-danger',
-	'onclick' => "deletefile()",
     ])
 ?>
 
