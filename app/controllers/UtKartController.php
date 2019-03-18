@@ -78,6 +78,19 @@ class UtKartController extends Controller
      * Lists all UtKart models.
      * @return mixed
      */
+
+
+	public function beforeAction($action)
+	{
+		if (in_array($action->id, ['callback'])) {
+			$this->enableCsrfValidation = false;
+		}
+		return parent::beforeAction($action);
+	}
+
+
+
+
 	public function actionPay()
 	{
 		$public_key = 'i26177975911';
@@ -202,7 +215,7 @@ class UtKartController extends Controller
 
 	public function actionCallback()
 	{
-		
+
 		$pay = new UtPay();
 		$post = Yii::$app->request->post();
 
