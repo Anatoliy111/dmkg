@@ -3,7 +3,6 @@
 namespace app\models;
 
 use app\poslug\models\UtAbonent;
-use kartik\builder\TabularForm;
 use Yii;
 
 /**
@@ -17,6 +16,7 @@ use Yii;
  * @property double $summ
  * @property string $textpay
  * @property string $status
+ * @property int $tippay 1=priv 2=other
  */
 class UtPay extends \yii\db\ActiveRecord
 {
@@ -34,11 +34,11 @@ class UtPay extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_kart', 'id_abonent', 'datepay','summ'], 'required'],
-            [['id_kart', 'id_abonent'], 'integer'],
+            [['id_kart', 'id_abonent', 'datepay'], 'required'],
+            [['id_kart', 'id_abonent', 'tippay'], 'integer'],
             [['datepay', 'datestat'], 'safe'],
             [['summ'], 'number'],
-            [['textpay','status'], 'string', 'max' => 200],
+            [['textpay', 'status'], 'string', 'max' => 200],
         ];
     }
 
@@ -56,6 +56,7 @@ class UtPay extends \yii\db\ActiveRecord
             'summ' => Yii::t('easyii', 'Summ'),
             'textpay' => Yii::t('easyii', 'Textpay'),
             'status' => Yii::t('easyii', 'Status'),
+            'tippay' => Yii::t('easyii', 'Tippay'),
         ];
     }
 
@@ -68,7 +69,5 @@ class UtPay extends \yii\db\ActiveRecord
     {
         return $this->hasOne(UtKart::className(), ['id' => 'id_kart']);
     }
-
-
 
 }

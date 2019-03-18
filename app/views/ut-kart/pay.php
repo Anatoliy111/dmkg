@@ -12,6 +12,10 @@ use yii\bootstrap\Html;
 use yii\widgets\MaskedInput;
 use yii\widgets\Pjax;
 
+$list = [1 => 'Privat24',2 => 'Other'];
+$asset = \app\assets\AppAsset::register($this);
+
+
 ?>
 
 
@@ -154,6 +158,18 @@ use yii\widgets\Pjax;
 
             <h3>Всього: <div id='paysumm'>0</div></h3>
         </div>
+
+           <?= $form->field($model, 'tippay')->radioList(
+               [
+//                   1 => Html::panel([ 'heading' => 'Panel Title', 'body' => Html::img($asset->baseUrl.'/p24.png', ['alt' => 'Наш логотип']),], Html::TYPE_PRIMARY),
+                   1 => Html::beginTag('div', ['class'=>'panel panel-success']).
+                        Html::img($asset->baseUrl.'/p24.png', ['alt' => 'Наш логотип']).
+                        Html::endTag("div"),
+                   2 => Html::img($asset->baseUrl.'/visa.png', ['alt' => 'Наш логотип'])
+               ],['inline' => true,'encode'=>FALSE])->label('Виберіть тип оплати') ?>
+
+<!--        1 => Html::img($asset->baseUrl.'/p24.png', ['alt' => 'Наш логотип']),-->
+<!--        2 => Html::img($asset->baseUrl.'/visa.png', ['alt' => 'Наш логотип'])-->
 
 
         <?= Html::submitButton('Зформувати платіж', ['class' => 'btn btn-primary']) ?>

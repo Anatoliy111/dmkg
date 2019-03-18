@@ -106,6 +106,7 @@ class UtKartController extends Controller
 
 				$model->id_abonent = Yii::$app->request->post()['payid_abonent'];
 				$model->id_kart = $session['model']->id;
+				$model->tippay = 1;
 
 
 				$oplab = UtOpl::find()
@@ -216,7 +217,7 @@ class UtKartController extends Controller
 	public function actionCallback()
 	{
 
-		$pay = new UtPay();
+//		$pay = new UtPay();
 		$post = Yii::$app->request->post();
 
 		if( isset($post['data']) && isset($post['signature'])){
@@ -232,10 +233,12 @@ class UtKartController extends Controller
 			if ($post['signature']==$sign ){
 				$result= json_decode( base64_decode($post['data']) );
 				// данные вернуться в base64 формат JSON
-				$pay->findOne($result->order_id);
+				$pay = UtPay::findOne(intval($result->order_id));
 
 				$pay->status = $result->status;
-				$pay->datestat = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));;
+				$my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
+				$pay->datestat = $my_date->format('Y-m-d H:i:s');
+				$pay->textpay = $result->description;
 				$pay->save();
 				$messageLog = [
 					'status' => 'Платеж прошел.',

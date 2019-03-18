@@ -101,7 +101,7 @@ jQuery(function($){
         var sum = 0;
         // will only come inside after the modal is shown
         $("form#pay-form :input").each(function () {
-            if (this.id != "" && this.id != "utpay-summ" && this.id != "utpay-id_abonent" && this.id != "utpay-id_kart")
+            if (this.id != "" && this.id != "utpay-summ" && this.id != "utpay-id_abonent" && this.id != "utpay-id_kart" && this.id != "utpay-tippay")
                 sum += Number($(this).val());
         });
 
@@ -115,7 +115,7 @@ jQuery(function($){
         var sum = 0;
 
         $("form#pay-form :input").each(function () {
-            if (this.id != "" && this.id != "utpay-summ" && this.id != "utpay-id_abonent" && this.id != "utpay-id_kart")
+            if (this.id != "" && this.id != "utpay-summ" && this.id != "utpay-id_abonent" && this.id != "utpay-id_kart" && this.id != "utpay-tippay")
                 sum += Number($(this).val());
         });
 
