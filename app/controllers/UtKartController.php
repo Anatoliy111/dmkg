@@ -252,7 +252,7 @@ class UtKartController extends Controller
 					'post' => $post
 				];
 
-//				Yii::error($messageLog, 'payment_fail');
+				Yii::error($messageLog, 'payment_fail');
 
 			}
 		}
@@ -262,7 +262,7 @@ class UtKartController extends Controller
 				'post' => $post
 			];
 
-//			Yii::error($messageLog, 'payment_fail');
+			Yii::error($messageLog, 'payment_fail');
 		}
 
 		return $this->redirect('/ut-kart');
