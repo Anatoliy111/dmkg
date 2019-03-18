@@ -90,7 +90,7 @@ class SiteController extends Controller
 					'payment' =>$pay->id.' '.$pay->status,
 				];
 
-				Yii::error($messageLog, 'payment_success');
+				Yii::info($messageLog, 'payment_success');
 
 			}
 		}
