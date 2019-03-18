@@ -202,7 +202,7 @@ class UtKartController extends Controller
 
 	public function actionCallback()
 	{
-
+		
 		$pay = new UtPay();
 		$post = Yii::$app->request->post();
 
@@ -239,7 +239,7 @@ class UtKartController extends Controller
 					'post' => $post
 				];
 
-				Yii::error($messageLog, 'payment_fail');
+//				Yii::error($messageLog, 'payment_fail');
 
 			}
 		}
@@ -249,7 +249,7 @@ class UtKartController extends Controller
 				'post' => $post
 			];
 
-			Yii::error($messageLog, 'payment_fail');
+//			Yii::error($messageLog, 'payment_fail');
 		}
 
 		return $this->redirect('/ut-kart');
