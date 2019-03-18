@@ -156,7 +156,7 @@ class UtKartController extends Controller
 							'version' => '3',
 							'language' => 'uk',
 							'result_url' => 'http://dmkg.com.ua/ut-kart/callback',
-
+							'paytypes' => 'privat24,qr',
 							'sandbox' => 1
 						));
 //						'server_url'    => 'http://dmkg.com.ua/site/callback',
