@@ -143,10 +143,10 @@ class UtKartController extends Controller
 							'version' => '3',
 							'language' => 'uk',
 							'result_url' => yii::$app->request->referrer,
-							'server_url'    => 'http://dmkg.com.ua/site/callback',
+
 							'sandbox' => 1
 						));
-
+//						'server_url'    => 'http://dmkg.com.ua/site/callback',
 //						$client = new Client();
 //						$response = $client->createRequest()
 //							->setMethod('post')
