@@ -258,15 +258,15 @@ yii\bootstrap\Modal::begin([
 								'onclick' => "PrePay($abon->id)",
 							]);
 
-//							echo Html::a('callback', ['/site/callback'], [
-//								'data' => [
-//									'method' => 'post',
-//									'params' => [
-//										'data' => 'value1',
-//										'signature' => 'value2',
-//									],
-//								],
-//							]);
+							echo Html::a('callback', ['/site/callback'], [
+								'data' => [
+									'method' => 'post',
+									'params' => [
+										'data' => 'value1',
+										'signature' => 'value2',
+									],
+								],
+							]);
 						}
 
 

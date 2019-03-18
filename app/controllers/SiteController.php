@@ -93,6 +93,15 @@ class SiteController extends Controller
 				Yii::info($messageLog, 'payment_success');
 
 			}
+			else{
+				$messageLog = [
+					'status' => 'Платеж не прошел.',
+					'post' => $post
+				];
+
+				Yii::error($messageLog, 'payment_fail');
+
+			}
 		}
 		else{
 			$messageLog = [
