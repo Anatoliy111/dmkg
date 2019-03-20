@@ -165,12 +165,12 @@ $asset = \app\assets\AppAsset::register($this);
                    1 => Html::beginTag('div', ['class'=>'panel panel-success', 'style'=>'text-align:center']).
                         Html::img($asset->baseUrl.'/p24.png', []).
                        '<div class="panel-body">Приват 24</div>'.
-                       '<div class="panel-footer">Комісія 1%, але не менше 3 грн.</div>'.
+//                       '<div class="panel-footer">Комісія 1%, але не менше 3 грн.</div>'.
                         Html::endTag("div"),
                    2 => Html::beginTag('div', ['class'=>'panel panel-success', 'style'=>'text-align:center']).
                         Html::img($asset->baseUrl.'/visa.png', []).
                        '<div class="panel-body">Інші банки</div>'.
-                       '<div class="panel-footer">Комісія 2.75%</div>'.
+//                       '<div class="panel-footer">Комісія 2.75%</div>'.
                         Html::endTag("div"),
                ],['inline' => true,'encode'=>FALSE])->label('Виберіть тип оплати') ?>
 
