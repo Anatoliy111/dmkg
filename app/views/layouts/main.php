@@ -22,6 +22,9 @@ use yii\widgets\Breadcrumbs;
 
 $search = '';
 
+$my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
+$year = $my_date->format('Y');
+
 ?>
 
 
@@ -160,9 +163,41 @@ $search = '';
 <footer>
 	<div class="bottom_footer container-fluid">
 		<div class="container">
-			<p class="float_left">Copyright &copy; DMKG 2017. All rights reserved. </p>
-<!--			<p class="float_right">Created by: Bondyuk</p>-->
-			<div id="qoo-counter">
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-3 footer-copyright">
+				<p>Copyright &copy; DMKG <?=$year?>.</p>
+				<p class="float_left">КП "Долинський міськкомунгосп"</p>
+			</div>
+
+<!--			<div id="tel-disp" class="float_left">-->
+<!--				<p align="center">fghdfhdfgjdfg</p>-->
+<!---->
+<!--			</div>-->
+
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-3 footer-colgroup">
+				<div class="footer-info">
+					<h3 class="block-title heading">Інформація</h3>
+					<span class="toggle-tab mobile" style="display: none;"><span class="hidden">hidden</span></span>
+					<div class="block-content block-content-statick toggle-content">
+						<ul class="bullet">
+							<li><a href='/contact/index'>Контакти</a></li>
+							<li><a href='/site/offerta'>Публічний договір-оферта</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12 footer-tel">
+				<div class="footer-info">
+					<h3 class="block-title heading">Диспетчер (цілодобово)</h3>
+					<h4 class="block-title heading">(05234) 2-06-15</h4>
+					<h4 class="block-title heading">(066) 942-00-12</h4>
+
+				</div>
+			</div>
+
+
+
+			<div id="qoo-counter" class="col-lg-1 col-md-1 col-sm-1 col-xs-2 footer-counter">
 				<!--LiveInternet counter--><script type="text/javascript">
 					document.write("<a href='//www.liveinternet.ru/click' "+
 						"target=_blank><img src='//counter.yadro.ru/hit?t18.6;r"+
@@ -175,7 +210,14 @@ $search = '';
 						"border='0' width='88' height='31'><\/a>")
 				</script><!--/LiveInternet-->
 
+				<img itemprop="image" src="<?= $asset->baseUrl ?>/visa.png" alt="VISA">
+
 			</div>
+
+
+
+
+
 
 
 		</div>

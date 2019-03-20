@@ -1461,7 +1461,7 @@ button#buttperiod{
     left: 14px;
 }
 .our_advisor .container {
-    margin-left: 1px;
+    /*margin-left: 1px;*/
 }
 
 .our_advisor .advisor_profile {
@@ -2031,17 +2031,45 @@ footer .bottom_footer {
 	background: #0c3c7b;;
 
 }
-footer .bottom_footer p {
+footer .bottom_footer .footer-copyright {
 	margin: 0;
 	font-size: 0.875em;
 	color: #f5f5f5;
 	padding:30px 0;
+	float: left;
 }
 
-#qoo-counter {
+footer .bottom_footer .footer-info {
+	/*margin: 0;*/
+	/*font-size: 0.875em;*/
+	color: #f5f5f5;
+	/*padding:30px 0;*/
+	float: left;
+}
+
+footer .bottom_footer .footer-colgroup a{
+	/*margin: 0;*/
+	/*font-size: 0.875em;*/
+	color: #f5f5f5;
+	/*padding:30px 0;*/
+	/*float: left;*/
+}
+
+footer .bottom_footer .footer-counter {
    float: right;
     padding-top: 8px;
     margin-top:  20px;
+}
+
+footer .bottom_footer .footer-counter img{
+	margin:5px;
+}
+
+#tel-disp {
+	margin-left: 15px;
+	font-size: 0.875em;
+	color: #f5f5f5;
+	padding:30px 0;
 }
 
 

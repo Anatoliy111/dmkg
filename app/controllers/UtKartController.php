@@ -33,6 +33,7 @@ use DateTimeInterface;
 use yii\filters\AccessControl;
 
 
+
 /**
  * UtKartController implements the CRUD actions for UtKart model.
  */
@@ -96,6 +97,7 @@ class UtKartController extends Controller
 		$public_key = 'i26177975911';
 		$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
 		$session = Yii::$app->session;
+
 		$model = new UtPay();
 		$textpay='';
 		$post = Yii::$app->request->post();
@@ -142,6 +144,23 @@ class UtKartController extends Controller
 						if ($impopl['sendopl']!=0)
 							$textpay=$textpay.UtObor::findOne($idobor)['tipposl'].':'.$impopl['sendopl'].' ';
 					}
+					$sum=0.00;
+					$kom=0.00;
+					$paytypes='';
+					$textkom='';
+					if ($model->tippay==1){
+						$kom = (($model->summ)/100) < 3 ? 3 : round((($model->summ)/100),2);
+						$sum = $model->summ + $kom;
+						$paytypes='privat24,qr';
+						$textkom='Комісія 1%, але не менше 3 грн.';
+					}
+
+					if ($model->tippay==2){
+						$kom = round((($model->summ)/100)*2.75,2);
+						$sum = $model->summ + $kom;
+						$paytypes='card,liqpay,masterpass';
+						$textkom='Комісія 2.75%';
+					}
 
 					if ($model->save()) {
 						$liqpay = new LiqPay($public_key, $private_key);
@@ -150,14 +169,14 @@ class UtKartController extends Controller
 
 						$html = $liqpay->cnb_form(array(
 							'action' => 'pay',
-							'amount' => $model->summ,
+							'amount' => $sum,
 							'currency' => 'UAH',
 							'description' => $textpay,
 							'order_id' => $model->id,
 							'version' => '3',
 							'language' => 'uk',
-							'result_url' => 'http://dmkg.com.ua/ut-kart/callback',
-							'paytypes' => 'privat24,qr',
+							'result_url' => $_SERVER['HTTP_ORIGIN'].'/ut-kart/callback',
+							'paytypes' => $paytypes,
 							'sandbox' => 1
 						));
 //						'server_url'    => 'http://dmkg.com.ua/site/callback',
@@ -179,9 +198,19 @@ class UtKartController extends Controller
 								<div class="col-xs-12">
 
 
-										<h4>Сума до сплати</h4>
-										<div class="summa" style="color: #0a660c;">
+
+										<div class="summa" style="color:#0a660c; text-align: center">
+										    <h2>Загальна сума</h2>
 										    <h2>%s</h2>
+										</div>
+										<h5>Сума за послуги</h5>
+										<div class="summa" ">
+										    <h4>%s</h4>
+										</div>
+										<h5>Комісія</h5>
+										<div class="summa" ">
+										    <h4>%s</h4><h6>(%s)</h6>
+
 										</div>
 
 									<div class="panel panel-success">
@@ -199,7 +228,10 @@ class UtKartController extends Controller
 
 								</div>
             ',
+							number_format($sum,2),
 							$model->summ,
+							number_format($kom,2),
+							$textkom,
 							$textpay
 
 						).$html;

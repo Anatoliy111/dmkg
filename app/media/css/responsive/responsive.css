@@ -288,6 +288,8 @@
 		left: 6%;
 	}
 
+
+
 	header .bottom_header,
 	header .top_header,
 	.banner .container {
@@ -390,6 +392,10 @@
 	.consultation a {
 		margin:0 0 10px 0;
 	}
+
+
+
+
 	footer .top_footer .part4,
 	footer .top_footer .part3,
 	footer .top_footer .part2 {
@@ -611,6 +617,14 @@
 		padding-right: 15px;
 	}
 
+	footer .bottom_footer .footer-counter{
+		display: none;
+	}
+	/*.footer-info{*/
+		/*text-align: center;*/
+		/*float:none;*/
+	/*}*/
+
 } /*max-width:991px*/
 
 /*@media (max-width: 767px) {*/
@@ -624,7 +638,24 @@
 /*}*/
 
 
-/*@media (max-width: 767px) {*/
+@media (max-width: 767px) {
+
+	footer .bottom_footer {
+		/*height:auto;*/
+		text-align: center;
+		float: none;
+	}
+
+	footer .bottom_footer .footer-info {
+		text-align: center;
+		float: none;
+	}
+
+	.footer-copyright,
+	.footer-colgroup {
+		display: none;
+	}
+}
 	/*body {*/
 		/*font-size: 14px;*/
 		/*overflow-x:hidden;*/
@@ -1019,6 +1050,8 @@
 		margin-left:0;
 		margin-top:15px;
 	}
+
+
 }
 @media (max-width: 666px) { 
 	.side_tab .market_strategy img {

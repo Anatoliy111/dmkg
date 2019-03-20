@@ -162,10 +162,16 @@ $asset = \app\assets\AppAsset::register($this);
            <?= $form->field($model, 'tippay')->radioList(
                [
 //                   1 => Html::panel([ 'heading' => 'Panel Title', 'body' => Html::img($asset->baseUrl.'/p24.png', ['alt' => 'Наш логотип']),], Html::TYPE_PRIMARY),
-                   1 => Html::beginTag('div', ['class'=>'panel panel-success']).
-                        Html::img($asset->baseUrl.'/p24.png', ['alt' => 'Наш логотип']).
+                   1 => Html::beginTag('div', ['class'=>'panel panel-success', 'style'=>'text-align:center']).
+                        Html::img($asset->baseUrl.'/p24.png', []).
+                       '<div class="panel-body">Приват 24</div>'.
+                       '<div class="panel-footer">Комісія 1%, але не менше 3 грн.</div>'.
                         Html::endTag("div"),
-                   2 => Html::img($asset->baseUrl.'/visa.png', ['alt' => 'Наш логотип'])
+                   2 => Html::beginTag('div', ['class'=>'panel panel-success', 'style'=>'text-align:center']).
+                        Html::img($asset->baseUrl.'/visa.png', []).
+                       '<div class="panel-body">Інші банки</div>'.
+                       '<div class="panel-footer">Комісія 2.75%</div>'.
+                        Html::endTag("div"),
                ],['inline' => true,'encode'=>FALSE])->label('Виберіть тип оплати') ?>
 
 <!--        1 => Html::img($asset->baseUrl.'/p24.png', ['alt' => 'Наш логотип']),-->

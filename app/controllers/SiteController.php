@@ -72,4 +72,9 @@ class SiteController extends Controller
 
 	}
 
+	public function actionOfferta()
+	{
+		return $this->render('offerta');
+	}
+
 }
