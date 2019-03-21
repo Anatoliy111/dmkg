@@ -254,9 +254,29 @@ yii\bootstrap\Modal::begin([
 						<?php
 						if ($abon->id==2071) {
 							echo Html::button("Сплатити", [
-								'class' => 'btn btn-success btn-lg btn-block',
+								'id' => 'btn-pay',
+								'class' => 'btn btn-success',
 								'onclick' => "PrePay($abon->id)",
 							]);
+?>
+						<div class="col-sm-1">
+
+							<?= Html::a('Вихід', ['ut-kart/logout'], ['class' => 'btn btn-primary']) ?>
+							<?= Html::button("Сплатити", [
+							'id' => 'btn-pay',
+							'class' => 'btn btn-success',
+							'onclick' => "PrePay($abon->id)",
+							])?>
+
+						</div>
+						<div class="col-sm-1">
+
+							<?= Html::a("Змінити код доступу", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-1','class'=>'btn btn-danger'])?>
+
+						</div>
+<?php
+
+						echo Html::a('Вихід', ['class' => 'btn btn-primary','onclick' => "PrePay($abon->id)"]);
 
 //							echo Html::a('callback', ['/ut-kart/callback'], [
 //								'data' => [
