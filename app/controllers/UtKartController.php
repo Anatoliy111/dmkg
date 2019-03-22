@@ -148,19 +148,21 @@ class UtKartController extends Controller
 					$kom=0.00;
 					$paytypes='';
 					$textkom='';
-					if ($model->tippay==1){
-						$kom = (($model->summ)/100) < 3 ? 3 : round((($model->summ)/100),2);
-						$sum = $model->summ + $kom;
-						$paytypes='privat24,qr';
-						$textkom='Комісія 1%, але не менше 3 грн.';
-					}
+//					if ($model->tippay==1){
+//						$kom = (($model->summ)/100) < 3 ? 3 : round((($model->summ)/100),2);
+//						$sum = $model->summ + $kom;
+//						$paytypes='privat24,qr';
+//						$textkom='Комісія 1%, але не менше 3 грн.';
+//					}
+//
+//					if ($model->tippay==2){
+//						$kom = round((($model->summ)/100)*2.75,2);
+//						$sum = $model->summ + $kom;
+//						$paytypes='card,liqpay,masterpass';
+//						$textkom='Комісія 2.75%';
+//					}
 
-					if ($model->tippay==2){
-						$kom = round((($model->summ)/100)*2.75,2);
-						$sum = $model->summ + $kom;
-						$paytypes='card,liqpay,masterpass';
-						$textkom='Комісія 2.75%';
-					}
+					$sum = $model->summ;
 
 					if ($model->save()) {
 						$liqpay = new LiqPay($public_key, $private_key);
@@ -203,15 +205,8 @@ class UtKartController extends Controller
 										    <h2>Загальна сума</h2>
 										    <h2>%s</h2>
 										</div>
-										<h5>Сума за послуги</h5>
-										<div class="summa" ">
-										    <h4>%s</h4>
-										</div>
-										<h5>Комісія</h5>
-										<div class="summa" ">
-										    <h4>%s</h4><h6>(%s)</h6>
 
-										</div>
+
 
 									<div class="panel panel-success">
 										<div class="panel-heading">
@@ -229,9 +224,9 @@ class UtKartController extends Controller
 								</div>
             ',
 							number_format($sum,2),
-							$model->summ,
-							number_format($kom,2),
-							$textkom,
+//							$model->summ,
+//							number_format($kom,2),
+//							$textkom,
 							$textpay
 
 						).$html;
@@ -244,6 +239,41 @@ class UtKartController extends Controller
 	return $this->redirect('/ut-kart');
 
 	}
+
+
+//<div class="col-xs-12">
+//
+//
+//
+//<div class="summa" style="color:#0a660c; text-align: center">
+//<h2>Загальна сума</h2>
+//<h2>%s</h2>
+//</div>
+//<h5>Сума за послуги</h5>
+//<div class="summa" ">
+//										    <h4>%s</h4>
+//										</div>
+//										<h5>Комісія</h5>
+//										<div class="summa" ">
+//<h4>%s</h4><h6>(%s)</h6>
+//
+//</div>
+//
+//<div class="panel panel-success">
+//<div class="panel-heading">
+//Призначення платежу
+//</div>
+//<div class="panel-body">
+//<p>%s</p>
+//</div>
+//</div>
+//
+//
+//
+//
+//
+//</div>
+
 
 
 	public function actionCallback()
