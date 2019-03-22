@@ -148,19 +148,19 @@ class UtKartController extends Controller
 					$kom=0.00;
 					$paytypes='';
 					$textkom='';
-//					if ($model->tippay==1){
+					if ($model->tippay==1){
 //						$kom = (($model->summ)/100) < 3 ? 3 : round((($model->summ)/100),2);
 //						$sum = $model->summ + $kom;
-//						$paytypes='privat24,qr';
+						$paytypes='privat24,qr';
 //						$textkom='Комісія 1%, але не менше 3 грн.';
-//					}
-//
-//					if ($model->tippay==2){
+					}
+
+					if ($model->tippay==2){
 //						$kom = round((($model->summ)/100)*2.75,2);
 //						$sum = $model->summ + $kom;
-//						$paytypes='card,liqpay,masterpass';
+						$paytypes='card,liqpay,masterpass';
 //						$textkom='Комісія 2.75%';
-//					}
+					}
 
 					$sum = $model->summ;
 
