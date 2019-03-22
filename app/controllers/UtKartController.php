@@ -94,8 +94,8 @@ class UtKartController extends Controller
 
 	public function actionPay()
 	{
-		$public_key = 'i26177975911';
-		$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
+		$public_key = 'i99036162001';
+		$private_key = '90MnlzYkLVfYQD8B1kEPgTYwpU3PxHrDVzQhHQxk';
 		$session = Yii::$app->session;
 
 		$model = new UtPay();
@@ -283,8 +283,8 @@ class UtKartController extends Controller
 		$post = Yii::$app->request->post();
 
 		if( isset($post['data']) && isset($post['signature'])){
-			$public_key = 'i26177975911';
-			$private_key = 'MRRWK7Ao9WlfTPO2TR5tRf8ciXv8OM73dqGHCjZQ';
+			$public_key = 'i99036162001';
+			$private_key = '90MnlzYkLVfYQD8B1kEPgTYwpU3PxHrDVzQhHQxk';
 
 			$sign = base64_encode( sha1(
 				$private_key .
