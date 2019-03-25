@@ -995,6 +995,10 @@ button#buttperiod{
     margin-top: 150px;
 }
 
+.panel-pay {
+	font-weight: 100;
+}
+
 .welcome_sec h2:before {
 	content: '';
 	width: 4px;
