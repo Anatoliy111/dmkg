@@ -179,7 +179,7 @@ class UtKartController extends Controller
 							'language' => 'uk',
 							'result_url' => $_SERVER['HTTP_ORIGIN'].'/ut-kart/callback',
 							'paytypes' => $paytypes,
-							'sandbox' => 1
+//							'sandbox' => 1
 						));
 //						'server_url'    => 'http://dmkg.com.ua/site/callback',
 //						$client = new Client();
