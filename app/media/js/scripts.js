@@ -164,6 +164,7 @@ jQuery(function($){
                 success: function(res){
                     //console.log(res);
                 $('#modal-content').html(res);
+                $('#modal-header ').html('<h2>zvzvxzcvzxcbvzxc</h2>');
                 },
                 error: function(){
                     alert('Error!');

@@ -1145,6 +1145,10 @@
 	    padding-right: 16px;
 	    margin-right: 11px;
 	}
+
+	.panel-pay {
+		width: 200px;
+	}
 }
 
 @media (max-width: 492px) {

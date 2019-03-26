@@ -210,7 +210,7 @@ $year = $my_date->format('Y');
 						"border='0' width='88' height='31'><\/a>")
 				</script><!--/LiveInternet-->
 
-				<img itemprop="image" src="<?= $asset->baseUrl ?>/visa.png" alt="VISA">
+				<img itemprop="image" src="<?= $asset->baseUrl ?>/visa2.png" alt="VISA">
 
 			</div>
 

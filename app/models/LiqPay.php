@@ -23,6 +23,8 @@
 
 namespace app\models;
 use InvalidArgumentException;
+use Yii;
+
 
 /**
  * Payment method liqpay process
@@ -37,6 +39,8 @@ class LiqPay
     const CURRENCY_RUB = 'RUB';
     const CURRENCY_RUR = 'RUR';
 
+
+
     private $_api_url = 'https://www.liqpay.ua/api/';
     private $_checkout_url = 'https://www.liqpay.ua/api/3/checkout';
     protected $_supportedCurrencies = array(
@@ -49,6 +53,9 @@ class LiqPay
     private $_public_key;
     private $_private_key;
     private $_server_response_code = null;
+    public $depends = [
+        'app\assets\AppAsset',
+    ];
 
     /**
      * Constructor.
@@ -140,18 +147,22 @@ class LiqPay
         $params    = $this->cnb_params($params);
         $data      = $this->encode_params($params);
         $signature = $this->cnb_signature($params);
+
+        $bundle = Yii::$app->getAssetManager()->getBundle('app\assets\AppAsset');
+
+
         
         return sprintf('
             <form method="POST" action="%s" accept-charset="utf-8">
                 %s
                 %s
-                <input type="image" src="//static.liqpay.ua/buttons/p1%s.radius.png" name="btn_text" />
+                %s
             </form>
             ',
             $this->_checkout_url,
             sprintf('<input type="hidden" name="%s" value="%s" />', 'data', $data),
             sprintf('<input type="hidden" name="%s" value="%s" />', 'signature', $signature),
-            $language
+            sprintf('<input type="image" src="%s" name="btn_text" />', $bundle->baseUrl."/liqpay-1.jpg")
         );
     }
 
