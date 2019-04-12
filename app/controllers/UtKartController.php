@@ -138,12 +138,17 @@ class UtKartController extends Controller
 					$my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
 					$model->datepay = $my_date->format('Y-m-d H:i:s');
 					$schet = UtAbonent::findOne($model->id_abonent)['schet'];
-					$textpay='Оплата за послуги по рах. '.$schet.' Заг.сумма '.$model->summ.' в т.ч:';
+					$textpay='Oplata po rah. '.$schet.' Summa '.$model->summ.' :';
+					$posluga='';
 					foreach ($post['UtObor'] as $idobor=>$impopl)
 					{
 						if ($impopl['sendopl']!=0)
-							$textpay=$textpay.UtObor::findOne($idobor)['tipposl'].':'.$impopl['sendopl'].' ';
+							$textpay = $textpay . transliterator_transliterate("Any-Latin; NFD; [:Nonspacing Mark:] Remove; NFC; [:Punctuation:] Remove; Lower();", UtObor::findOne($idobor)['tipposl']) . ':' . $impopl['sendopl'] . ' ';
+
 					}
+
+
+
 					$sum=0.00;
 					$kom=0.00;
 					$paytypes='';
@@ -179,7 +184,7 @@ class UtKartController extends Controller
 							'language' => 'uk',
 							'result_url' => $_SERVER['HTTP_ORIGIN'].'/ut-kart/callback',
 							'paytypes' => $paytypes,
-//							'sandbox' => 1
+							'sandbox' => 1
 						));
 //						'server_url'    => 'http://dmkg.com.ua/site/callback',
 //						$client = new Client();
