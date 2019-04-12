@@ -101,7 +101,7 @@ $year = $my_date->format('Y');
 								<span class="separator icon icon-Phone2"></span>
 							</div>
 							<div class="content-box">
-								<p itemprop="telephone"> +3805-234-5-22-56 <br> dmkg28500@ukr.net </p>
+								<p itemprop="telephone"> +38(05234)2-06-15 <br> dmkg28500@ukr.net </p>
 							</div>
 						</div>
 						<div class="top-info">
