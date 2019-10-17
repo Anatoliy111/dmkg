@@ -81,7 +81,7 @@ class SearchUtKart extends UtKart
 
 		if (($Get['kv']==null) or ($Get['kv']=="") or ($Get['kv']==0))
 		{
-			$this->kv=1;
+			$this->kv='';
 		}
 		$query->andWhere([
 			'id_ulica' => $this->id_ulica,
