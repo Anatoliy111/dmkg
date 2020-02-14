@@ -53,7 +53,7 @@ class CronController extends Controller
             mkdir($uploadPath, 0777, true);
         }
 
-        $filename = $uploadPath . '/OPL.DBF';
+        $filename = $uploadPath . 'OPL.DBF';
         echo 'file '.$filename . "\n";
         if (file_exists($filename)) {
             echo 'file exist '."\n";
