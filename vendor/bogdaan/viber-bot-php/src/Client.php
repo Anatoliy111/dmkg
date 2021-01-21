@@ -113,7 +113,7 @@ class Client
             throw new ApiException('Invalid webhook url: ' . $url);
         }
 
-        return $this->call('set_webhook', [
+        return $this->call('https://chatapi.viber.com/pa/set_webhook', [
             'url' => $url,
             'event_types' => $eventTypes,
         ]);
