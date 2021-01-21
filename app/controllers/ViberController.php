@@ -70,6 +70,7 @@ class ViberController extends \yii\web\Controller
                 })
                 ->run();
         } catch (Exception $e) {
+            echo "Error: ". $e->getMessage() ."\n";
             // todo - log exceptions
         }
     }
