@@ -7,12 +7,11 @@ use Exception;
 use Viber\Bot;
 use Viber\Client;
 use Viber\Api\Sender;
-
+use Yii;
 
 
 class ViberController extends \yii\web\Controller
 {
-
 
 
     public function actionIndex()
@@ -23,18 +22,18 @@ class ViberController extends \yii\web\Controller
 
     public function actionSetup()
     {
-        $apiKey = '4cc2a5b34ba7d2bf-ad220322f4f8ca5b-dd7d0419116d069a'; // <- PLACE-YOU-API-KEY-HERE
+        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
         $webhookUrl = 'https://dmkg.com.ua/viber/bot'; // <- PLACE-YOU-HTTPS-URL
         try {
             $client = new Client(['token' => $apiKey]);
             $result = $client->setWebhook($webhookUrl);
             echo "Success!\n";
         } catch (Exception $e) {
-             echo "Error: ". $e->getMessage() ."\n";
-           // echo "Error: " . "\n";
+            echo "Error222222222222222222: " . $e->getMessage() . "\n";
+            // echo "Error: " . "\n";
         }
 
-        return;
+        return '';
 
     }
 
@@ -42,23 +41,23 @@ class ViberController extends \yii\web\Controller
     {
 
 
-        $apiKey = '4cc2a5b34ba7d2bf-ad220322f4f8ca5b-dd7d0419116d069a';
+        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';
 
 // так будет выглядеть наш бот (имя и аватар - можно менять)
         $botSender = new Sender([
-            'name' => 'Whois bot',
+            'name' => 'bondyukviberbot',
             'avatar' => 'https://dmkg.com.ua/uploads/images/icon_16.png',
         ]);
 
         try {
             $bot = new Bot(['token' => $apiKey]);
             $bot->onConversation(function ($event) use ($bot, $botSender) {
-                    // это событие будет вызвано, как только пользователь перейдет в чат
-                    // вы можете отправить "привествие", но не можете посылать более сообщений
-                    return (new \Viber\Api\Message\Text())
-                        ->setSender($botSender)
-                        ->setText("Can i help you?");
-                })
+                // это событие будет вызвано, как только пользователь перейдет в чат
+                // вы можете отправить "привествие", но не можете посылать более сообщений
+                return (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setText("Can i help you?");
+            })
                 ->onText('|whois .*|si', function ($event) use ($bot, $botSender) {
                     // это событие будет вызвано если пользователь пошлет сообщение
                     // которое совпадет с регулярным выражением
@@ -71,10 +70,18 @@ class ViberController extends \yii\web\Controller
                 })
                 ->run();
         } catch (Exception $e) {
-            echo "Error11111111111111111111111: ". $e->getMessage() ."\n";
+            echo "Error11111111111111111111111: " . $e->getMessage() . "\n";
             // todo - log exceptions
         }
 
-        return;
+        return '';
     }
+
+
+    public function beforeAction($action) {
+        if($action->id === 'bot'){
+            Yii::$app->controller->enableCsrfValidation = false;
+        }
+    }
+
 }
