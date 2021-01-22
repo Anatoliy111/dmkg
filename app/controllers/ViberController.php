@@ -74,7 +74,7 @@ class ViberController extends \yii\web\Controller
             // todo - log exceptions
         }
 
-        return '';
+        return '111111';
     }
 
 
