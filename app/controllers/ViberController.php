@@ -50,8 +50,7 @@ class ViberController extends \yii\web\Controller
 
         try {
             $bot = new Bot(['token' => $apiKey]);
-            $bot
-                ->onConversation(function ($event) use ($bot, $botSender) {
+            $bot->onConversation(function ($event) use ($bot, $botSender) {
                     // это событие будет вызвано, как только пользователь перейдет в чат
                     // вы можете отправить "привествие", но не можете посылать более сообщений
                     return (new \Viber\Api\Message\Text())
@@ -70,7 +69,7 @@ class ViberController extends \yii\web\Controller
                 })
                 ->run();
         } catch (Exception $e) {
-            echo "Error: ". $e->getMessage() ."\n";
+            echo "Error11111111111111111111111: ". $e->getMessage() ."\n";
             // todo - log exceptions
         }
     }
