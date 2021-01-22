@@ -34,6 +34,8 @@ class ViberController extends \yii\web\Controller
            // echo "Error: " . "\n";
         }
 
+        return;
+
     }
 
     public function actionBot()
@@ -72,5 +74,7 @@ class ViberController extends \yii\web\Controller
             echo "Error11111111111111111111111: ". $e->getMessage() ."\n";
             // todo - log exceptions
         }
+
+        return;
     }
 }
