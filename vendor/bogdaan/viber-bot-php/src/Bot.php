@@ -159,7 +159,7 @@ class Bot
             $signature = $_GET['sig'];
         }
         if (empty($signature)) {
-            throw new \RuntimeException('Signature header not found', 1);
+      //      throw new \RuntimeException('Signature header not found', 1);
         }
 
         return $signature;
