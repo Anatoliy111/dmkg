@@ -44,17 +44,17 @@ class CronController extends Controller
 
     public $lastperiod;
 
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'bot' => ['POST'],
-                ],
-            ],
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'bot' => ['POST'],
+//                ],
+//            ],
+//        ];
+//    }
 
 
     public function actionIndex($message = 'hello00000000000000 world')
@@ -309,6 +309,8 @@ class CronController extends Controller
                 $log->warning('Actual body: ' . $bot->getInputBody());
             }
         }
+
+        return true;
 
     }
 
