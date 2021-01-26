@@ -513,11 +513,11 @@ class CronController extends Controller
         return true;
     }
 
-    public function beforeAction($action) {
-        if($action->id === 'bot'){
-            Yii::$app->controller->enableCsrfValidation = false;
-        }
-        return parent::beforeAction($action);
-    }
+//    public function beforeAction($action) {
+//        if($action->id === 'bot'){
+//            Yii::$app->controller->enableCsrfValidation = false;
+//        }
+//        return parent::beforeAction($action);
+//    }
 
 }
