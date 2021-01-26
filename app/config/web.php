@@ -32,9 +32,9 @@ $config = [
 			'class' => 'yii\caching\FileCache',
 
 		],
-		'parsers' => [
-			'application/json' => 'yii\web\JsonParser'
-		],
+//		'parsers' => [
+//			'application/json' => 'yii\web\JsonParser'
+//		],
 //		'users' => [
 //			'class' => 'yii\web\User',
 //			'identityClass' => 'app\models\SearchUtKart',
