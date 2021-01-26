@@ -47,24 +47,6 @@ class CronController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                //'only' => ['index', 'viber'],
-                'rules' => [
-                    [
-                        //разрешить гостям
-                        'actions' => ['webhook','bot'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        //разрешить зарегистрированным
-                        'actions' => ['webhook', 'bot','impopl','index','mess'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
