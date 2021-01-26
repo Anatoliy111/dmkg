@@ -10,7 +10,9 @@ use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Yii;
-use yii\rest\Controller;
+use yii\web\Controller;
+
+//use yii\rest\Controller;
 
 class ViberController extends Controller
 {
@@ -39,7 +41,7 @@ class ViberController extends Controller
             echo "Error: ". $e->getMessage() ."\n";
         }
 
-        return true;
+     //   return true;
 
     }
 
@@ -265,7 +267,7 @@ class ViberController extends Controller
             }
         }
 
-        return true;
+     //   return true;
 
     }
 
