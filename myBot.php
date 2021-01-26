@@ -46,6 +46,7 @@ try {
         })
         // when user subscribe to PA
         ->onSubscribe(function ($event) use ($bot, $botSender, $log) {
+            $receiverId = $event->getSender()->getId();
             $log->info('onSubscribe handler');
             $this->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
@@ -60,7 +61,7 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
-                    ->setText('you press the button')
+                    ->setText('you press the button and you ID '.$receiverId)
             );
         })
         ->onText('|k\d+|is', function ($event) use ($bot, $botSender, $log) {
