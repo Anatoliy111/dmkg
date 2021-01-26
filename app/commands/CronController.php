@@ -18,6 +18,9 @@ use Viber\Bot;
 use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+
 /**
  * This command echoes the first argument that you have entered.
  *
@@ -40,6 +43,37 @@ class CronController extends Controller
     public static $UPLOADS_DIR = 'uploads/cron';
 
     public $lastperiod;
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index', 'viber'],
+                'rules' => [
+                    [
+                        //разрешить гостям
+                        'actions' => ['webhook','bot'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        //разрешить зарегистрированным
+                        'actions' => ['webhook', 'bot','impopl','index','mess'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'bot' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
 
     public function actionIndex($message = 'hello00000000000000 world')
     {
@@ -495,6 +529,13 @@ class CronController extends Controller
             Yii::error($messageLog, 'import_err');
         }
         return true;
+    }
+
+    public function beforeAction($action) {
+        if($action->id === 'bot'){
+            Yii::$app->controller->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
 }
