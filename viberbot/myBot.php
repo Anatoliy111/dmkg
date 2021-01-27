@@ -22,7 +22,7 @@ $botSender = new Sender([
 
 // log bot interaction
 $log = new Logger('bot');
-$log->pushHandler(new StreamHandler('/tmp/bot.log'));
+$log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
 
 try {
     // create bot instance
