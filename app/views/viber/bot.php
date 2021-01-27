@@ -6,8 +6,6 @@ use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-use yii\web\Controller;
-
 /* @var $this yii\web\View */
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
 
@@ -15,6 +13,7 @@ $botSender = new Sender([
     'name' => 'bondyukViberBot',
     'avatar' => '',
 ]);
+
 
 // log bot interaction
 $log = new Logger('bot');
