@@ -109,6 +109,7 @@ try {
                             ->setReceiver($receiverId)
                             ->setName('Novikov Bogdan')
                             ->setPhoneNumber('+380000000000')
+                            ->setKeyboard(getMainMenu())
                     );
                     break;
                 //
@@ -119,6 +120,7 @@ try {
                             ->setReceiver($receiverId)
                             ->setLat(48.486504)
                             ->setLng(35.038910)
+                            ->setKeyboard(getMainMenu())
                     );
                     break;
                 //
@@ -128,6 +130,7 @@ try {
                             ->setSender($botSender)
                             ->setReceiver($receiverId)
                             ->setStickerId(114408)
+                            ->setKeyboard(getMainMenu())
                     );
                     break;
                 //
@@ -137,6 +140,7 @@ try {
                             ->setSender($botSender)
                             ->setReceiver($receiverId)
                             ->setMedia('https://hcbogdan.com')
+                            ->setKeyboard(getMainMenu())
                     );
                     break;
                 //
@@ -147,6 +151,7 @@ try {
                             ->setReceiver($receiverId)
                             ->setText('some media data')
                             ->setMedia('https://developers.viber.com/img/devlogo.png')
+                            ->setKeyboard(getMainMenu())
                     );
                     break;
                 //
@@ -157,6 +162,7 @@ try {
                             ->setReceiver($receiverId)
                             ->setSize(2 * 1024 * 1024)
                             ->setMedia('http://techslides.com/demos/sample-videos/small.mp4')
+                            ->setKeyboard(getMainMenu())
                     );
                     break;
                 //
