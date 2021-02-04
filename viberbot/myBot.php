@@ -9,8 +9,11 @@ use Viber\Bot;
 use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use yii\bootstrap\Html;
 
 //echo "sdgsdgsd\n";
+
+
 
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
 
@@ -219,6 +222,8 @@ try {
 
 function getMainMenu(){
 
+    $asset = \app\assets\AppAsset::register($this);
+
    return (new \Viber\Api\Keyboard())
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
@@ -243,7 +248,7 @@ function getMainMenu(){
             (new \Viber\Api\Keyboard\Button())
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage('https://dmkg.com.ua/assets/d771d523/p24.png'),
+                ->setImage(Html::img($asset->baseUrl.'/viber_p24.png', [])),
         ]);
 
 }
