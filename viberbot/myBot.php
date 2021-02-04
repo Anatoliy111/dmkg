@@ -13,9 +13,7 @@ use yii\bootstrap\Html;
 
 //echo "sdgsdgsd\n";
 
-$asset = __DIR__ .\..\app\assets\AppAsset::register($this);
-$img = Html::img($asset->baseUrl.'/viber_p24.png',[]);
-echo $img;
+
 
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
 
@@ -224,8 +222,6 @@ try {
 
 function getMainMenu(){
 
-    $asset = \app\assets\AppAsset::register($this);
-    $img = Html::img($asset->baseUrl.'/viber_p24.png',[]);
    return (new \Viber\Api\Keyboard())
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
@@ -250,7 +246,7 @@ function getMainMenu(){
             (new \Viber\Api\Keyboard\Button())
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage($img),
+                ->setImage("https://dmkg.com.ua/uploads/viber_p24.png"),
         ]);
 
 }
