@@ -255,7 +255,8 @@ yii\bootstrap\Modal::begin([
 						if ($abon->id==2071) {
 							echo Html::button("Сплатити", [
 								'class' => 'btn btn-success btn-lg btn-block',
-								'onclick' => "PrePay($abon->id)",
+							//	'onclick' => "PrePay($abon->id)",
+								'onclick' => "https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D)",
 							]);
 						}
 						?>
@@ -263,7 +264,8 @@ yii\bootstrap\Modal::begin([
 						if ($abon->id==3703) {
 							echo Html::button("Сплатити", [
 								'class' => 'btn btn-success btn-lg btn-block',
-								'onclick' => "PrePay($abon->id)",
+								//'onclick' => "PrePay($abon->id)",
+								'onclick' => "https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D)",
 							]);
 						}
 						?>

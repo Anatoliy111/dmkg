@@ -229,7 +229,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Button 1'),
+                ->setText('Інформація по ос.рахунках'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -238,15 +238,41 @@ function getMainMenu(){
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Button 2'),
+                ->setText('Операції з ос.рахунками'),
 
             (new \Viber\Api\Keyboard\Button())
-              //  ->setBgColor('#555555')
+                ->setColumns(6)
+                ->setRows(3)
+                ->setActionType('open-url')
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
+                ->setImage('https://dmkg.com.ua/assets/d771d523/p24.png'),
+        ]);
+
+}
+
+function getRahMenu(){
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //->setBgColor('#8074d6')
+                // ->setTextSize('small')
                 ->setTextSize('large')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Button 3'),
+                ->setText('Додати рахунок до бота'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('btn-click')
+                ->setText('Видалити рахунок з бота'),
+
         ]);
 
 }
