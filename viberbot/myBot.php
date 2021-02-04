@@ -223,7 +223,7 @@ function getMainMenu(){
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(2)
-                ->setBgColor('#8074d6')
+                //->setBgColor('#8074d6')
                 ->setTextSize('small')
                 ->setTextHAlign('right')
                 ->setActionType('reply')
@@ -232,14 +232,14 @@ function getMainMenu(){
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(2)
-                ->setBgColor('#2fa4e7')
+              //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
                 ->setText('Button 2'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setBgColor('#555555')
+              //  ->setBgColor('#555555')
                 ->setTextSize('large')
                 ->setTextHAlign('left')
                 ->setActionType('reply')
