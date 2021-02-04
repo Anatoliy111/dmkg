@@ -68,17 +68,6 @@ try {
                     ->setText('you press the button and you ID '.$receiverId)
             );
         })
-        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log) {
-            $log->info('onText ' . var_export($event, true));
-            // .* - match any symbols
-            $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setReceiver($event->getSender()->getId())
-                    ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
-                    ->setKeyboard(getMainMenu())
-            );
-        })
         ->onText('|k\d+|is', function ($event) use ($bot, $botSender, $log) {
             $caseNumber = (int)preg_replace('|[^0-9]|s', '', $event->getMessage()->getText());
             $log->info('onText demo handler #' . $caseNumber);
@@ -207,6 +196,17 @@ try {
                     );
                     break;
             }
+        })
+        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log) {
+            $log->info('onText ' . var_export($event, true));
+            // .* - match any symbols
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($event->getSender()->getId())
+                    ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
+                    ->setKeyboard(getMainMenu())
+            );
         })
         ->run();
 } catch (Exception $e) {
