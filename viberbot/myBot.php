@@ -240,12 +240,10 @@ function getMainMenu(){
                 ->setActionBody('btn-click')
                 ->setText('Операції з ос.рахунками'),
 
-//            (new \Viber\Api\Keyboard\Button())
-//                ->setColumns(6)
-//                ->setRows(3)
-//                ->setActionType('open-url')
-//                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-//                ->setImage('https://dmkg.com.ua/assets/d771d523/p24.png'),
+            (new \Viber\Api\Keyboard\Button())
+                ->setActionType('open-url')
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
+                ->setImage('https://dmkg.com.ua/assets/d771d523/p24.png'),
         ]);
 
 }
