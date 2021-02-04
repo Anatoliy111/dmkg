@@ -239,7 +239,7 @@ function getMainMenu(){
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
                 ->setText('Операції з ос.рахунками'),
-
+            
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(6)
                 ->setRows(3)
