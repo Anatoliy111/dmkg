@@ -75,7 +75,8 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($event->getSender()->getId())
-                    ->setText('HI!')
+                    ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
+                    ->setKeyboard(getMainMenu())
             );
         })
         ->onText('|k\d+|is', function ($event) use ($bot, $botSender, $log) {
