@@ -13,7 +13,7 @@ use yii\bootstrap\Html;
 
 //echo "sdgsdgsd\n";
 
-$asset = \app\assets\AppAsset::register($this);
+$asset = __DIR__ .\..\app\assets\AppAsset::register($this);
 $img = Html::img($asset->baseUrl.'/viber_p24.png',[]);
 echo $img;
 
