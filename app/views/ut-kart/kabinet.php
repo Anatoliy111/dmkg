@@ -254,19 +254,20 @@ yii\bootstrap\Modal::begin([
 						<?php
 						if ($abon->id==2071) {
 							echo Html::button("Сплатити", [
-								'value'=>Url::to("https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D"),
+							//	'value'=>Url::to("https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D"),
 								'class' => 'btn btn-success btn-lg btn-block',
 							//	'onclick' => "PrePay($abon->id)",
-							//	'onclick' => "https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D",
+								'onclick' => "location.href='https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'",
 							]);
 						}
 						?>
 						<?php
 						if ($abon->id==3703) {
 							echo Html::button("Сплатити", [
-								'value'=>Url::to("https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D"),
+							//	'value'=>Url::to("https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D"),
 								'class' => 'btn btn-success btn-lg btn-block',
 								//'onclick' => "PrePay($abon->id)",
+								'onclick' => "location.href='https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'",
 							]);
 						}
 						?>
