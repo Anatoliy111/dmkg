@@ -1,6 +1,7 @@
 .idea
 uploads/*
 !uploads/images/
+viberbot/tmp/*
 assets/*
 eset_upd/*
 
