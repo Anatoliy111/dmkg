@@ -262,7 +262,7 @@ yii\bootstrap\Modal::begin([
 								'target'=> "_blank",
 							]);
 
-							echo Html::a('Сплатити', ['https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'], ['class' => 'btn-lg btn-success','target'=>"_blank"])
+							echo Html::a('Сплатити', ['https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'], ['class' => 'btn-lg btn-success','target'=>"_blank"]);
 
 						}
 						?>
@@ -276,6 +276,9 @@ yii\bootstrap\Modal::begin([
 								'href' => "https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D",
 								'target'=> "_blank",
 							]);
+							echo Html::a('Сплатити', ['https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'], ['class' => 'btn-lg btn-success','target'=>"_blank"]);
+
+
 						}
 						?>
 
