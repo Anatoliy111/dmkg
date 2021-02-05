@@ -241,7 +241,7 @@ function getMainMenu(){
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Операції з ос.рахунками'),
+                ->setText('Операції з   ос.рахунками'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setActionType('open-url')
