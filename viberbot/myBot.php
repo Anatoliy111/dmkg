@@ -228,11 +228,12 @@ function getMainMenu(){
                 ->setColumns(3)
                 //->setBgColor('#8074d6')
                // ->setTextSize('small')
-                ->setTextSize('large')
+                ->setTextSize('regular')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Інформація по ос.рахунках'),
+                ->setText('Інформація по ос.рахунках')
+                ->setImage("https://dmkg.com.ua/uploads/doc.ico"),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -241,7 +242,8 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText("<font color=\"#494E67\">Операції з ос.рахунками</font><br><br>"),
+                ->setBgColor("#f7bb3f")
+                ->setText('<font color=\"#494E67\">Операції з ос.рахунками</font>'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setActionType('open-url')
