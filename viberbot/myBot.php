@@ -238,10 +238,10 @@ function getMainMenu(){
                 ->setColumns(3)
               //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
-                ->setTextSize('large')
+                ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Операції з ос.рахунками'),
+                ->setText("<font color=\"#494E67\">Операції з ос.рахунками</font><br><br>"),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setActionType('open-url')
