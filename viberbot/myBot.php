@@ -94,7 +94,7 @@ try {
                     ->setSender($botSender)
                     ->setReceiver($event->getSender()->getId())
                     ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
-                    ->setKeyboard(getRahMenu())
+                    ->setKeyboard(getMainMenu())
             );
         })
         ->run();
