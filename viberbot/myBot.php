@@ -34,6 +34,7 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log) {
             $log->info('onConversation handler');
+
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
@@ -176,5 +177,34 @@ function getRahMenu(){
                 ->setText('< Назад'),
 
         ]);
+
+}
+
+function verifyRah($receiverId){
+
+    $FindModel = UtUlica::findOne(['kl' => $fields['KL']]);
+    if ($FindModel== null)
+    {
+        $model = new UtUlica();
+        $model->ul = $ulic;
+        $model->kl = $fields['KL'];
+        $model->val = $fields['VAL'];
+        if ($model->validate() && $model->save())
+        {
+            return true;
+        }
+        else
+        {
+//				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$dbf.' '.$ulic.' ' );
+            Flash($Base,$model,$model->ul);
+//				die("Error!!!  Insert is $dbf  to UtUlica $ulic");
+//				return false;
+        }
+    }
+
+}
+
+function addRah(){
+
 
 }
