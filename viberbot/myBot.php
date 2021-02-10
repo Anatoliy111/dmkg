@@ -78,7 +78,11 @@ try {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
-                         getMainMenu()
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($event->getSender()->getId())
+                    ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
+                    ->setKeyboard(getMainMenu())
             );
         })
 
