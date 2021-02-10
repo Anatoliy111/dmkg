@@ -78,11 +78,7 @@ try {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setReceiver($receiverId)
-                 //   ->setText('')
-                    ->setKeyboard(getMainMenu())
+                         getMainMenu()
             );
         })
 
