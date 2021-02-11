@@ -76,6 +76,7 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
+                    ->setMinApiVersion(3)
                     ->setText('you press the button and you ID '.$receiverId)
                     ->setKeyboard(getRahMenu())
             );
@@ -87,6 +88,7 @@ try {
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
+                    ->setMinApiVersion(3)
                     ->setReceiver($event->getSender()->getId())
                     ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
                     ->setKeyboard(getMainMenu())
