@@ -197,7 +197,7 @@ function getRahMenu(){
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
                 //->setText('\U+1F6AA Головне меню')
-                ->setText("<br><b>\u00A0\u00A0ZEPRAS</b><br>\u00A0\u00A0Minimum: 100 \u20BD Delivery: 10 \u20BD<br>\u00A0\u00A012:00 - 23:30<br>\u00A0\u00A0aprox. delivery time: 90 min.<br>\u00A0\u00A0Rating: 4 stars, 760 reviews")
+                ->setText('<br><b>\u00A0\u00A0ZEPRAS</b><br>\u00A0\u00A0Minimum: 100 \u20BD Delivery: 10 \u20BD<br>\u00A0\u00A012:00 - 23:30<br>\u00A0\u00A0aprox. delivery time: 90 min.<br>\u00A0\u00A0Rating: 4 stars, 760 reviews')
                // ->setText('<img src="https://dmkg.com.ua/uploads/home_small.png" width="20" height="20" alt="Головне меню">')
                 // ->setText("<img src="images/sample.gif" width="200" height="100" alt="Иллюстрация">")
 
