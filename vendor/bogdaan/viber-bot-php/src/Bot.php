@@ -184,7 +184,8 @@ class Bot
     public function outputEntity(Entity $entity)
     {
         header('Content-Type: application/json');
-        echo json_encode($entity->toApiArray(),JSON_UNESCAPED_UNICODE);
+        echo json_encode($entity->toApiArray());
+       // echo json_encode($entity->toApiArray(),JSON_UNESCAPED_UNICODE);
     }
 
     /**
