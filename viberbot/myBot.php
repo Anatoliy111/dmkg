@@ -5,6 +5,11 @@
 //require_once("../vendor/autoload.php");
 require_once(__DIR__ . '/../vendor/autoload.php');
 
+use app\models\UtKart;
+use app\poslug\models\UtAbonent;
+use app\poslug\models\UtAbonkart;
+use app\poslug\models\Viber;
+use app\poslug\models\ViberAbon;
 use Viber\Bot;
 use Viber\Api\Sender;
 use Monolog\Logger;
@@ -16,6 +21,7 @@ use yii\bootstrap\Html;
 
 
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
+$org = 'dmkg';
 
 // ��� ����� ��������� ��� ��� (��� � ������ - ����� ������)
 $botSender = new Sender([
@@ -133,13 +139,24 @@ function getMainMenu(){
                 ->setActionBody('rah-menu')
                 ->setBgColor("#f7bb3f")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('<font color=\"#494E67\">Операції з ос.рахунками</font>'),
+                ->setText('Операції з ос.рахунками'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('regular')
+                ->setActionType('reply')
+                ->setActionBody('rah-menu')
+                ->setBgColor("#f7bb3f")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
                 ->setText('Операції з ос.рахунками')
-                ->setImage("https://dmkg.com.ua/uploads/viber_p24.jpg"),
+                ->setImage("https://dmkg.com.ua/uploads/viber-p24.jpg"),
         ]);
 
 }
@@ -180,31 +197,75 @@ function getRahMenu(){
 
 }
 
-function verifyRah($receiverId){
+function verifyReceiver($receiverId, $apiKey, $org){
 
-    $FindModel = UtUlica::findOne(['kl' => $fields['KL']]);
+    $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId]);
     if ($FindModel== null)
     {
-        $model = new UtUlica();
-        $model->ul = $ulic;
-        $model->kl = $fields['KL'];
-        $model->val = $fields['VAL'];
+        $model = new Viber();
+        $model->api_key = $apiKey;
+        $model->id_receiver = $receiverId;
+        $model->org = $org;
         if ($model->validate() && $model->save())
         {
-            return true;
+            return $model->id;
         }
         else
         {
-//				Yii::$app->session->AddFlash('alert-danger', 'Помилка імпорту '.$dbf.' '.$ulic.' ' );
-            Flash($Base,$model,$model->ul);
-//				die("Error!!!  Insert is $dbf  to UtUlica $ulic");
-//				return false;
+            $messageLog = [
+                'status' => 'Помилка додавання в підписника',
+                'post' => $model->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+
+            return false;
+
         }
     }
+    else return $FindModel->id;
 
 }
 
-function addRah(){
+
+function verifyAbon($apiKey,$id_viber,$schet, $org){
+
+    $FindAbon = UtAbonent::findOne(['schet' => $schet]);
+    if ($FindAbon<>null)
+    {
+        $FindKart = UtKart::findOne(['id' => $FindAbon->id_kart]);
+
+        $FindModel = ViberAbon::findOne(['id_viber' => $apiKey,'id_utkart' => $FindKart]);
+        if ($FindModel== null)
+        {
+            $model = new ViberAbon();
+            $model->id_viber = $id_viber;
+            $model->id_utkart = $FindKart;
+            $model->org = $org;
+            if ($model->validate() && $model->save())
+            {
+                return $model->id;
+            }
+            else
+            {
+                $messageLog = [
+                    'status' => 'Помилка додавання абонента',
+                    'post' => $model->errors
+                ];
+
+                Yii::error($messageLog, 'viber_err');
+
+                return false;
+
+            }
+        }
+        else return $FindModel->id;
+    }
+    else return 'Рахунок не знайдено';
+
+
+
 
 
 }
+

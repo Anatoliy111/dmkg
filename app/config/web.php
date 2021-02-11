@@ -117,6 +117,12 @@ $config = [
 					'logFile' => '@runtime/logs/import.log', //куда сохранять
 					'logVars' => [] //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
 				],
+				[
+					'class' => 'yii\log\FileTarget', //в файл
+					'categories' => ['viber_err'], //категория логов
+					'logFile' => '@runtime/logs/viber.log', //куда сохранять
+					'logVars' => [] //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
+				],
 
             ],
         ],
