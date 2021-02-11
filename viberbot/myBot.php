@@ -150,7 +150,7 @@ function getMainMenu(){
                 ->setActionBody('rah-menu')
                 ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('Подати показники'),
+                ->setText('\128688 Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -196,16 +196,16 @@ function getRahMenu(){
                 ->setTextVAlign('middle')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                ->setText("<br><font color=\"#494E67\">Головне меню</font>")
+                ->setText('\&#128682 Головне меню')
                // ->setText('<img src="https://dmkg.com.ua/uploads/home_small.png" width="20" height="20" alt="Головне меню">')
                 // ->setText("<img src="images/sample.gif" width="200" height="100" alt="Иллюстрация">")
 
                 //->setText('Головне меню')
-                ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
+               // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
 
 
-            
+
 
         ]);
 
