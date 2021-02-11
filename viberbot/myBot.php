@@ -126,7 +126,7 @@ function getMainMenu(){
                 ->setTextVAlign('bottom')
                 ->setActionType('reply')
                 ->setActionBody('info-click')
-               ->setBgColor("#51AEEE")
+            //   ->setBgColor("#51AEEE")
                 ->setText('Інформація по ос.рахунках'),
                // ->setImage("https://dmkg.com.ua/uploads/plus.png"),
 
@@ -137,7 +137,7 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
-                ->setBgColor("#51AEEE")
+             //   ->setBgColor("#51AEEE")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Операції з ос.рахунками'),
 
@@ -148,7 +148,7 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
-                ->setBgColor("#51AEEE")
+              //  ->setBgColor("#51AEEE")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Подати показники'),
 
