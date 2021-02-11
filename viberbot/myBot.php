@@ -199,7 +199,7 @@ function getRahMenu(){
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
            //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
-                ->setText('Hello&#160;world')
+                ->setText('Hello\u00A0world')
 
 //                ->setText("<font color=\"#494E67\">Головне меню</font>")
 //                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
