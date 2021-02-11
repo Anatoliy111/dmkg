@@ -156,7 +156,7 @@ function getMainMenu(){
                 ->setColumns(3)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/p24.jpg"),
+                ->setImage("https://dmkg.com.ua/uploads/p24-1.jpg"),
         ]);
 
 }
@@ -171,7 +171,7 @@ function getRahMenu(){
                 ->setColumns(3)
                 ->setBgColor('#75F3AE')
                 // ->setTextSize('small')
-                ->setTextSize('large')
+              //  ->setTextSize('large')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
@@ -181,7 +181,7 @@ function getRahMenu(){
                 ->setColumns(3)
                   ->setBgColor('#F39175')
                 ->setTextHAlign('center')
-                ->setTextSize('large')
+              //  ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
                 ->setText('Видалити рахунок з бота'),
@@ -189,7 +189,7 @@ function getRahMenu(){
             (new \Viber\Api\Keyboard\Button())
                   ->setBgColor('#75C5F3')
                 ->setTextHAlign('center')
-                ->setTextSize('large')
+              //  ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
                 ->setText('Головне меню'),
