@@ -127,8 +127,8 @@ function getMainMenu(){
                 ->setActionType('reply')
                 ->setActionBody('info-click')
                ->setBgColor("#75C5F3")
-                ->setText('Інформація по ос.рахунках'),
-               // ->setImage("https://dmkg.com.ua/uploads/plus.png"),
+                ->setText('Інформація по ос.рахунках')
+                ->setImage("https://dmkg.com.ua/uploads/plus.png"),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -194,8 +194,8 @@ function getRahMenu(){
                 ->setTextVAlign('bottom')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                ->setImage("https://dmkg.com.ua/uploads/home_small.ico")
-                ->setText('Головне меню'),
+                ->setText('Головне меню')
+                ->setImage("https://dmkg.com.ua/uploads/home_small.ico"),
 
         ]);
 
