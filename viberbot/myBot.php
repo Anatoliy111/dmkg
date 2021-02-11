@@ -150,7 +150,7 @@ function getMainMenu(){
                 ->setActionBody('rah-menu')
                 ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('\128688 Подати показники'),
+                ->setText('Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -187,23 +187,22 @@ function getRahMenu(){
                 ->setText('Видалити рахунок з бота'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
+                ->setColumns(4)
                 ->setRows(2)
                   ->setBgColor('#75C5F3')
               //  ->setTextSize('large')
                 ->setTextSize('regular')
-                ->setTextHAlign('center')
-                ->setTextVAlign('middle')
+                ->setTextHAlign('left')
+                ->setTextVAlign('top')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                //->setText('\U+1F6AA Головне меню')
-                ->setText('<br><b>\u00A0\u00A0ZEPRAS</b><br>\u00A0\u00A0Minimum: 100 \u20BD Delivery: 10 \u20BD<br>\u00A0\u00A012:00 - 23:30<br>\u00A0\u00A0aprox. delivery time: 90 min.<br>\u00A0\u00A0Rating: 4 stars, 760 reviews')
-               // ->setText('<img src="https://dmkg.com.ua/uploads/home_small.png" width="20" height="20" alt="Головне меню">')
-                // ->setText("<img src="images/sample.gif" width="200" height="100" alt="Иллюстрация">")
+           //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
+                ->setText("<br><b>\u00A0\u00A0ZEPRAS</b><br>\u00A0\u00A0Minimum: 100 \u20BD Delivery: 10 \u20BD<br>")
 
+//                ->setText("<font color=\"#494E67\">Головне меню</font>")
+//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
                 //->setText('Головне меню')
-               // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
-
+                ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
         ]);
 
