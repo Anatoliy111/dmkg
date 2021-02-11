@@ -128,7 +128,7 @@ function getMainMenu(){
                 ->setActionBody('info-click')
                ->setBgColor("#75C5F3")
                 ->setText('Інформація по ос.рахунках')
-                ->setImage("https://dmkg.com.ua/uploads/plus.png"),
+                ->setImage("https://dmkg.com.ua/uploads/home_small.ico"),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
