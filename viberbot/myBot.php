@@ -192,9 +192,9 @@ function getRahMenu(){
                 ->setTextSize('regular')
                 ->setTextHAlign('center')
                 ->setTextVAlign('bottom')
-                ->setActionType('reply')                  
+                ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                ->setImage("https://dmkg.com.ua/uploads/home_small.png")
+                ->setImage("https://dmkg.com.ua/uploads/home_small.ico")
                 ->setText('Головне меню'),
 
         ]);
