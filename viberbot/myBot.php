@@ -187,22 +187,28 @@ function getRahMenu(){
                 ->setText('Видалити рахунок з бота'),
 
             (new \Viber\Api\Keyboard\Button())
+                ->setColumns(2)
+                ->setRows(2)
                   ->setBgColor('#75C5F3')
               //  ->setTextSize('large')
                 ->setTextSize('regular')
                 ->setTextHAlign('center')
-                ->setTextVAlign('bottom')
+                ->setTextVAlign('middle')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                //->setText("<font color=\"#494E67\">Головне меню</font>")
-                ->setText('<img src="https://dmkg.com.ua/uploads/home_small.png" width="20" height="20" alt="Головне меню">')
+                ->setText("<br><font color=\"#494E67\">Головне меню</font>")
+               // ->setText('<img src="https://dmkg.com.ua/uploads/home_small.png" width="20" height="20" alt="Головне меню">')
                 // ->setText("<img src="images/sample.gif" width="200" height="100" alt="Иллюстрация">")
 
                 //->setText('Головне меню')
                 ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
+
+
+            
+
         ]);
-    
+
 }
 
 function verifyReceiver($receiverId, $apiKey, $org){
