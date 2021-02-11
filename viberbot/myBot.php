@@ -156,7 +156,7 @@ function getMainMenu(){
                 ->setColumns(3)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/p241.jpg"),
+                ->setImage("https://dmkg.com.ua/uploads/p242.jpg"),
         ]);
 
 }
@@ -195,7 +195,7 @@ function getRahMenu(){
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
                 ->setText('Головне меню')
-                ->setImage("https://dmkg.com.ua/uploads/home_small.ico"),
+                ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
         ]);
 
