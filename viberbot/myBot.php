@@ -194,12 +194,13 @@ function getRahMenu(){
                 ->setTextVAlign('bottom')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                ->setText("<img src='https://dmkg.com.ua/uploads/home_small.png' width='20' height='20' alt='Головне меню'>")
+                //->setText("<font color=\"#494E67\">Головне меню</font>")
+                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20\" alt=\"Головне меню\">")
                 //->setText('Головне меню')
                 ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
         ]);
-
+    
 }
 
 function verifyReceiver($receiverId, $apiKey, $org){
