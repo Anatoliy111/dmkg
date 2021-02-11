@@ -126,7 +126,7 @@ function getMainMenu(){
                 ->setTextVAlign('bottom')
                 ->setActionType('reply')
                 ->setActionBody('info-click')
-               ->setBgColor("#51AEEE")
+               ->setBgColor("#75C5F3")
                 ->setText('Інформація по ос.рахунках'),
                // ->setImage("https://dmkg.com.ua/uploads/plus.png"),
 
@@ -137,7 +137,7 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
-                ->setBgColor("#51AEEE")
+                ->setBgColor("#75C5F3")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Операції з ос.рахунками'),
 
@@ -148,7 +148,7 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
-                ->setBgColor("#51AEEE")
+                ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Подати показники'),
 
@@ -169,7 +169,7 @@ function getRahMenu(){
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
-                ->setBgColor('#36F044')
+                ->setBgColor('#75F3AE')
                 // ->setTextSize('small')
                 ->setTextSize('large')
                 ->setTextHAlign('center')
@@ -179,7 +179,7 @@ function getRahMenu(){
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
-                  ->setBgColor('#F06036')
+                  ->setBgColor('#F39175')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
@@ -187,7 +187,7 @@ function getRahMenu(){
                 ->setText('Видалити рахунок з бота'),
 
             (new \Viber\Api\Keyboard\Button())
-                //  ->setBgColor('#51AEEE')
+                  ->setBgColor('#75C5F3')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
