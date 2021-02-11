@@ -188,9 +188,11 @@ function getRahMenu(){
 
             (new \Viber\Api\Keyboard\Button())
                   ->setBgColor('#75C5F3')
-                ->setTextHAlign('center')
               //  ->setTextSize('large')
-                ->setActionType('reply')
+                ->setTextSize('regular')
+                ->setTextHAlign('center')
+                ->setTextVAlign('bottom')
+                ->setActionType('reply')                  
                 ->setActionBody('MainMenu')
                 ->setImage("https://dmkg.com.ua/uploads/home_small.png")
                 ->setText('Головне меню'),
