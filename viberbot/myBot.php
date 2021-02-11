@@ -196,15 +196,12 @@ function getRahMenu(){
                 ->setTextVAlign('middle')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                ->setText('\&#128682 Головне меню')
+                ->setText('\U+1F6AA Головне меню')
                // ->setText('<img src="https://dmkg.com.ua/uploads/home_small.png" width="20" height="20" alt="Головне меню">')
                 // ->setText("<img src="images/sample.gif" width="200" height="100" alt="Иллюстрация">")
 
                 //->setText('Головне меню')
                // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
-
-
-
 
 
         ]);
