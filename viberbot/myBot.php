@@ -126,7 +126,7 @@ function getMainMenu(){
                 ->setTextVAlign('bottom')
                 ->setActionType('reply')
                 ->setActionBody('info-click')
-               ->setBgColor("#f7bb3f")
+               ->setBgColor("#51AEEE")
                 ->setText('Інформація по ос.рахунках'),
                // ->setImage("https://dmkg.com.ua/uploads/plus.png"),
 
@@ -137,7 +137,7 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
-                ->setBgColor("#f7bb3f")
+                ->setBgColor("#51AEEE")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Операції з ос.рахунками'),
 
@@ -148,7 +148,7 @@ function getMainMenu(){
                 ->setTextSize('regular')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
-                ->setBgColor("#f7bb3f")
+                ->setBgColor("#51AEEE")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Подати показники'),
 
@@ -156,10 +156,12 @@ function getMainMenu(){
                 ->setColumns(3)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/privat24.png"),
+                ->setImage("https://dmkg.com.ua/uploads/privat24-1.png"),
         ]);
 
 }
+
+<?= ?>
 
 function getRahMenu(){
 
