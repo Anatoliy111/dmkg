@@ -42,10 +42,14 @@ try {
             $log->info('onConversation handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            if ($Receiv <> null) {
+                $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
+            }
+            else $mes = 'Помилка реєстрації';
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
+                ->setText($mes)
                 ->setKeyboard(getMainMenu());
         })
         // when user subscribe to PA
@@ -54,11 +58,15 @@ try {
             $log->info('onSubscribe handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            if ($Receiv <> null) {
+                $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
+            }
+            else $mes = 'Помилка реєстрації';
             $this->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
+                    ->setText($mes)
                     ->setKeyboard(getMainMenu())
             );
         })
@@ -257,7 +265,7 @@ function verifyReceiver($receiverId, $receiverName,$apiKey, $org){
 
             Yii::error($messageLog, 'viber_err');
 
-            return false;
+            //return false;
 
         }
     }
