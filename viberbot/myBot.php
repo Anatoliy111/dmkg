@@ -90,7 +90,7 @@ try {
                     ->setSender($botSender)
                     ->setMinApiVersion(7)
                     ->setReceiver($event->getSender()->getId())
-                    ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
+                    ->setText('Головне меню:')
                     ->setKeyboard(getMainMenu())
             );
         })
@@ -102,9 +102,16 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($event->getSender()->getId())
-                    ->setText('Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.')
+                    ->setText('Не визначений запит!!!')
+            );
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($event->getSender()->getId())
+                    ->setText('Головне меню:')
                     ->setKeyboard(getMainMenu())
             );
+
         })
         ->run();
 } catch (Exception $e) {
@@ -127,7 +134,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('info-click')
+                ->setActionBody('info-menu')
                ->setBgColor("#75C5F3")
                 ->setText('📈  Інформація по ос.рахунках'),
 
@@ -148,7 +155,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('rah-menu')
+                ->setActionBody('pokaz-menu')
                 ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('📟  Подати показники'),
