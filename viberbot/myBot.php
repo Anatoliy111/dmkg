@@ -48,7 +48,7 @@ try {
             $log->info('onConversation handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $receiverName, $apiKey, $org);
             if ($Receiv <> null) {
                 $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
             }
@@ -64,7 +64,7 @@ try {
             $log->info('onSubscribe handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $receiverName, $apiKey, $org);
             if ($Receiv <> null) {
                 $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
             }
@@ -86,6 +86,12 @@ try {
                     ->setText('you press the button and you ID '.$receiverId)
                     ->setKeyboard(getMainMenu())
             );
+        })
+
+        ->onText('|info-user|s', function ($event) use ($bot, $botSender, $log) {
+            $log->info('click on button');
+            $receiverId = $event->getSender()->getId();
+            $bot->getClient()->getUserDetails($receiverId);
         })
 
         ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
@@ -131,8 +137,8 @@ try {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
             $receiverId = $event->getSender()->getId();
-            //$receiverName = $event->getSender()->getName();
-            verifyReceiver($receiverId, $apiKey, $org);
+            $receiverName = $event->getSender()->getName();
+            verifyReceiver($receiverId, $receiverName,$apiKey, $org);
 
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
@@ -254,7 +260,7 @@ function getRahMenu(){
 
 }
 
-function verifyReceiver($receiverId, $apiKey, $org){
+function verifyReceiver($receiverId, $receiverName, $apiKey, $org){
 
     $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId]);
     if ($FindModel== null)
@@ -262,7 +268,7 @@ function verifyReceiver($receiverId, $apiKey, $org){
         $model = new Viber();
         $model->api_key = $apiKey;
         $model->id_receiver = $receiverId;
-       // $model->name = $receiverName;
+        $model->name = $receiverName;
         $model->org = $org;
         if ($model->validate() && $model->save())
         {
