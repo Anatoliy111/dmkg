@@ -257,7 +257,7 @@ function verifyReceiver($receiverId, $receiverName,$apiKey, $org){
         $model->org = $org;
         if ($model->validate() && $model->save())
         {
-            return $model->id;
+            return $model;
         }
         else
         {
@@ -272,7 +272,7 @@ function verifyReceiver($receiverId, $receiverName,$apiKey, $org){
 
         }
     }
-    else return $FindModel->id;
+    else return $FindModel;
 
 }
 
@@ -293,7 +293,7 @@ function verifyAbon($apiKey,$id_viber,$schet, $org){
             $model->org = $org;
             if ($model->validate() && $model->save())
             {
-                return $model->id;
+                return $model;
             }
             else
             {
@@ -308,7 +308,7 @@ function verifyAbon($apiKey,$id_viber,$schet, $org){
 
             }
         }
-        else return $FindModel->id;
+        else return $FindModel;
     }
     else return 'Рахунок не знайдено';
 
