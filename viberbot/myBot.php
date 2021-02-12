@@ -123,36 +123,35 @@ function getMainMenu(){
                 ->setColumns(3)
                 //->setBgColor('#8074d6')
                // ->setTextSize('small')
-                ->setTextSize('regular')
+                ->setTextSize('large')
                 ->setTextHAlign('center')
-                ->setTextVAlign('bottom')
+                ->setTextVAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('info-click')
                ->setBgColor("#75C5F3")
-                ->setText('Інформація по ос.рахунках')
-                ->setImage("https://dmkg.com.ua/uploads/home_small.ico"),
+                ->setText('📈  Інформація по ос.рахунках'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
               //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
-                ->setTextSize('regular')
+                ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
                 ->setBgColor("#75C5F3")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('Операції з ос.рахунками'),
+                ->setText('♻  Операції з ос.рахунками'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
-                ->setTextSize('regular')
+                ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('rah-menu')
                 ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('Подати показники'),
+                ->setText('🚰  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -173,7 +172,7 @@ function getRahMenu(){
                 ->setColumns(3)
                 ->setBgColor('#75F3AE')
                 // ->setTextSize('small')
-              //  ->setTextSize('large')
+                ->setTextSize('large')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
@@ -183,7 +182,7 @@ function getRahMenu(){
                 ->setColumns(3)
                   ->setBgColor('#F39175')
                 ->setTextHAlign('center')
-              //  ->setTextSize('large')
+                ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
                 ->setText('Видалити рахунок з бота'),
