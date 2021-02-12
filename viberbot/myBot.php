@@ -42,7 +42,7 @@ try {
             $log->info('onConversation handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $apiKey, $org);
             if ($Receiv <> null) {
                 $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
             }
@@ -58,7 +58,7 @@ try {
             $log->info('onSubscribe handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $apiKey, $org);
             if ($Receiv <> null) {
                 $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
             }
@@ -125,8 +125,9 @@ try {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
             $receiverId = $event->getSender()->getId();
-            $receiverName = $event->getSender()->getName();
-            verifyReceiver($receiverId, $receiverName,$apiKey, $org);
+            //$receiverName = $event->getSender()->getName();
+            verifyReceiver($receiverId, $apiKey, $org);
+
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -148,6 +149,7 @@ try {
     if ($bot) {
         $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
         $log->warning('Actual body: ' . $bot->getInputBody());
+        echo $e->getMessage();
     }
 }
 
@@ -245,7 +247,7 @@ function getRahMenu(){
 
 }
 
-function verifyReceiver($receiverId, $receiverName,$apiKey, $org){
+function verifyReceiver($receiverId, $apiKey, $org){
 
     $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId]);
     if ($FindModel== null)
@@ -253,7 +255,7 @@ function verifyReceiver($receiverId, $receiverName,$apiKey, $org){
         $model = new Viber();
         $model->api_key = $apiKey;
         $model->id_receiver = $receiverId;
-        $model->name = $receiverName;
+       // $model->name = $receiverName;
         $model->org = $org;
         if ($model->validate() && $model->save())
         {
