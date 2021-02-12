@@ -76,7 +76,7 @@ try {
                     ->setKeyboard(getMainMenu())
             );
         })
-        ->onText('|info-click|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|info-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
@@ -88,10 +88,29 @@ try {
             );
         })
 
-        ->onText('|info-user|s', function ($event) use ($bot, $botSender, $log) {
+
+        ->onText('|admin|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
-            $bot->getClient()->getUserDetails($receiverId);
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($event->getSender()->getId())
+                    ->setText('Головне меню:')
+                    ->setKeyboard(getMainMenu())
+            );
+        })
+
+        ->onText('|add-rah|s', function ($event) use ($bot, $botSender, $log) {
+            $log->info('click on button');
+            $receiverId = $event->getSender()->getId();
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($receiverId)
+                    ->setText('Вкажіть номер Вашого особового рахунку')
+                    ->setKeyboard(getRahMenu())
+            );
         })
 
         ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
@@ -101,22 +120,8 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
-                    ->setMinApiVersion(7)
                     ->setText('you press the button and you ID '.$receiverId)
                     ->setKeyboard(getRahMenu())
-            );
-        })
-
-        ->onText('|admin|s', function ($event) use ($bot, $botSender, $log) {
-            $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
-            $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setMinApiVersion(7)
-                    ->setReceiver($event->getSender()->getId())
-                    ->setText('Головне меню:')
-                    ->setKeyboard(getMainMenu())
             );
         })
 
@@ -126,7 +131,6 @@ try {
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setMinApiVersion(7)
                     ->setReceiver($event->getSender()->getId())
                     ->setText('Головне меню:')
                     ->setKeyboard(getMainMenu())
@@ -226,7 +230,7 @@ function getRahMenu(){
                 ->setTextSize('large')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('btn-click')
+                ->setActionBody('add-rah')
                 ->setText('🟢  Додати рахунок до бота'),
 
             (new \Viber\Api\Keyboard\Button())
@@ -294,7 +298,14 @@ function verifyReceiver($receiverId, $receiverName, $apiKey, $org){
 }
 
 
-function verifyAbon($apiKey,$id_viber,$schet, $org){
+function verifySchet($schet){
+
+    $FindAbon = UtAbonent::findOne(['schet' => $schet]);
+    return $FindAbon;
+
+}
+
+function addAbon($apiKey,$id_viber,$schet, $org){
 
     $FindAbon = UtAbonent::findOne(['schet' => $schet]);
     if ($FindAbon<>null)
@@ -328,10 +339,6 @@ function verifyAbon($apiKey,$id_viber,$schet, $org){
         else return $FindModel;
     }
     else return 'Рахунок не знайдено';
-
-
-
-
 
 }
 
