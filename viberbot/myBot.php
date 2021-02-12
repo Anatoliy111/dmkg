@@ -150,6 +150,7 @@ try {
         $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
         $log->warning('Actual body: ' . $bot->getInputBody());
         echo $e->getMessage();
+
     }
 }
 
@@ -259,7 +260,7 @@ function verifyReceiver($receiverId, $apiKey, $org){
         $model->org = $org;
         if ($model->validate() && $model->save())
         {
-            return $model;
+            $FindModel = $model;
         }
         else
         {
@@ -274,7 +275,9 @@ function verifyReceiver($receiverId, $apiKey, $org){
 
         }
     }
-    else return $FindModel;
+
+
+    return $FindModel;
 
 }
 
