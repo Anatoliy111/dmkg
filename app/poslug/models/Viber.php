@@ -33,7 +33,7 @@ class Viber extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['api_key', 'org', 'id_receiver', 'name', 'status', 'note'], 'required'],
+            [['api_key', 'org', 'id_receiver'], 'required'],
             [['api_key'], 'string', 'max' => 50],
             [['org'], 'string', 'max' => 6],
             [['id_receiver'], 'string', 'max' => 30],
@@ -47,13 +47,13 @@ class Viber extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('easyii', 'ID'),
-            'api_key' => Yii::t('easyii', 'Api Key'),
-            'org' => Yii::t('easyii', 'Org'),
-            'id_receiver' => Yii::t('easyii', 'Id Receiver'),
-            'name' => Yii::t('easyii', 'Name'),
-            'status' => Yii::t('easyii', 'Status'),
-            'note' => Yii::t('easyii', 'Note'),
+            'id' => 'ID',
+            'api_key' => 'Api Key',
+            'org' => 'Org',
+            'id_receiver' => 'Id Receiver',
+            'name' => 'Name',
+            'status' => 'Status',
+            'note' => 'Note',
         ];
     }
 
