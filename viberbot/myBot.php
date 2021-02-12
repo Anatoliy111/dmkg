@@ -151,7 +151,7 @@ function getMainMenu(){
                 ->setActionBody('rah-menu')
                 ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('🚰  Подати показники'),
+                ->setText('📟  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -176,7 +176,7 @@ function getRahMenu(){
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Додати рахунок до бота'),
+                ->setText('🟢  Додати рахунок до бота'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -185,7 +185,7 @@ function getRahMenu(){
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Видалити рахунок з бота'),
+                ->setText('❌  Видалити рахунок з бота'),
 
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
