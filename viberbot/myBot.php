@@ -121,9 +121,12 @@ try {
             );
         })
 
-        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
+            $receiverId = $event->getSender()->getId();
+            $receiverName = $event->getSender()->getName();
+            verifyReceiver($receiverId, $receiverName,$apiKey, $org);
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
