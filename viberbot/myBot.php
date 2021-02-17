@@ -105,7 +105,7 @@ try {
         ->onText('|add-rah|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus(verifyReceiver($event, $apiKey, $org),'add-rah');
+            UpdateStatus($Receiv,'add-rah');
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -299,7 +299,7 @@ function UpdateStatus($Model,$Status){
 
     if ($Model <> null)
     {
-        $Model->satatus = $Status;
+        $Model->status = $Status;
         if ($Model->validate() && $Model->save())
         {
             return true;
