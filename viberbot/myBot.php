@@ -120,6 +120,7 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
+                    ->setText('Редагування рахунків:')
                     ->setKeyboard(getRahMenu())
             );
         })
