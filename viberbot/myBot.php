@@ -146,7 +146,7 @@ try {
                     (new \Viber\Api\Message\Text())
                         ->setSender($botSender)
                         ->setReceiver($event->getSender()->getId())
-                        ->setText('Не визначений запит!!!' . $event->getMessage()->getText())
+                        ->setText('Не визначений запит!!!')
                 );
                 $bot->getClient()->sendMessage(
                     (new \Viber\Api\Message\Text())
