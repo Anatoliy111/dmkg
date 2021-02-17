@@ -124,7 +124,7 @@ try {
 //            );
 //        })
 
-        ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|menu-rah|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
@@ -202,7 +202,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('rah-menu')
+                ->setActionBody('menu-rah')
                 ->setBgColor("#75C5F3")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('♻  Операції з ос.рахунками'),
