@@ -124,7 +124,7 @@ try {
 //            );
 //        })
 
-        ->onText('|menu-rah|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|MenuRah|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
@@ -192,7 +192,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('menu-rah')
+                ->setActionBody('MenuRah')
                ->setBgColor("#75C5F3")
                 ->setText('📈  Інформація по ос.рахунках'),
 
@@ -202,7 +202,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('menu-rah')
+                ->setActionBody('MenuRah')
                 ->setBgColor("#75C5F3")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('♻  Операції з ос.рахунками'),
