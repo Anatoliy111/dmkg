@@ -124,7 +124,7 @@ try {
 //            );
 //        })
 
-        ->onText('|MenuRah|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
@@ -227,54 +227,6 @@ function getMainMenu(){
 
 }
 
-function getMainMenu2(){
-
-    return (new \Viber\Api\Keyboard())
-        ->setButtons([
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                //->setBgColor('#8074d6')
-                // ->setTextSize('small')
-                ->setTextSize('large')
-                ->setTextHAlign('center')
-                ->setTextVAlign('center')
-                ->setActionType('reply')
-                ->setActionBody('MenuRah')
-                ->setBgColor("#75C5F3")
-                ->setText('📈  Інформація по ос.рахунка2х'),
-
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                //  ->setBgColor('#2fa4e7')
-                ->setTextHAlign('center')
-                ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('MenuRah')
-                ->setBgColor("#75C5F3")
-                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('♻  Операції з ос.рахунками2'),
-
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                //  ->setBgColor('#2fa4e7')
-                ->setTextHAlign('center')
-                ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('pokaz-menu')
-                ->setBgColor("#75C5F3")
-                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('📟  Подати показник2и'),
-
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                ->setActionType('open-url')
-                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/p243.jpg"),
-        ]);
-
-}
-
-
 
 function getRahMenu(){
 
@@ -299,26 +251,27 @@ function getRahMenu(){
                 ->setActionBody('btn-click')
                 ->setText('Видалити рахунок з бота'),
 
-//            (new \Viber\Api\Keyboard\Button())
-//               ->setColumns(4)
-////                ->setRows(2)
-//                  ->setBgColor('#75C5F3')
-//                ->setTextSize('large')
-//               // ->setTextSize('regular')
-//                ->setTextHAlign('center')
-//                ->setTextVAlign('center')
-//                ->setActionType('reply')
-//                ->setActionBody('MainMenu')
-//                ->setText('Головне меню'),
-
-//                ->setText("<font color=\"#494E67\">Головне меню</font>")
-//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
-                //->setText('Головне меню')
-               // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
-
+            (new \Viber\Api\Keyboard\Button())
+               ->setColumns(4)
+//                ->setRows(2)
+                  ->setBgColor('#75C5F3')
+                ->setTextSize('large')
+               // ->setTextSize('regular')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('MainMenu')
+                ->setText('Головне меню')
         ]);
 
 }
+
+//
+//                ->setText("<font color=\"#494E67\">Головне меню</font>")
+//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
+//                ->setText('Головне меню')
+//                ->setImage("https://dmkg.com.ua/uploads/home_small2.png")
+
 
 function verifyReceiver($receiverId, $receiverName, $apiKey, $org){
 
