@@ -291,7 +291,6 @@ function verifyReceiver($event, $apiKey, $org){
         }
     }
 
-
     return $FindModel;
 
 }
@@ -318,9 +317,7 @@ function UpdateStatus($Model,$Status){
 
         }
     }
-
-
-    return true;
+    else return false;
 
 }
 
