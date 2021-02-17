@@ -140,20 +140,46 @@ try {
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
-            verifyReceiver($event,$apiKey, $org);
-            $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setReceiver($event->getSender()->getId())
-                    ->setText('Не визначений запит!!!')
-            );
-            $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setReceiver($event->getSender()->getId())
-                    ->setText('Головне меню:')
-                    ->setKeyboard(getMainMenu())
-            );
+            $Receiv = verifyReceiver($event,$apiKey, $org);
+            if ($Receiv = null && $Receiv->status = ''){
+                $bot->getClient()->sendMessage(
+                    (new \Viber\Api\Message\Text())
+                        ->setSender($botSender)
+                        ->setReceiver($event->getSender()->getId())
+                        ->setText('Не визначений запит!!!')
+                );
+                $bot->getClient()->sendMessage(
+                    (new \Viber\Api\Message\Text())
+                        ->setSender($botSender)
+                        ->setReceiver($event->getSender()->getId())
+                        ->setText('Головне меню:')
+                        ->setKeyboard(getMainMenu())
+                );
+            }
+            else {
+                if ($Receiv->status = 'add-rah'){
+                    $ModelAbon = findSchetAbon($event->getMessage()->getText());
+                    if ($ModelAbon != null){
+                        UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
+
+                        $bot->getClient()->sendMessage(
+                            (new \Viber\Api\Message\Text())
+                                ->setSender($botSender)
+                                ->setReceiver($event->getSender()->getId())
+                                ->setText('Для підтвердження рахунку введіть прізвище власника рахунку:')
+                                ->setKeyboard(getRahMenu())
+                        );
+                    }
+                    else message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
+//                    else $bot->getClient()->sendMessage(
+//                        (new \Viber\Api\Message\Text())
+//                            ->setSender($botSender)
+//                            ->setReceiver($event->getSender()->getId())
+//                            ->setText('Вибачте але цей рахунок не знайдено!!!')
+//                            ->setKeyboard(getRahMenu())
+//                    );
+                }
+            }
 
         })
         ->run();
@@ -261,6 +287,17 @@ function getRahMenu(){
 
 }
 
+function message($bot, $botSender, $event, $mess, $menu){
+    return $bot->getClient()->sendMessage(
+        (new \Viber\Api\Message\Text())
+            ->setSender($botSender)
+            ->setReceiver($event->getSender()->getId())
+            ->setText($mess)
+            ->setKeyboard($menu)
+    );
+
+}
+
 function verifyReceiver($event, $apiKey, $org){
 
     $receiverId = $event->getSender()->getId();
@@ -326,9 +363,6 @@ function findSchetAbon($schet){
 
     $FindAbon = UtAbonent::findOne(['schet' => $schet]);
     return $FindAbon;
-
-    //is_object
-
 }
 
 function addSchetReceiver($schet){
