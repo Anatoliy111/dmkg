@@ -104,6 +104,7 @@ try {
 
         ->onText('|add-rah|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus(verifyReceiver($event, $apiKey, $org),'add-rah');
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
@@ -116,10 +117,11 @@ try {
 
         ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
+            $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setReceiver($event->getSender()->getId())
+                    ->setReceiver($receiverId)
                     ->setKeyboard(getRahMenu())
             );
         })
