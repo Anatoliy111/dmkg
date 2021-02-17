@@ -141,7 +141,7 @@ try {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
             $Receiv = verifyReceiver($event,$apiKey, $org);
-            if ($Receiv = null && $Receiv->status = ''){
+            if ($Receiv = null || $Receiv->status = ''){
                 $bot->getClient()->sendMessage(
                     (new \Viber\Api\Message\Text())
                         ->setSender($botSender)
