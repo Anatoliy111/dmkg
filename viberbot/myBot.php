@@ -141,46 +141,53 @@ try {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
             $Receiv = verifyReceiver($event,$apiKey, $org);
-            if ($Receiv = null || $Receiv->status = ''){
-                $bot->getClient()->sendMessage(
-                    (new \Viber\Api\Message\Text())
-                        ->setSender($botSender)
-                        ->setReceiver($event->getSender()->getId())
-                        ->setText('Не визначений запит!!!')
-                );
-                $bot->getClient()->sendMessage(
-                    (new \Viber\Api\Message\Text())
-                        ->setSender($botSender)
-                        ->setReceiver($event->getSender()->getId())
-                        ->setText('Головне меню:')
-                        ->setKeyboard(getMainMenu())
-                );
-            }
-            else {
-                if ($Receiv->status = 'add-rah'){
-                    $ModelAbon = findSchetAbon($event->getMessage()->getText());
-                    if ($ModelAbon != null){
-                        UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
 
-                        $bot->getClient()->sendMessage(
-                            (new \Viber\Api\Message\Text())
-                                ->setSender($botSender)
-                                ->setReceiver($event->getSender()->getId())
-                                ->setText('Для підтвердження рахунку введіть прізвище власника рахунку:')
-                                ->setKeyboard(getRahMenu())
-                        );
-                    }
-                    else message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
-//                    else $bot->getClient()->sendMessage(
-//                        (new \Viber\Api\Message\Text())
-//                            ->setSender($botSender)
-//                            ->setReceiver($event->getSender()->getId())
-//                            ->setText('Вибачте але цей рахунок не знайдено!!!')
-//                            ->setKeyboard(getRahMenu())
-//                    );
-                }
-                else message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
-            }
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($event->getSender()->getId())
+                    ->setText('onText ' . var_export($Receiv, true))
+            );
+//            if ($Receiv = null || $Receiv->status = ''){
+//                $bot->getClient()->sendMessage(
+//                    (new \Viber\Api\Message\Text())
+//                        ->setSender($botSender)
+//                        ->setReceiver($event->getSender()->getId())
+//                        ->setText('Не визначений запит!!!')
+//                );
+//                $bot->getClient()->sendMessage(
+//                    (new \Viber\Api\Message\Text())
+//                        ->setSender($botSender)
+//                        ->setReceiver($event->getSender()->getId())
+//                        ->setText('Головне меню:')
+//                        ->setKeyboard(getMainMenu())
+//                );
+//            }
+//            else {
+//                if ($Receiv->status = 'add-rah'){
+//                    $ModelAbon = findSchetAbon($event->getMessage()->getText());
+//                    if ($ModelAbon != null){
+//                        UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
+//
+//                        $bot->getClient()->sendMessage(
+//                            (new \Viber\Api\Message\Text())
+//                                ->setSender($botSender)
+//                                ->setReceiver($event->getSender()->getId())
+//                                ->setText('Для підтвердження рахунку введіть прізвище власника рахунку:')
+//                                ->setKeyboard(getRahMenu())
+//                        );
+//                    }
+//                    else message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
+////                    else $bot->getClient()->sendMessage(
+////                        (new \Viber\Api\Message\Text())
+////                            ->setSender($botSender)
+////                            ->setReceiver($event->getSender()->getId())
+////                            ->setText('Вибачте але цей рахунок не знайдено!!!')
+////                            ->setKeyboard(getRahMenu())
+////                    );
+//                }
+//                else message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
+//            }
 
         })
         ->run();
