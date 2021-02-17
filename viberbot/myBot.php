@@ -143,7 +143,7 @@ try {
             $Receiv = verifyReceiver($event,$apiKey, $org);
            // message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
 
-            if ($Receiv->status = ''){
+            if ($Receiv->status == ''){
                 $bot->getClient()->sendMessage(
                     (new \Viber\Api\Message\Text())
                         ->setSender($botSender)
