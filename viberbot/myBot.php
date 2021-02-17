@@ -105,7 +105,6 @@ try {
         ->onText('|add-rah|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
-
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -231,25 +230,25 @@ function getRahMenu(){
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('add-rah')
-                ->setText('🟢  Додати рахунок до бота'),
+                ->setText('🟢  Додати рахунок до бота')
 
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                  ->setBgColor('#F39175')
-                ->setTextHAlign('center')
-                ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('btn-click')
-                ->setText('❌  Видалити рахунок з бота'),
-
-            (new \Viber\Api\Keyboard\Button())
-                  ->setBgColor('#75C5F3')
-                ->setTextSize('large')
-                ->setTextHAlign('center')
-                ->setTextVAlign('center')
-                ->setActionType('reply')
-                ->setActionBody('MainMenu')
-                ->setText('🏠   Головне меню')
+//            (new \Viber\Api\Keyboard\Button())
+//                ->setColumns(3)
+//                  ->setBgColor('#F39175')
+//                ->setTextHAlign('center')
+//                ->setTextSize('large')
+//                ->setActionType('reply')
+//                ->setActionBody('btn-click')
+//                ->setText('❌  Видалити рахунок з бота'),
+//
+//            (new \Viber\Api\Keyboard\Button())
+//                  ->setBgColor('#75C5F3')
+//                ->setTextSize('large')
+//                ->setTextHAlign('center')
+//                ->setTextVAlign('center')
+//                ->setActionType('reply')
+//                ->setActionBody('MainMenu')
+//                ->setText('🏠   Головне меню')
         ]);
 
 }
