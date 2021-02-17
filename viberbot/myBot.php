@@ -179,6 +179,7 @@ try {
 //                            ->setKeyboard(getRahMenu())
 //                    );
                 }
+                else message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
             }
 
         })
