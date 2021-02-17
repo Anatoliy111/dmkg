@@ -113,18 +113,7 @@ try {
             );
         })
 
-//        ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
-//            $log->info('click on button');
-//            $receiverId = $event->getSender()->getId();
-//            $bot->getClient()->sendMessage(
-//                (new \Viber\Api\Message\Text())
-//                    ->setSender($botSender)
-//                    ->setReceiver($event->getSender()->getId())
-//                    ->setKeyboard(getRahMenu())
-//            );
-//        })
-
-        ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|rah_menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
@@ -192,7 +181,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('MenuRah')
+                ->setActionBody('rah_menu')
                ->setBgColor("#75C5F3")
                 ->setText('📈  Інформація по ос.рахунках'),
 
@@ -202,7 +191,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('MenuRah')
+                ->setActionBody('rah_menu')
                 ->setBgColor("#75C5F3")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('♻  Операції з ос.рахунками'),
