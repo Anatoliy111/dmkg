@@ -85,7 +85,7 @@ try {
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
                     ->setText('you press the button and you ID '.$receiverId)
-                    ->setKeyboard(getMainMenu())
+                    ->setKeyboard(getRahMenu())
             );
         })
 
