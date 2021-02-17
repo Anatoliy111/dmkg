@@ -158,6 +158,8 @@ try {
                         ->setKeyboard(getMainMenu())
                 );
             }
+
+            message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!', getRahMenu());
 //            else {
 //                if ($Receiv->status = 'add-rah'){
 //                    $ModelAbon = findSchetAbon($event->getMessage()->getText());
