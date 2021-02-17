@@ -48,7 +48,7 @@ try {
             $log->info('onConversation handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $receiverName, $apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
             if ($Receiv <> null) {
                 $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
             }
@@ -64,7 +64,7 @@ try {
             $log->info('onSubscribe handler');
             $receiverId = $event->getSender()->getId();
             $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $receiverName, $apiKey, $org);
+            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
             if ($Receiv <> null) {
                 $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
             }
@@ -79,19 +79,20 @@ try {
         ->onText('|info-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
+
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
                     ->setText('you press the button and you ID '.$receiverId)
-                    ->setKeyboard(getRahMenu())
+                    ->setKeyboard(getMainMenu())
             );
         })
 
 
-        ->onText('|admin|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
+            verifyReceiver($event, $apiKey, $org);
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -101,25 +102,25 @@ try {
             );
         })
 
-        ->onText('|add-rah|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|add-rah|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus(verifyReceiver($event, $apiKey, $org),'add-rah');
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setReceiver($receiverId)
+                    ->setReceiver($event->getSender()->getId())
                     ->setText('Вкажіть номер Вашого особового рахунку')
                     ->setKeyboard(getRahMenu())
             );
         })
 
-        ->onText('|rah_menu|s', function ($event) use ($bot, $botSender, $log) {
+        ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setReceiver($receiverId)
+                    ->setReceiver($event->getSender()->getId())
                     ->setText('Редагування рахунків:')
                     ->setKeyboard(getRahMenu())
             );
@@ -127,7 +128,6 @@ try {
 
         ->onText('|MainMenu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -140,10 +140,7 @@ try {
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
-            $receiverId = $event->getSender()->getId();
-            $receiverName = $event->getSender()->getName();
-            verifyReceiver($receiverId, $receiverName,$apiKey, $org);
-
+            verifyReceiver($event,$apiKey, $org);
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -182,7 +179,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('rah_menu')
+                ->setActionBody('info-menu')
                ->setBgColor("#75C5F3")
                 ->setText('📈  Інформація по ос.рахунках'),
 
@@ -192,7 +189,7 @@ function getMainMenu(){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('rah_menu')
+                ->setActionBody('rah-menu')
                 ->setBgColor("#75C5F3")
                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('♻  Операції з ос.рахунками'),
@@ -218,6 +215,7 @@ function getMainMenu(){
 }
 
 
+
 function getRahMenu(){
 
     return (new \Viber\Api\Keyboard())
@@ -230,7 +228,7 @@ function getRahMenu(){
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('add-rah')
-                ->setText('Додати рахунок до бота'),
+                ->setText('🟢  Додати рахунок до бота'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -239,10 +237,10 @@ function getRahMenu(){
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('Видалити рахунок з бота'),
+                ->setText('❌  Видалити рахунок з бота'),
 
             (new \Viber\Api\Keyboard\Button())
-               ->setColumns(4)
+//                ->setColumns(4)
 //                ->setRows(2)
                   ->setBgColor('#75C5F3')
                 ->setTextSize('large')
@@ -251,20 +249,22 @@ function getRahMenu(){
                 ->setTextVAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('MainMenu')
-                ->setText('Головне меню')
+           //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
+                ->setText('🏠   Головне меню')
+
+//                ->setText("<font color=\"#494E67\">Головне меню</font>")
+//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
+                //->setText('Головне меню')
+               // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
+
         ]);
 
 }
 
-//
-//                ->setText("<font color=\"#494E67\">Головне меню</font>")
-//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
-//                ->setText('Головне меню')
-//                ->setImage("https://dmkg.com.ua/uploads/home_small2.png")
+function verifyReceiver($event, $apiKey, $org){
 
-
-function verifyReceiver($receiverId, $receiverName, $apiKey, $org){
-
+    $receiverId = $event->getSender()->getId();
+    $receiverName = $event->getSender()->getName();
     $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId]);
     if ($FindModel== null)
     {
@@ -286,20 +286,38 @@ function verifyReceiver($receiverId, $receiverName, $apiKey, $org){
 
             Yii::error($messageLog, 'viber_err');
 
-            //return false;
+            $FindModel = null;
 
         }
     }
-
 
     return $FindModel;
 
 }
 
-function UpdateStatus($Model,$stat){
+function UpdateStatus($Model,$Status){
 
-//    $FindAbon = UtAbonent::findOne(['schet' => $schet]);
-//    return $FindAbon;
+    if ($Model <> null)
+    {
+        $Model->satatus = $Status;
+        if ($Model->validate() && $Model->save())
+        {
+            return true;
+        }
+        else
+        {
+            $messageLog = [
+                'status' => 'Помилка додавання в підписника',
+                'post' => $Model->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+
+            return false;
+
+        }
+    }
+    else return false;
 
 }
 
