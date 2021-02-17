@@ -131,7 +131,7 @@ try {
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
                     ->setReceiver($receiverId)
-                    ->setKeyboard(getMainMenu2())
+                    ->setKeyboard(getRahMenu())
             );
         })
 
