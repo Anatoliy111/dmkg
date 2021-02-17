@@ -79,7 +79,6 @@ try {
         ->onText('|info-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
-
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -114,13 +113,24 @@ try {
             );
         })
 
+//        ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
+//            $log->info('click on button');
+//            $receiverId = $event->getSender()->getId();
+//            $bot->getClient()->sendMessage(
+//                (new \Viber\Api\Message\Text())
+//                    ->setSender($botSender)
+//                    ->setReceiver($event->getSender()->getId())
+//                    ->setKeyboard(getRahMenu())
+//            );
+//        })
+
         ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $receiverId = $event->getSender()->getId();
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setReceiver($event->getSender()->getId())
+                    ->setReceiver($receiverId)
                     ->setKeyboard(getRahMenu())
             );
         })
