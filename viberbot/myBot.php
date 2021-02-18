@@ -260,7 +260,7 @@ function getDelRahMenu($FindRah){
     {
         $buttons[] =
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(1)
+                ->setColumns(2)
                 ->setActionType('reply')
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
