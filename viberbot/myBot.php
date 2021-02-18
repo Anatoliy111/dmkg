@@ -128,8 +128,8 @@ try {
 
         ->onText('|MainMenu|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');
-            $Receiv = verifyReceiver($event,$apiKey, $org);
-            if ($Receiv->status != '') UpdateStatus($Receiv,'');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            if ($Receiv->status != '') {UpdateStatus($Receiv,'');}
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
@@ -168,7 +168,7 @@ try {
                     $ModelAbon = findSchetAbon($event->getMessage()->getText());
                     if ($ModelAbon != null){
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu())
+                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
                     else {
                         message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!!!!', getRahMenu());
@@ -255,20 +255,20 @@ function getRahMenu(){
                 ->setColumns(3)
                 ->setBgColor('#75F3AE')
                 // ->setTextSize('small')
-                ->setTextSize('large')
+               // ->setTextSize('large')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('add-rah')
-                ->setText('🟢  Додати рахунок до бота'),
+                ->setText('Додати рахунок до бота'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                   ->setBgColor('#F39175')
                 ->setTextHAlign('center')
-                ->setTextSize('large')
+              //  ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('btn-click')
-                ->setText('❌  Видалити рахунок з бота'),
+                ->setText('Видалити рахунок з бота'),
 
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
