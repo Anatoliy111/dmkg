@@ -115,6 +115,19 @@ try {
             );
         })
 
+        ->onText('|del-rah|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'add-rah');
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($event->getSender()->getId())
+                    ->setText('Вкажіть номер Вашого особового рахунку')
+                    ->setKeyboard(getRahMenu())
+            );
+        })
+
         ->onText('|rah-menu|s', function ($event) use ($bot, $botSender, $log) {
             $log->info('click on button');
             $bot->getClient()->sendMessage(
@@ -165,18 +178,29 @@ try {
             }
             else {
                 if ($Receiv->status == 'add-rah'){
-                    $ModelAbon = findSchetAbon($event->getMessage()->getText());
+                    $ModelAbon = UtAbonent::findOne(['schet' => $event->getMessage()->getText()]);
                     if ($ModelAbon != null){
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
                         message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
                     else {
-                        message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!!!!!', getRahMenu());
-                        UpdateStatus($Receiv,'');
+                        message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
+                        //UpdateStatus($Receiv,'');
                     }
                 }
                 elseif (substr($Receiv->status, 0, 10) == 'verify-rah'){
+                    $ModelAbon = UtAbonent::findOne(['schet' => substr($Receiv->status, 11)]);
+                    if ($ModelAbon != null){
+                        $ModelKart = UtKart::findOne(['id' => $ModelAbon->id_kart]);
+                        if ($ModelKart != null){
+                            if (mb_strtolower($ModelKart->fio) == mb_strtolower($event->getMessage()->getText())){
+                                addAbon($Receiv->id,substr($Receiv->status, 11),$ModelKart->id,$org);
 
+                            }
+                        }
+                        UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
+                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
+                    }
 
                 }
                 else{
@@ -363,33 +387,15 @@ function UpdateStatus($Model,$Status){
 
 }
 
+function addAbon($id_viber,$schet,$id_kart, $org){
 
-function findSchetAbon($schet){
-
-    $FindAbon = UtAbonent::findOne(['schet' => $schet]);
-    return $FindAbon;
-}
-
-function addSchetReceiver($schet){
-
-    $FindAbon = UtAbonent::findOne(['schet' => $schet]);
-    return $FindAbon;
-
-}
-
-function addAbon($apiKey,$id_viber,$schet, $org){
-
-    $FindAbon = UtAbonent::findOne(['schet' => $schet]);
-    if ($FindAbon<>null)
-    {
-        $FindKart = UtKart::findOne(['id' => $FindAbon->id_kart]);
-
-        $FindModel = ViberAbon::findOne(['id_viber' => $apiKey,'id_utkart' => $FindKart]);
-        if ($FindModel== null)
+        $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'id_utkart' => $id_kart]);
+        if ($FindModel == null)
         {
             $model = new ViberAbon();
             $model->id_viber = $id_viber;
-            $model->id_utkart = $FindKart;
+            $model->id_utkart = $id_kart;
+            $model->schet = $schet;
             $model->org = $org;
             if ($model->validate() && $model->save())
             {
@@ -409,8 +415,6 @@ function addAbon($apiKey,$id_viber,$schet, $org){
             }
         }
         else return $FindModel;
-    }
-    else return 'Рахунок не знайдено';
 
 }
 
