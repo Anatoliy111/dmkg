@@ -198,12 +198,12 @@ try {
                     if ($ModelAbon != null){
                         $ModelKart = UtKart::findOne(['id' => $ModelAbon->id_kart]);
                         if ($ModelKart != null){
-                            if (mb_strtolower($ModelKart->fio) == mb_strtolower($event->getMessage()->getText())){
+                            if (mb_strtolower($ModelKart->name_f) == mb_strtolower($event->getMessage()->getText())){
                                 $addabon = addAbonReceiver($Receiv->id,substr($Receiv->status, 11),$ModelKart->id,$org);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.substr($Receiv->status, 11).' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv,'');
                             }
-                            else message($bot, $botSender, $event, $event->getMessage()->getText().' Вибачте, але це прізвище не правильне!!! Спробуйте ще '.$ModelKart->fio, getRahMenu());
+                            else message($bot, $botSender, $event, $event->getMessage()->getText().' Вибачте, але це прізвище не правильне!!! Спробуйте ще '.$ModelKart->name_f, getRahMenu());
                         }
                     }
                 }
