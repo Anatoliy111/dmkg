@@ -203,7 +203,7 @@ try {
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.substr($Receiv->status, 11).' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv,'');
                             }
-                            else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
+                            else message($bot, $botSender, $event, $event->getMessage()->getText().' Вибачте, але це прізвище не правильне!!! Спробуйте ще '.$ModelKart->fio, getRahMenu());
                         }
                     }
                 }
