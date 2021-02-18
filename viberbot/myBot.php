@@ -179,12 +179,17 @@ try {
             else {
                 if ($Receiv->status == 'add-rah'){
                     $ModelAbon = UtAbonent::findOne(['schet' => $event->getMessage()->getText()]);
-                    if ($ModelAbon != null){
+                    $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
+                    if ($ModelAbon != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
                         message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
-                    else {
-                        message($bot, $botSender, $event, 'Вибачте але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
+                    elseif ($ModelAbon == null && $ModelAbonReceiver == null) {
+                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
+                        //UpdateStatus($Receiv,'');
+                    }
+                    elseif ($ModelAbon != null && $ModelAbonReceiver != null) {
+                        message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до бота!', getRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                 }
@@ -194,14 +199,13 @@ try {
                         $ModelKart = UtKart::findOne(['id' => $ModelAbon->id_kart]);
                         if ($ModelKart != null){
                             if (mb_strtolower($ModelKart->fio) == mb_strtolower($event->getMessage()->getText())){
-                                addAbon($Receiv->id,substr($Receiv->status, 11),$ModelKart->id,$org);
-
+                                $addabon = addAbonReceiver($Receiv->id,substr($Receiv->status, 11),$ModelKart->id,$org);
+                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.substr($Receiv->status, 11).' під"єднано до бота', getRahMenu());
+                                UpdateStatus($Receiv,'');
                             }
+                            else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
                         }
-                        UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
-
                 }
                 else{
                      message($bot, $botSender, $event, 'Не визначений статус!!!', getRahMenu());
@@ -387,7 +391,7 @@ function UpdateStatus($Model,$Status){
 
 }
 
-function addAbon($id_viber,$schet,$id_kart, $org){
+function addAbonReceiver($id_viber,$schet,$id_kart, $org){
 
         $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'id_utkart' => $id_kart]);
         if ($FindModel == null)
@@ -410,7 +414,7 @@ function addAbon($id_viber,$schet,$id_kart, $org){
 
                 Yii::error($messageLog, 'viber_err');
 
-                return false;
+                return null;
 
             }
         }
