@@ -11,6 +11,7 @@ use Yii;
  * @property int $id_viber
  * @property string $org
  * @property int $id_utkart
+ * * @property string $schet
  * @property string $note
  *
  * @property UtKart $utkart
@@ -32,10 +33,11 @@ class ViberAbon extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_viber', 'org', 'id_utkart', 'note'], 'required'],
+            [['id_viber', 'org', 'id_utkart'], 'required'],
             [['id_viber', 'id_utkart'], 'integer'],
             [['org'], 'string', 'max' => 6],
             [['note'], 'string', 'max' => 64],
+            [['schet'], 'string', 'max' => 10],
             [['id_utkart'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::className(), 'targetAttribute' => ['id_utkart' => 'id']],
             [['id_viber'], 'exist', 'skipOnError' => true, 'targetClass' => Viber::className(), 'targetAttribute' => ['id_viber' => 'id']],
         ];
@@ -51,6 +53,7 @@ class ViberAbon extends \yii\db\ActiveRecord
             'id_viber' => Yii::t('easyii', 'Id Viber'),
             'org' => Yii::t('easyii', 'Org'),
             'id_utkart' => Yii::t('easyii', 'Id Utkart'),
+            'schet' => Yii::t('easyii', 'Schet'),
             'note' => Yii::t('easyii', 'Note'),
         ];
     }
