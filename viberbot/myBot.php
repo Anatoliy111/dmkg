@@ -79,7 +79,7 @@ try {
             UpdateStatus($Receiv,'add-rah');
             message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
         })
-        ->onText('|Delrah-buttom|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+        ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
@@ -108,7 +108,7 @@ try {
             $Receiv = verifyReceiver($event,$apiKey, $org);
            // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
             if ($Receiv == null || $Receiv->status == ''){
-                message($bot, $botSender, $event, 'Не визначений запит!!!', null);
+                message($bot, $botSender, $event, 'Не визначений запит:' . $event->getMessage()->getText(), null);
                 message($bot, $botSender, $event, 'Головне меню:', getMainMenu());
             }
             else {
@@ -143,7 +143,7 @@ try {
                     }
                 }
                 else{
-                     message($bot, $botSender, $event, 'Не визначений статус!!!', getRahMenu());
+                     message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu());
                      UpdateStatus($Receiv,'');
                 }
 
