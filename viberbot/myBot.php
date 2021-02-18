@@ -88,7 +88,7 @@ try {
             else {
                 foreach ($FindRah as $Rah)
                 {
-                    message($bot, $botSender, $event, $Rah->schet, getRahMenu());
+                    message($bot, $botSender, $event, $Rah, getRahMenu());
                 }
             }
            // else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getDelRahMenu($FindRah));
