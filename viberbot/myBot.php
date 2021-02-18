@@ -85,7 +85,7 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getDelRahMenu($FindRah));
+            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahMenu());//getDelRahMenu($FindRah));
         })
         ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
