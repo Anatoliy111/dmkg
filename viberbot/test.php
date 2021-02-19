@@ -21,13 +21,13 @@ new yii\web\Application($yiiConfig);
 
 echo substr("abcdefsgdergrgreg", 10);
 
-$Receiv = Viber::findOne(['id' => 2]);
+$Receiv = Viber::findOne(2);
 
-$FindRah = $Receiv->getViberAbons();
+$FindRah = $Receiv->getViberAbons()->all();
 if ($FindRah == null) echo 'null';
 else {
     foreach ($FindRah as $Rah)
     {
-        echo $Rah;
+        echo $Rah->schet;
     }
 }

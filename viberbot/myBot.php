@@ -83,7 +83,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            $FindRah = $Receiv->getViberAbons();
+            $FindRah = $Receiv->getViberAbons()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
             else {
                 foreach ($FindRah as $Rah)
