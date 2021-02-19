@@ -124,7 +124,7 @@ try {
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => substr($event->getMessage()->getText(), 8)]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah#'));
             else {
-                message($bot, $botSender, $event, infoSchet(substr($event->getMessage()->getText(), 8)), getRahList($FindRah,'inf-rah#'));
+                message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'inf-rah#'));
             }
         })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
@@ -429,7 +429,7 @@ function infoSchet($schet){
     $mess='';
     $modelKart = UtKart::findOne(['schet' => $schet]);
 
-    $mess = $modelKart->fio . '<br/>' . $modelKart->getUlica()['ul'];
+    $mess = $modelKart->fio . '<br/>' . $modelKart->getUlica()->asArray()->one()['ul'].' '.$modelKart->dom .' '. $modelKart->kv;
 
     return $mess;
 
