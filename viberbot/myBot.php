@@ -106,12 +106,11 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 9).' видалено з бота!', getRahMenu());
-            $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
+            $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => substr($event->getMessage()->getText(), 8)]);
             if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
             else {
                 $DelRah->delete();
-                message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 9).' видалено з бота!', getRahMenu());
+                message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 8).' видалено з бота!', getRahMenu());
             }
         })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
