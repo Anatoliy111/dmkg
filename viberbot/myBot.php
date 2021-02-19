@@ -70,8 +70,11 @@ try {
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
-            message($bot, $botSender, $event, 'Головне меню:', getMainMenu());
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            $FindRah = $Receiv->getViberAbons()->all();
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+            else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah#'));
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -111,6 +114,17 @@ try {
             else {
                 $DelRah->delete();
                 message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 8).' видалено з бота!', getRahMenu());
+            }
+        })
+        ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            $FindRah = $Receiv->getViberAbons()->all();
+            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => substr($event->getMessage()->getText(), 8)]);
+            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah#'));
+            else {
+                message($bot, $botSender, $event, infoSchet(substr($event->getMessage()->getText(), 8)), getRahList($FindRah,'inf-rah#'));
             }
         })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
@@ -407,3 +421,16 @@ function addAbonReceiver($id_viber,$schet,$id_kart, $org){
 
 }
 
+/**
+ * @param $schet
+ */
+function infoSchet($schet){
+
+    $mess='';
+    $modelKart = UtKart::findOne(['schet' => $schet]);
+
+    $mess = $modelKart->fio . '<br/>' . $modelKart->getUlica()['ul'];
+
+    return $mess;
+
+}
