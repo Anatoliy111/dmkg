@@ -85,7 +85,7 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getDelRahMenu($FindRah));
+            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah#'));
         })
         ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -104,8 +104,14 @@ try {
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            verifyReceiver($event, $apiKey, $org);
-            message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 9).' видалено з бота!', getRahMenu());
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
+            if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
+            else {
+                $DelRah->delete();
+                message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 9).' видалено з бота!', getRahMenu());
+            }
         })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
@@ -258,19 +264,19 @@ function getRahMenu(){
 
 }
 
-function getDelRahMenu($FindRah){
+function getRahList($FindRah,$action){
 
     $buttons = [];
     foreach ($FindRah as $Rah)
     {
         $buttons[] =
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setBgColor('#75C5F3')
                 ->setActionType('reply')
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
-                ->setActionBody('del-rah#')
-                ->setText('465465465');
+                ->setActionBody($action.$Rah->schet)
+                ->setText($Rah->schet);
     }
 
     $buttons[] =
