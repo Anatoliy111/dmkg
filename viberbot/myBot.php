@@ -108,6 +108,11 @@ try {
             verifyReceiver($event, $apiKey, $org);
             message($bot, $botSender, $event, 'Головне меню:', getMainMenu());
         })
+        ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            verifyReceiver($event, $apiKey, $org);
+            message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 9).' видалено з бота!', getRahMenu());
+        })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
@@ -270,7 +275,7 @@ function getDelRahMenu($FindRah){
                 ->setActionType('reply')
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
-                ->setActionBody('del_rah#')
+                ->setActionBody('del-rah#')
                 ->setText('465465465');
     }
 
