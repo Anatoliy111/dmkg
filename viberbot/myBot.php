@@ -106,6 +106,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
+            message($bot, $botSender, $event, 'Рахунок '.substr($event->getMessage()->getText(), 9).' видалено з бота!', getRahMenu());
             $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
             if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
             else {
