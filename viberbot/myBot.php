@@ -273,15 +273,15 @@ function getDelRahMenu($FindRah){
                 ->setText('465465465');
     }
 
-//    $buttons[] =
-//    (new \Viber\Api\Keyboard\Button())
-//        ->setBgColor('#75C5F3')
-//        ->setTextSize('large')
-//        ->setTextHAlign('center')
-//        ->setTextVAlign('center')
-//        ->setActionType('reply')
-//        ->setActionBody('MainMenu-button')
-//        ->setText('🏠   Головне меню');
+    $buttons[] =
+    (new \Viber\Api\Keyboard\Button())
+        ->setBgColor('#75C5F3')
+        ->setTextSize('large')
+        ->setTextHAlign('center')
+        ->setTextVAlign('center')
+        ->setActionType('reply')
+        ->setActionBody('MainMenu-button')
+        ->setText('🏠   Головне меню');
 
     return (new \Viber\Api\Keyboard())
         ->setButtons($buttons);
