@@ -85,13 +85,7 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else {
-                foreach ($FindRah as $Rah)
-                {
-                    message($bot, $botSender, $event, $Rah, getRahMenu());
-                }
-            }
-           // else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getDelRahMenu($FindRah));
+            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getDelRahMenu($FindRah));
         })
         ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -279,15 +273,15 @@ function getDelRahMenu($FindRah){
                 ->setText('465465465');
     }
 
-    $buttons[] =
-    (new \Viber\Api\Keyboard\Button())
-        ->setBgColor('#75C5F3')
-        ->setTextSize('large')
-        ->setTextHAlign('center')
-        ->setTextVAlign('center')
-        ->setActionType('reply')
-        ->setActionBody('MainMenu-button')
-        ->setText('🏠   Головне меню');
+//    $buttons[] =
+//    (new \Viber\Api\Keyboard\Button())
+//        ->setBgColor('#75C5F3')
+//        ->setTextSize('large')
+//        ->setTextHAlign('center')
+//        ->setTextVAlign('center')
+//        ->setActionType('reply')
+//        ->setActionBody('MainMenu-button')
+//        ->setText('🏠   Головне меню');
 
     return (new \Viber\Api\Keyboard())
         ->setButtons($buttons);
