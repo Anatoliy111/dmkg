@@ -5,7 +5,7 @@ $db = require(__DIR__ . '/db.php');
 $basePath =  dirname(__DIR__);
 $webroot = dirname($basePath);
 
-return [
+$config= [
     'id' => 'app-console',
     'basePath' => $basePath,
     'runtimePath' => $webroot . '/runtime',
@@ -19,6 +19,10 @@ return [
         'gii' => 'yii\gii\Module',
     ],
     'components' => [
+        'request' => [
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'd3nJy8BE2jOgBK3yTQtr0KZ3xm04n-mS',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -37,3 +41,5 @@ return [
     ],
     'params' => $params,
 ];
+
+return array_merge_recursive($config, require($webroot . '/vendor/noumo/easyii/config/easyii.php'));
