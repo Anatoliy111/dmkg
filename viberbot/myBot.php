@@ -432,7 +432,7 @@ function infoSchet($schet){
     $modelKart = UtKart::findOne(['schet' => $schet]);
 
     $mess = $modelKart->fio . "\n";
-    $mess = $mess.$modelKart->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$modelKart->dom.' '.(isset($modelKart->kv)?"":Yii::t('easyii', 'ap.').$modelKart->kv)."\n";
+    $mess = $mess.$modelKart->getUlica()->asArray()->one()['ul'].' буд.№'.$modelKart->dom.' '.(isset($modelKart->kv)?'кв.'.$modelKart->kv:'')."\r\n";
 
     $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
     $oplab=UtOpl::find()
@@ -448,7 +448,7 @@ function infoSchet($schet){
 //  				    $dolg->select('ut_obor.*,b.summ,');
     $dolg->where(['ut_obor.id_abonent'=> $abonen->id,'ut_obor.period'=> $modelKart->lastperiod()]);
     $dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-    $mess = $mess.'Ваша заборгованість по послугам:'."\n";
+    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
     {
@@ -460,7 +460,7 @@ function infoSchet($schet){
         }
     }
 
-    $mess = $mess.'Всього до сплати: '.$summa."\n";
+    $mess = $mess."\n\r".'Всього до сплати: '.$summa."\n";
 
 
     return $mess;

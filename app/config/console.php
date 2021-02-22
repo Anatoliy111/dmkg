@@ -5,7 +5,7 @@ $db = require(__DIR__ . '/db.php');
 $basePath =  dirname(__DIR__);
 $webroot = dirname($basePath);
 
-$config= [
+return [
     'id' => 'app-console',
     'basePath' => $basePath,
     'runtimePath' => $webroot . '/runtime',
@@ -42,4 +42,3 @@ $config= [
     'params' => $params,
 ];
 
-return array_merge_recursive($config, require($webroot . '/vendor/noumo/easyii/config/easyii.php'));
