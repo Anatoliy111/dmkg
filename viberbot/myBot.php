@@ -429,7 +429,7 @@ function infoSchet($schet){
     $mess='';
     $modelKart = UtKart::findOne(['schet' => $schet]);
 
-    $mess = $modelKart->fio . "/r/n" . $modelKart->getUlica()->asArray()->one()['ul']." ".$modelKart->dom ." ". $modelKart->kv;
+    $mess = $modelKart->fio . " /r/n " . $modelKart->getUlica()->asArray()->one()['ul']."%20".$modelKart->dom ."%0A". $modelKart->kv;
 
     return $mess;
 
