@@ -285,7 +285,7 @@ function getRahList($FindRah,$action){
     {
         $buttons[] =
             (new \Viber\Api\Keyboard\Button())
-                ->setBgColor('#75C5F3')
+                ->setBgColor('#F2AD50')
                 ->setActionType('reply')
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
@@ -429,7 +429,7 @@ function infoSchet($schet){
     $mess='';
     $modelKart = UtKart::findOne(['schet' => $schet]);
 
-    $mess = $modelKart->fio . '\n' . $modelKart->getUlica()->asArray()->one()['ul'].' '.$modelKart->dom .' '. $modelKart->kv;
+    $mess = $modelKart->fio . '/r/n' . $modelKart->getUlica()->asArray()->one()['ul'].' '.$modelKart->dom .' '. $modelKart->kv;
 
     return $mess;
 
