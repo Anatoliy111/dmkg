@@ -430,8 +430,8 @@ function infoSchet($schet){
 
     $mess='';
     $modelKart = UtKart::findOne(['schet' => $schet]);
-
-    $mess = $modelKart->fio . "\n";
+    $mess = 'Особовий рахунок - '.$schet."\r\n";
+    $mess = $mess.$modelKart->fio . "\n";
     $mess = $mess.$modelKart->getUlica()->asArray()->one()['ul'].' буд.№'.$modelKart->dom.' '.(isset($modelKart->kv)?'кв.'.$modelKart->kv:'')."\r\n";
 
     $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
@@ -460,7 +460,7 @@ function infoSchet($schet){
         }
     }
 
-    $mess = $mess."\n\r".'Всього до сплати: '.$summa."\n";
+    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
 
 
     return $mess;
