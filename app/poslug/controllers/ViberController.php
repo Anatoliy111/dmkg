@@ -121,4 +121,31 @@ class ViberController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionImpjson()
+    {
+        $res = json_decode(file_get_contents("php://input"));
+        if(!empty($res))
+        {
+            $current_date=date("Y-m-d H:i:s");
+        }
+
+        return "good";
+    }
+
+    public function beforeAction($action)
+    {
+        if($action->id=="impjson")
+        {
+            $this->enableCsrfValidation=false;
+        }
+
+        if(!parent::beforeAction($action)) {
+            return false;
+        }
+
+        return true;
+    }
+
+
 }
