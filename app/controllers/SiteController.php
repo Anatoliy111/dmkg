@@ -77,4 +77,52 @@ class SiteController extends Controller
 		return $this->render('offerta');
 	}
 
+	public function actionImpjson()
+	{
+		if (Yii::$app->request->isPost){
+//			$res = Yii::$app->request->post();
+
+//			$r1 = json_decode($res);
+//			$r2 = current($rres);
+			$r3 = Yii::$app->getRequest()->getRawBody();
+			$r323 = Yii::$app->getRequest()->getBodyParams();
+//            $r323 = Yii::$app->getRequest()['json'];
+//			$r123 = json_decode($r3);
+		//	$r33 = gettype($r323);
+		//	$r4 = current($r323);
+			$json = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
+//            $rr = json_decode($json);
+//			$rrr = current($rr);
+//			$res2 = $res['phone'];
+//			$res1 = json_decode($res['data']);
+
+			$mes = $r3 ;//. $r33; //. $r4;
+			return $mes;
+
+//			if(!empty($rres))
+//			{
+//				$current_date=date("Y-m-d H:i:s");
+//				//$str = implode(',', array_column($res1, 'data'));
+//				return $rres;
+//			}
+//			else return "res is null222";
+		}
+		else return "post is null";
+
+	}
+
+	public function beforeAction($action)
+	{
+		if($action->id=="impjson")
+		{
+			$this->enableCsrfValidation=false;
+		}
+
+		if(!parent::beforeAction($action)) {
+			return false;
+		}
+
+		return true;
+	}
+
 }

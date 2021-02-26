@@ -20,9 +20,22 @@ $config = [
     'runtimePath' => $webroot . '/runtime',
     'vendorPath' => $webroot . '/vendor',
     'components' => [
+		'response' => [
+			'formatters' => [
+				\yii\web\Response::FORMAT_JSON => [
+					'class' => 'yii\web\JsonResponseFormatter',
+					'prettyPrint' => YII_DEBUG, // используем "pretty" в режиме отладки
+					'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+					// ...
+				],
+			],
+		],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'd3nJy8BE2jOgBK3yTQtr0KZ3xm04n-mS',
+			'parsers' => [
+				'application/json' => 'yii\web\JsonParser'
+				],
         ],
 //        'user' => [
 //            'identityClass' => 'app\models\UserIdentity',
