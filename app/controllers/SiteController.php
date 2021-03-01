@@ -80,23 +80,28 @@ class SiteController extends Controller
 	public function actionImpjson()
 	{
 		if (Yii::$app->request->isPost){
-//			$res = Yii::$app->request->post();
+			$res = Yii::$app->request->post();
 
+			$r1 = json_decode($res['data'],true);
+			$r2 = current($r1);
+			$r3 = current($r2);
+			$r4 = current($r3);
+
+			$keys = array_keys($r1);
+
+			foreach ($r1[$keys[0]] as $k1=>$v1){
+				$mes = $k1;
+			}
+
+
+//			$res = Yii::$app->getRequest()->getRawBody();
 //			$r1 = json_decode($res);
-//			$r2 = current($rres);
-			$r3 = Yii::$app->getRequest()->getRawBody();
-			$r323 = Yii::$app->getRequest()->getBodyParams();
-//            $r323 = Yii::$app->getRequest()['json'];
-//			$r123 = json_decode($r3);
-		//	$r33 = gettype($r323);
-		//	$r4 = current($r323);
-			$json = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
-//            $rr = json_decode($json);
-//			$rrr = current($rr);
-//			$res2 = $res['phone'];
-//			$res1 = json_decode($res['data']);
+//			$r2 = current($r1);
+//			$r3 = current($r2);
+//			$r4 = current($r3);
 
-			$mes = $r3 ;//. $r33; //. $r4;
+
+//			$mes = $key1;//. $r33; //. $r4;
 			return $mes;
 
 //			if(!empty($rres))
