@@ -32,6 +32,12 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget', //в файл
+                    'categories' => ['viber_err'], //категория логов
+                    'logFile' => '@runtime/logs/viber.log', //куда сохранять
+                    'logVars' => [] //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
+                ],
             ],
         ],
 		'authManager' => [
