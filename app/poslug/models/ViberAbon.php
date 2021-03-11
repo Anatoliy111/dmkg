@@ -33,7 +33,7 @@ class ViberAbon extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_viber', 'org', 'id_utkart'], 'required'],
+            [['id_viber', 'org'], 'required'],
             [['id_viber', 'id_utkart'], 'integer'],
             [['org'], 'string', 'max' => 7],
             [['note'], 'string', 'max' => 64],
