@@ -11,7 +11,7 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 use Viber\Client;
 
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
-$webhookUrl = 'https://dmkg.com.ua/viberbot/myBot.php'; // <- PLACE-YOU-HTTPS-URL
+$webhookUrl = 'https://dmkg.com.ua/viberbot/kpcentrBot.php'; // <- PLACE-YOU-HTTPS-URL
 try {
     $client = new Client([ 'token' => $apiKey ]);
     $result = $client->setWebhook($webhookUrl);

@@ -2,15 +2,28 @@
 
 namespace app\controllers;
 
+
+
+use app\models\KpcentrObor;
+use app\models\KpcentrPokazn;
 use app\models\UtPay;
+use DateTime;
+use Throwable;
 use Yii;
+use yii\base\ErrorException;
 use yii\bootstrap\Alert;
 use yii\easyii\modules\page\models\Page;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
+require_once(Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
+
+
+
 class SiteController extends Controller
 {
+
+
     public function actions()
     {
         return [
@@ -77,48 +90,192 @@ class SiteController extends Controller
 		return $this->render('offerta');
 	}
 
+
+
 	public function actionImpjson()
 	{
-		if (Yii::$app->request->isPost){
-			$res = Yii::$app->request->post();
 
-			$r1 = json_decode($res['data'],true);
-			$r2 = current($r1);
-			$r3 = current($r2);
-			$r4 = current($r3);
+		//
+		$mes='ok';
+		if (Yii::$app->request->isPost) {
+				$res = Yii::$app->request->post();
 
-			$keys = array_keys($r1);
+			  //  $res = json_decode($res['data'],true);
 
-			foreach ($r1[$keys[0]] as $k1=>$v1){
-				$mes = $k1;
+            $kol = 0;
+			if ($res['model']=='kpobor') KpcentrObor::deleteAll('status = :status', [':status' => 0]);
+			if ($res['model']=='kppokazn') KpcentrPokazn::deleteAll('status = :status', [':status' => 0]);
+
+			if (count($res['data'])!=0) {
+				foreach ($res['data'] as $k1 => $v1) {
+
+					try {
+
+						if ($res['model']=='kpobor') $model = new KpcentrObor();
+						if ($res['model']=='kppokazn') $model = new KpcentrPokazn();
+
+                       $model->period = date('Y-m-d',strtotime( $res['period']));
+						foreach ($v1 as $k2 => $v2){
+							$type = $model->getTableSchema()->getColumn($k2);
+							if ($type->dbType == 'date') {
+								$model->$k2 = date('Y-m-d',strtotime($v2));
+							}
+							else $model->$k2 = $v2;
+						}
+                        if ($model->validate()){
+							$model->save();
+						}
+						else {
+							$errAll = $model->getErrors();
+							$meserr='Error import json '.$res['model'].' '.$v1['schet'].' ';
+							foreach ($errAll as $err){
+								$meserr=$meserr.implode(",", $err);
+							}
+							Yii::error($meserr, 'json_import');
+							getSend($meserr);
+							return implode($meserr);
+						}
+
+					} catch (Throwable $e) {
+						$messageLog = [
+							'status' => 'Помилка імпорту, запис в базу даних ',
+							'model' => $res['model'],
+							'post' => $e
+						];
+
+						Yii::error($messageLog, 'json_import');
+
+						getSend($e);
+					}
+
+					++$kol;
+				}
+				if (intval($res['kol'])!=$kol)
+					$mes = 'Error!!! Json model '.$res['model'].' kol='.$res['kol'].' > save base kol='.$kol;
+				else $mes = 'Export '.$res['model'].' is good!!!';
+			}
+			else $mes = 'Error!!! Count Json = 0';
+
+		}
+		else $mes = "Error!!! Post Json is null";
+
+		$pos = strpos($mes, 'Error!!!');
+		if ($pos === 0) {
+
+			$messageLog = [
+				'status' => 'Помилка імпорту Obor',
+				'model' => $res['model'],
+				'post' => $mes
+			];
+
+			Yii::error($messageLog, 'json_import');
+
+			getSend(implode(",", $messageLog));
+		}
+		else {
+			$model->deleteAll('status = :status', [':status' => 1]);
+			$model->updateAllCounters(['status' => 1]);
+//			KpcentrObor::updateAll(['status' => 1], ['like', 'email', '@example.com']);
+		}
+
+
+		return $mes;
+	}
+
+	function is_Date($str){
+		return is_numeric(strtotime($str));
+	}
+
+	function object_to_array($data){
+		if(is_array($data) || is_object($data))
+		{
+			$result = array();
+
+			foreach($data as $key => $value) {
+				$result[$key] = $this->object_to_array($value);
 			}
 
-
-//			$res = Yii::$app->getRequest()->getRawBody();
-//			$r1 = json_decode($res);
-//			$r2 = current($r1);
-//			$r3 = current($r2);
-//			$r4 = current($r3);
-
-
-//			$mes = $key1;//. $r33; //. $r4;
-			return $mes;
-
-//			if(!empty($rres))
-//			{
-//				$current_date=date("Y-m-d H:i:s");
-//				//$str = implode(',', array_column($res1, 'data'));
-//				return $rres;
-//			}
-//			else return "res is null222";
+			return $result;
 		}
-		else return "post is null";
 
+		return $data;
 	}
+
+	public function actionImptest()
+	{
+
+		//
+		$mes='ok';
+		if (Yii::$app->request->isPost) {
+			$res5 = Yii::$app->request->post();
+//			$json = json_decode($res['data'],true);
+//			try {
+
+			$res1 = Yii::$app->getRequest();
+//			$json = json_decode($res,true);
+
+//			if (is_null($res))$mes='res is null';
+//			if (count($res['parsers'])!=0) $mes=count($res['parsers']);
+//			$res = $this->object_to_array($res1);
+//			$pars = $res['_bodyParams'];
+//			$json = $pars['application/json'];
+			//$array = json_decode(json_encode($res), true);
+			if (count($res5)!=0) $mes=count($res5);
+			$mes= $mes.'/'.gettype($res5);
+//			$mes= $mes.'/'.$_POST;
+//			if (count($array['parsers'])!=0) $mes=count($array['parsers']);
+//            $pars = $res['parsers'];
+//			$json = $pars['application/json'];
+//			$mes= $pars;
+//
+			foreach($res5 as $key=>$value)
+			{
+				$mes= $mes.'/'.$key;
+//			$mes= gettype($value);
+			}
+//			$mes= gettype($res['parsers']);
+
+//			$keys = array_keys($res);
+//			$mes= $keys[0];
+////
+//			if (count($res)!=0) $mes=array_key_first($res);
+
+//			$mes = strtotime($res['kol']);
+////			$json = json_decode($res, true);
+//			} catch (Throwable $e) {
+//						$messageLog = [
+//							'status' => 'Помилка імпорту, запис в базу даних ',
+//							'org' => 'kpcentr',
+//							'post' => $e
+//						];
+//
+//						Yii::error($messageLog, 'json_import');
+//
+//						getSend($e);
+//					}
+//
+//
+		}
+
+
+		return $mes;
+	}
+
+	/**
+	 * @param $data
+	 * @return array
+     */
+
+
 
 	public function beforeAction($action)
 	{
 		if($action->id=="impjson")
+		{
+			$this->enableCsrfValidation=false;
+		}
+
+		if($action->id=="imptest")
 		{
 			$this->enableCsrfValidation=false;
 		}
@@ -130,4 +287,7 @@ class SiteController extends Controller
 		return true;
 	}
 
+
+
 }
+

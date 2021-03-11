@@ -411,6 +411,16 @@ function addAbonReceiver($id_viber,$schet,$id_kart, $org){
 
 }
 
+//		try {
+
+//			return $this->redirect(['index']);
+//		} catch (ErrorException $e) {
+//			throw new \yii\web\HttpException(451,
+//				'Tom McFarlin\'s humor is often lost on me
+//              (and lots of people).');
+////			Yii::warning("Видалення не можливе");
+//		}
+
 /**
  * @param $schet
  */

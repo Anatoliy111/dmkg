@@ -38,9 +38,9 @@ class KpcentrObor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['period', 'schet', 'wid', 'naim_wid', 'fio', 'im', 'ot', 'dolg', 'opl', 'sal', 'ulnaim', 'nomdom', 'nomkv'], 'required'],
+            [['period', 'schet', 'wid', 'naim_wid', 'fio', 'ulnaim'], 'required'],
             [['period'], 'safe'],
-            [['dolg', 'opl', 'sal'], 'number'],
+            //[['dolg', 'opl', 'sal'], 'number'],
             [['schet'], 'string', 'max' => 10],
             [['wid'], 'string', 'max' => 2],
             [['naim_wid', 'im', 'ot'], 'string', 'max' => 15],

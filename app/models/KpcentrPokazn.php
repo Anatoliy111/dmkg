@@ -8,9 +8,11 @@ use Yii;
  * This is the model class for table "kpcentr_pokazn".
  *
  * @property int $id
+ * @property string $period
  * @property string $schet
- * @property string $date
+ * @property string $date_pok
  * @property int $pokazn
+ * @property int $status
  */
 class KpcentrPokazn extends \yii\db\ActiveRecord
 {
@@ -28,9 +30,10 @@ class KpcentrPokazn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['schet', 'date', 'pokazn'], 'required'],
-            [['date'], 'safe'],
-            [['pokazn'], 'integer'],
+            [['schet', 'date_pok', 'pokazn'], 'required'],
+            [['period'], 'safe'],
+            [['date_pok'], 'safe'],
+            [['pokazn', 'status'], 'integer'],
             [['schet'], 'string', 'max' => 10],
         ];
     }
@@ -42,9 +45,11 @@ class KpcentrPokazn extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'period' => 'Period',
             'schet' => 'Schet',
-            'date' => 'Date',
+            'date_pok' => 'Date',
             'pokazn' => 'Pokazn',
+            'status' => 'Status',
         ];
     }
 }
