@@ -337,7 +337,7 @@ function verifyReceiver($event, $apiKey, $org){
 
     $receiverId = $event->getSender()->getId();
     $receiverName = $event->getSender()->getName();
-    $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId]);
+    $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
     if ($FindModel== null)
     {
         $model = new Viber();
