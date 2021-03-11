@@ -141,7 +141,7 @@ try {
             }
             else {
                 if ($Receiv->status == 'add-rah'){
-                    $ModelAbon = UtAbonent::findOne(['schet' => $event->getMessage()->getText()]);
+                    $ModelAbon = KpcentrObor::findOne(['schet' => $event->getMessage()->getText()]);
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
                     if ($ModelAbon != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
