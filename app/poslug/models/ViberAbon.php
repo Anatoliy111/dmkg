@@ -35,7 +35,7 @@ class ViberAbon extends \yii\db\ActiveRecord
         return [
             [['id_viber', 'org', 'id_utkart'], 'required'],
             [['id_viber', 'id_utkart'], 'integer'],
-            [['org'], 'string', 'max' => 6],
+            [['org'], 'string', 'max' => 7],
             [['note'], 'string', 'max' => 64],
             [['schet'], 'string', 'max' => 10],
             [['id_utkart'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::className(), 'targetAttribute' => ['id_utkart' => 'id']],

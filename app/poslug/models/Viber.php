@@ -35,7 +35,7 @@ class Viber extends \yii\db\ActiveRecord
         return [
             [['api_key', 'org', 'id_receiver'], 'required'],
             [['api_key'], 'string', 'max' => 50],
-            [['org'], 'string', 'max' => 6],
+            [['org'], 'string', 'max' => 7],
             [['id_receiver'], 'string', 'max' => 30],
             [['name', 'status', 'note'], 'string', 'max' => 64],
         ];
