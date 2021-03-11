@@ -157,17 +157,15 @@ try {
                     }
                 }
                 elseif (substr($Receiv->status, 0, 10) == 'verify-rah'){
-                    $ModelAbon = UtAbonent::findOne(['schet' => substr($Receiv->status, 11)]);
+                    $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 11)]);
                     if ($ModelAbon != null){
-                        $ModelKart = UtKart::findOne(['id' => $ModelAbon->id_kart]);
-                        if ($ModelKart != null){
-                            if (mb_strtolower($ModelKart->name_f) == mb_strtolower($event->getMessage()->getText())){
-                                $addabon = addAbonReceiver($Receiv->id,substr($Receiv->status, 11),$ModelKart->id,$org);
+                            if (mb_strtolower($ModelAbon->fio) == mb_strtolower($event->getMessage()->getText())){
+                                $addabon = addAbonReceiver($Receiv->id,substr($Receiv->status, 11),$org);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.substr($Receiv->status, 11).' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv,'');
                             }
                             else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
-                        }
+
                     }
                 }
                 else{
@@ -393,14 +391,13 @@ function UpdateStatus($Model,$Status){
 
 }
 
-function addAbonReceiver($id_viber,$schet,$id_kart, $org){
+function addAbonReceiver($id_viber,$schet,$org){
 
-        $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'id_utkart' => $id_kart]);
+        $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'schet' => $schet]);
         if ($FindModel == null)
         {
             $model = new ViberAbon();
             $model->id_viber = $id_viber;
-            $model->id_utkart = $id_kart;
             $model->schet = $schet;
             $model->org = $org;
             if ($model->validate() && $model->save())
