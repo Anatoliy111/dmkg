@@ -107,6 +107,7 @@ class SiteController extends Controller
 			if ($res['model']=='kppokazn') KpcentrPokazn::deleteAll('status = :status', [':status' => 0]);
 
 			if (count($res['data'])!=0) {
+				$transaction = Yii::$app->db->beginTransaction();
 				foreach ($res['data'] as $k1 => $v1) {
 
 					try {
@@ -124,6 +125,11 @@ class SiteController extends Controller
 						}
                         if ($model->validate()){
 							$model->save();
+						}
+
+						if ($kol % 1000 === 0) {
+							$transaction->commit();
+							$transaction = Yii::$app->db->beginTransaction();
 						}
 						else {
 							$errAll = $model->getErrors();
@@ -150,6 +156,7 @@ class SiteController extends Controller
 
 					++$kol;
 				}
+				$transaction->commit();
 				if (intval($res['kol'])!=$kol)
 					$mes = 'Error!!! Json model '.$res['model'].' kol='.$res['kol'].' > save base kol='.$kol;
 				else $mes = 'Export '.$res['model'].' is good!!!';
@@ -163,7 +170,7 @@ class SiteController extends Controller
 		if ($pos === 0) {
 
 			$messageLog = [
-				'status' => 'Помилка імпорту Obor',
+				'status' => 'Помилка імпорту '.$res['model'],
 				'model' => $res['model'],
 				'post' => $mes
 			];
