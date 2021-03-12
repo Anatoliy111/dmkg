@@ -126,11 +126,6 @@ class SiteController extends Controller
                         if ($model->validate()){
 							$model->save();
 						}
-
-						if ($kol % 1000 === 0) {
-							$transaction->commit();
-							$transaction = Yii::$app->db->beginTransaction();
-						}
 						else {
 							$errAll = $model->getErrors();
 							$meserr='Error import json '.$res['model'].' '.$v1['schet'].' ';
@@ -140,6 +135,10 @@ class SiteController extends Controller
 							Yii::error($meserr, 'json_import');
 							getSend($meserr);
 							return implode($meserr);
+						}
+						if ($kol % 1000 === 0) {
+							$transaction->commit();
+							$transaction = Yii::$app->db->beginTransaction();
 						}
 
 					} catch (Throwable $e) {
