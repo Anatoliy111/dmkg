@@ -12,6 +12,7 @@ new yii\web\Application($yiiConfig);
 
 
 use app\models\KpcentrObor;
+use app\models\KpcentrPokazn;
 use app\models\UtKart;
 use app\poslug\models\UtAbonent;
 use app\poslug\models\UtAbonkart;
@@ -79,6 +80,14 @@ try {
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah#'));
         })
+        ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            $FindRah = $Receiv->getViberAbons()->all();
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+            else message($bot, $botSender, $event, 'Виберіть рахунок по якому подати показник:', getRahList($FindRah,'pok-rah#'));
+        })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -130,6 +139,17 @@ try {
                 message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'inf-rah#'));
             }
         })
+        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            $FindRah = $Receiv->getViberAbons()->all();
+            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => substr($event->getMessage()->getText(), 8)]);
+            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah#'));
+            else {
+                message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'pok-rah#'));
+            }
+        })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
@@ -141,7 +161,7 @@ try {
             }
             else {
                 if ($Receiv->status == 'add-rah'){
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $event->getMessage()->getText()]);
+                    $ModelAbon = KpcentrObor::findOne(['schet' => $event->getMessage()->getText(),'status' => 1]);
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
                     if ($ModelAbon != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
@@ -157,7 +177,7 @@ try {
                     }
                 }
                 elseif (substr($Receiv->status, 0, 10) == 'verify-rah'){
-                    $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 11)]);
+                    $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 11),'status' => 1]);
                     if ($ModelAbon != null){
                             if (mb_strtolower($ModelAbon->fio) == mb_strtolower($event->getMessage()->getText())){
                                 $addabon = addAbonReceiver($Receiv->id,substr($Receiv->status, 11),$org);
@@ -427,7 +447,7 @@ function addAbonReceiver($id_viber,$schet,$org){
 function infoSchet($schet){
 
     $mess='';
-    $modelObor = KpcentrObor::findOne(['schet' => $schet]);
+    $modelObor = KpcentrObor::findOne(['schet' => $schet,'status' => 1]);
     $mess = 'Особовий рахунок - '.$schet."\r\n";
     $mess = $mess.$modelObor->fio .' '.$modelObor->im.' '.$modelObor->ot. "\n";
     $mess = $mess.$modelObor->ulnaim.' буд.'.$modelObor->nomdom.' '.(isset($modelObor->nomkv)?'кв.'.$modelObor->nomkv:'')."\r\n";
@@ -436,7 +456,7 @@ function infoSchet($schet){
 //					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
     $dolg->select(["kpcentr_obor.*"]);
 //  				    $dolg->select('ut_obor.*,b.summ,');
-    $dolg->where(['kpcentr_obor.schet'=> $schet])->all();
+    $dolg->where(['kpcentr_obor.schet'=> $schet,'status' => 1])->all();
     $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
@@ -450,6 +470,12 @@ function infoSchet($schet){
     }
 
     $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
+
+    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
+    if ($modelPokazn!=null){
+    $mess = 'Останній показник по воді :'."\r\n";
+    $mess = $mess.$modelPokazn->date_pok.' - '.$modelPokazn->pokazn."\r\n";
+    }
 
 
     return $mess;
