@@ -530,7 +530,7 @@ function infoPokazn($schet){
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
         $mess = $mess.'Останній показник по воді :'."\r\n";
-        $mess = $mess.Yii::$app->formatter->asDate($modelPokazn->date_pok, 'LLLL Y').' - Показник: '.$modelPokazn->pokazn."\r\n";
+        $mess = $mess.date('d-m-Y',$modelPokazn->date_pok).' - Показник: '.$modelPokazn->pokazn."\r\n";
     }
     else $mess = 'Ваш останній останній показник по воді не зафіксовано:'."\r\n";
     $mess = $mess.'Увага!!! Обробка показників триває на протягом 1-3 днів:'."\r\n";
