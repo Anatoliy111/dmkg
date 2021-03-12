@@ -514,7 +514,7 @@ function infoSchet($schet){
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
     $mess = $mess.'Останній показник по воді :'."\r\n";
-    $mess = $mess.Yii::$app->formatter->asDate($modelPokazn->date_pok, 'LLLL Y').' - Показник: '.$modelPokazn->pokazn."\r\n";
+    $mess = $mess.$modelPokazn->date_pok.' - Показник: '.$modelPokazn->pokazn."\r\n";
     }
 
 
