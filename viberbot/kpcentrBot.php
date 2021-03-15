@@ -540,7 +540,7 @@ function infoSchet($schet){
 
 
 
-    return $mess."<font color=#F2AD50>Согласовать</font>";
+    return $mess.'<font color=#F2AD50>Согласовать</font>';
 
 }
 
