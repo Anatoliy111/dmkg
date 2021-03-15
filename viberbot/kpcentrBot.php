@@ -165,6 +165,10 @@ try {
                 message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah#'));
             }
         })
+        ->onText('|*privat24*|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button privat24 ');
+            message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getMainMenu());
+        })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
