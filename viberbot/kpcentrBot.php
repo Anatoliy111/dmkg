@@ -296,8 +296,8 @@ function getMainMenu(){
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 ->setActionType('open-url')
-                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2233006271%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/p243.jpg"),
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222381919%22,%22form%22:%7B%22query%22:%2233006271%22%7D%7D')
+                ->setImage("https://dmkg.com.ua/uploads/privat50x50.png"),
         ]);
 
 }
