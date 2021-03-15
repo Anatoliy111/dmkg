@@ -51,11 +51,10 @@ try {
     $bot
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onConversation handler 111');
+            $log->info('onConversation handler');
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText('Вітаємо в вайбер боті КП "Центр"!!!')
-                ->setText('Оберіть потрібну функцію кнопками нижче.')
+                ->setText($event->getSender()->getName().' Вітаємо Вас в вайбер боті КП "Центр"!!!')
                 ->setKeyboard(getMainMenu());
            // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getMainMenu());
