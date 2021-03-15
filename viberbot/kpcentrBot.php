@@ -229,6 +229,11 @@ try {
             }
 
         })
+        ->on(function ($event) {
+            return true; // match all
+        }, function ($event) use ($log) {
+            $log->info('Other event: ' . var_export($event, true));
+        })
         ->run();
 } catch (Exception $e) {
     $log->warning('Exception: ' . $e->getMessage());
