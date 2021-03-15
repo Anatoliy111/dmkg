@@ -50,21 +50,8 @@ try {
     $bot = new Bot(['token' => $apiKey]);
     $bot
         // first interaction with bot - return "welcome message"
-        ->on(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onConversation handler');
-            $mes = ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-            message($bot, $botSender, $event, $mes, getMainMenu());
-//            $receiverId = $event->getSender()->getId();
-//            $receiverName = $event->getSender()->getName();
-//            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
-//            if ($Receiv <> null) {
-//                $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-//            }
-//            else $mes = 'Помилка реєстрації';
-//            message($bot, $botSender, $event, $mes, getMainMenu());
-        })         
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onConversation handler');
+            $log->info('onConversation handler dsdgsfdgsdfgsdfgsdfgsdfgsdfg');
             $mes = ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
             message($bot, $botSender, $event, $mes, getMainMenu());
 //            $receiverId = $event->getSender()->getId();
