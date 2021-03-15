@@ -52,27 +52,31 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler');
-            $receiverId = $event->getSender()->getId();
-            $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
-            if ($Receiv <> null) {
-                $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-            }
-            else $mes = 'Помилка реєстрації';
+            $mes = ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
             message($bot, $botSender, $event, $mes, getMainMenu());
+//            $receiverId = $event->getSender()->getId();
+//            $receiverName = $event->getSender()->getName();
+//            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
+//            if ($Receiv <> null) {
+//                $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
+//            }
+//            else $mes = 'Помилка реєстрації';
+//            message($bot, $botSender, $event, $mes, getMainMenu());
         })
         // when user subscribe to PA
         ->onSubscribe(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $receiverId = $event->getSender()->getId();
             $log->info('onSubscribe handler');
-            $receiverId = $event->getSender()->getId();
-            $receiverName = $event->getSender()->getName();
-            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
-            if ($Receiv <> null) {
-                $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
-            }
-            else $mes = 'Помилка реєстрації';
+            $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
             message($bot, $botSender, $event, $mes, getMainMenu());
+//            $receiverId = $event->getSender()->getId();
+//            $receiverName = $event->getSender()->getName();
+//            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
+//            if ($Receiv <> null) {
+//                $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
+//            }
+//            else $mes = 'Помилка реєстрації';
+//            message($bot, $botSender, $event, $mes, getMainMenu());
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
