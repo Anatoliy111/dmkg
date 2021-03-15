@@ -292,7 +292,7 @@ function getMainMenu(){
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 ->setActionType('open-url')
-                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2233006271%22%7D%7D')
                 ->setImage("https://dmkg.com.ua/uploads/p243.jpg"),
         ]);
 
@@ -520,7 +520,7 @@ function infoSchet($schet){
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
     {
-        $mess = $mess.$obb['naim_wid'].': '.$obb['sal']."\n";
+        $mess = $mess.$obb['naim_wid'].': '.$obb['sal']."грн \n";
 
         if ($obb['sal']>0)
         {
@@ -528,12 +528,13 @@ function infoSchet($schet){
         }
     }
 
-    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
+
+   // $mess = $mess."\r".'Всього до сплати: '.$summa."\n\r";
 
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
-    $mess = $mess.'Останній показник по воді :'."\r\n";
-    $mess = $mess.$modelPokazn->date_pok.' - Показник: '.$modelPokazn->pokazn."\r\n";
+    $mess = $mess."\r".'Останній показник по воді :'."\r\n";
+    $mess = $mess."Дата показника: ".date_format($modelPokazn->date_pok,'d-m-Y').' - Показник: '.$modelPokazn->pokazn."\r\n";
     }
 
 
