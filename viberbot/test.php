@@ -8,6 +8,7 @@
 
 
 //require_once("../vendor/autoload.php");
+use app\models\KpcentrPokazn;
 use app\poslug\models\UtAbonent;
 use app\models\UtKart;
 use app\poslug\models\UtObor;
@@ -24,6 +25,15 @@ new yii\web\Application($yiiConfig);
 
 
 echo substr("abcdefsgdergrgreg", 10);
+
+
+$modelPokazn = KpcentrPokazn::findOne(['schet' => '0092124','status' => 1]);
+if ($modelPokazn!=null) {
+    $mess = $mess . "\r" . 'Останній показник по воді :' . "\r\n";
+    $mess = $mess . "Дата показника: " . date('d.m.Y',strtotime($modelPokazn->date_pok)) . ' - Показник: ' . $modelPokazn->pokazn . "\r\n" . "<font color=#F2AD50>Согласовать</font>";
+}
+
+echo $mess;
 
 $Receiv = Viber::findOne(2);
 

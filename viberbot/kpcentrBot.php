@@ -534,13 +534,13 @@ function infoSchet($schet){
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
     $mess = $mess."\r".'Останній показник по воді :'."\r\n";
-    $mess = $mess."Дата показника: ".date_format($modelPokazn->date_pok,'d-m-Y').' - Показник: '.$modelPokazn->pokazn."\r\n";
+    $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok)).' - Показник: '.$modelPokazn->pokazn."\r\n";
     }
 
 
 
 
-    return $mess;
+    return $mess."<font color=#F2AD50>Согласовать</font>";
 
 }
 
