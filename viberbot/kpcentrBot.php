@@ -54,7 +54,9 @@ try {
             $log->info('onConversation handler 111');
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText('Can i help you?');
+                ->setText('Вітаємо в вайбер боті КП "Центр"!!!')
+                ->setText('Оберіть потрібну функцію кнопками нижче.')
+                ->setKeyboard(getMainMenu());
            // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getMainMenu());
 //            $receiverId = $event->getSender()->getId();
