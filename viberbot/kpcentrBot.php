@@ -52,8 +52,8 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler dsdgsfdgsdfgsdfgsdfgsdfgsdfg');
-            $mes = ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-            message($bot, $botSender, $event, $mes, getMainMenu());
+           // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
+            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getMainMenu());
 //            $receiverId = $event->getSender()->getId();
 //            $receiverName = $event->getSender()->getName();
 //            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
