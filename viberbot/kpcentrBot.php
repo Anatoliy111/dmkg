@@ -51,7 +51,7 @@ try {
     $bot
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onConversation handler dsdgsfdgsdfgsdfgsdfgsdfgsdfg');
+            $log->info('onConversation handler 111');
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText('Can i help you?');
