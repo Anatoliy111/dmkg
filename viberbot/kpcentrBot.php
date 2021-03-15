@@ -54,7 +54,7 @@ try {
             $log->info('onConversation handler');
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText($event->getSender()->getName().' Вітаємо Вас в вайбер боті КП "Центр"!!!')
+                ->setText(' Вітаємо Вас в вайбер боті КП "Центр"!!!')
                 ->setKeyboard(getMainMenu());
            // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getMainMenu());
@@ -69,8 +69,8 @@ try {
         })
         // when user subscribe to PA
         ->onSubscribe(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $receiverId = $event->getSender()->getId();
             $log->info('onSubscribe handler');
+          //  $receiverId = $event->getSender()->getId();
             $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
             message($bot, $botSender, $event, $mes, getMainMenu());
 //            $receiverId = $event->getSender()->getId();
