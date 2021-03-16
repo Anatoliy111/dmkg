@@ -157,12 +157,12 @@ try {
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'add-pok');
             $FindRah = $Receiv->getViberAbons()->all();
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => substr($event->getMessage()->getText(), 8)]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah#'));
             else {
                 message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah#'));
+                UpdateStatus($Receiv,'add-pok#'.substr($event->getMessage()->getText(), 8));
             }
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -209,8 +209,8 @@ try {
                 }
                 elseif (substr($Receiv->status, 0, 7) == 'add-pok'){
                       message($bot, $botSender, $event, 'add-pok', getMainMenu());
-//                    $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
-//                    $FindRah = $Receiv->getViberAbons()->all();
+                     $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
+                     $FindRah = $Receiv->getViberAbons()->all();
 //                    if ($ModelAbon != null){
 //                        if (is_integer(intval($event->getMessage()->getText()))){
 //                            $modelPokazn = KpcentrPokazn::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
