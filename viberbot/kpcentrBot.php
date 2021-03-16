@@ -208,29 +208,29 @@ try {
                     }
                 }
                 elseif (substr($Receiv->status, 0, 7) == 'add-pok'){
-                      message($bot, $botSender, $event, 'add-pok', getMainMenu());
+                    //  message($bot, $botSender, $event, 'add-pok', getMainMenu());
                      $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
-                     $FindRah = $Receiv->getViberAbons()->all();
-//                    if ($ModelAbon != null){
-//                        if (is_integer(intval($event->getMessage()->getText()))){
-//                            $modelPokazn = KpcentrPokazn::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
-//                            if ($modelPokazn!=null){
-//                                if ($modelPokazn->pokazn > intval($event->getMessage()->getText())){
-//                                  $addpok = addPokazn(intval($event->getMessage()->getText()),substr($Receiv->status, 8));
-//                                    if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$event->getMessage()->getText().' здано успішно!', getMainMenu());
-//                                    UpdateStatus($Receiv,'');
-//                                }
-//                                else message($bot, $botSender, $event, 'Вибачте, але значення меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
-//                            }
-//                            else {
-//                                $addpok = addPokazn(intval($event->getMessage()->getText()),substr($Receiv->status, 8));
-//                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$event->getMessage()->getText().' здано успішно!', getMainMenu());
-//                                UpdateStatus($Receiv,'');
-//                            }
-//                        }
-//                        else message($bot, $botSender, $event, 'Вибачте, але значення не ціле число!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
-//
-//                    }
+                    $FindRah = $Receiv->getViberAbons()->all();
+                    if ($ModelAbon != null){
+                        if (is_integer(intval($event->getMessage()->getText()))){
+                            $modelPokazn = KpcentrPokazn::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
+                            if ($modelPokazn!=null){
+                                if ($modelPokazn->pokazn > intval($event->getMessage()->getText())){
+                                  $addpok = addPokazn(intval($event->getMessage()->getText()),substr($Receiv->status, 8));
+                                    if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$event->getMessage()->getText().' здано успішно!', getMainMenu());
+                                    UpdateStatus($Receiv,'');
+                                }
+                                else message($bot, $botSender, $event, 'Вибачте, але значення меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
+                            }
+                            else {
+                                $addpok = addPokazn(intval($event->getMessage()->getText()),substr($Receiv->status, 8));
+                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$event->getMessage()->getText().' здано успішно!', getMainMenu());
+                                UpdateStatus($Receiv,'');
+                            }
+                        }
+                        else message($bot, $botSender, $event, 'Вибачте, але значення не ціле число!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
+
+                    }
                 }
                 else{
                      message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu());
