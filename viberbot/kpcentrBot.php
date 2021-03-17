@@ -212,23 +212,24 @@ try {
                      $ModelAbon = KpcentrObor::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
                     $FindRah = $Receiv->getViberAbons()->all();
                     if ($ModelAbon != null){
-                        if (is_integer(intval($event->getMessage()->getText()))){
+                        $val=$event->getMessage()->getText();
+                        if (is_numeric($val) && floor($val) == $val && $val > 0){
                             $modelPokazn = KpcentrPokazn::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
                             if ($modelPokazn!=null){
-                                if ($modelPokazn->pokazn > intval($event->getMessage()->getText())){
-                                  $addpok = addPokazn(intval($event->getMessage()->getText()),substr($Receiv->status, 8));
-                                    if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$event->getMessage()->getText().' здано успішно!', getMainMenu());
+                                if ($modelPokazn->pokazn > intval($val)){
+                                  $addpok = addPokazn(intval($val),substr($Receiv->status, 8));
+                                    if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
                                     UpdateStatus($Receiv,'');
                                 }
                                 else message($bot, $botSender, $event, 'Вибачте, але значення меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
                             }
                             else {
-                                $addpok = addPokazn(intval($event->getMessage()->getText()),substr($Receiv->status, 8));
-                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$event->getMessage()->getText().' здано успішно!', getMainMenu());
+                                $addpok = addPokazn(intval($val),substr($Receiv->status, 8));
+                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
                                 UpdateStatus($Receiv,'');
                             }
                         }
-                        else message($bot, $botSender, $event, 'Вибачте, але значення не ціле число!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
+                        else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
 
                     }
                 }
@@ -535,7 +536,7 @@ function infoSchet($schet){
 
 
    // $mess = $mess."\r".'Всього до сплати: '.$summa."\n\r";
-
+    $mess = $mess.'----------------------------'."\r\n";
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
     $mess = $mess."\r".'Останній показник по воді :'."\r\n";
@@ -545,7 +546,7 @@ function infoSchet($schet){
 
 
 
-    return $mess.'<font color=#F2AD50>Согласовать</font>';
+    return $mess;
 
 }
 
@@ -555,10 +556,11 @@ function infoPokazn($schet){
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
         $mess = $mess.'Останній показник по воді :'."\r\n";
-        $mess = $mess.$modelPokazn->date_pok.' - Показник: '.$modelPokazn->pokazn."\r\n";
+        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok)).' - Показник: '.$modelPokazn->pokazn."\r\n";
     }
     else $mess = 'Ваш останній останній показник по воді не зафіксовано:'."\r\n";
-    $mess = $mess.'Увага!!! Обробка показників триває на протягом 1-3 днів:'."\r\n";
+    $mess = $mess.'----------------------------'."\r\n";
+    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\r\n";
     $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\r\n";
 
     return $mess;
