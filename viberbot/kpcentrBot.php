@@ -311,9 +311,9 @@ function getMainMenu(){
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('Kontakt-button')
-                ->setBgColor("#F3F327")
+                ->setBgColor("#27F3E4")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('📞 Контактна ынформація'),
+                ->setText('📞 Контактна інформація'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
