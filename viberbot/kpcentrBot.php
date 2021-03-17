@@ -121,6 +121,10 @@ try {
             $log->info('click on button');
             message($bot, $botSender, $event, 'Редагування рахунків:', getRahMenu());
         })
+        ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            message($bot, $botSender, $event, infoKontakt(), getMainMenu());
+        })
         ->onText('|MainMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -301,7 +305,18 @@ function getMainMenu(){
                 ->setText('📟  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(1)
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('Kontakt-button')
+                ->setBgColor("#F3F327")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('📞 Контактна ынформація'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222381919%22,%22form%22:%7B%22query%22:%2233006271%22%7D%7D')
                 ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
@@ -609,6 +624,17 @@ function infoPokazn($schet){
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok)).' - Показник: '.$modelPokazn->pokazn."\r\n";
     }
     else $mess = 'Ваш останній останній показник по воді не зафіксовано:'."\r\n";
+    $mess = $mess.'----------------------------'."\r\n";
+    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\r\n";
+    $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\r\n";
+
+    return $mess;
+
+}
+
+function infoKontakt(){
+
+    $mess='Телефон контролера: ()';
     $mess = $mess.'----------------------------'."\r\n";
     $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\r\n";
     $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\r\n";
