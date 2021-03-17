@@ -54,7 +54,7 @@ try {
             $log->info('onConversation handler');
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText(' Вітаємо вас в вайбер боті КП "Центр"!!!\n Увага!!! В разі надання неправдивої інформації по показниках ваша підписка буде заблокована!')
+                ->setText(' Вітаємо вас в вайбер боті КП "Центр"!!!'."\n".' Увага!!! В разі надання неправдивої інформації по показниках, ваша підписка буде заблокована!')
                 ->setKeyboard(getMainMenu());
            // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getMainMenu());
@@ -312,7 +312,7 @@ function getMainMenu(){
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('Kontakt-button')
-                ->setBgColor("#27F3E4")
+                ->setBgColor("#F3DD27")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('📞 Контактна інформація'),
 
