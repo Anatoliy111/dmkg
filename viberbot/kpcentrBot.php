@@ -267,7 +267,7 @@ function getMainMenu(){
    return (new \Viber\Api\Keyboard())
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 //->setBgColor('#8074d6')
                // ->setTextSize('small')
                 ->setTextSize('large')
@@ -279,7 +279,7 @@ function getMainMenu(){
                 ->setText('📈  Інформація по ос.рахунках'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
               //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
@@ -290,7 +290,7 @@ function getMainMenu(){
                 ->setText('♻  Операції з ос.рахунками'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
@@ -301,7 +301,7 @@ function getMainMenu(){
                 ->setText('📟  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222381919%22,%22form%22:%7B%22query%22:%2233006271%22%7D%7D')
                 ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
@@ -314,7 +314,7 @@ function getRahMenu(){
     return (new \Viber\Api\Keyboard())
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 ->setBgColor('#75F3AE')
                 // ->setTextSize('small')
                // ->setTextSize('large')
@@ -324,7 +324,7 @@ function getRahMenu(){
                 ->setText('Додати рахунок до бота'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                   ->setBgColor('#F39175')
                 ->setTextHAlign('center')
               //  ->setTextSize('large')
