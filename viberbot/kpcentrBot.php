@@ -216,10 +216,15 @@ try {
                         if (is_numeric($val) && floor($val) == $val && $val > 0){
                             $modelPokazn = KpcentrPokazn::findOne(['schet' => substr($Receiv->status, 8),'status' => 1]);
                             if ($modelPokazn!=null){
-                                if ($modelPokazn->pokazn > intval($val)){
+                                if ($modelPokazn->pokazn < intval($val)){
+                                    if ((intval($val)-$modelPokazn->pokazn) > 100 ){
+                                        message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - '.intval($val), getYesNoMenu('pok-rah#'.substr($Receiv->status, 8)));
+                                    }
+                                    else {
                                   $addpok = addPokazn(intval($val),substr($Receiv->status, 8));
                                     if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
                                     UpdateStatus($Receiv,'');
+                                    }
                                 }
                                 else message($bot, $botSender, $event, 'Вибачте, але значення меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
                             }
@@ -344,6 +349,51 @@ function getRahMenu(){
 //                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
                 //->setText('Головне меню')
                // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
+
+        ]);
+
+}
+
+function getYesNoMenu($action){
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setBgColor('#75F3AE')
+                // ->setTextSize('small')
+                // ->setTextSize('large')
+                ->setTextHAlign('center')
+                ->setActionType('reply')
+                ->setActionBody($action.'&yes')
+                ->setText('Так'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setBgColor('#F39175')
+                ->setTextHAlign('center')
+                //  ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('MainMenu-button')
+                ->setText('Ні'),
+
+            (new \Viber\Api\Keyboard\Button())
+//                ->setColumns(4)
+//                ->setRows(2)
+                ->setBgColor('#75C5F3')
+                ->setTextSize('large')
+                // ->setTextSize('regular')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('MainMenu-button')
+                //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
+                ->setText('🏠   Головне меню')
+
+//                ->setText("<font color=\"#494E67\">Головне меню</font>")
+//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
+            //->setText('Головне меню')
+            // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
         ]);
 
