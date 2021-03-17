@@ -285,17 +285,6 @@ function getMainMenu(){
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(2)
-              //  ->setBgColor('#2fa4e7')
-                ->setTextHAlign('center')
-                ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('Rahmenu-button')
-                ->setBgColor("#75C5F3")
-               // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('♻  Операції з ос.рахунками'),
-
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
@@ -306,13 +295,25 @@ function getMainMenu(){
                 ->setText('📟  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
+                ->setColumns(2)
+              //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('Rahmenu-button')
+                ->setBgColor("#75C5F3")
+               // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('♻  Операції з ос.рахунками'),
+
+
+            (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('Kontakt-button')
-                ->setBgColor("#F3DD27")
+               // ->setBgColor("#F3DD27")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('📞 Контактна інформація'),
 
