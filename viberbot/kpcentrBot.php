@@ -608,7 +608,8 @@ function infoSchet($schet){
     $dolg->select(["kpcentr_obor.*"]);
 //  				    $dolg->select('ut_obor.*,b.summ,');
     $dolg->where(['kpcentr_obor.schet'=> $schet,'status' => 1])->all();
-    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
+    $mess = $mess.'----------------------------'."\n";
+    $mess = $mess.'Ваша заборгованість по послугам:'."\n";
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
     {
@@ -622,11 +623,12 @@ function infoSchet($schet){
 
 
    // $mess = $mess."\r".'Всього до сплати: '.$summa."\n\r";
-    $mess = $mess.'----------------------------'."\r\n";
+    $mess = $mess.'----------------------------'."\n";
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
-    $mess = $mess."\r".'Останній показник по воді :'."\r\n";
-    $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok)).' - Показник: '.$modelPokazn->pokazn."\r\n";
+    $mess = $mess."\r".'Останній показник по воді :'."\n";
+    $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
+    $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
 
 
@@ -641,12 +643,14 @@ function infoPokazn($schet){
     $mess='';
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
-        $mess = $mess.'Останній показник по воді :'."\r\n";
-        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok)).' - Показник: '.$modelPokazn->pokazn."\r\n";
+        $mess = $mess.'Останній показник по воді :'."\n";
+        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
+        $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
     else $mess = 'Ваш останній останній показник по воді не зафіксовано:'."\r\n";
-    $mess = $mess.'----------------------------'."\r\n";
+    $mess = $mess.'----------------------------'."\n";
     $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\r\n";
+    $mess = $mess.'----------------------------'."\n";
     $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\r\n";
 
     return $mess;
