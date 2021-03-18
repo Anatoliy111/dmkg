@@ -25,7 +25,7 @@ new yii\web\Application($yiiConfig);
 
 
 //echo substr("abcdefsgdergrgreg", 10);
-$text='add-rah';
+$text='del-rah#0092124j#345#yes';
 
 //preg_match( '/(?<=(#))(.+)/ui', $text, $match );
 preg_match_all('/([^#]+)/ui', $text, $match );

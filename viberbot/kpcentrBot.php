@@ -94,7 +94,7 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah#'));
+            else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
         })
         ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -102,7 +102,7 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок по якому подати показник:', getRahList($FindRah,'pok-rah#'));
+            else message($bot, $botSender, $event, 'Виберіть рахунок по якому подати показник:', getRahList($FindRah,'pok-rah'));
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -116,20 +116,24 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah#'));
+            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah'));
         })
         ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, 'Редагування рахунків:', getRahMenu());
         })
         ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, infoKontakt(), getMainMenu());
         })
         ->onText('|MainMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            if ($Receiv->status != '') {UpdateStatus($Receiv,'');}
+            UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, 'Головне меню:', getMainMenu());
         })
         ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -141,14 +145,13 @@ try {
             $log->info('click on button');
 //            $match = [];
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[1]]);
+            $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
             if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
             else {
                 $DelRah->delete();
-                message($bot, $botSender, $event, 'Рахунок '.$match[1].' видалено з бота!', getRahMenu());
+                message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з бота!', getRahMenu());
             }
         })
         ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -157,10 +160,10 @@ try {
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[1]]);
-            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah#'));
+            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
+            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-                message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'inf-rah#'));
+                message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -168,11 +171,11 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[1]]);
-            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah#'));
+            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
+            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
-                message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah#'));
-                UpdateStatus($Receiv,'add-pok#'.$match[1]);
+                message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah'));
+                UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
             }
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -190,7 +193,7 @@ try {
             }
             else {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
-                if ($match[0] == 'add-rah'){
+                if ($match[0][0] == 'add-rah'){
                     $ModelAbon = KpcentrObor::findOne(['schet' => $event->getMessage()->getText(),'status' => 1]);
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
                     if ($ModelAbon != null && $ModelAbonReceiver == null)  {
@@ -206,47 +209,51 @@ try {
                         //UpdateStatus($Receiv,'');
                     }
                 }
-                elseif ($match[0] == 'verify-rah'){
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[1],'status' => 1]);
+                elseif ($match[0][0] == 'verify-rah'){
+                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1],'status' => 1]);
                     if ($ModelAbon != null){
                             if (mb_strtolower($ModelAbon->fio) == mb_strtolower($event->getMessage()->getText())){
-                                $addabon = addAbonReceiver($Receiv->id,$match[1],$org);
-                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[1].' під"єднано до бота', getRahMenu());
+                                $addabon = addAbonReceiver($Receiv->id,$match[0][1],$org);
+                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv,'');
                             }
                             else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
 
                     }
                 }
-                elseif ($match[0] == 'add-pok'){
+                elseif ($match[0][0] == 'add-pok'){
                     //  message($bot, $botSender, $event, 'add-pok', getMainMenu());
-                     $ModelAbon = KpcentrObor::findOne(['schet' => $match[1],'status' => 1]);
-                    $FindRah = $Receiv->getViberAbons()->all();
-                    if ($ModelAbon != null){
-                        $val=$event->getMessage()->getText();
-                        if (is_numeric($val) && floor($val) == $val && $val > 0){
-                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[1],'status' => 1]);
-                            if ($modelPokazn!=null){
-                                if ($modelPokazn->pokazn < intval($val)){
-                                    if ((intval($val)-$modelPokazn->pokazn) > 100 ){
-                                        message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - '.intval($val), getYesNoMenu('pok-rah#'.$match[1]));
-                                    }
-                                    else {
-                                  $addpok = addPokazn(intval($val),$match[1]);
-                                    if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
-                                    UpdateStatus($Receiv,'');
-                                    }
-                                }
-                                else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
-                            }
-                            else {
-                                $addpok = addPokazn(intval($val),substr($Receiv->status, 8));
-                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
-                                UpdateStatus($Receiv,'');
-                            }
-                        }
-                        else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah,'pok-rah#'));
+                    $val=$event->getMessage()->getText();
+                    if (count($match[0])==4 && $match[0][3]=='yes'){
+                        $addpok = addPokazn(intval($val),$match[0][1]);
+                        if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
+                        UpdateStatus($Receiv,'');
+                    }
+                    else {
+                        $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
+                        $FindRah = $Receiv->getViberAbons()->all();
+                        if ($ModelAbon != null) {
 
+                            if (is_numeric($val) && floor($val) == $val && $val > 0) {
+                                $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
+                                if ($modelPokazn != null) {
+                                    if ($modelPokazn->pokazn < intval($val)) {
+                                        if ((intval($val) - $modelPokazn->pokazn) > 100) {
+                                            message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#' . $match[0][1] . '#' . $val));
+                                        } else {
+                                            $addpok = addPokazn(intval($val), $match[0][1]);
+                                            if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMainMenu());
+                                            UpdateStatus($Receiv, '');
+                                        }
+                                    } else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
+                                } else {
+                                    $addpok = addPokazn(intval($val), $match[0][1]);
+                                    if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMainMenu());
+                                    UpdateStatus($Receiv, '');
+                                }
+                            } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
+
+                        }
                     }
                 }
                 else{
@@ -337,7 +344,7 @@ function getRahMenu(){
     return (new \Viber\Api\Keyboard())
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
+                ->setColumns(3)
                 ->setBgColor('#75F3AE')
                 // ->setTextSize('small')
                // ->setTextSize('large')
@@ -347,7 +354,7 @@ function getRahMenu(){
                 ->setText('Додати рахунок до бота'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
+                ->setColumns(3)
                   ->setBgColor('#F39175')
                 ->setTextHAlign('center')
               //  ->setTextSize('large')
@@ -388,7 +395,7 @@ function getYesNoMenu($action){
                 // ->setTextSize('large')
                 ->setTextHAlign('center')
                 ->setActionType('reply')
-                ->setActionBody($action.'&yes')
+                ->setActionBody($action.'#yes')
                 ->setText('Так'),
 
             (new \Viber\Api\Keyboard\Button())
@@ -433,7 +440,7 @@ function getRahList($FindRah,$action){
                 ->setActionType('reply')
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
-                ->setActionBody($action.$Rah->schet)
+                ->setActionBody($action.'#'.$Rah->schet)
                 ->setText($Rah->schet);
     }
 
@@ -517,28 +524,30 @@ function UpdateStatus($Model,$Status){
 
     if ($Model <> null)
     {
-        $Model->status = $Status;
-        if ($Model->validate() && $Model->save())
-        {
-            return true;
-        }
-        else
-        {
-            $messageLog = [
-                'status' => 'Помилка додавання в підписника',
-                'post' => $Model->errors
-            ];
+        if ((strlen($Status)==0 && strlen($Model->status)<>0) || (strlen($Status)<>0)) {
 
-            Yii::error($messageLog, 'viber_err');
-            $meserr='';
-            foreach ($messageLog as $err){
-                $meserr=$meserr.implode(",", $err);
+            $Model->status = $Status;
+            if ($Model->validate() && $Model->save()) {
+                return true;
             }
-            getSend($meserr);
+            else {
+                $messageLog = [
+                    'status' => 'Помилка додавання в підписника',
+                    'post' => $Model->errors
+                ];
 
-            return false;
+                Yii::error($messageLog, 'viber_err');
+                $meserr = '';
+                foreach ($messageLog as $err) {
+                    $meserr = $meserr . implode(",", $err);
+                }
+                getSend($meserr);
 
+                return false;
+
+            }
         }
+        else return false;
     }
     else return false;
 
