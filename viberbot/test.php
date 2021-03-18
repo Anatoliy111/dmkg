@@ -25,12 +25,15 @@ new yii\web\Application($yiiConfig);
 
 
 //echo substr("abcdefsgdergrgreg", 10);
-$int='123';
+$text='add-rah';
 
-if (is_numeric($int) && floor($int) == $int && $int > 0){
-    echo 'is integer - '.$int;
-}
-else echo 'is not integer - '.$int;
+//preg_match( '/(?<=(#))(.+)/ui', $text, $match );
+preg_match_all('/([^#]+)/ui', $text, $match );
+//    foreach ($match as $mm){
+//        echo $mm."\r";
+//    }
+var_dump($match);
+
 
 
 //$modelPokazn = KpcentrPokazn::findOne(['schet' => '0092124','status' => 1]);
