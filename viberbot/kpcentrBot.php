@@ -599,9 +599,9 @@ function infoSchet($schet){
 
     $mess='';
     $modelObor = KpcentrObor::findOne(['schet' => $schet,'status' => 1]);
-    $mess = 'Особовий рахунок - '.$schet."\r\n";
+    $mess = 'Особовий рахунок - '.$schet."\n";
     $mess = $mess.$modelObor->fio .' '.$modelObor->im.' '.$modelObor->ot. "\n";
-    $mess = $mess.$modelObor->ulnaim.' буд.'.$modelObor->nomdom.' '.(isset($modelObor->nomkv)?'кв.'.$modelObor->nomkv:'')."\r\n";
+    $mess = $mess.$modelObor->ulnaim.' буд.'.$modelObor->nomdom.' '.(isset($modelObor->nomkv)?'кв.'.$modelObor->nomkv:'')."\n";
 
     $dolg= KpcentrObor::find();
 //					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
@@ -626,7 +626,7 @@ function infoSchet($schet){
     $mess = $mess.'----------------------------'."\n";
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
-    $mess = $mess."\r".'Останній показник по воді :'."\n";
+    $mess = $mess.'Останній показник по воді :'."\n";
     $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
     $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
@@ -647,11 +647,11 @@ function infoPokazn($schet){
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
         $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
-    else $mess = 'Ваш останній останній показник по воді не зафіксовано:'."\r\n";
+    else $mess = 'Ваш останній останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\r\n";
+    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
     $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\r\n";
+    $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\n";
 
     return $mess;
 
