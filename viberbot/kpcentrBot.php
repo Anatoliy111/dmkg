@@ -178,6 +178,17 @@ try {
                 UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
             }
         })
+        ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            $FindRah = $Receiv->getViberAbons()->all();
+            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
+            if (count($match[0])==4 && $match[0][3]=='yes'){
+                $addpok = addPokazn(intval($match[0][2]),$match[0][1]);
+                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getMainMenu());
+                UpdateStatus($Receiv,'');
+            }
+        })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button privat24 ');
             message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getMainMenu());
@@ -223,23 +234,16 @@ try {
                 }
                 elseif ($match[0][0] == 'add-pok'){
                     //  message($bot, $botSender, $event, 'add-pok', getMainMenu());
-                    $val=$event->getMessage()->getText();
-                    if (count($match[0])==4 && $match[0][3]=='yes'){
-                        $addpok = addPokazn(intval($val),$match[0][1]);
-                        if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$val.' здано успішно!', getMainMenu());
-                        UpdateStatus($Receiv,'');
-                    }
-                    else {
                         $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
                         $FindRah = $Receiv->getViberAbons()->all();
                         if ($ModelAbon != null) {
-
+                            $val = $event->getMessage()->getText();
                             if (is_numeric($val) && floor($val) == $val && $val > 0) {
                                 $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
                                 if ($modelPokazn != null) {
                                     if ($modelPokazn->pokazn < intval($val)) {
                                         if ((intval($val) - $modelPokazn->pokazn) > 100) {
-                                            message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#' . $match[0][1] . '#' . $val));
+                                            message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                         } else {
                                             $addpok = addPokazn(intval($val), $match[0][1]);
                                             if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMainMenu());
@@ -254,7 +258,7 @@ try {
                             } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
 
                         }
-                    }
+
                 }
                 else{
                      message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu());

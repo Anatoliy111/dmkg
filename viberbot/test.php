@@ -25,14 +25,20 @@ new yii\web\Application($yiiConfig);
 
 
 //echo substr("abcdefsgdergrgreg", 10);
-$text='del-rah#0092124j#345#yes';
+$text='add-pok#0092124д#6000#yes';
 
 //preg_match( '/(?<=(#))(.+)/ui', $text, $match );
 preg_match_all('/([^#]+)/ui', $text, $match );
 //    foreach ($match as $mm){
 //        echo $mm."\r";
 //    }
+
+if (count($match[0])==4 && $match[0][3]=='yes'){
+    echo 'ok';
+}
+
 var_dump($match);
+
 
 
 
