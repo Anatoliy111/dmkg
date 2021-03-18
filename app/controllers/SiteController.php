@@ -121,6 +121,9 @@ class SiteController extends Controller
 							if ($type->dbType == 'date') {
 								$model->$k2 = date('Y-m-d',strtotime($v2));
 							}
+							elseif ($type->dbType == 'string')  {
+								$model->$k2 = encodestr($v2);
+							}
 							else $model->$k2 = $v2;
 						}
                         if ($model->validate()){
@@ -291,6 +294,31 @@ class SiteController extends Controller
 		}
 
 		return true;
+	}
+
+
+
+	function encodestr($str)
+	{
+		$patterns[0] = "/H/";
+		$patterns[1] = "/h/";
+		$patterns[2] = "/C/";
+		$patterns[3] = "/c/";
+		$patterns[4] = "/I/";
+		$patterns[5] = "/i/";
+
+		$replacements[0] = "Н";
+		$replacements[1] = "н";
+		$replacements[2] = "С";
+		$replacements[3] = "с";
+		$replacements[4] = "І";
+		$replacements[5] = "і";
+
+		ksort($patterns);
+		ksort($replacements);
+
+		return preg_replace($patterns, $replacements, $str);
+
 	}
 
 
