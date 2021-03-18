@@ -11,6 +11,7 @@ use Yii;
  * @property string $schet
  * @property string $data
  * @property int $pokazn
+ * @property string $viber_name
  * @property int $status
  */
 class KpcentrViberpokazn extends \yii\db\ActiveRecord
@@ -33,6 +34,7 @@ class KpcentrViberpokazn extends \yii\db\ActiveRecord
             [['data'], 'safe'],
             [['pokazn', 'status'], 'integer'],
             [['schet'], 'string', 'max' => 10],
+            [['viber_name'], 'string', 'max' => 64],
         ];
     }
 
@@ -47,6 +49,7 @@ class KpcentrViberpokazn extends \yii\db\ActiveRecord
             'data' => 'Data',
             'pokazn' => 'Pokazn',
             'status' => 'Status',
+            'viber_name' => 'viber_name'
         ];
     }
 }
