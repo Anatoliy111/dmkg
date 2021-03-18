@@ -184,7 +184,7 @@ try {
             $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
-                $addpok = addPokazn(intval($match[0][2]),$match[0][1]);
+                $addpok = addPokazn(intval($match[0][2]),$match[0][1],$event->getSender()->getName());
                 if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getMainMenu());
                 UpdateStatus($Receiv,'');
             }
@@ -245,13 +245,13 @@ try {
                                         if ((intval($val) - $modelPokazn->pokazn) > 100) {
                                             message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                         } else {
-                                            $addpok = addPokazn(intval($val), $match[0][1]);
+                                            $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
                                             if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMainMenu());
                                             UpdateStatus($Receiv, '');
                                         }
                                     } else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
                                 } else {
-                                    $addpok = addPokazn(intval($val), $match[0][1]);
+                                    $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
                                     if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMainMenu());
                                     UpdateStatus($Receiv, '');
                                 }
@@ -626,7 +626,7 @@ function infoSchet($schet){
     $mess = $mess.'----------------------------'."\n";
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
-    $mess = $mess.'Останній показник по воді :'."\n";
+    $mess = $mess.'Останній зарахований показник по воді :'."\n";
     $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
     $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
@@ -643,7 +643,7 @@ function infoPokazn($schet){
     $mess='';
     $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     if ($modelPokazn!=null){
-        $mess = $mess.'Останній показник по воді :'."\n";
+        $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
         $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
@@ -679,12 +679,13 @@ function infoKontakt(){
  * @param $schet
  * @return KpcentrViberpokazn|null
  */
-function addPokazn($pokazn, $schet){
+function addPokazn($pokazn, $schet, $viber_name){
 
         $model = new KpcentrViberpokazn();
         $model->data = date('Y-m-d');
         $model->schet = $schet;
         $model->pokazn = $pokazn;
+        $model->viber_name = $viber_name;
         if ($model->validate())
         {
             /** @var TYPE_NAME $model */
