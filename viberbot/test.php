@@ -22,6 +22,8 @@ require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 $yiiConfig = require __DIR__ . '/../app/config/console.php';
 new yii\web\Application($yiiConfig);
 
+require_once('mySendBot.php');
+
 
 
 //echo substr("abcdefsgdergrgreg", 10);
@@ -37,8 +39,19 @@ if (count($match[0])==4 && $match[0][3]=='yes'){
     echo 'ok';
 }
 
-var_dump($match);
+//var_dump($match);
+$i = 1;
+$mes='';
+while ($i <= 7000) {
 
+    $mes=$mes.'1';
+     $i++;  /* выводиться будет значение переменной
+                   $i перед её увеличением
+                   (post-increment) */
+}
+
+
+getSend($mes);
 
 
 

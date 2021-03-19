@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
+use app\models\KpcentrViberpokazn;
 use app\models\UtPay;
 use DateTime;
 use Throwable;
@@ -100,7 +101,7 @@ class SiteController extends Controller
 		if (Yii::$app->request->isPost) {
 				$res = Yii::$app->request->post();
 
-			  //  $res = json_decode($res['data'],true);
+			 //   $res = json_decode($res['data'],true);
 
             $kol = 0;
 			if ($res['model']=='kpobor') KpcentrObor::deleteAll('status = :status', [':status' => 0]);
@@ -191,6 +192,30 @@ class SiteController extends Controller
 		return $mes;
 	}
 
+	public function actionExpjson()
+	{
+		$mes = '';
+		if (Yii::$app->request->isPost) {
+			$res = Yii::$app->request->post();
+
+			$res = json_decode($res['data'], true);
+
+			if (($res['model']=='kpviberpokazn')) {
+				$findpokaz = KpcentrViberpokazn::find()
+				->Where(['in','`id`',KpcentrViberpokazn::find()->select('max(id)')->where(['>','id',$res['lastid']])->groupBy('schet')])
+//				->Where(['=','`id`','(select max(kp2.id) from kpcentr_viberpokazn kp2 where kp2.id > '.$res['lastid'].' and kp2.schet=kpcentr_viberpokazn.schet)'])
+				->asArray()->all();
+				if ($findpokaz!=null){
+					$mes = json_encode($findpokaz);
+
+				}
+			}
+		}
+
+		return $mes;
+
+	}
+
 	function is_Date($str){
 		return is_numeric(strtotime($str));
 	}
@@ -279,7 +304,7 @@ class SiteController extends Controller
 
 	public function beforeAction($action)
 	{
-		if($action->id=="impjson")
+		if(($action->id=="impjson") || ($action->id=="expjson"))
 		{
 			$this->enableCsrfValidation=false;
 		}
