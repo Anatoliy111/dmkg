@@ -198,7 +198,7 @@ class SiteController extends Controller
 		if (Yii::$app->request->isPost) {
 			$res = Yii::$app->request->post();
 
-			$res = json_decode($res['data'], true);
+		//	$res = json_decode($res['data'], true);
 
 			if (($res['model']=='kpviberpokazn')) {
 				$findpokaz = KpcentrViberpokazn::find()
