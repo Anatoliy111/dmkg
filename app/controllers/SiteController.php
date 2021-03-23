@@ -112,7 +112,7 @@ class SiteController extends Controller
 		if (Yii::$app->request->isPost) {
 				$res = Yii::$app->request->post();
 
-			    $res = json_decode($res['data'],true);
+			  //  $res = json_decode($res['data'],true);
 
             $kol = 0;
 			if ($res['model']=='kpobor') KpcentrObor::deleteAll('status = :status', [':status' => 0]);
