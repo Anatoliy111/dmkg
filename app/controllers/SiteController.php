@@ -8,8 +8,14 @@ use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
 use app\models\UtPay;
+use app\poslug\models\Viber;
 use DateTime;
+use Exception;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Throwable;
+use Viber\Api\Sender;
+use Viber\Bot;
 use Yii;
 use yii\base\ErrorException;
 use yii\bootstrap\Alert;
@@ -18,6 +24,7 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
 require (Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
+//require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
 
 
 
@@ -220,6 +227,68 @@ class SiteController extends Controller
 
 	}
 
+    public function actionSendmess()
+    {
+        $mes = '';
+        if (Yii::$app->request->isPost) {
+            $res = Yii::$app->request->post();
+
+            	$res = json_decode($res['data'], true);
+            $apiKey ='';
+            $message = '';
+            $model = null;
+            $botSender = null;
+            $menu = null;
+            if (($res['org']=='kpcentr')) {
+
+                $apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';
+                $message = $res['mes'];
+                $model = Viber::find()
+                ->where(['api_key' => $apiKey,'org' => $res['org']])->asArray()->all();
+//                $menu =
+
+                $botSender = new Sender([
+                    'name' => 'KPCentrBot',
+                    'avatar' => '',
+                ]);
+            }
+
+            if (($apiKey <>'') && ($message<>'') && ($model<>null)){
+
+                $log = new Logger('bot');
+                $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
+
+                try {
+                    // create bot instance
+
+                    foreach($model as $reciv){
+
+                    $bot = new Bot(['token' => $apiKey]);
+                    $bot->getClient()->sendMessage(
+                        (new \Viber\Api\Message\Text())
+                            ->setSender($botSender)
+                            ->setReceiver($reciv['id_receiver'])
+                            ->setText($message)
+                            ->setKeyboard($menu)
+                    );
+                    }
+
+                } catch (Exception $e) {
+                    $log->warning('Exception: ' . $e->getMessage());
+                    if ($bot) {
+                        $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+                        $log->warning('Actual body: ' . $bot->getInputBody());
+                    }
+                }
+
+                return $mes;
+            }
+        }
+
+        return $mes;
+
+    }
+
 	public function actionImptest()
 	{
 
@@ -286,7 +355,7 @@ class SiteController extends Controller
 
 	public function beforeAction($action)
 	{
-		if(($action->id=="impjson") || ($action->id=="expjson"))
+		if(($action->id=="impjson") || ($action->id=="expjson") || ($action->id=="sendmess"))
 		{
 			$this->enableCsrfValidation=false;
 		}
