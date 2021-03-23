@@ -24,6 +24,7 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
 require (Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
+require (Yii::getAlias('@webroot'). '/viberbot/kpcentrMenu.php');
 //require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
 
 
@@ -245,7 +246,7 @@ class SiteController extends Controller
                 $message = $res['mes'];
                 $model = Viber::find()
                 ->where(['api_key' => $apiKey,'org' => $res['org']])->asArray()->all();
-//                $menu =
+                $menu = getMainMenu();
 
                 $botSender = new Sender([
                     'name' => 'KPCentrBot',
