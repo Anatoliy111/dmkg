@@ -13,7 +13,7 @@ $mes = '';
 if (Yii::$app->request->isPost) {
     $res = Yii::$app->request->post();
 
-   // $res = json_decode($res['data'], true);
+    //$res = json_decode($res['data'], true);
 
 
     $apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';
