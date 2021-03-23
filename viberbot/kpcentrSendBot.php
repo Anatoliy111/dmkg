@@ -17,9 +17,9 @@ if (Yii::$app->request->isPost) {
 
 
     $apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';
-    $message = $res['mes'];
+    $message = $res['mess'];
     $model = Viber::find()
-        ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
+        ->where(['api_key' => $apiKey, 'org' => 'kpcentr'])->asArray()->all();
     $menu = getMainMenu();
 
     $botSender = new Sender([
@@ -48,12 +48,15 @@ if (Yii::$app->request->isPost) {
                 );
             }
 
+            $mes = 'OK';
+
         } catch (Exception $e) {
             $log->warning('Exception: ' . $e->getMessage());
             if ($bot) {
                 $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
                 $log->warning('Actual body: ' . $bot->getInputBody());
             }
+            $mes = $e->getMessage();
         }
     }
 }
