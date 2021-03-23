@@ -17,7 +17,7 @@ use yii\easyii\modules\page\models\Page;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
-require_once(Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
+require (Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
 
 
 
@@ -58,6 +58,7 @@ class SiteController extends Controller
 		if ($exception !== null) {
 			return $this->render('error', ['message' => $exception]);
 		}
+        return '';
 	}
 
 	public function actionSaveperioddom()
@@ -92,7 +93,10 @@ class SiteController extends Controller
 	}
 
 
-
+	/**
+	 * @return string
+	 * @throws \yii\db\Exception
+     */
 	public function actionImpjson()
 	{
 
@@ -101,7 +105,7 @@ class SiteController extends Controller
 		if (Yii::$app->request->isPost) {
 				$res = Yii::$app->request->post();
 
-			 //   $res = json_decode($res['data'],true);
+			    $res = json_decode($res['data'],true);
 
             $kol = 0;
 			if ($res['model']=='kpobor') KpcentrObor::deleteAll('status = :status', [':status' => 0]);
@@ -119,11 +123,11 @@ class SiteController extends Controller
                        $model->period = date('Y-m-d',strtotime( $res['period']));
 						foreach ($v1 as $k2 => $v2){
 							$type = $model->getTableSchema()->getColumn($k2);
-							if ($type->dbType == 'date') {
+							if ($type->type == 'date') {
 								$model->$k2 = date('Y-m-d',strtotime($v2));
 							}
-							elseif ($type->dbType == 'string')  {
-								$model->$k2 = encodestr($v2);
+							elseif ($type->type == 'string')  {
+								$model->$k2 = ukrencodestr($v2);
 							}
 							else $model->$k2 = $v2;
 						}
@@ -216,25 +220,6 @@ class SiteController extends Controller
 
 	}
 
-	function is_Date($str){
-		return is_numeric(strtotime($str));
-	}
-
-	function object_to_array($data){
-		if(is_array($data) || is_object($data))
-		{
-			$result = array();
-
-			foreach($data as $key => $value) {
-				$result[$key] = $this->object_to_array($value);
-			}
-
-			return $result;
-		}
-
-		return $data;
-	}
-
 	public function actionImptest()
 	{
 
@@ -295,10 +280,7 @@ class SiteController extends Controller
 		return $mes;
 	}
 
-	/**
-	 * @param $data
-	 * @return array
-     */
+
 
 
 
@@ -323,28 +305,7 @@ class SiteController extends Controller
 
 
 
-	function encodestr($str)
-	{
-		$patterns[0] = "/H/";
-		$patterns[1] = "/h/";
-		$patterns[2] = "/C/";
-		$patterns[3] = "/c/";
-		$patterns[4] = "/I/";
-		$patterns[5] = "/i/";
 
-		$replacements[0] = "Н";
-		$replacements[1] = "н";
-		$replacements[2] = "С";
-		$replacements[3] = "с";
-		$replacements[4] = "І";
-		$replacements[5] = "і";
-
-		ksort($patterns);
-		ksort($replacements);
-
-		return preg_replace($patterns, $replacements, $str);
-
-	}
 
 
 
