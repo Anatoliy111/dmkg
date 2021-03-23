@@ -56,7 +56,7 @@ if (Yii::$app->request->isPost) {
                 $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
                 $log->warning('Actual body: ' . $bot->getInputBody());
             }
-            $mes = $e->getMessage();
+            //$mes = $e->getMessage();
         }
     }
 }
