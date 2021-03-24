@@ -240,7 +240,7 @@ class SiteController extends Controller
             $model = null;
             $botSender = null;
             $menu = null;
-            if (($res['org']=='kpcentr')) {
+            if ($res['org']=='kpcentr') {
 
                 $apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';
                 $message = $res['mess'];
@@ -273,6 +273,8 @@ class SiteController extends Controller
                             ->setKeyboard($menu)
                     );
                     }
+
+                    $mes = 'OK';
 
                 } catch (Exception $e) {
                     $log->warning('Exception: ' . $e->getMessage());
