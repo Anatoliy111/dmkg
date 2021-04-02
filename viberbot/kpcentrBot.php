@@ -550,10 +550,13 @@ function infoSchet($schet){
 //  				    $dolg->select('ut_obor.*,b.summ,');
     $dolg->where(['kpcentr_obor.schet'=> $schet,'status' => 1])->all();
     $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Ваша заборгованість по послугам:'."\n";
+
+
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
     {
+        if ($obb['sal']>=0) $mess = $mess.'Ваша заборгованість по послузі:'."\n";
+        else $mess = $mess.'Ваша передплата по послузі:'."\n";
         $mess = $mess.$obb['naim_wid'].': '.$obb['sal']."грн \n";
 
         if ($obb['sal']>0)
