@@ -254,6 +254,20 @@ class SiteController extends Controller
                 ]);
             }
 
+            if ($res['org']=='dmkg') {
+
+                $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';
+                $message = $res['mess'];
+                $model = Viber::find()
+                    ->where(['api_key' => $apiKey,'org' => $res['org']])->asArray()->all();
+                $menu = getMainMenu();
+
+                $botSender = new Sender([
+                    'name' => 'bondyukViberBot',
+                    'avatar' => '',
+                ]);
+            }
+
             if (($apiKey <>'') && ($message<>'') && ($model<>null)){
 
                 $log = new Logger('bot');
