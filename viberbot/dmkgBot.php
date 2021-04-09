@@ -205,7 +205,7 @@ try {
             else {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
                 if ($match[0][0] == 'add-rah'){
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $event->getMessage()->getText(),'status' => 1]);
+                    $ModelAbon = UtAbonent::findOne(['schet' => $event->getMessage()->getText()]);
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
                     if ($ModelAbon != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
@@ -221,15 +221,20 @@ try {
                     }
                 }
                 elseif ($match[0][0] == 'verify-rah'){
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1],'status' => 1]);
+                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1]]);
+
+
+                    $ModelAbon = UtAbonent::findOne(['schet' => $match[0][1]]);
                     if ($ModelAbon != null){
-                            if (mb_strtolower($ModelAbon->fio) == mb_strtolower($event->getMessage()->getText())){
-                                $addabon = addAbonReceiver($Receiv->id,$match[0][1],$org);
+                        $ModelKart = UtKart::findOne(['id' => $ModelAbon->id_kart]);
+                        if ($ModelKart != null){
+                            if (mb_strtolower($ModelKart->name_f) == mb_strtolower($event->getMessage()->getText())){
+                                $addabon = addAbonReceiver($Receiv->id,$match[0][1],$ModelKart->id,$org);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv,'');
                             }
                             else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
-
+                        }
                     }
                 }
                 elseif ($match[0][0] == 'add-pok'){
@@ -498,7 +503,7 @@ function UpdateStatus($Model,$Status){
 
 }
 
-function addAbonReceiver($id_viber,$schet,$org){
+function addAbonReceiver($id_viber,$schet,$id_kart,$org){
 
     $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'id_utkart' => $id_kart]);
     if ($FindModel == null)
