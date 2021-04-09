@@ -14,7 +14,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 
-function getMainMenu(){
+function getKpMenu(){
 
     return (new \Viber\Api\Keyboard())
         ->setButtons([
