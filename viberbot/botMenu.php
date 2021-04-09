@@ -78,7 +78,7 @@ function getDmkgMenu(){
     return (new \Viber\Api\Keyboard())
         ->setButtons([
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
+                ->setColumns(3)
                 //->setBgColor('#8074d6')
                 // ->setTextSize('small')
                 ->setTextSize('small')
@@ -101,7 +101,7 @@ function getDmkgMenu(){
 //                ->setText('📟  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
+                ->setColumns(3)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('small')
