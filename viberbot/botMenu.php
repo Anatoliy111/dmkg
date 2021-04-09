@@ -86,7 +86,7 @@ function getDmkgMenu(){
                 ->setTextVAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('Infomenu-button')
-                ->setBgColor("#F4B8F9")
+                ->setBgColor("#F2F3A7")
                 ->setText('📊  Інформація по рахунках'),
 
 //            (new \Viber\Api\Keyboard\Button())
@@ -107,7 +107,7 @@ function getDmkgMenu(){
                 ->setTextSize('small')
                 ->setActionType('reply')
                 ->setActionBody('Rahmenu-button')
-                ->setBgColor("#F4B8F9")
+                ->setBgColor("#F2F3A7")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('⚙ Додати/видалити рахунок'),
 
