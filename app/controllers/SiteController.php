@@ -9,6 +9,7 @@ use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
 use app\models\UtPay;
 use app\poslug\models\Viber;
+use app\poslug\models\ViberAbon;
 use DateTime;
 use Exception;
 use Monolog\Handler\StreamHandler;
@@ -25,6 +26,8 @@ use yii\web\ForbiddenHttpException;
 
 require (Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
 require (Yii::getAlias('@webroot'). '/viberbot/botMenu.php');
+require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
+require (Yii::getAlias('@webroot'). '/viberbot/dmkgBot.php');
 //require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
 
 
@@ -234,19 +237,18 @@ class SiteController extends Controller
         if (Yii::$app->request->isPost) {
             $res = Yii::$app->request->post();
 
-            	//$res = json_decode($res['data'], true);
-            $apiKey ='';
+            //$res = json_decode($res['data'], true);
+            $apiKey = '';
             $message = '';
             $model = null;
             $botSender = null;
             $menu = null;
-            if ($res['org']=='kpcentr') {
+            if ($res['org'] == 'kpcentr') {
 
                 $apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';
                 $message = $res['mess'];
-                $model = Viber::find()
-                ->where(['api_key' => $apiKey,'org' => $res['org']])->asArray()->all();
-                $menu = getMainMenu();
+
+                $menu = getKpMenu();
 
                 $botSender = new Sender([
                     'name' => 'KPCentrBot',
@@ -254,13 +256,12 @@ class SiteController extends Controller
                 ]);
             }
 
-            if ($res['org']=='dmkg') {
+            if ($res['org'] == 'dmkg') {
 
                 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';
                 $message = $res['mess'];
-                $model = Viber::find()
-                    ->where(['api_key' => $apiKey,'org' => $res['org']])->asArray()->all();
-                $menu = getMainMenu();
+
+                $menu = getDmkgMenu();
 
                 $botSender = new Sender([
                     'name' => 'bondyukViberBot',
@@ -268,39 +269,103 @@ class SiteController extends Controller
                 ]);
             }
 
-            if (($apiKey <>'') && ($message<>'') && ($model<>null)){
+            if ($res['vidmess'] == 'mess') {
 
-                $log = new Logger('bot');
-                $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
+                $model = Viber::find()
+                    ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
 
-                try {
-                    // create bot instance
 
-                    foreach($model as $reciv){
+                if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
 
-                    $bot = new Bot(['token' => $apiKey]);
-                    $bot->getClient()->sendMessage(
-                        (new \Viber\Api\Message\Text())
-                            ->setSender($botSender)
-                            ->setReceiver($reciv['id_receiver'])
-                            ->setText($message)
-                            ->setKeyboard($menu)
-                    );
+                    $log = new Logger('bot');
+                    $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
+
+                    try {
+                        // create bot instance
+
+                        foreach ($model as $reciv) {
+
+                            $bot = new Bot(['token' => $apiKey]);
+                            $bot->getClient()->sendMessage(
+                                (new \Viber\Api\Message\Text())
+                                    ->setSender($botSender)
+                                    ->setReceiver($reciv['id_receiver'])
+                                    ->setText($message)
+                                    ->setKeyboard($menu)
+                            );
+                        }
+
+                        $mes = 'OK';
+
+                    } catch (Exception $e) {
+                        $log->warning('Exception: ' . $e->getMessage());
+                        if ($bot) {
+                            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+                            $log->warning('Actual body: ' . $bot->getInputBody());
+                        }
                     }
 
-                    $mes = 'OK';
+                    return $mes;
+                }
+            }
 
-                } catch (Exception $e) {
-                    $log->warning('Exception: ' . $e->getMessage());
-                    if ($bot) {
-                        $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-                        $log->warning('Actual body: ' . $bot->getInputBody());
+            if ($res['vidmess'] == 'info') {
+
+                $model = Viber::find()
+                    ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
+
+
+                if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
+
+                    $log = new Logger('bot');
+                    $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
+
+                    try {
+                        // create bot instance
+
+                        foreach ($model as $reciv) {
+
+                            $Abons = ViberAbon::find()
+                                ->where(['id_viber' => $reciv['id']])->asArray()->all();
+
+                            foreach ($Abons as $schet) {
+
+                                if ($res['org'] == 'dmkg') $message=infoDmkgSchet($schet['schet']);
+                                if ($res['org'] == 'kpcentr') $message=infoKpSchet($schet['schet']);
+
+                                $bot = new Bot(['token' => $apiKey]);
+                                $bot->getClient()->sendMessage(
+                                    (new \Viber\Api\Message\Text())
+                                        ->setSender($botSender)
+                                        ->setReceiver($reciv['id_receiver'])
+                                        ->setText($message)
+                                        ->setKeyboard($menu)
+                                );
+
+                            }
+
+
+                        }
+
+                        $mes = 'OK';
+
+                    } catch (Exception $e) {
+                        $log->warning('Exception: ' . $e->getMessage());
+                        if ($bot) {
+                            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+                            $log->warning('Actual body: ' . $bot->getInputBody());
+                        }
                     }
+
+                    return $mes;
                 }
 
-                return $mes;
+
             }
+
+
         }
+
 
         return $mes;
 
