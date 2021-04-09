@@ -536,51 +536,7 @@ function addAbonReceiver($id_viber,$schet,$org){
 /**
  * @param $schet
  */
-function infoKpSchet($schet){
 
-    $mess='';
-    $modelObor = KpcentrObor::findOne(['schet' => $schet,'status' => 1]);
-    $mess = 'Особовий рахунок - '.$schet."\n";
-    $mess = $mess.$modelObor->fio .' '.$modelObor->im.' '.$modelObor->ot. "\n";
-    $mess = $mess.$modelObor->ulnaim.' буд.'.$modelObor->nomdom.' '.(isset($modelObor->nomkv)?'кв.'.$modelObor->nomkv:'')."\n";
-
-    $dolg= KpcentrObor::find();
-//					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-    $dolg->select(["kpcentr_obor.*"]);
-//  				    $dolg->select('ut_obor.*,b.summ,');
-    $dolg->where(['kpcentr_obor.schet'=> $schet,'status' => 1])->all();
-    $mess = $mess.'----------------------------'."\n";
-
-
-    $summa =0;
-    foreach($dolg->asArray()->all() as $obb)
-    {
-        if ($obb['sal']>=0) $mess = $mess.'Ваша заборгованість по послузі:'."\n";
-        else $mess = $mess.'Ваша передплата по послузі:'."\n";
-        $mess = $mess.$obb['naim_wid'].': '.$obb['sal']."грн \n";
-
-        if ($obb['sal']>0)
-        {
-            $summa = $summa + $obb['sal'];
-        }
-    }
-
-
-   // $mess = $mess."\r".'Всього до сплати: '.$summa."\n\r";
-    $mess = $mess.'----------------------------'."\n";
-    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
-    if ($modelPokazn!=null){
-    $mess = $mess.'Останній зарахований показник по воді :'."\n";
-    $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
-    $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
-    }
-
-
-
-
-    return $mess;
-
-}
 
 function infoPokazn($schet){
 

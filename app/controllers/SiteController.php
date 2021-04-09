@@ -26,8 +26,8 @@ use yii\web\ForbiddenHttpException;
 
 require (Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
 require (Yii::getAlias('@webroot'). '/viberbot/botMenu.php');
-require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
-require (Yii::getAlias('@webroot'). '/viberbot/dmkgBot.php');
+//require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
+//require (Yii::getAlias('@webroot'). '/viberbot/dmkgBot.php');
 //require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
 
 
