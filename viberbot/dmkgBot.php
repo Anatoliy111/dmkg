@@ -32,12 +32,12 @@ use yii\bootstrap\Html;
 
 
 //$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
-$apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';
-$org = 'kpcentr';
+$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';
+$org = 'dmkg';
 
 // ��� ����� ��������� ��� ��� (��� � ������ - ����� ������)
 $botSender = new Sender([
-    'name' => 'KPCentrBot',
+    'name' => 'bondyukViberBot',
     'avatar' => '',
 ]);
 
@@ -54,7 +54,7 @@ try {
             $log->info('onConversation handler');
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText(' Вітаємо вас в вайбер боті КП "Центр"!!!'."\n"."\n".'Увага!!! В разі надання, через чатбот, неправдивої інформації по показниках, передача показників буде заблокована!')
+                ->setText(' Вітаємо вас в вайбер боті КП "ДМКГ"!!!')
                 ->setKeyboard(getKpMenu());
            // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getKpMenu());
@@ -500,36 +500,32 @@ function UpdateStatus($Model,$Status){
 
 function addAbonReceiver($id_viber,$schet,$org){
 
-        $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'schet' => $schet]);
-        if ($FindModel == null)
+    $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'id_utkart' => $id_kart]);
+    if ($FindModel == null)
+    {
+        $model = new ViberAbon();
+        $model->id_viber = $id_viber;
+        $model->id_utkart = $id_kart;
+        $model->schet = $schet;
+        $model->org = $org;
+        if ($model->validate() && $model->save())
         {
-            $model = new ViberAbon();
-            $model->id_viber = $id_viber;
-            $model->schet = $schet;
-            $model->org = $org;
-            if ($model->validate() && $model->save())
-            {
-                return $model;
-            }
-            else
-            {
-                $messageLog = [
-                    'status' => 'Помилка додавання абонента',
-                    'post' => $model->errors
-                ];
-
-                Yii::error($messageLog, 'viber_err');
-                $meserr='';
-                foreach ($messageLog as $err){
-                    $meserr=$meserr.implode(",", $err);
-                }
-                getSend($meserr);
-
-                return null;
-
-            }
+            return $model;
         }
-        else return $FindModel;
+        else
+        {
+            $messageLog = [
+                'status' => 'Помилка додавання абонента',
+                'post' => $model->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+
+            return null;
+
+        }
+    }
+    else return $FindModel;
 
 }
 
@@ -539,43 +535,38 @@ function addAbonReceiver($id_viber,$schet,$org){
 function infoSchet($schet){
 
     $mess='';
-    $modelObor = KpcentrObor::findOne(['schet' => $schet,'status' => 1]);
-    $mess = 'Особовий рахунок - '.$schet."\n";
-    $mess = $mess.$modelObor->fio .' '.$modelObor->im.' '.$modelObor->ot. "\n";
-    $mess = $mess.$modelObor->ulnaim.' буд.'.$modelObor->nomdom.' '.(isset($modelObor->nomkv)?'кв.'.$modelObor->nomkv:'')."\n";
+    $modelKart = UtKart::findOne(['schet' => $schet]);
+    $mess = 'Особовий рахунок - '.$schet."\r\n";
+    $mess = $mess.$modelKart->fio . "\n";
+    $mess = $mess.$modelKart->getUlica()->asArray()->one()['ul'].' буд.'.$modelKart->dom.' '.(isset($modelKart->kv)?'кв.'.$modelKart->kv:'')."\r\n";
 
-    $dolg= KpcentrObor::find();
+    $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
+    $oplab=UtOpl::find()
+        ->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+        ->where(['ut_opl.id_abonent'=> $abonen->id])
+        ->andwhere(['>', 'ut_opl.period', $modelKart->lastperiod()])
+        ->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
+        ->asArray();
+
+    $dolg= UtObor::find();
 //					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-    $dolg->select(["kpcentr_obor.*"]);
+    $dolg->select(["ut_obor.id_abonent as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
 //  				    $dolg->select('ut_obor.*,b.summ,');
-    $dolg->where(['kpcentr_obor.schet'=> $schet,'status' => 1])->all();
-    $mess = $mess.'----------------------------'."\n";
-
-
+    $dolg->where(['ut_obor.id_abonent'=> $abonen->id,'ut_obor.period'=> $modelKart->lastperiod()]);
+    $dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
     {
-        if ($obb['sal']>=0) $mess = $mess.'Ваша заборгованість по послузі:'."\n";
-        else $mess = $mess.'Ваша передплата по послузі:'."\n";
-        $mess = $mess.$obb['naim_wid'].': '.$obb['sal']."грн \n";
+        $mess = $mess.$obb['tipposl'].': '.$obb['sal']."\n";
 
-        if ($obb['sal']>0)
+        if ($obb['dolgopl']>0)
         {
-            $summa = $summa + $obb['sal'];
+            $summa = $summa + $obb['dolgopl'];
         }
     }
 
-
-   // $mess = $mess."\r".'Всього до сплати: '.$summa."\n\r";
-    $mess = $mess.'----------------------------'."\n";
-    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
-    if ($modelPokazn!=null){
-    $mess = $mess.'Останній зарахований показник по воді :'."\n";
-    $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
-    $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
-    }
-
-
+    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
 
 
     return $mess;
