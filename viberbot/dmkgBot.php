@@ -163,7 +163,7 @@ try {
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-                message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
+                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -532,7 +532,7 @@ function addAbonReceiver($id_viber,$schet,$org){
 /**
  * @param $schet
  */
-function infoSchet($schet){
+function infoDmkgSchet($schet){
 
     $mess='';
     $modelKart = UtKart::findOne(['schet' => $schet]);
