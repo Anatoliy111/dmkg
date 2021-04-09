@@ -130,7 +130,7 @@ try {
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, infoKontakt(), getDmkgMenu());
         })
-        ->onText('|KpMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+        ->onText('|DmkgMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
@@ -316,7 +316,7 @@ function getRahMenu(){
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('KpMenu-button')
+                ->setActionBody('DmkgMenu-button')
            //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
                 ->setText('🏠   Головне меню')
 
@@ -349,19 +349,19 @@ function getYesNoMenu($action){
                 ->setTextHAlign('center')
                 //  ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('KpMenu-button')
+                ->setActionBody('DmkgMenu-button')
                 ->setText('Ні'),
 
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
 //                ->setRows(2)
-                ->setBgColor('#75C5F3')
+                ->setBgColor('#F2F3A7')
                 ->setTextSize('large')
                 // ->setTextSize('regular')
                 ->setTextHAlign('center')
                 ->setTextVAlign('center')
                 ->setActionType('reply')
-                ->setActionBody('KpMenu-button')
+                ->setActionBody('DmkgMenu-button')
                 //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
                 ->setText('🏠   Головне меню')
 
@@ -391,12 +391,12 @@ function getRahList($FindRah,$action){
 
     $buttons[] =
     (new \Viber\Api\Keyboard\Button())
-        ->setBgColor('#75C5F3')
+        ->setBgColor('#F2F3A7')
         ->setTextSize('large')
         ->setTextHAlign('center')
         ->setTextVAlign('center')
         ->setActionType('reply')
-        ->setActionBody('KpMenu-button')
+        ->setActionBody('DmkgMenu-button')
         ->setText('🏠   Головне меню');
 
     return (new \Viber\Api\Keyboard())
