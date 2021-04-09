@@ -563,7 +563,7 @@ function infoKontakt(){
     $mess=$mess.'(067) 520-87-30'."\n";
     $mess=$mess.'(066) 942-00-12'."\n";
     $mess=$mess.'Телефон контролери:'."\n";
-    $mess=$mess.'(066)***-**-** (Viber)'."\n"."\n";
+    $mess=$mess.'(095)062-68-89 (Viber)'."\n"."\n";
  //   $mess=$mess.'(099)120-31-54'."\n";
    // $mess=$mess.'(095)791-32-62'."\n"."\n";
     $mess = $mess.'e-mail: dmkg28500@ukr.net'."\n";
