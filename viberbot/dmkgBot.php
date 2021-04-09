@@ -310,7 +310,7 @@ function getRahMenu(){
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
 //                ->setRows(2)
-                  ->setBgColor('#75C5F3')
+                  ->setBgColor('#F2F3A7')
                 ->setTextSize('large')
                // ->setTextSize('regular')
                 ->setTextHAlign('center')
