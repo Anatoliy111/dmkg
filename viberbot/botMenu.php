@@ -86,8 +86,8 @@ function getDmkgMenu(){
                 ->setTextVAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('Infomenu-button')
-                ->setBgColor("#75C5F3")
-                ->setText('📈  Інформація по ос.рахунках'),
+                ->setBgColor("#F4B8F9")
+                ->setText('📊  Інформація по рахунках'),
 
 //            (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(2)
@@ -107,9 +107,9 @@ function getDmkgMenu(){
                 ->setTextSize('small')
                 ->setActionType('reply')
                 ->setActionBody('Rahmenu-button')
-                ->setBgColor("#75C5F3")
+                ->setBgColor("#F4B8F9")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('♻  Операції з ос.рахунками'),
+                ->setText('⚙ Додати/видалити рахунок'),
 
 
             (new \Viber\Api\Keyboard\Button())
@@ -121,12 +121,12 @@ function getDmkgMenu(){
                 ->setActionBody('Kontakt-button')
                 // ->setBgColor("#F3DD27")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('📞 Контактна інформація'),
+                ->setText('📬 Контактна інформація'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 ->setActionType('open-url')
-                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222381919%22,%22form%22:%7B%22query%22:%2233006271%22%7D%7D')
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
                 ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
         ]);
 
