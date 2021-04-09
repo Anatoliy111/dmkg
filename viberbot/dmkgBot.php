@@ -539,6 +539,7 @@ function infoSchet($schet){
     $mess = 'Особовий рахунок - '.$schet."\r\n";
     $mess = $mess.$modelKart->fio . "\n";
     $mess = $mess.$modelKart->getUlica()->asArray()->one()['ul'].' буд.'.$modelKart->dom.' '.(isset($modelKart->kv)?'кв.'.$modelKart->kv:'')."\r\n";
+    $mess = $mess.'----------------------------'."\n";
 
     $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
     $oplab=UtOpl::find()
@@ -565,6 +566,7 @@ function infoSchet($schet){
             $summa = $summa + $obb['dolgopl'];
         }
     }
+    $mess = $mess.'----------------------------'."\n";
 
     $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
 
