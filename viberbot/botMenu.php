@@ -166,7 +166,7 @@ function infoDmkgSchet($schet){
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
     {
-        $mess = $mess.$obb['tipposl'].' - '.$obb['sal']."\n";
+        $mess = $mess.$obb['tipposl'].' '.$obb['sal']."\n";
 
         if ($obb['dolgopl']>0)
         {
