@@ -241,7 +241,7 @@ try {
                             if (is_numeric($val) && floor($val) == $val && $val > 0) {
                                 $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
                                 if ($modelPokazn != null) {
-                                    if ($modelPokazn->pokazn < intval($val)) {
+                                    if ($modelPokazn->pokazn <= intval($val)) {
                                         if ((intval($val) - $modelPokazn->pokazn) > 100) {
                                             message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                         } else {
