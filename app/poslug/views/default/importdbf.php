@@ -970,7 +970,7 @@ function importIN($dbf,$i,$Base)
 //							{
 //								$rowsCount = dbase_numrecords($dbf);
 //							}
-            if ($schet <> '' or $schet <> null or $wid <> '' or $wid <> null) {
+            if ($schet <> '' and $schet <> null and $wid <> '' and $wid <> null) {
                 $posl = UtTipposl::findOne(['old_tipusl' => $wid]);
                 $abon = UtAbonent::findOne(['schet' => $schet]);
                 if ($abon <> null && $posl <> null) {
