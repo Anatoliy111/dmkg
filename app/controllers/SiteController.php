@@ -113,6 +113,7 @@ class SiteController extends Controller
 
 		//
 		$mes='ok';
+		$mesALL='';
 		if (Yii::$app->request->isPost) {
 				$res = Yii::$app->request->post();
 
@@ -153,6 +154,7 @@ class SiteController extends Controller
 							}
 							Yii::error($meserr, 'json_import');
 							getSend($meserr);
+                            $mesALL=$mesALL.' '.$meserr;
 							//return implode($meserr);
 						}
 						if ($kol % 1000 === 0) {
@@ -203,7 +205,9 @@ class SiteController extends Controller
 //			KpcentrObor::updateAll(['status' => 1], ['like', 'email', '@example.com']);
 		}
 
-
+        if ($mesALL<>'') {
+            $mes = $mesALL;
+        }
 		return $mes;
 	}
 
