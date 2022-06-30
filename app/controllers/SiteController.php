@@ -153,7 +153,7 @@ class SiteController extends Controller
 							}
 							Yii::error($meserr, 'json_import');
 							getSend($meserr);
-							return implode($meserr);
+							//return implode($meserr);
 						}
 						if ($kol % 1000 === 0) {
 							$transaction->commit();
