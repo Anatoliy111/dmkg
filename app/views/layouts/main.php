@@ -180,7 +180,8 @@ $year = $my_date->format('Y');
 					<div class="block-content block-content-statick toggle-content">
 						<ul class="bullet">
 							<li><a href='/contact/index'>Контакти</a></li>
-							<li><a href='/site/offerta'>Публічний договір-оферта</a></li>
+<!--							<li><a href='/site/offerta'>Публічний договір-оферта</a></li>-->
+							<li><a href='/articles/cat?slug=publicni-dogovori'>Публічні договори</a></li>
 						</ul>
 					</div>
 				</div>
