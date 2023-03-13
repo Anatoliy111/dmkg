@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\bootstrap;
@@ -54,7 +54,7 @@ use yii\helpers\ArrayHelper;
  * ]);
  * ```
  *
- * @see http://getbootstrap.com/javascript/#tabs
+ * @see https://getbootstrap.com/javascript/#tabs
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @since 2.0
  */
@@ -129,6 +129,12 @@ class Tabs extends Widget
      * @since 2.0.7
      */
     public $dropdownClass = 'yii\bootstrap\Dropdown';
+    /**
+     * @var string template for layout for the headers and the panes. Can be helpful, for example, if a left
+     * vertical tabs are required. Defaults to `{headers}{panes}`
+     * @since 2.0.11
+     */
+    public $template = '{headers}{panes}';
 
 
     /**
@@ -220,7 +226,14 @@ class Tabs extends Widget
             $headers[] = Html::tag('li', $header, $headerOptions);
         }
 
-        return Html::tag('ul', implode("\n", $headers), $this->options) . $this->renderPanes($panes);
+        $headersHtml = Html::tag('ul', implode("\n", $headers), $this->options);
+        $panesHtml = $this->renderPanes($panes);
+
+        return strtr($this->template, [
+            '{headers}' => $headersHtml,
+            '{panes}' => $panesHtml,
+        ]);
+
     }
 
     /**

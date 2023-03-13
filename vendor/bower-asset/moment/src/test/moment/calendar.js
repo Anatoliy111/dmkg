@@ -6,7 +6,7 @@ import moment from '../../moment';
 module('calendar');
 
 test('passing a function', function (assert) {
-    var a  = moment().hours(13).minutes(0).seconds(0);
+    var a = moment().hours(13).minutes(0).seconds(0);
     assert.equal(moment(a).calendar(null, {
         'sameDay': function () {
             return 'h:mmA';
@@ -19,7 +19,7 @@ test('extending calendar options', function (assert) {
 
     moment.calendarFormat = function (myMoment, now) {
         var diff = myMoment.diff(now, 'days', true);
-        var nextMonth = now.clone().add(1, 'month');
+        var nextMonth = now.add(1, 'month');
 
         var retVal =  diff < -6 ? 'sameElse' :
             diff < -1 ? 'lastWeek' :

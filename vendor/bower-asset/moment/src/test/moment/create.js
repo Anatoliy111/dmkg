@@ -96,11 +96,13 @@ test('date mutation', function (assert) {
 
 test('moment', function (assert) {
     assert.ok(moment(moment()).toDate() instanceof Date, 'moment(moment())');
+    assert.ok(moment(moment()).isValid(), 'moment(moment()) is valid');
     assert.ok(moment(moment(moment())).toDate() instanceof Date, 'moment(moment(moment()))');
+    assert.ok(moment(moment(moment())).isValid(), 'moment(moment(moment())) is valid');
 });
 
 test('cloning moment should only copy own properties', function (assert) {
-    assert.ok(!moment().clone().hasOwnProperty('month'), 'Should not clone prototype methods');
+    assert.ok(!moment(moment()).hasOwnProperty('month'), 'Should not clone prototype methods');
 });
 
 test('cloning moment works with weird clones', function (assert) {
@@ -114,19 +116,20 @@ test('cloning moment works with weird clones', function (assert) {
     now = moment(),
     nowu = moment.utc();
 
-    assert.equal(+extend({}, now).clone(), +now, 'cloning extend-ed now is now');
-    assert.equal(+extend({}, nowu).clone(), +nowu, 'cloning extend-ed utc now is utc now');
+    assert.equal(+moment(extend({}, now)), +now, 'cloning extend-ed now is now');
+    assert.equal(+moment(extend({}, nowu)), +nowu, 'cloning extend-ed utc now is utc now');
 });
 
-test('cloning respects moment.momentProperties', function (assert) {
-    var m = moment();
+// TODO: Drop this altogether?
+// test('cloning respects moment.momentProperties', function (assert) {
+//     var m = moment();
 
-    assert.equal(m.clone()._special, undefined, 'cloning ignores extra properties');
-    m._special = 'bacon';
-    moment.momentProperties.push('_special');
-    assert.equal(m.clone()._special, 'bacon', 'cloning respects momentProperties');
-    moment.momentProperties.pop();
-});
+//     assert.equal(moment(m)._special, undefined, 'cloning ignores extra properties');
+//     m._special = 'bacon';
+//     moment.momentProperties.push('_special');
+//     assert.equal(moment(m)._special, 'bacon', 'cloning respects momentProperties');
+//     moment.momentProperties.pop();
+// });
 
 test('undefined', function (assert) {
     assert.ok(moment().toDate() instanceof Date, 'undefined');
@@ -190,16 +193,16 @@ test('undefined argument with formats', function (assert) {
 test('defaulting to current date', function (assert) {
     var now = moment();
     assert.equal(moment('12:13:14', 'hh:mm:ss').format('YYYY-MM-DD hh:mm:ss'),
-                 now.clone().hour(12).minute(13).second(14).format('YYYY-MM-DD hh:mm:ss'),
+                 now.hour(12).minute(13).second(14).format('YYYY-MM-DD hh:mm:ss'),
                  'given only time default to current date');
     assert.equal(moment('05', 'DD').format('YYYY-MM-DD'),
-                 now.clone().date(5).format('YYYY-MM-DD'),
+                 now.date(5).format('YYYY-MM-DD'),
                  'given day of month default to current month, year');
     assert.equal(moment('05', 'MM').format('YYYY-MM-DD'),
-                 now.clone().month(4).date(1).format('YYYY-MM-DD'),
+                 now.month(4).date(1).format('YYYY-MM-DD'),
                  'given month default to current year');
     assert.equal(moment('1996', 'YYYY').format('YYYY-MM-DD'),
-                 now.clone().year(1996).month(0).date(1).format('YYYY-MM-DD'),
+                 now.year(1996).month(0).date(1).format('YYYY-MM-DD'),
                  'given year do not default');
 });
 
@@ -241,6 +244,7 @@ test('string with format', function (assert) {
         ['h:mm a',              '12:00 am'],
         ['h:mm a',              '12:30 am'],
         ['HH:mm',               '12:00'],
+        ['kk:mm',               '12:00'],
         ['YYYY-MM-DDTHH:mm:ss', '2011-11-11T11:11:11'],
         ['MM-DD-YYYY [M]',      '12-02-1999 M'],
         ['ddd MMM DD HH:mm:ss YYYY', 'Tue Apr 07 22:52:51 2009'],
@@ -253,6 +257,15 @@ test('string with format', function (assert) {
         ['HH:mm:ss S',          '00:30:00 7'],
         ['HH:mm:ss SS',         '00:30:00 78'],
         ['HH:mm:ss SSS',        '00:30:00 789'],
+        ['kk:mm:ss',            '12:00:00'],
+        ['kk:mm:ss',            '12:30:00'],
+        ['kk:mm:ss',            '24:00:00'],
+        ['kk:mm:ss S',          '24:30:00 1'],
+        ['kk:mm:ss SS',         '24:30:00 12'],
+        ['kk:mm:ss SSS',        '24:30:00 123'],
+        ['kk:mm:ss S',          '24:30:00 7'],
+        ['kk:mm:ss SS',         '24:30:00 78'],
+        ['kk:mm:ss SSS',        '24:30:00 789'],
         ['X',                   '1234567890'],
         ['x',                   '1234567890123'],
         ['LT',                  '12:30 AM'],
@@ -379,13 +392,13 @@ test('string with array of formats', function (assert) {
 
     assert.equal(moment('11-02-10', ['MM/DD/YY', 'YY MM DD', 'DD-MM-YY']).format('MM DD YYYY'), '02 11 2010', 'all unparsed substrings have influence on format penalty');
     assert.equal(moment('11-02-10', ['MM-DD-YY HH:mm', 'YY MM DD']).format('MM DD YYYY'), '02 10 2011', 'prefer formats without extra tokens');
-    assert.equal(moment('11-02-10 junk', ['MM-DD-YY', 'YY.MM.DD junk']).format('MM DD YYYY'), '02 10 2011', 'prefer formats that dont result in extra characters');
+    assert.equal(moment('11-02-10 junk', ['MM-DD-YY', 'YY.MM.DD [junk]']).format('MM DD YYYY'), '02 10 2011', 'prefer formats that dont result in extra characters');
     assert.equal(moment('11-22-10', ['YY-MM-DD', 'YY-DD-MM']).format('MM DD YYYY'), '10 22 2011', 'prefer valid results');
 
     assert.equal(moment('gibberish', ['YY-MM-DD', 'YY-DD-MM']).format('MM DD YYYY'), 'Invalid date', 'doest throw for invalid strings');
     assert.equal(moment('gibberish', []).format('MM DD YYYY'), 'Invalid date', 'doest throw for an empty array');
 
-    //https://github.com/moment/moment/issues/1143
+    // https://github.com/moment/moment/issues/1143
     assert.equal(moment(
         'System Administrator and Database Assistant (7/1/2011), System Administrator and Database Assistant (7/1/2011), Database Coordinator (7/1/2011), Vice President (7/1/2011), System Administrator and Database Assistant (5/31/2012), Database Coordinator (7/1/2012), System Administrator and Database Assistant (7/1/2013)',
         ['MM/DD/YYYY', 'MM-DD-YYYY', 'YYYY-MM-DD', 'YYYY-MM-DDTHH:mm:ssZ'])
@@ -393,10 +406,10 @@ test('string with array of formats', function (assert) {
 
     assert.equal(moment('11-02-10', ['MM.DD.YY', 'DD-MM-YY']).format('MM DD YYYY'), '02 11 2010', 'escape RegExp special characters on comparing');
 
-    assert.equal(moment('13-10-98', ['DD MM YY', 'DD MM YYYY'])._f, 'DD MM YY', 'use two digit year');
-    assert.equal(moment('13-10-1998', ['DD MM YY', 'DD MM YYYY'])._f, 'DD MM YYYY', 'use four digit year');
+    assert.equal(moment('13-10-98', ['DD MM YY', 'DD MM YYYY']).parsingFlags().format, 'DD MM YY', 'use two digit year');
+    assert.equal(moment('13-10-1998', ['DD MM YY', 'DD MM YYYY']).parsingFlags().format, 'DD MM YYYY', 'use four digit year');
 
-    assert.equal(moment('01', ['MM', 'DD'])._f, 'MM', 'Should use first valid format');
+    assert.equal(moment('01', ['MM', 'DD']).parsingFlags().format, 'MM', 'Should use first valid format');
 
     assert.equal(moment('Thursday 8:30pm', ['dddd h:mma']).format('YYYY MM DD dddd h:mma'), thursdayForCurrentWeek + ' Thursday 8:30pm', 'Default to current week');
 });
@@ -404,6 +417,7 @@ test('string with array of formats', function (assert) {
 test('string with array of formats + ISO', function (assert) {
     assert.equal(moment('1994', [moment.ISO_8601, 'MM', 'HH:mm', 'YYYY']).year(), 1994, 'iso: assert parse YYYY');
     assert.equal(moment('17:15', [moment.ISO_8601, 'MM', 'HH:mm', 'YYYY']).hour(), 17, 'iso: assert parse HH:mm (1)');
+    assert.equal(moment('24:15', [moment.ISO_8601, 'MM', 'kk:mm', 'YYYY']).hour(), 0, 'iso: assert parse kk:mm');
     assert.equal(moment('17:15', [moment.ISO_8601, 'MM', 'HH:mm', 'YYYY']).minutes(), 15, 'iso: assert parse HH:mm (2)');
     assert.equal(moment('06', [moment.ISO_8601, 'MM', 'HH:mm', 'YYYY']).month(), 6 - 1, 'iso: assert parse MM');
     assert.equal(moment('2012-06-01', [moment.ISO_8601, 'MM', 'HH:mm', 'YYYY']).parsingFlags().iso, true, 'iso: assert parse iso');
@@ -421,28 +435,61 @@ test('string with format - years', function (assert) {
 test('implicit cloning', function (assert) {
     var momentA = moment([2011, 10, 10]),
     momentB = moment(momentA);
-    momentA.month(5);
-    assert.equal(momentB.month(), 10, 'Calling moment() on a moment will create a clone');
-    assert.equal(momentA.month(), 5, 'Calling moment() on a moment will create a clone');
+    assert.notEqual(momentA, momentB, 'Calling moment() on a moment will create a clone');
+    momentA = momentA.month(5);
+    assert.equal(momentB.month(), 10, 'momentA has updated month');
+    assert.equal(momentA.month(), 5, 'momentB keeps original month');
 });
 
 test('explicit cloning', function (assert) {
+    test.expectedDeprecations('clone does nothing');
+
     var momentA = moment([2011, 10, 10]),
     momentB = momentA.clone();
-    momentA.month(5);
-    assert.equal(momentB.month(), 10, 'Calling moment() on a moment will create a clone');
-    assert.equal(momentA.month(), 5, 'Calling moment() on a moment will create a clone');
+    assert.equal(momentA, momentB, 'Calling clone() on a moment will not create a clone, because immutability');
+    momentA = momentA.month(5);
+    assert.equal(momentB.month(), 10, 'momentA has updated month');
+    assert.equal(momentA.month(), 5, 'momentB keeps original month');
 });
 
-test('cloning carrying over utc mode', function (assert) {
-    assert.equal(moment().local().clone()._isUTC, false, 'An explicit cloned local moment should have _isUTC == false');
-    assert.equal(moment().utc().clone()._isUTC, true, 'An cloned utc moment should have _isUTC == true');
-    assert.equal(moment().clone()._isUTC, false, 'An explicit cloned local moment should have _isUTC == false');
-    assert.equal(moment.utc().clone()._isUTC, true, 'An explicit cloned utc moment should have _isUTC == true');
-    assert.equal(moment(moment().local())._isUTC, false, 'An implicit cloned local moment should have _isUTC == false');
-    assert.equal(moment(moment().utc())._isUTC, true, 'An implicit cloned utc moment should have _isUTC == true');
-    assert.equal(moment(moment())._isUTC, false, 'An implicit cloned local moment should have _isUTC == false');
-    assert.equal(moment(moment.utc())._isUTC, true, 'An implicit cloned utc moment should have _isUTC == true');
+test('cloning uses utc mode of new constructor', function (assert) {
+    assert.equal(moment(moment().local()).isUTC(), false, 'local(local) -> local');
+    assert.equal(moment(moment().utc()).isUTC(), false, 'local(utc) -> local');
+    assert.equal(moment.utc(moment().local()).isUTC(), true, 'utc(local) -> utc');
+    assert.equal(moment.utc(moment().utc()).isUTC(), true, 'utc(utc) -> utc');
+});
+
+test('parsing RFC 2822', function (assert) {
+    var testCases = {
+        'clean RFC2822 datetime with all options': 'Tue, 01 Nov 2016 01:23:45 UT',
+        'clean RFC2822 datetime without comma': 'Tue 01 Nov 2016 02:23:45 GMT',
+        'clean RFC2822 datetime without seconds': 'Tue, 01 Nov 2016 03:23 +0000',
+        'clean RFC2822 datetime without century': 'Tue, 01 Nov 16 04:23:45 Z',
+        'clean RFC2822 datetime without day': '01 Nov 2016 05:23:45 z',
+        'clean RFC2822 datetime with single-digit day-of-month': 'Tue, 1 Nov 2016 06:23:45 GMT',
+        'RFC2822 datetime with CFWSs': '(Init Comment) Tue,\n 1 Nov              2016 (Split\n Comment)  07:23:45 +0000 (GMT)'
+    };
+    var testCase;
+
+    for (testCase in testCases) {
+        var testResult = moment(testCases[testCase], moment.RFC_2822, true);
+        assert.ok(testResult.isValid(), testResult);
+        assert.ok(testResult.parsingFlags().rfc2822, testResult + ' - rfc2822 parsingFlag');
+    }
+});
+
+test('non RFC 2822 strings', function (assert) {
+    var testCases = {
+        'RFC2822 datetime with all options but invalid day delimiter': 'Tue. 01 Nov 2016 01:23:45 GMT',
+        'RFC2822 datetime with mismatching Day (week v date)': 'Mon, 01 Nov 2016 01:23:45 GMT'
+    };
+    var testCase;
+
+    for (testCase in testCases) {
+        var testResult = moment(testCases[testCase], moment.RFC_2822, true);
+        assert.ok(!testResult.isValid(), testResult);
+        assert.ok(!testResult.parsingFlags().rfc2822, testResult + ' - rfc2822 parsingFlag');
+    }
 });
 
 test('parsing iso', function (assert) {
@@ -732,15 +779,15 @@ test('parsing ISO with Z', function (assert) {
 });
 
 test('parsing iso with T', function (assert) {
-    assert.equal(moment('2011-10-08T18')._f, 'YYYY-MM-DDTHH', 'should include \'T\' in the format');
-    assert.equal(moment('2011-10-08T18:20')._f, 'YYYY-MM-DDTHH:mm', 'should include \'T\' in the format');
-    assert.equal(moment('2011-10-08T18:20:13')._f, 'YYYY-MM-DDTHH:mm:ss', 'should include \'T\' in the format');
-    assert.equal(moment('2011-10-08T18:20:13.321')._f, 'YYYY-MM-DDTHH:mm:ss.SSSS', 'should include \'T\' in the format');
+    assert.equal(moment('2011-10-08T18').parsingFlags().format, 'YYYY-MM-DDTHH', 'should include \'T\' in the format');
+    assert.equal(moment('2011-10-08T18:20').parsingFlags().format, 'YYYY-MM-DDTHH:mm', 'should include \'T\' in the format');
+    assert.equal(moment('2011-10-08T18:20:13').parsingFlags().format, 'YYYY-MM-DDTHH:mm:ss', 'should include \'T\' in the format');
+    assert.equal(moment('2011-10-08T18:20:13.321').parsingFlags().format, 'YYYY-MM-DDTHH:mm:ss.SSSS', 'should include \'T\' in the format');
 
-    assert.equal(moment('2011-10-08 18')._f, 'YYYY-MM-DD HH', 'should not include \'T\' in the format');
-    assert.equal(moment('2011-10-08 18:20')._f, 'YYYY-MM-DD HH:mm', 'should not include \'T\' in the format');
-    assert.equal(moment('2011-10-08 18:20:13')._f, 'YYYY-MM-DD HH:mm:ss', 'should not include \'T\' in the format');
-    assert.equal(moment('2011-10-08 18:20:13.321')._f, 'YYYY-MM-DD HH:mm:ss.SSSS', 'should not include \'T\' in the format');
+    assert.equal(moment('2011-10-08 18').parsingFlags().format, 'YYYY-MM-DD HH', 'should not include \'T\' in the format');
+    assert.equal(moment('2011-10-08 18:20').parsingFlags().format, 'YYYY-MM-DD HH:mm', 'should not include \'T\' in the format');
+    assert.equal(moment('2011-10-08 18:20:13').parsingFlags().format, 'YYYY-MM-DD HH:mm:ss', 'should not include \'T\' in the format');
+    assert.equal(moment('2011-10-08 18:20:13.321').parsingFlags().format, 'YYYY-MM-DD HH:mm:ss.SSSS', 'should not include \'T\' in the format');
 });
 
 test('parsing iso Z timezone', function (assert) {
@@ -1106,3 +1153,18 @@ test('invalid dates return invalid for methods that access the _d prop', functio
     assert.ok(momentAsDate instanceof Date, 'toDate returns a Date object');
     assert.ok(isNaN(momentAsDate.getTime()), 'toDate returns an invalid Date invalid');
 });
+
+test('k, kk', function (assert) {
+    for (var i = -1; i <= 24; i++) {
+        var kVal = i + ':15:59';
+        var kkVal = (i < 10 ? '0' : '') + i + ':15:59';
+        if (i !== 24) {
+            assert.ok(moment(kVal, 'k:mm:ss').isSame(moment(kVal, 'H:mm:ss')), kVal + ' k parsing');
+            assert.ok(moment(kkVal, 'kk:mm:ss').isSame(moment(kkVal, 'HH:mm:ss')), kkVal + ' kk parsing');
+        } else {
+            assert.equal(moment(kVal, 'k:mm:ss').format('k:mm:ss'), kVal, kVal + ' k parsing');
+            assert.equal(moment(kkVal, 'kk:mm:ss').format('kk:mm:ss'), kkVal, kkVal + ' skk parsing');
+        }
+    }
+});
+

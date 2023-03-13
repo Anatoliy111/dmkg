@@ -1,5 +1,15 @@
-php-date-formatter
-==================
+<h1 align="center">
+    <a href="http://plugins.krajee.com" title="Krajee Plugins" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/krajee-logo-b.png" alt="Krajee Logo"/>
+    </a>
+    <br>
+    php-date-formatter
+    <hr>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DTP3NZQ6G2AYU"
+       title="Donate via Paypal" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/donate.png" alt="Donate"/>
+    </a>
+</h1>
 
 [![Bower version](https://badge.fury.io/bo/php-date-formatter.svg)](http://badge.fury.io/bo/php-date-formatter)
 [![Stable Version](https://poser.pugx.org/kartik-v/php-date-formatter/v/stable)](https://packagist.org/packages/kartik-v/php-date-formatter)
@@ -15,7 +25,7 @@ server side and client side validation should help in building extensible applic
 
 This library is a standalone javascript library and does not depend on other libraries or plugins like jQuery.
 
-The latest release of the library is v1.3.4. Check the [CHANGE LOG](https://github.com/kartik-v/php-date-formatter/blob/master/CHANGE.md) for details.
+The latest release of the library is v1.3.6. Check the [CHANGE LOG](https://github.com/kartik-v/php-date-formatter/blob/master/CHANGE.md) for details.
 
 ## Features
 

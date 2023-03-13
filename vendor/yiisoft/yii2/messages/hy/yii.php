@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 /**
@@ -117,7 +117,7 @@ return [
     '{nFormatted} B' => '{nFormatted} Բ',
     '{nFormatted} GB' => '{nFormatted} ԳԲ',
     '{nFormatted} GiB' => '{nFormatted} ԳիԲ',
-    '{nFormatted} KB' => '{nFormatted} ԿԲ',
+    '{nFormatted} kB' => '{nFormatted} ԿԲ',
     '{nFormatted} KiB' => '{nFormatted} ԿիԲ',
     '{nFormatted} MB' => '{nFormatted} ՄԲ',
     '{nFormatted} MiB' => '{nFormatted} ՄիԲ',

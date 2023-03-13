@@ -15,15 +15,15 @@ addFormatToken('D', ['DD', 2], 'Do', 'date');
 
 addUnitAlias('date', 'D');
 
-// PRIOROITY
-addUnitPriority('date', 9);
-
 // PARSING
 
 addRegexToken('D',  match1to2);
 addRegexToken('DD', match1to2, match2);
 addRegexToken('Do', function (isStrict, locale) {
-    return isStrict ? locale._ordinalParse : locale._ordinalParseLenient;
+    // TODO: Remove "ordinalParse" fallback in next major release.
+    return isStrict ?
+      (locale._dayOfMonthOrdinalParse || locale._ordinalParse) :
+      locale._dayOfMonthOrdinalParseLenient;
 });
 
 addParseToken(['D', 'DD'], DATE);
@@ -33,4 +33,8 @@ addParseToken('Do', function (input, array) {
 
 // MOMENTS
 
-export var getSetDayOfMonth = makeGetSet('Date', true);
+export var getSetDayOfMonth = makeGetSet('Date');
+
+// PRIORITY
+
+addUnitPriority('date', 9, getSetDayOfMonth);

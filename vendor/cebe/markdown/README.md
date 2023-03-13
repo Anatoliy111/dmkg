@@ -4,7 +4,6 @@ A super fast, highly extensible markdown parser for PHP
 [![Latest Stable Version](https://poser.pugx.org/cebe/markdown/v/stable.png)](https://packagist.org/packages/cebe/markdown)
 [![Total Downloads](https://poser.pugx.org/cebe/markdown/downloads.png)](https://packagist.org/packages/cebe/markdown)
 [![Build Status](https://travis-ci.org/cebe/markdown.svg?branch=master)](http://travis-ci.org/cebe/markdown)
-[![Tested against HHVM](http://hhvm.h4cc.de/badge/cebe/markdown.png)](http://hhvm.h4cc.de/package/cebe/markdown)
 [![Code Coverage](https://scrutinizer-ci.com/g/cebe/markdown/badges/coverage.png?s=db6af342d55bea649307ef311fbd536abb9bab76)](https://scrutinizer-ci.com/g/cebe/markdown/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/cebe/markdown/badges/quality-score.png?s=17448ca4d140429fd687c58ff747baeb6568d528)](https://scrutinizer-ci.com/g/cebe/markdown/)
 
@@ -53,17 +52,21 @@ Installation <a name="installation"></a>
 [PHP 5.4 or higher](http://www.php.net/downloads.php) is required to use it.
 It will also run on facebook's [hhvm](http://hhvm.com/).
 
+The library uses PHPDoc annotations to determine the markdown elements that should be parsed.
+So in case you are using PHP `opcache`, make sure 
+[it does not strip comments](http://php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments).
+
 Installation is recommended to be done via [composer][] by running:
 
-	composer require cebe/markdown "~1.1.1"
+	composer require cebe/markdown "~1.2.0"
 
 Alternatively you can add the following to the `require` section in your `composer.json` manually:
 
 ```json
-"cebe/markdown": "~1.1.1"
+"cebe/markdown": "~1.2.0"
 ```
 
-Run `composer update` afterwards.
+Run `composer update cebe/markdown` afterwards.
 
 [composer]: https://getcomposer.org/ "The PHP package manager"
 
@@ -175,13 +178,50 @@ Here is the full Help output you will see when running `bin/markdown --help`:
     [3] http://michelf.ca/projects/php-markdown/extra/
 
 
+Security Considerations <a name="security"></a>
+-----------------------
+
+By design markdown [allows HTML to be included within the markdown text](https://daringfireball.net/projects/markdown/syntax#html).
+This also means that it may contain Javascript and CSS styles. This allows to be very flexible
+for creating output that is not limited by the markdown syntax, but it comes with
+a security risk if you are parsing user input as markdown (see [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting)).
+
+In that case you should process the result of the markdown conversion with tools like 
+[HTML Purifier](http://htmlpurifier.org/) that filter out all elements which are not allowed for users
+to be added.
+
+The list of [allowed elements](http://htmlpurifier.org/live/configdoc/plain.html#HTML.AllowedElements) for
+markdown could be configured as:
+
+```php
+[
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'hr',
+    'pre', 'code',
+    'blockquote',
+    'table', 'tr', 'td', 'th', 'thead', 'tbody',
+    'strong', 'em', 'b', 'i', 'u', 's', 'span',
+    'a', 'p', 'br', 'nobr',
+    'ul', 'ol', 'li',
+    'img',
+],
+```
+
+The list of [allowed attributes](http://htmlpurifier.org/live/configdoc/plain.html#HTML.AllowedAttributes) would be:
+
+```php
+['th.align', 'td.align', 'ol.start', 'code.class']
+```
+
+The above configuration is a general recommendation and may need to be adjusted dependent on your needs.
+
+
 Extensions
 ----------
 
 Here are some extensions to this library:
 
 - [Bogardo/markdown-codepen](https://github.com/Bogardo/markdown-codepen) - shortcode to embed codepens from http://codepen.io/ in markdown.
-- [kartik-v/yii2-markdown](https://github.com/kartik-v/yii2-markdown) - Advanced Markdown editing and conversion utilities for Yii Framework 2.0.
 - [cebe/markdown-latex](https://github.com/cebe/markdown-latex) - Convert Markdown to LaTeX and PDF
 - [softark/creole](https://github.com/softark/creole) - A creole markup parser
 - [hyn/frontmatter](https://github.com/hyn/frontmatter) - Frontmatter Metadata Support (JSON, TOML, YAML)
@@ -417,7 +457,7 @@ parsing to ensure you get a reusable object.
 
 #### Define escapeable characters
 
-Depenedend on the language features you have chosen there is a different set of characters that can be escaped
+Depending on the language features you have chosen there is a different set of characters that can be escaped
 using `\`. The following is the set of escapeable characters for traditional markdown, you can copy it to your class
 as is.
 
@@ -489,6 +529,8 @@ to using callbacks to inject functionallity into the parser.
 [real parser]: http://en.wikipedia.org/wiki/Parsing#Types_of_parser
 
 [Parsedown]: http://parsedown.org/ "The Parsedown PHP Markdown parser"
+
+[Yii framework 2.0]: https://github.com/yiisoft/yii2
 
 ### Where do I report bugs or rendering issues?
 

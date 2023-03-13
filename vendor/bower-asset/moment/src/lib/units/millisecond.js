@@ -37,14 +37,9 @@ addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
     return this.millisecond() * 1000000;
 });
 
-
 // ALIASES
 
 addUnitAlias('millisecond', 'ms');
-
-// PRIORITY
-
-addUnitPriority('millisecond', 16);
 
 // PARSING
 
@@ -66,4 +61,8 @@ for (token = 'S'; token.length <= 9; token += 'S') {
 }
 // MOMENTS
 
-export var getSetMillisecond = makeGetSet('Milliseconds', false);
+export var getSetMillisecond = makeGetSet('Milliseconds', 1);
+
+// PRIORITY
+
+addUnitPriority('millisecond', 16, getSetMillisecond);

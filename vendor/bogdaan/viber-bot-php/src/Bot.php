@@ -159,7 +159,7 @@ class Bot
             $signature = $_GET['sig'];
         }
         if (empty($signature)) {
-      //      throw new \RuntimeException('Signature header not found', 1);
+            throw new \RuntimeException('Signature header not found', 1);
         }
 
         return $signature;
@@ -185,7 +185,6 @@ class Bot
     {
         header('Content-Type: application/json');
         echo json_encode($entity->toApiArray());
-       // echo json_encode($entity->toApiArray(),JSON_UNESCAPED_UNICODE);
     }
 
     /**

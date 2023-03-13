@@ -1,122 +1,169 @@
-'use strict';
+import DatasetController from '../core/core.datasetController.js';
+import {valueOrDefault} from '../helpers/helpers.core.js';
 
-module.exports = function(Chart) {
+export default class BubbleController extends DatasetController {
 
-	var helpers = Chart.helpers;
+  static id = 'bubble';
 
-	Chart.defaults.bubble = {
-		hover: {
-			mode: 'single'
-		},
+  /**
+   * @type {any}
+   */
+  static defaults = {
+    datasetElementType: false,
+    dataElementType: 'point',
 
-		scales: {
-			xAxes: [{
-				type: 'linear', // bubble should probably use a linear scale by default
-				position: 'bottom',
-				id: 'x-axis-0' // need an ID so datasets can reference the scale
-			}],
-			yAxes: [{
-				type: 'linear',
-				position: 'left',
-				id: 'y-axis-0'
-			}]
-		},
+    animations: {
+      numbers: {
+        type: 'number',
+        properties: ['x', 'y', 'borderWidth', 'radius']
+      }
+    }
+  };
 
-		tooltips: {
-			callbacks: {
-				title: function() {
-					// Title doesn't make sense for scatter since we format the data as a point
-					return '';
-				},
-				label: function(tooltipItem, data) {
-					var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-					var dataPoint = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-					return datasetLabel + ': (' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ', ' + dataPoint.r + ')';
-				}
-			}
-		}
-	};
+  /**
+   * @type {any}
+   */
+  static overrides = {
+    scales: {
+      x: {
+        type: 'linear'
+      },
+      y: {
+        type: 'linear'
+      }
+    }
+  };
 
-	Chart.controllers.bubble = Chart.DatasetController.extend({
+  initialize() {
+    this.enableOptionSharing = true;
+    super.initialize();
+  }
 
-		dataElementType: Chart.elements.Point,
+  /**
+	 * Parse array of primitive values
+	 * @protected
+	 */
+  parsePrimitiveData(meta, data, start, count) {
+    const parsed = super.parsePrimitiveData(meta, data, start, count);
+    for (let i = 0; i < parsed.length; i++) {
+      parsed[i]._custom = this.resolveDataElementOptions(i + start).radius;
+    }
+    return parsed;
+  }
 
-		update: function(reset) {
-			var me = this;
-			var meta = me.getMeta();
-			var points = meta.data;
+  /**
+	 * Parse array of arrays
+	 * @protected
+	 */
+  parseArrayData(meta, data, start, count) {
+    const parsed = super.parseArrayData(meta, data, start, count);
+    for (let i = 0; i < parsed.length; i++) {
+      const item = data[start + i];
+      parsed[i]._custom = valueOrDefault(item[2], this.resolveDataElementOptions(i + start).radius);
+    }
+    return parsed;
+  }
 
-			// Update Points
-			helpers.each(points, function(point, index) {
-				me.updateElement(point, index, reset);
-			});
-		},
+  /**
+	 * Parse array of objects
+	 * @protected
+	 */
+  parseObjectData(meta, data, start, count) {
+    const parsed = super.parseObjectData(meta, data, start, count);
+    for (let i = 0; i < parsed.length; i++) {
+      const item = data[start + i];
+      parsed[i]._custom = valueOrDefault(item && item.r && +item.r, this.resolveDataElementOptions(i + start).radius);
+    }
+    return parsed;
+  }
 
-		updateElement: function(point, index, reset) {
-			var me = this;
-			var meta = me.getMeta();
-			var xScale = me.getScaleForId(meta.xAxisID);
-			var yScale = me.getScaleForId(meta.yAxisID);
+  /**
+	 * @protected
+	 */
+  getMaxOverflow() {
+    const data = this._cachedMeta.data;
 
-			var custom = point.custom || {};
-			var dataset = me.getDataset();
-			var data = dataset.data[index];
-			var pointElementOptions = me.chart.options.elements.point;
-			var dsIndex = me.index;
+    let max = 0;
+    for (let i = data.length - 1; i >= 0; --i) {
+      max = Math.max(max, data[i].size(this.resolveDataElementOptions(i)) / 2);
+    }
+    return max > 0 && max;
+  }
 
-			helpers.extend(point, {
-				// Utility
-				_xScale: xScale,
-				_yScale: yScale,
-				_datasetIndex: dsIndex,
-				_index: index,
+  /**
+	 * @protected
+	 */
+  getLabelAndValue(index) {
+    const meta = this._cachedMeta;
+    const labels = this.chart.data.labels || [];
+    const {xScale, yScale} = meta;
+    const parsed = this.getParsed(index);
+    const x = xScale.getLabelForValue(parsed.x);
+    const y = yScale.getLabelForValue(parsed.y);
+    const r = parsed._custom;
 
-				// Desired view properties
-				_model: {
-					x: reset ? xScale.getPixelForDecimal(0.5) : xScale.getPixelForValue(typeof data === 'object' ? data : NaN, index, dsIndex, me.chart.isCombo),
-					y: reset ? yScale.getBasePixel() : yScale.getPixelForValue(data, index, dsIndex),
-					// Appearance
-					radius: reset ? 0 : custom.radius ? custom.radius : me.getRadius(data),
+    return {
+      label: labels[index] || '',
+      value: '(' + x + ', ' + y + (r ? ', ' + r : '') + ')'
+    };
+  }
 
-					// Tooltip
-					hitRadius: custom.hitRadius ? custom.hitRadius : helpers.getValueAtIndexOrDefault(dataset.hitRadius, index, pointElementOptions.hitRadius)
-				}
-			});
+  update(mode) {
+    const points = this._cachedMeta.data;
 
-			// Trick to reset the styles of the point
-			Chart.DatasetController.prototype.removeHoverStyle.call(me, point, pointElementOptions);
+    // Update Points
+    this.updateElements(points, 0, points.length, mode);
+  }
 
-			var model = point._model;
-			model.skip = custom.skip ? custom.skip : (isNaN(model.x) || isNaN(model.y));
+  updateElements(points, start, count, mode) {
+    const reset = mode === 'reset';
+    const {iScale, vScale} = this._cachedMeta;
+    const {sharedOptions, includeOptions} = this._getSharedOptions(start, mode);
+    const iAxis = iScale.axis;
+    const vAxis = vScale.axis;
 
-			point.pivot();
-		},
+    for (let i = start; i < start + count; i++) {
+      const point = points[i];
+      const parsed = !reset && this.getParsed(i);
+      const properties = {};
+      const iPixel = properties[iAxis] = reset ? iScale.getPixelForDecimal(0.5) : iScale.getPixelForValue(parsed[iAxis]);
+      const vPixel = properties[vAxis] = reset ? vScale.getBasePixel() : vScale.getPixelForValue(parsed[vAxis]);
 
-		getRadius: function(value) {
-			return value.r || this.chart.options.elements.point.radius;
-		},
+      properties.skip = isNaN(iPixel) || isNaN(vPixel);
 
-		setHoverStyle: function(point) {
-			var me = this;
-			Chart.DatasetController.prototype.setHoverStyle.call(me, point);
+      if (includeOptions) {
+        properties.options = sharedOptions || this.resolveDataElementOptions(i, point.active ? 'active' : mode);
 
-			// Radius
-			var dataset = me.chart.data.datasets[point._datasetIndex];
-			var index = point._index;
-			var custom = point.custom || {};
-			var model = point._model;
-			model.radius = custom.hoverRadius ? custom.hoverRadius : (helpers.getValueAtIndexOrDefault(dataset.hoverRadius, index, me.chart.options.elements.point.hoverRadius)) + me.getRadius(dataset.data[index]);
-		},
+        if (reset) {
+          properties.options.radius = 0;
+        }
+      }
 
-		removeHoverStyle: function(point) {
-			var me = this;
-			Chart.DatasetController.prototype.removeHoverStyle.call(me, point, me.chart.options.elements.point);
+      this.updateElement(point, i, properties, mode);
+    }
+  }
 
-			var dataVal = me.chart.data.datasets[point._datasetIndex].data[point._index];
-			var custom = point.custom || {};
-			var model = point._model;
+  /**
+	 * @param {number} index
+	 * @param {string} [mode]
+	 * @protected
+	 */
+  resolveDataElementOptions(index, mode) {
+    const parsed = this.getParsed(index);
+    let values = super.resolveDataElementOptions(index, mode);
 
-			model.radius = custom.radius ? custom.radius : me.getRadius(dataVal);
-		}
-	});
-};
+    // In case values were cached (and thus frozen), we need to clone the values
+    if (values.$shared) {
+      values = Object.assign({}, values, {$shared: false});
+    }
+
+    // Custom radius resolution
+    const radius = values.radius;
+    if (mode !== 'active') {
+      values.radius = 0;
+    }
+    values.radius += valueOrDefault(parsed && parsed._custom, radius);
+
+    return values;
+  }
+}

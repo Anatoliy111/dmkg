@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 use yii\base\InvalidConfigException;
@@ -54,18 +54,18 @@ class m141106_185632_log_init extends Migration
                 throw new InvalidConfigException('You should configure "log" component to use one or more database targets before executing this migration.');
             }
         }
+
         return $this->dbTargets;
     }
 
     public function up()
     {
-        $targets = $this->getDbTargets();
-        foreach ($targets as $target) {
+        foreach ($this->getDbTargets() as $target) {
             $this->db = $target->db;
 
             $tableOptions = null;
             if ($this->db->driverName === 'mysql') {
-                // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+                // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
                 $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
             }
 
@@ -85,8 +85,7 @@ class m141106_185632_log_init extends Migration
 
     public function down()
     {
-        $targets = $this->getDbTargets();
-        foreach ($targets as $target) {
+        foreach ($this->getDbTargets() as $target) {
             $this->db = $target->db;
 
             $this->dropTable($target->logTable);

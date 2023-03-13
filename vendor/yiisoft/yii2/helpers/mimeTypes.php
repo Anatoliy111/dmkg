@@ -5,10 +5,10 @@
  * This file contains most commonly used MIME types
  * according to file extension names.
  * Its content is generated from the apache http mime.types file.
- * http://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=markup
+ * https://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=markup
  * This file has been placed in the public domain for unlimited redistribution.
  */
-return [
+$mimeTypes = [
     '3dml' => 'text/vnd.in3d.3dml',
     '3ds' => 'image/x-3ds',
     '3g2' => 'video/3gpp2',
@@ -318,11 +318,12 @@ return [
     'htke' => 'application/vnd.kenameaapp',
     'htm' => 'text/html',
     'html' => 'text/html',
-    'hvd' => 'application/vnd.yamaha.hv-dic',
     'hvp' => 'application/vnd.yamaha.hv-voice',
     'hvs' => 'application/vnd.yamaha.hv-script',
     'i2g' => 'application/vnd.intergeo',
     'icc' => 'application/vnd.iccprofile',
+    0 => 'application/vnd.lotus-1-2-3',
+    'hvd' => 'application/vnd.yamaha.hv-dic',
     'ice' => 'x-conference/x-cooltalk',
     'icm' => 'application/vnd.iccprofile',
     'ico' => 'image/x-icon',
@@ -365,7 +366,7 @@ return [
     'jpgm' => 'video/jpm',
     'jpgv' => 'video/jpeg',
     'jpm' => 'video/jpm',
-    'js' => 'application/javascript',
+    'js' => 'text/javascript',
     'json' => 'application/json',
     'jsonml' => 'application/jsonml+json',
     'kar' => 'audio/midi',
@@ -448,6 +449,7 @@ return [
     'mime' => 'message/rfc822',
     'mj2' => 'video/mj2',
     'mjp2' => 'video/mj2',
+    'mjs' => 'text/javascript',
     'mk3d' => 'video/x-matroska',
     'mka' => 'audio/x-matroska',
     'mks' => 'video/x-matroska',
@@ -551,11 +553,12 @@ return [
     'opf' => 'application/oebps-package+xml',
     'opml' => 'text/x-opml',
     'oprc' => 'application/vnd.palm',
+    'opus' => 'audio/ogg',
     'org' => 'application/vnd.lotus-organizer',
     'osf' => 'application/vnd.yamaha.openscoreformat',
     'osfpvg' => 'application/vnd.yamaha.openscoreformat.osfpvg+xml',
     'otc' => 'application/vnd.oasis.opendocument.chart-template',
-    'otf' => 'application/x-font-otf',
+    'otf' => 'font/otf',
     'otg' => 'application/vnd.oasis.opendocument.graphics-template',
     'oth' => 'application/vnd.oasis.opendocument.text-web',
     'oti' => 'application/vnd.oasis.opendocument.image-template',
@@ -808,8 +811,8 @@ return [
     'trm' => 'application/x-msterminal',
     'tsd' => 'application/timestamped-data',
     'tsv' => 'text/tab-separated-values',
-    'ttc' => 'application/x-font-ttf',
-    'ttf' => 'application/x-font-ttf',
+    'ttc' => 'font/collection',
+    'ttf' => 'font/ttf',
     'ttl' => 'text/turtle',
     'twd' => 'application/vnd.simtech-mindmapper',
     'twds' => 'application/vnd.simtech-mindmapper',
@@ -904,7 +907,8 @@ return [
     'wmv' => 'video/x-ms-wmv',
     'wmx' => 'video/x-ms-wmx',
     'wmz' => 'application/x-msmetafile',
-    'woff' => 'application/font-woff',
+    'woff' => 'font/woff',
+    'woff2' => 'font/woff2',
     'wpd' => 'application/vnd.wordperfect',
     'wpl' => 'application/vnd.ms-wpl',
     'wps' => 'application/vnd.ms-works',
@@ -990,5 +994,10 @@ return [
     'zir' => 'application/vnd.zul',
     'zirz' => 'application/vnd.zul',
     'zmm' => 'application/vnd.handheld-entertainment+xml',
-    123 => 'application/vnd.lotus-1-2-3',
 ];
+
+if (PHP_VERSION_ID >= 80100) {
+    $mimeTypes = array_replace($mimeTypes, array('xz' => 'application/octet-stream'));
+}
+
+return $mimeTypes;

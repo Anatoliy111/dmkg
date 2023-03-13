@@ -1,13 +1,14 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\validators;
 
 use yii\base\InvalidConfigException;
+use yii\helpers\Json;
 
 /**
  * FilterValidator converts the attribute value according to a filter.
@@ -25,6 +26,8 @@ use yii\base\InvalidConfigException;
  * ```
  *
  * Many PHP functions qualify this signature (e.g. `trim()`).
+ * If the callback function requires non-null argument (important since PHP 8.1)
+ * remember to set [[skipOnEmpty]] to `true` otherwise you may trigger an error.
  *
  * To specify the filter, set [[filter]] property to be the callback.
  *
@@ -58,7 +61,7 @@ class FilterValidator extends Validator
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -69,7 +72,7 @@ class FilterValidator extends Validator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validateAttribute($model, $attribute)
     {
@@ -80,7 +83,7 @@ class FilterValidator extends Validator
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function clientValidateAttribute($model, $attribute, $view)
     {
@@ -91,11 +94,11 @@ class FilterValidator extends Validator
         ValidationAsset::register($view);
         $options = $this->getClientOptions($model, $attribute);
 
-        return 'value = yii.validation.trim($form, attribute, ' . json_encode($options, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . ');';
+        return 'value = yii.validation.trim($form, attribute, ' . Json::htmlEncode($options) . ', value);';
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getClientOptions($model, $attribute)
     {

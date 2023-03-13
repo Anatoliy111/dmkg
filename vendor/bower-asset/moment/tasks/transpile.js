@@ -71,7 +71,8 @@ module.exports = function (grunt) {
         }
 
         return rollup(rollupOpts).then(function (bundle) {
-            var result = bundle.generate(bundleOpts);
+            return bundle.generate(bundleOpts);
+        }).then(function (result) {
             return result.code;
         });
     }
@@ -280,7 +281,9 @@ module.exports = function (grunt) {
             grunt.log.ok('build/umd/min/moment-with-locales.custom.js');
         }).then(function () {
             var moment = require('../build/umd/min/moment-with-locales.custom.js');
-            if (moment.locales().length !== localeFiles.length) {
+            if (moment.locales().filter(function (locale) {
+                return locale !== 'en';
+            }).length !== localeFiles.length) {
                 throw new Error(
                     'You probably specified locales requiring ' +
                     'parent locale, but didn\'t specify parent');

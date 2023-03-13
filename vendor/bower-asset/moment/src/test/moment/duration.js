@@ -49,14 +49,25 @@ test('object instantiation with strings', function (assert) {
 
 test('milliseconds instantiation', function (assert) {
     assert.equal(moment.duration(72).milliseconds(), 72, 'milliseconds');
+    assert.equal(moment.duration(72).humanize(), 'a few seconds', 'Duration should be valid');
 });
 
 test('undefined instantiation', function (assert) {
     assert.equal(moment.duration(undefined).milliseconds(), 0, 'milliseconds');
+    assert.equal(moment.duration(undefined).isValid(), true, '_isValid');
+    assert.equal(moment.duration(undefined).humanize(), 'a few seconds', 'Duration should be valid');
 });
 
 test('null instantiation', function (assert) {
     assert.equal(moment.duration(null).milliseconds(), 0, 'milliseconds');
+    assert.equal(moment.duration(null).isValid(), true, '_isValid');
+    assert.equal(moment.duration(null).humanize(), 'a few seconds', 'Duration should be valid');
+});
+
+test('NaN instantiation', function (assert) {
+    assert.ok(isNaN(moment.duration(NaN).milliseconds()), 'milliseconds should be NaN');
+    assert.equal(moment.duration(NaN).isValid(), false, '_isValid');
+    assert.equal(moment.duration(NaN).humanize(), 'Invalid date', 'Duration should be invalid');
 });
 
 test('instantiation by type', function (assert) {
@@ -294,7 +305,7 @@ test('serialization to ISO 8601 duration strings', function (assert) {
     assert.equal(moment.duration({M: -1}).toISOString(), '-P1M', 'one month ago');
     assert.equal(moment.duration({m: -1}).toISOString(), '-PT1M', 'one minute ago');
     assert.equal(moment.duration({s: -0.5}).toISOString(), '-PT0.5S', 'one half second ago');
-    assert.equal(moment.duration({y: -0.5, M: 1}).toISOString(), '-P5M', 'a month after half a year ago');
+    assert.equal(moment.duration({y: -1, M: 1}).toISOString(), '-P11M', 'a month after a year ago');
     assert.equal(moment.duration({}).toISOString(), 'P0D', 'zero duration');
     assert.equal(moment.duration({M: 16, d:40, s: 86465}).toISOString(), 'P1Y4M40DT24H1M5S', 'all fields');
 });
@@ -304,7 +315,7 @@ test('toString acts as toISOString', function (assert) {
     assert.equal(moment.duration({M: -1}).toString(), '-P1M', 'one month ago');
     assert.equal(moment.duration({m: -1}).toString(), '-PT1M', 'one minute ago');
     assert.equal(moment.duration({s: -0.5}).toString(), '-PT0.5S', 'one half second ago');
-    assert.equal(moment.duration({y: -0.5, M: 1}).toString(), '-P5M', 'a month after half a year ago');
+    assert.equal(moment.duration({y: -1, M: 1}).toString(), '-P11M', 'a month after a year ago');
     assert.equal(moment.duration({}).toString(), 'P0D', 'zero duration');
     assert.equal(moment.duration({M: 16, d:40, s: 86465}).toString(), 'P1Y4M40DT24H1M5S', 'all fields');
 });
@@ -594,10 +605,14 @@ test('isDuration', function (assert) {
 test('add', function (assert) {
     var d = moment.duration({months: 4, weeks: 3, days: 2});
     // for some reason, d._data._months does not get updated; use d._months instead.
-    assert.equal(d.add(1, 'month')._months, 5, 'Add months');
-    assert.equal(d.add(5, 'days')._days, 28, 'Add days');
-    assert.equal(d.add(10000)._milliseconds, 10000, 'Add milliseconds');
-    assert.equal(d.add({h: 23, m: 59})._milliseconds, 23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 10000, 'Add hour:minute');
+    d = d.add(1, 'month');
+    assert.equal(d._months, 5, 'Add months');
+    d = d.add(5, 'days');
+    assert.equal(d._days, 28, 'Add days');
+    d = d.add(10000);
+    assert.equal(d._milliseconds, 10000, 'Add milliseconds');
+    d = d.add({h: 23, m: 59});
+    assert.equal(d._milliseconds, 23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 10000, 'Add hour:minute');
 });
 
 test('add and bubble', function (assert) {
@@ -653,10 +668,22 @@ test('subtract and bubble', function (assert) {
 test('subtract', function (assert) {
     var d = moment.duration({months: 2, weeks: 2, days: 0, hours: 5});
     // for some reason, d._data._months does not get updated; use d._months instead.
-    assert.equal(d.subtract(1, 'months')._months, 1, 'Subtract months');
-    assert.equal(d.subtract(14, 'days')._days, 0, 'Subtract days');
-    assert.equal(d.subtract(10000)._milliseconds, 5 * 60 * 60 * 1000 - 10000, 'Subtract milliseconds');
-    assert.equal(d.subtract({h: 1, m: 59})._milliseconds, 3 * 60 * 60 * 1000 + 1 * 60 * 1000 - 10000, 'Subtract hour:minute');
+    d = d.subtract(1, 'months');
+    assert.equal(d._months, 1, 'Subtract months');
+    d = d.subtract(14, 'days');
+    assert.equal(d._days, 0, 'Subtract days');
+    d = d.subtract(10000);
+    assert.equal(d._milliseconds, 5 * 60 * 60 * 1000 - 10000, 'Subtract milliseconds');
+    d = d.subtract({h: 1, m: 59});
+    assert.equal(d._milliseconds, 3 * 60 * 60 * 1000 + 1 * 60 * 1000 - 10000, 'Subtract hour:minute');
+});
+
+test('abs', function (assert) {
+    var d = moment.duration({months: 2, weeks: 2, hours: 5});
+    assert.equal(+d.abs(), +d);
+
+    d = moment.duration({months: -2, weeks: -2, hours: -5});
+    assert.equal(+d.abs(), -d);
 });
 
 test('JSON.stringify duration', function (assert) {

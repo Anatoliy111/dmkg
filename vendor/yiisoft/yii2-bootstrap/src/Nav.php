@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\bootstrap;
@@ -45,8 +45,8 @@ use yii\helpers\ArrayHelper;
  *
  * Note: Multilevel dropdowns beyond Level 1 are not supported in Bootstrap 3.
  *
- * @see http://getbootstrap.com/components/#dropdowns
- * @see http://getbootstrap.com/components/#nav
+ * @see https://getbootstrap.com/docs/3.3/components/#dropdowns
+ * @see https://getbootstrap.com/docs/3.3/components/#nav
  *
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @since 2.0
@@ -63,7 +63,7 @@ class Nav extends Widget
      * - linkOptions: array, optional, the HTML attributes of the item's link.
      * - options: array, optional, the HTML attributes of the item container (LI).
      * - active: bool, optional, whether the item should be on active state or not.
-     * - dropDownOptions: array, optional, the HTML options that will passed to the [[Dropdown]] widget.
+     * - dropdownOptions: array, optional, the HTML options that will passed to the [[Dropdown]] widget.
      * - items: array|string, optional, the configuration array for creating a [[Dropdown]] widget,
      *   or a string representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
      * - encode: bool, optional, whether the label will be HTML-encoded. If set, supersedes the $encodeLabels option for only this item.

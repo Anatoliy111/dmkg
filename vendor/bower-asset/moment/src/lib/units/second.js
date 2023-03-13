@@ -14,10 +14,6 @@ addFormatToken('s', ['ss', 2], 0, 'second');
 
 addUnitAlias('second', 's');
 
-// PRIORITY
-
-addUnitPriority('second', 15);
-
 // PARSING
 
 addRegexToken('s',  match1to2);
@@ -26,4 +22,8 @@ addParseToken(['s', 'ss'], SECOND);
 
 // MOMENTS
 
-export var getSetSecond = makeGetSet('Seconds', false);
+export var getSetSecond = makeGetSet('Seconds', 1000);
+
+// PRIORITY
+
+addUnitPriority('second', 15, getSetSecond);

@@ -6,8 +6,11 @@ import { addWeekParseToken } from '../parse/token';
 import { weekOfYear, weeksInYear, dayOfYearFromWeeks } from './week-calendar-utils';
 import toInt from '../utils/to-int';
 import { hooks } from '../utils/hooks';
-import { createLocal } from '../create/local';
+import { quickCreateLocal } from '../create/from-anything';
 import { createUTCDate } from '../create/date-from-array';
+import { getSetDayOfMonth } from './day-of-month';
+import { getSetMonth } from './month';
+import { getSetYear } from './year';
 
 // FORMATTING
 
@@ -33,11 +36,6 @@ addWeekYearFormatToken('GGGGG', 'isoWeekYear');
 addUnitAlias('weekYear', 'gg');
 addUnitAlias('isoWeekYear', 'GG');
 
-// PRIORITY
-
-addUnitPriority('weekYear', 1);
-addUnitPriority('isoWeekYear', 1);
-
 
 // PARSING
 
@@ -61,7 +59,7 @@ addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
 // MOMENTS
 
 export function getSetWeekYear (input) {
-    return getSetWeekYearHelper.call(this,
+    return getSetWeekYearHelper(this,
             input,
             this.week(),
             this.weekday(),
@@ -70,8 +68,8 @@ export function getSetWeekYear (input) {
 }
 
 export function getSetISOWeekYear (input) {
-    return getSetWeekYearHelper.call(this,
-            input, this.isoWeek(), this.isoWeekday(), 1, 4);
+    return getSetWeekYearHelper(
+        this, input, this.isoWeek(), this.isoWeekday(), 1, 4);
 }
 
 export function getISOWeeksInYear () {
@@ -83,25 +81,34 @@ export function getWeeksInYear () {
     return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
 }
 
-function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+function getSetWeekYearHelper(mom, input, week, weekday, dow, doy) {
     var weeksTarget;
     if (input == null) {
-        return weekOfYear(this, dow, doy).year;
+        return weekOfYear(mom, dow, doy).year;
     } else {
+        if (!mom.isValid()) {
+            return mom;
+        }
         weeksTarget = weeksInYear(input, dow, doy);
         if (week > weeksTarget) {
             week = weeksTarget;
         }
-        return setWeekAll.call(this, input, week, weekday, dow, doy);
+        return setWeekAll(mom, input, week, weekday, dow, doy);
     }
 }
 
-function setWeekAll(weekYear, week, weekday, dow, doy) {
+function setWeekAll(mom, weekYear, week, weekday, dow, doy) {
     var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
-        date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+        date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear),
+        d = new Date(mom._d);
 
-    this.year(date.getUTCFullYear());
-    this.month(date.getUTCMonth());
-    this.date(date.getUTCDate());
-    return this;
+    // TODOv3 -- I guess the generic set method should accept all args that the Date
+    // object accepts.
+    d.setUTCFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    return quickCreateLocal(d.valueOf(), mom._locale, mom._tz);
 }
+
+// PRIORITY
+
+addUnitPriority('weekYear', 1, getSetWeekYear);
+addUnitPriority('isoWeekYear', 1, getSetISOWeekYear);

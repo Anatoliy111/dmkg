@@ -2,8 +2,8 @@
 /**
  * @package   yii2-builder
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   1.6.6
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2022
+ * @version   1.6.9
  */
 
 namespace kartik\builder;
@@ -16,15 +16,17 @@ use kartik\helpers\Html;
 use kartik\form\ActiveForm;
 
 /**
- * A form builder widget for rendering the form attributes using [[ActiveForm]]. The widget uses Bootstrap 3.x styling
- * for generating form styles and multiple field columns.
+ * Form is a builder widget for rendering the form attributes using [[ActiveForm]]. The widget uses Bootstrap
+ * 5.x, 4.x, or 3.x styling (depending on [[bsVersion]]) for generating form styles and multiple field columns.
  *
- * Usage example:
+ * For example,
  *
- * ~~~
+ * ```php
  * use kartik\form\ActiveForm;
  * use kartik\builder\Form;
- * $form = ActiveForm::begin($options); // $options will be your form config array params.
+ *
+ * $options = []; // $options is your ActiveForm configuration
+ * $form = ActiveForm::begin($options);
  * echo Form::widget([
  *     'model' => $model, // your model
  *     'form' => $form,
@@ -36,31 +38,30 @@ use kartik\form\ActiveForm;
  *     ]
  * ]);
  * ActiveForm::end();
- * ~~~
+ * ```
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
- * @since  1.0
  */
 class Form extends BaseForm
 {
     /**
-     * Maximum bootstrap grid width (layout columns count).
+     * @var int maximum bootstrap grid width (layout columns count).
      */
     const GRID_WIDTH = 12;
     /**
-     * [[ActiveFormEvent]] triggered before parsing input.
+     * @var string the [[ActiveFormEvent]] triggered before parsing input.
      */
     const EVENT_BEFORE_PARSE_INPUT = 'eBeforeParseInput';
     /**
-     * [[ActiveFormEvent]] triggered after parsing input.
+     * @var string the [[ActiveFormEvent]] triggered after parsing input.
      */
     const EVENT_AFTER_PARSE_INPUT = 'eAfterParseInput';
     /**
-     * [[ActiveFormEvent]] triggered before rendering sub attribute.
+     * @var string the [[ActiveFormEvent]] triggered before rendering sub attribute.
      */
     const EVENT_BEFORE_RENDER_SUB_ATTR = 'eBeforeRenderSubAttr';
     /**
-     * [[ActiveFormEvent]] triggered after rendering sub attribute.
+     * @var string the [[ActiveFormEvent]] triggered after rendering sub attribute.
      */
     const EVENT_AFTER_RENDER_SUB_ATTR = 'eAfterRenderSubAttr';
 
@@ -80,14 +81,16 @@ class Form extends BaseForm
     public $contentAfter = '';
 
     /**
-     * @var integer the number of columns in which to split the fields horizontally. If not set, defaults to 1 column.
+     * @var int the number of columns in which to split the fields horizontally. If not set, defaults to 1 column.
      */
     public $columns = 1;
 
     /**
      * @var bool whether to use a compact row/column grid layout as supported by Bootstrap 4.x via `form-row` class.
-     * Supported only when [[bsVersion]] = '4.x'
-     * @see https://getbootstrap.com/docs/4.0/components/forms/#form-row
+     * Supported only when [[bsVersion]] = '4.x' or [[bsVersion]] = '5.x'
+     *
+     * @see https://getbootstrap.com/docs/4.6/components/forms/#form-row
+     * @see https://getbootstrap.com/docs/5.1/layout/gutters/#horizontal--vertical-gutters
      */
     public $compactGrid = false;
 
@@ -113,8 +116,9 @@ class Form extends BaseForm
     public $rowOptions = [];
 
     /**
-     * @var array the HTML attributes for the field/attributes container. The following options are additionally
+     * @var array the HTML attributes for the field / attributes container. The following options are additionally
      * recognized:
+     *
      * - `tag`: _string_, the HTML tag for the container. Defaults to `fieldset`.
      */
     public $options = [];
@@ -163,7 +167,7 @@ class Form extends BaseForm
     }
 
     /**
-     * Initializes the widget options
+     * Initializes the [[Form]] widget options.
      */
     protected function initOptions()
     {
@@ -180,13 +184,13 @@ class Form extends BaseForm
             $this->form->bsVersion = $this->bsVersion;
         }
         $this->_fieldsetTag = ArrayHelper::remove($this->options, 'tag', 'fieldset');
-        $isBs4 = $this->isBs4();
-        $this->_labelCss = $isBs4 ? 'col-form-label' : 'control-label';
-        $this->_rowCss = $isBs4 && $this->compactGrid ? 'form-row' : 'row';
+        $notBs3 = !$this->isBs(3);
+        $this->_labelCss = $notBs3 ? 'col-form-label' : 'control-label';
+        $this->_rowCss = $notBs3 && $this->compactGrid ? ($this->isBs(4) ? 'form-row' : 'g-2') : 'row';
     }
 
     /**
-     * Registers widget assets
+     * Registers the client assets for the [[Form]] widget.
      */
     protected function registerAssets()
     {
@@ -210,7 +214,7 @@ class Form extends BaseForm
     }
 
     /**
-     * Renders the field set.
+     * Renders each field set within the form.
      *
      * @return string
      * @throws InvalidConfigException
@@ -245,6 +249,9 @@ class Form extends BaseForm
                 }
                 $colWidth = (int)$colWidth;
                 Html::addCssClass($colOptions, 'col-' . $this->columnSize . '-' . $colWidth);
+                if (ArrayHelper::getValue($colOptions, 'visible', true) === false) {
+                    Html::addCssStyle($colOptions, 'display:none');
+                }
                 $content .= "\t" . $this->beginTag('div', $colOptions, $skip) . "\n";
                 if (!empty($settings['attributes'])) {
                     $this->raise(self::EVENT_BEFORE_RENDER_SUB_ATTR, $attribute, $index, ['settings' => &$settings]);
@@ -292,7 +299,7 @@ class Form extends BaseForm
         $labelSpan = ArrayHelper::getValue($settings, 'labelSpan', $defaultLabelSpan);
         Html::addCssClass($labelOptions, ["col-{$this->columnSize}-{$labelSpan}", $this->_labelCss]);
         $inputSpan = self::GRID_WIDTH - $labelSpan;
-        $rowCss = $this->isBs4() ? ' ' . $this->_rowCss : '';
+        $rowCss = !$this->isBs(3) ? ' ' . $this->_rowCss : '';
         $rowOptions = ['class' => 'kv-nested-attribute-block form-sub-attributes form-group' . $rowCss];
         $inputOptions = ['class' => "col-{$this->columnSize}-{$inputSpan}"];
         return Html::beginTag('div', $rowOptions) . "\n" .
@@ -336,6 +343,11 @@ class Form extends BaseForm
             Html::addCssClass($subColOptions, 'col-' . $this->columnSize . '-' . $subColWidth);
             $subSettings['columnOptions'] = $subColOptions;
             $subSettings['fieldConfig']['skipFormLayout'] = true;
+            if ($this->isBs(5)) {
+                $opts = ArrayHelper::getValue($subSettings['fieldConfig'], 'options', []);
+                Html::addCssClass($opts, ['mb-3', 'g-0']);
+                $subSettings['fieldConfig']['options'] = $opts;
+            }
             $content .= "\t\t" . $this->beginTag('div', $subColOptions) . "\n";
             /** @var integer $index */
             $content .= "\t\t\t" . $this->parseInput($subAttr, $subSettings, $index * 10 + $subIndex) . "\n";
@@ -444,7 +456,7 @@ class Form extends BaseForm
     }
 
     /**
-     * Triggers an [[ActiveFormEvent]].
+     * Triggers and raises an [[ActiveFormEvent]].
      *
      * @param string $event the event name.
      * @param string $attribute the attribute name.

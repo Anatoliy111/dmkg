@@ -1,7 +1,12 @@
-Twitter Bootstrap Extension for Yii 2
-=====================================
+<p align="center">
+    <a href="https://getbootstrap.com/docs/3.4/" target="_blank" rel="external">
+        <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" height="80px">
+    </a>
+    <h1 align="center">Twitter Bootstrap Extension for Yii 2</h1>
+    <br>
+</p>
 
-This is the Twitter Bootstrap extension for [Yii framework 2.0](http://www.yiiframework.com). It encapsulates [Bootstrap](http://getbootstrap.com/) components
+This is the Twitter Bootstrap extension for [Yii framework 2.0](https://www.yiiframework.com). It encapsulates [Bootstrap 3](https://getbootstrap.com/docs/3.4/) components
 and plugins in terms of Yii widgets, and thus makes using Bootstrap components/plugins
 in Yii applications extremely easy.
 
@@ -11,13 +16,13 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-bootstrap/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-bootstrap)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-bootstrap/downloads.png)](https://packagist.org/packages/yiisoft/yii2-bootstrap)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-bootstrap.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-bootstrap)
+[![Build Status](https://github.com/yiisoft/yii2-bootstrap/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-bootstrap/actions)
 
 
 Installation
 ------------
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 
 Either run
 

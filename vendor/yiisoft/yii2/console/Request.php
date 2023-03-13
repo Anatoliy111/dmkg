@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\console;
@@ -71,6 +71,7 @@ class Request extends \yii\base\Request
         }
 
         $params = [];
+        $prevOption = null;
         foreach ($rawParams as $param) {
             if ($endOfOptionsFound) {
                 $params[] = $param;
@@ -84,6 +85,7 @@ class Request extends \yii\base\Request
 
                 if ($name !== Application::OPTION_APPCONFIG) {
                     $params[$name] = isset($matches[2]) ? $matches[2] : true;
+                    $prevOption = &$params[$name];
                 }
             } elseif (preg_match('/^-([\w-]+)(?:=(.*))?$/', $param, $matches)) {
                 $name = $matches[1];
@@ -91,7 +93,11 @@ class Request extends \yii\base\Request
                     $params[] = $param;
                 } else {
                     $params['_aliases'][$name] = isset($matches[2]) ? $matches[2] : true;
+                    $prevOption = &$params['_aliases'][$name];
                 }
+            } elseif ($prevOption === true) {
+                // `--option value` syntax
+                $prevOption = $param;
             } else {
                 $params[] = $param;
             }

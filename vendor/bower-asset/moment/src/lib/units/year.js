@@ -27,10 +27,6 @@ addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
 
 addUnitAlias('year', 'y');
 
-// PRIORITIES
-
-addUnitPriority('year', 1);
-
 // PARSING
 
 addRegexToken('Y',      matchSigned);
@@ -68,8 +64,12 @@ hooks.parseTwoDigitYear = function (input) {
 
 // MOMENTS
 
-export var getSetYear = makeGetSet('FullYear', true);
+export var getSetYear = makeGetSet('FullYear');
 
 export function getIsLeapYear () {
     return isLeapYear(this.year());
 }
+
+// PRIORITIES
+
+addUnitPriority('year', 1, getSetYear);

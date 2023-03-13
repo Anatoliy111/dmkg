@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\console;
@@ -12,6 +12,7 @@ use yii\base\Action;
 use yii\base\InlineAction;
 use yii\base\InvalidRouteException;
 use yii\helpers\Console;
+use yii\helpers\Inflector;
 
 /**
  * Controller is the base class of console command classes.
@@ -27,19 +28,23 @@ use yii\helpers\Console;
  * where `<route>` is a route to a controller action and the params will be populated as properties of a command.
  * See [[options()]] for details.
  *
- * @property string $help This property is read-only.
- * @property string $helpSummary This property is read-only.
- * @property array $passedOptionValues The properties corresponding to the passed options. This property is
- * read-only.
- * @property array $passedOptions The names of the options passed during execution. This property is
- * read-only.
+ * @property-read string $help The help information for this controller.
+ * @property-read string $helpSummary The one-line short summary describing this controller.
+ * @property-read array $passedOptionValues The properties corresponding to the passed options.
+ * @property-read array $passedOptions The names of the options passed during execution.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
 class Controller extends \yii\base\Controller
 {
+    /**
+     * @deprecated since 2.0.13. Use [[ExitCode::OK]] instead.
+     */
     const EXIT_CODE_NORMAL = 0;
+    /**
+     * @deprecated since 2.0.13. Use [[ExitCode::UNSPECIFIED_ERROR]] instead.
+     */
     const EXIT_CODE_ERROR = 1;
 
     /**
@@ -47,7 +52,7 @@ class Controller extends \yii\base\Controller
      */
     public $interactive = true;
     /**
-     * @var bool whether to enable ANSI color in the output.
+     * @var bool|null whether to enable ANSI color in the output.
      * If not set, ANSI color will only be enabled for terminals that support it.
      */
     public $color;
@@ -55,13 +60,31 @@ class Controller extends \yii\base\Controller
      * @var bool whether to display help information about current command.
      * @since 2.0.10
      */
-    public $help;
+    public $help = false;
+    /**
+     * @var bool|null if true - script finish with `ExitCode::OK` in case of exception.
+     * false - `ExitCode::UNSPECIFIED_ERROR`.
+     * Default: `YII_ENV_TEST`
+     * @since 2.0.36
+     */
+    public $silentExitOnException;
 
     /**
      * @var array the options passed during execution.
      */
     private $_passedOptions = [];
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeAction($action)
+    {
+        $silentExit = $this->silentExitOnException !== null ? $this->silentExitOnException : YII_ENV_TEST;
+        Yii::$app->errorHandler->silentExitOnException = $silentExit;
+
+        return parent::beforeAction($action);
+    }
 
     /**
      * Returns a value indicating whether ANSI color is enabled.
@@ -98,15 +121,35 @@ class Controller extends \yii\base\Controller
                     if (array_key_exists($name, $optionAliases)) {
                         $params[$optionAliases[$name]] = $value;
                     } else {
-                        throw new Exception(Yii::t('yii', 'Unknown alias: -{name}', ['name' => $name]));
+                        $message = Yii::t('yii', 'Unknown alias: -{name}', ['name' => $name]);
+                        if (!empty($optionAliases)) {
+                            $aliasesAvailable = [];
+                            foreach ($optionAliases as $alias => $option) {
+                                $aliasesAvailable[] = '-' . $alias . ' (--' . $option . ')';
+                            }
+
+                            $message .= '. ' . Yii::t('yii', 'Aliases available: {aliases}', [
+                                'aliases' => implode(', ', $aliasesAvailable)
+                            ]);
+                        }
+                        throw new Exception($message);
                     }
                 }
                 unset($params['_aliases']);
             }
             foreach ($params as $name => $value) {
+                // Allow camelCase options to be entered in kebab-case
+                if (!in_array($name, $options, true) && strpos($name, '-') !== false) {
+                    $kebabName = $name;
+                    $altName = lcfirst(Inflector::id2camel($kebabName));
+                    if (in_array($altName, $options, true)) {
+                        $name = $altName;
+                    }
+                }
+
                 if (in_array($name, $options, true)) {
                     $default = $this->$name;
-                    if (is_array($default)) {
+                    if (is_array($default) && is_string($value)) {
                         $this->$name = preg_split('/\s*,\s*(?![^()]*\))/', $value);
                     } elseif ($default !== null) {
                         settype($value, gettype($default));
@@ -116,8 +159,16 @@ class Controller extends \yii\base\Controller
                     }
                     $this->_passedOptions[] = $name;
                     unset($params[$name]);
+                    if (isset($kebabName)) {
+                        unset($params[$kebabName]);
+                    }
                 } elseif (!is_int($name)) {
-                    throw new Exception(Yii::t('yii', 'Unknown option: --{name}', ['name' => $name]));
+                    $message = Yii::t('yii', 'Unknown option: --{name}', ['name' => $name]);
+                    if (!empty($options)) {
+                        $message .= '. ' . Yii::t('yii', 'Options available: {options}', ['options' => '--' . implode(', --', $options)]);
+                    }
+
+                    throw new Exception($message);
                 }
             }
         }
@@ -125,6 +176,7 @@ class Controller extends \yii\base\Controller
             $route = $this->getUniqueId() . '/' . $id;
             return Yii::$app->runAction('help', [$route]);
         }
+
         return parent::runAction($id, $params);
     }
 
@@ -146,19 +198,45 @@ class Controller extends \yii\base\Controller
             $method = new \ReflectionMethod($action, 'run');
         }
 
-        $args = array_values($params);
-
+        $args = [];
         $missing = [];
+        $actionParams = [];
+        $requestedParams = [];
         foreach ($method->getParameters() as $i => $param) {
-            if ($param->isArray() && isset($args[$i])) {
-                $args[$i] = preg_split('/\s*,\s*/', $args[$i]);
+            $name = $param->getName();
+            $key = null;
+            if (array_key_exists($i, $params)) {
+                $key = $i;
+            } elseif (array_key_exists($name, $params)) {
+                $key = $name;
             }
-            if (!isset($args[$i])) {
-                if ($param->isDefaultValueAvailable()) {
-                    $args[$i] = $param->getDefaultValue();
+
+            if ($key !== null) {
+                if (PHP_VERSION_ID >= 80000) {
+                    $isArray = ($type = $param->getType()) instanceof \ReflectionNamedType && $type->getName() === 'array';
                 } else {
-                    $missing[] = $param->getName();
+                    $isArray = $param->isArray();
                 }
+                if ($isArray) {
+                    $params[$key] = $params[$key] === '' ? [] : preg_split('/\s*,\s*/', $params[$key]);
+                }
+                $args[] = $actionParams[$key] = $params[$key];
+                unset($params[$key]);
+            } elseif (
+                PHP_VERSION_ID >= 70100
+                && ($type = $param->getType()) !== null
+                && $type instanceof \ReflectionNamedType
+                && !$type->isBuiltin()
+            ) {
+                try {
+                    $this->bindInjectedParams($type, $name, $args, $requestedParams);
+                } catch (\yii\base\Exception $e) {
+                    throw new Exception($e->getMessage());
+                }
+            } elseif ($param->isDefaultValueAvailable()) {
+                $args[] = $actionParams[$i] = $param->getDefaultValue();
+            } else {
+                $missing[] = $name;
             }
         }
 
@@ -166,11 +244,16 @@ class Controller extends \yii\base\Controller
             throw new Exception(Yii::t('yii', 'Missing required arguments: {params}', ['params' => implode(', ', $missing)]));
         }
 
-        return $args;
+        // We use a different array here, specifically one that doesn't contain service instances but descriptions instead.
+        if (\Yii::$app->requestedParams === null) {
+            \Yii::$app->requestedParams = array_merge($actionParams, $requestedParams);
+        }
+
+        return array_merge($args, $params);
     }
 
     /**
-     * Formats a string with ANSI codes
+     * Formats a string with ANSI codes.
      *
      * You may pass additional parameters using the constants defined in [[\yii\helpers\Console]].
      *
@@ -190,11 +273,12 @@ class Controller extends \yii\base\Controller
             array_shift($args);
             $string = Console::ansiFormat($string, $args);
         }
+
         return $string;
     }
 
     /**
-     * Prints a string to STDOUT
+     * Prints a string to STDOUT.
      *
      * You may optionally format the string with ANSI codes by
      * passing additional parameters using the constants defined in [[\yii\helpers\Console]].
@@ -206,6 +290,7 @@ class Controller extends \yii\base\Controller
      * ```
      *
      * @param string $string the string to print
+     * @param int ...$args additional parameters to decorate the output
      * @return int|bool Number of bytes printed or false on error
      */
     public function stdout($string)
@@ -215,11 +300,12 @@ class Controller extends \yii\base\Controller
             array_shift($args);
             $string = Console::ansiFormat($string, $args);
         }
+
         return Console::stdout($string);
     }
 
     /**
-     * Prints a string to STDERR
+     * Prints a string to STDERR.
      *
      * You may optionally format the string with ANSI codes by
      * passing additional parameters using the constants defined in [[\yii\helpers\Console]].
@@ -231,6 +317,7 @@ class Controller extends \yii\base\Controller
      * ```
      *
      * @param string $string the string to print
+     * @param int ...$args additional parameters to decorate the output
      * @return int|bool Number of bytes printed or false on error
      */
     public function stderr($string)
@@ -240,11 +327,12 @@ class Controller extends \yii\base\Controller
             array_shift($args);
             $string = Console::ansiFormat($string, $args);
         }
+
         return fwrite(\STDERR, $string);
     }
 
     /**
-     * Prompts the user for input and validates it
+     * Prompts the user for input and validates it.
      *
      * @param string $text prompt string
      * @param array $options the options to validate the input:
@@ -335,7 +423,7 @@ class Controller extends \yii\base\Controller
     public function options($actionID)
     {
         // $actionId might be used in subclasses to provide options specific to action id
-        return ['color', 'interactive', 'help'];
+        return ['color', 'interactive', 'help', 'silentExitOnException'];
     }
 
     /**
@@ -351,7 +439,7 @@ class Controller extends \yii\base\Controller
     public function optionAliases()
     {
         return [
-            'h' => 'help'
+            'h' => 'help',
         ];
     }
 
@@ -369,6 +457,7 @@ class Controller extends \yii\base\Controller
         foreach ($this->options($this->action->id) as $property) {
             $properties[$property] = $this->$property;
         }
+
         return $properties;
     }
 
@@ -383,7 +472,7 @@ class Controller extends \yii\base\Controller
     }
 
     /**
-     * Returns the properties corresponding to the passed options
+     * Returns the properties corresponding to the passed options.
      *
      * @return array the properties corresponding to the passed options
      */
@@ -393,6 +482,7 @@ class Controller extends \yii\base\Controller
         foreach ($this->_passedOptions as $property) {
             $properties[$property] = $this->$property;
         }
+
         return $properties;
     }
 
@@ -428,6 +518,10 @@ class Controller extends \yii\base\Controller
      */
     public function getActionHelpSummary($action)
     {
+        if ($action === null) {
+            return $this->ansiFormat(Yii::t('yii', 'Action not found.'), Console::FG_RED);
+        }
+
         return $this->parseDocCommentSummary($this->getActionMethodReflection($action));
     }
 
@@ -443,63 +537,81 @@ class Controller extends \yii\base\Controller
 
     /**
      * Returns the help information for the anonymous arguments for the action.
+     *
      * The returned value should be an array. The keys are the argument names, and the values are
      * the corresponding help information. Each value must be an array of the following structure:
      *
-     * - required: boolean, whether this argument is required.
-     * - type: string, the PHP type of this argument.
-     * - default: string, the default value of this argument
-     * - comment: string, the comment of this argument
+     * - required: bool, whether this argument is required
+     * - type: string|null, the PHP type(s) of this argument
+     * - default: mixed, the default value of this argument
+     * - comment: string, the description of this argument
      *
-     * The default implementation will return the help information extracted from the doc-comment of
-     * the parameters corresponding to the action method.
+     * The default implementation will return the help information extracted from the Reflection or
+     * DocBlock of the parameters corresponding to the action method.
      *
-     * @param Action $action
+     * @param Action $action the action instance
      * @return array the help information of the action arguments
      */
     public function getActionArgsHelp($action)
     {
         $method = $this->getActionMethodReflection($action);
+
         $tags = $this->parseDocCommentTags($method);
-        $params = isset($tags['param']) ? (array) $tags['param'] : [];
+        $tags['param'] = isset($tags['param']) ? (array) $tags['param'] : [];
+        $phpDocParams = [];
+        foreach ($tags['param'] as $i => $tag) {
+            if (preg_match('/^(?<type>\S+)(\s+\$(?<name>\w+))?(?<comment>.*)/us', $tag, $matches) === 1) {
+                $key = empty($matches['name']) ? $i : $matches['name'];
+                $phpDocParams[$key] = ['type' => $matches['type'], 'comment' => $matches['comment']];
+            }
+        }
+        unset($tags);
 
         $args = [];
 
-        /** @var \ReflectionParameter $reflection */
-        foreach ($method->getParameters() as $i => $reflection) {
-            if ($reflection->getClass() !== null) {
-                continue;
+        /** @var \ReflectionParameter $parameter */
+        foreach ($method->getParameters() as $i => $parameter) {
+            $type = null;
+            $comment = '';
+            if (PHP_MAJOR_VERSION > 5 && $parameter->hasType()) {
+                $reflectionType = $parameter->getType();
+                if (PHP_VERSION_ID >= 70100) {
+                    $types = method_exists($reflectionType, 'getTypes') ? $reflectionType->getTypes() : [$reflectionType];
+                    foreach ($types as $key => $reflectionType) {
+                        $types[$key] = $reflectionType->getName();
+                    }
+                    $type = implode('|', $types);
+                } else {
+                    $type = (string) $reflectionType;
+                }
             }
-            $name = $reflection->getName();
-            $tag = isset($params[$i]) ? $params[$i] : '';
-            if (preg_match('/^(\S+)\s+(\$\w+\s+)?(.*)/s', $tag, $matches)) {
-                $type = $matches[1];
-                $comment = $matches[3];
-            } else {
-                $type = null;
-                $comment = $tag;
+            // find PhpDoc tag by property name or position
+            $key = isset($phpDocParams[$parameter->name]) ? $parameter->name : (isset($phpDocParams[$i]) ? $i : null);
+            if ($key !== null) {
+                $comment = $phpDocParams[$key]['comment'];
+                if ($type === null && !empty($phpDocParams[$key]['type'])) {
+                    $type = $phpDocParams[$key]['type'];
+                }
             }
-            if ($reflection->isDefaultValueAvailable()) {
-                $args[$name] = [
-                    'required' => false,
-                    'type' => $type,
-                    'default' => $reflection->getDefaultValue(),
-                    'comment' => $comment,
-                ];
-            } else {
-                $args[$name] = [
-                    'required' => true,
-                    'type' => $type,
-                    'default' => null,
-                    'comment' => $comment,
-                ];
+            // if type still not detected, then using type of default value
+            if ($type === null && $parameter->isDefaultValueAvailable() && $parameter->getDefaultValue() !== null) {
+                $type = gettype($parameter->getDefaultValue());
             }
+
+            $args[$parameter->name] = [
+                'required' => !$parameter->isOptional(),
+                'type' => $type,
+                'default' => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null,
+                'comment' => $comment,
+            ];
         }
+
         return $args;
     }
 
     /**
      * Returns the help information for the options for the action.
+     *
      * The returned value should be an array. The keys are the option names, and the values are
      * the corresponding help information. Each value must be an array of the following structure:
      *
@@ -529,6 +641,10 @@ class Controller extends \yii\base\Controller
             }
             $defaultValue = $property->getValue($this);
             $tags = $this->parseDocCommentTags($property);
+
+            // Display camelCase options in kebab-case
+            $name = Inflector::camel2id($name, '-', true);
+
             if (isset($tags['var']) || isset($tags['property'])) {
                 $doc = isset($tags['var']) ? $tags['var'] : $tags['property'];
                 if (is_array($doc)) {
@@ -554,6 +670,7 @@ class Controller extends \yii\base\Controller
                 ];
             }
         }
+
         return $options;
     }
 
@@ -561,7 +678,7 @@ class Controller extends \yii\base\Controller
 
     /**
      * @param Action $action
-     * @return \ReflectionMethod
+     * @return \ReflectionFunctionAbstract
      */
     protected function getActionMethodReflection($action)
     {
@@ -572,18 +689,19 @@ class Controller extends \yii\base\Controller
                 $this->_reflections[$action->id] = new \ReflectionMethod($action, 'run');
             }
         }
+
         return $this->_reflections[$action->id];
     }
 
     /**
      * Parses the comment block into tags.
-     * @param \Reflector $reflection the comment block
+     * @param \ReflectionClass|\ReflectionProperty|\ReflectionFunctionAbstract $reflection the comment block
      * @return array the parsed tags
      */
     protected function parseDocCommentTags($reflection)
     {
         $comment = $reflection->getDocComment();
-        $comment = "@description \n" . strtr(trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($comment, '/'))), "\r", '');
+        $comment = "@description \n" . strtr(trim(preg_replace('/^\s*\**([ \t])?/m', '', trim($comment, '/'))), "\r", '');
         $parts = preg_split('/^\s*@/m', $comment, -1, PREG_SPLIT_NO_EMPTY);
         $tags = [];
         foreach ($parts as $part) {
@@ -598,13 +716,14 @@ class Controller extends \yii\base\Controller
                 }
             }
         }
+
         return $tags;
     }
 
     /**
      * Returns the first line of docblock.
      *
-     * @param \Reflector $reflection
+     * @param \ReflectionClass|\ReflectionProperty|\ReflectionFunctionAbstract $reflection
      * @return string
      */
     protected function parseDocCommentSummary($reflection)
@@ -613,24 +732,26 @@ class Controller extends \yii\base\Controller
         if (isset($docLines[1])) {
             return trim($docLines[1], "\t *");
         }
+
         return '';
     }
 
     /**
      * Returns full description from the docblock.
      *
-     * @param \Reflector $reflection
+     * @param \ReflectionClass|\ReflectionProperty|\ReflectionFunctionAbstract $reflection
      * @return string
      */
     protected function parseDocCommentDetail($reflection)
     {
-        $comment = strtr(trim(preg_replace('/^\s*\**( |\t)?/m', '', trim($reflection->getDocComment(), '/'))), "\r", '');
+        $comment = strtr(trim(preg_replace('/^\s*\**([ \t])?/m', '', trim($reflection->getDocComment(), '/'))), "\r", '');
         if (preg_match('/^\s*@\w+/m', $comment, $matches, PREG_OFFSET_CAPTURE)) {
             $comment = trim(substr($comment, 0, $matches[0][1]));
         }
         if ($comment !== '') {
             return rtrim(Console::renderColoredString(Console::markdownToAnsi($comment)));
         }
+
         return '';
     }
 }

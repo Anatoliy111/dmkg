@@ -7,7 +7,7 @@ import toInt from '../utils/to-int';
 import isArray from '../utils/is-array';
 import indexOf from '../utils/index-of';
 import hasOwnProp from '../utils/has-own-prop';
-import { createUTC } from '../create/utc';
+import { createUTC } from '../create/constructors';
 import getParsingFlags from '../create/parsing-flags';
 
 // FORMATTING
@@ -34,11 +34,6 @@ addFormatToken('E', 0, 0, 'isoWeekday');
 addUnitAlias('day', 'd');
 addUnitAlias('weekday', 'e');
 addUnitAlias('isoWeekday', 'E');
-
-// PRIORITY
-addUnitPriority('day', 11);
-addUnitPriority('weekday', 11);
-addUnitPriority('isoWeekday', 11);
 
 // PARSING
 
@@ -100,7 +95,8 @@ function parseIsoWeekday(input, locale) {
 export var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
 export function localeWeekdays (m, format) {
     if (!m) {
-        return this._weekdays;
+        return isArray(this._weekdays) ? this._weekdays :
+            this._weekdays['standalone'];
     }
     return isArray(this._weekdays) ? this._weekdays[m.day()] :
         this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
@@ -226,7 +222,7 @@ export function getSetDayOfWeek (input) {
     if (!this.isValid()) {
         return input != null ? this : NaN;
     }
-    var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+    var day = this._d.getUTCDay();
     if (input != null) {
         input = parseWeekday(input, this.localeData());
         return this.add(input - day, 'd');
@@ -361,3 +357,9 @@ function computeWeekdaysParse () {
     this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
     this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
 }
+
+// PRIORITY
+
+addUnitPriority('day', 11, getSetDayOfWeek);
+addUnitPriority('weekday', 11, getSetLocaleDayOfWeek);
+addUnitPriority('isoWeekday', 11, getSetISODayOfWeek);

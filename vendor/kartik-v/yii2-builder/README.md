@@ -1,11 +1,26 @@
-yii2-builder
-============
+<h1 align="center">
+    <a href="http://demos.krajee.com" title="Krajee Demos" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/krajee-logo-b.png" alt="Krajee Logo"/>
+    </a>
+    <br>
+    yii2-builder
+    <hr>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DTP3NZQ6G2AYU"
+       title="Donate via Paypal" target="_blank"><img height="60" src="https://kartik-v.github.io/bootstrap-fileinput-samples/samples/donate.png" alt="Donate"/></a>
+    &nbsp; &nbsp; &nbsp;
+    <a href="https://www.buymeacoffee.com/kartikv" title="Buy me a coffee" ><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="60" alt="kartikv" /></a>
+</h1>
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/kartik-v/yii2-builder.svg)](https://packagist.org/packages/kartik-v/yii2-builder)
+<div align="center">
+
+[![Latest Stable Version](https://poser.pugx.org/kartik-v/yii2-builder/v/stable)](https://packagist.org/packages/kartik-v/yii2-builder)
+[![Latest Unstable Version](https://poser.pugx.org/kartik-v/yii2-builder/v/unstable)](https://packagist.org/packages/kartik-v/yii2-builder)
 [![License](https://poser.pugx.org/kartik-v/yii2-builder/license)](https://packagist.org/packages/kartik-v/yii2-builder)
 [![Total Downloads](https://poser.pugx.org/kartik-v/yii2-builder/downloads)](https://packagist.org/packages/kartik-v/yii2-builder)
 [![Monthly Downloads](https://poser.pugx.org/kartik-v/yii2-builder/d/monthly)](https://packagist.org/packages/kartik-v/yii2-builder)
 [![Daily Downloads](https://poser.pugx.org/kartik-v/yii2-builder/d/daily)](https://packagist.org/packages/kartik-v/yii2-builder)
+
+</div>
 
 A form builder extension that allows you to build both single view and multi-view/tabular forms for Yii Framework 2.0. The extension contains these widgets:
 
@@ -13,12 +28,13 @@ A form builder extension that allows you to build both single view and multi-vie
 - FormGrid
 - TabularForm
 
-> NOTE: This extension depends on the [kartik-v/yii2-widgets](https://github.com/kartik-v/yii2-widgets) extension, which in turn depends on the
-[yiisoft/yii2-bootstrap](https://github.com/yiisoft/yii2/tree/master/extensions/bootstrap) extension. Check the 
-[composer.json](https://github.com/kartik-v/yii2-builder/blob/master/composer.json) for this extension's requirements and dependencies. 
+> NOTE: Check the [composer.json](https://github.com/kartik-v/yii2-builder/blob/master/composer.json) for this extension's requirements and dependencies. 
 
 ## Latest Release
-The latest version of the module is v1.6.2. Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-builder/blob/master/CHANGE.md) for details.
+Refer the [CHANGE LOG](https://github.com/kartik-v/yii2-builder/blob/master/CHANGE.md) for details on changes to various releases.
+
+## Docs & Demo
+You can see detailed [docs & demos](http://demos.krajee.com/builder-details/form) and the API [code documentation](https://docs.krajee.com/kartik-builder-form) on usage of the extension.
 
 ## Form
 
@@ -27,12 +43,12 @@ The latest version of the module is v1.6.2. Refer the [CHANGE LOG](https://githu
 The Form Builder widget allows you to build a form through a configuration array. Key features available:
 
 - Configure your form fields from a model extending `yii\base\model` or `yii\db\ActiveRecord`.
-- Ability to support various Bootstrap 3.x form layouts. Uses the advanced [`kartik\widgets\ActiveForm`](http://demos.krajee.com/widget-details/active-form).
+- Ability to support various Bootstrap form layouts. Uses the advanced [`kartik\widgets\ActiveForm`](http://demos.krajee.com/widget-details/active-form).
 - Use Bootstrap column/builder layout styling by just supplying `columns` property.
 - Build complex layouts (for example single, double, or multi columns in the same layout) - by reusing the widget for building your attributes.
 - Tweak ActiveForm defaults to control field options, styles, templates, and layouts.
 - Configure your own hints to display below each active field attribute.
-- Various Bootstrap 3.x styling features are available by default. However, one can easily customize and theme it to one's liking using any CSS framework.
+- Various Bootstrap styling features are available by default. However, one can easily customize and theme it to one's liking using any CSS framework.
 - Supports and renders HTML input types (uses [`kartik\widgets\ActiveField`](http://demos.krajee.com/widget-details/active-field)) including input widgets and more:
     - `INPUT_TEXT` or `textInput`
     - `INPUT_TEXTAREA` or `textarea`
@@ -52,8 +68,6 @@ The Form Builder widget allows you to build a form through a configuration array
     - `INPUT_STATIC` or `staticInput`
     - `INPUT_HIDDEN_STATIC` or `hiddenStaticInput`
     - `INPUT_RAW` or `raw` (any free text or html markup)
-
-Refer the [documentation](http://demos.krajee.com/builder-details/form) for more details.
 
 ## FormGrid
 
@@ -76,8 +90,8 @@ The tabular form allows you to update information from multiple models (typicall
 - Allows you to highlight and select table rows
 - Allows you to add and configure action buttons for each row.
 - Configure your own hints to display below each active field attribute.
-- Various Bootstrap 3.x styling features are available by default. However, one can easily customize and theme it to one's liking using any CSS framework.
-- Advanced table styling, columns, and layout configuration by using the features available in the [`kartik\builder\GridView`]([`kartik\widgets\ActiveForm`](http://demos.krajee.com/builder) widget.
+- Various Bootstrap styling features are available by default. However, one can easily customize and theme it to one's liking using any CSS framework.
+- Advanced table styling, columns, and layout configuration by using the features available in the [`kartik\builder\GridView`](http://demos.krajee.com/grid) and the [`kartik\widgets\ActiveForm`](http://demos.krajee.com/builder) widget.
 - One can easily read and manage the tabular input data using the `loadMultiple` and `validateMultiple` functions in `yii\base\Model`.
 
 > NOTE: The TabularForm widget depends on and uses the [yii2-grid](http://demos.krajee.com/grid) module. Hence, the `gridview` module needs to be setup in your Yii configuration file.
@@ -184,6 +198,7 @@ ActiveForm::end();
 use kartik\builder\TabularForm;
 $form = ActiveForm::begin();
 echo TabularForm::widget([
+    'bsVersion' => '4.x',
     'form' => $form,
     'dataProvider' => $dataProvider,
     'attributes' => [
@@ -209,21 +224,21 @@ echo TabularForm::widget([
     'gridSettings' => [
         'floatHeader' => true,
         'panel' => [
-            'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Manage Books</h3>',
+            'heading' => '<i class="fas fa-book"></i> Manage Books',
             'type' => GridView::TYPE_PRIMARY,
             'after'=> 
                 Html::a(
-                    '<i class="glyphicon glyphicon-plus"></i> Add New', 
+                    '<i class="fas fa-plus"></i> Add New', 
                     $createUrl, 
                     ['class'=>'btn btn-success']
                 ) . '&nbsp;' . 
                 Html::a(
-                    '<i class="glyphicon glyphicon-remove"></i> Delete', 
+                    '<i class="fas fa-times"></i> Delete', 
                     $deleteUrl, 
                     ['class'=>'btn btn-danger']
                 ) . '&nbsp;' .
                 Html::submitButton(
-                    '<i class="glyphicon glyphicon-floppy-disk"></i> Save', 
+                    '<i class="fas fa-save"></i> Save', 
                     ['class'=>'btn btn-primary']
                 )
         ]
@@ -234,4 +249,4 @@ ActiveForm::end();
 
 ## License
 
-**yii2-builder** is released under the BSD 3-Clause License. See the bundled `LICENSE.md` for details.
+**yii2-builder** is released under the BSD-3-Clause License. See the bundled `LICENSE.md` for details.

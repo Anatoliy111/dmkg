@@ -1,4 +1,5 @@
 import { module, test } from '../qunit';
+import { dstTimeZone } from '../helpers/dst-time-zone';
 import moment from '../../moment';
 
 module('start and end of units');
@@ -311,85 +312,53 @@ test('end of second', function (assert) {
 test('startOf across DST +1', function (assert) {
     var oldUpdateOffset = moment.updateOffset,
         // Based on a real story somewhere in America/Los_Angeles
-        dstAt = moment('2014-03-09T02:00:00-08:00').parseZone(),
-        m;
+        dstAt = moment.parseZone('2014-03-09T02:00:00-08:00'),
+        m,
+        tz = dstTimeZone(-8, dstAt, -7);
 
-    moment.updateOffset = function (mom, keepTime) {
-        if (mom.isBefore(dstAt)) {
-            mom.utcOffset(-8, keepTime);
-        } else {
-            mom.utcOffset(-7, keepTime);
-        }
-    };
+    m = moment.zoned('2014-03-15T00:00:00-07:00', tz);
+    assert.equal(m.startOf('y').format(), '2014-01-01T00:00:00-08:00', 'startOf(\'year\') across +1');
+    assert.equal(m.startOf('M').format(), '2014-03-01T00:00:00-08:00', 'startOf(\'month\') across +1');
 
-    m = moment('2014-03-15T00:00:00-07:00').parseZone();
-    m.startOf('y');
-    assert.equal(m.format(), '2014-01-01T00:00:00-08:00', 'startOf(\'year\') across +1');
+    m = moment.zoned('2014-03-09T09:00:00-07:00', tz);
+    assert.equal(m.startOf('d').format(), '2014-03-09T00:00:00-08:00', 'startOf(\'day\') across +1');
 
-    m = moment('2014-03-15T00:00:00-07:00').parseZone();
-    m.startOf('M');
-    assert.equal(m.format(), '2014-03-01T00:00:00-08:00', 'startOf(\'month\') across +1');
+    m = moment.zoned('2014-03-09T03:05:00-07:00', tz);
+    assert.equal(m.startOf('h').format(), '2014-03-09T03:00:00-07:00', 'startOf(\'hour\') after +1');
 
-    m = moment('2014-03-09T09:00:00-07:00').parseZone();
-    m.startOf('d');
-    assert.equal(m.format(), '2014-03-09T00:00:00-08:00', 'startOf(\'day\') across +1');
-
-    m = moment('2014-03-09T03:05:00-07:00').parseZone();
-    m.startOf('h');
-    assert.equal(m.format(), '2014-03-09T03:00:00-07:00', 'startOf(\'hour\') after +1');
-
-    m = moment('2014-03-09T01:35:00-08:00').parseZone();
-    m.startOf('h');
-    assert.equal(m.format(), '2014-03-09T01:00:00-08:00', 'startOf(\'hour\') before +1');
+    m = moment.zoned('2014-03-09T01:35:00-08:00', tz);
+    assert.equal(m.startOf('h').format(), '2014-03-09T01:00:00-08:00', 'startOf(\'hour\') before +1');
 
     // There is no such time as 2:30-7 to try startOf('hour') across that
-
-    moment.updateOffset = oldUpdateOffset;
 });
 
 test('startOf across DST -1', function (assert) {
     var oldUpdateOffset = moment.updateOffset,
         // Based on a real story somewhere in America/Los_Angeles
-        dstAt = moment('2014-11-02T02:00:00-07:00').parseZone(),
-        m;
+        dstAt = moment.parseZone('2014-11-02T02:00:00-07:00'),
+        m,
+        tz = dstTimeZone(-7, dstAt, -8);
 
-    moment.updateOffset = function (mom, keepTime) {
-        if (mom.isBefore(dstAt)) {
-            mom.utcOffset(-7, keepTime);
-        } else {
-            mom.utcOffset(-8, keepTime);
-        }
-    };
+    m = moment.zoned('2014-11-15T00:00:00-08:00', tz);
+    assert.equal(m.startOf('y').format(), '2014-01-01T00:00:00-07:00', 'startOf(\'year\') across -1');
+    assert.equal(m.startOf('M').format(), '2014-11-01T00:00:00-07:00', 'startOf(\'month\') across -1');
 
-    m = moment('2014-11-15T00:00:00-08:00').parseZone();
-    m.startOf('y');
-    assert.equal(m.format(), '2014-01-01T00:00:00-07:00', 'startOf(\'year\') across -1');
-
-    m = moment('2014-11-15T00:00:00-08:00').parseZone();
-    m.startOf('M');
-    assert.equal(m.format(), '2014-11-01T00:00:00-07:00', 'startOf(\'month\') across -1');
-
-    m = moment('2014-11-02T09:00:00-08:00').parseZone();
-    m.startOf('d');
-    assert.equal(m.format(), '2014-11-02T00:00:00-07:00', 'startOf(\'day\') across -1');
+    m = moment.zoned('2014-11-02T09:00:00-08:00', tz);
+    assert.equal(m.startOf('d').format(), '2014-11-02T00:00:00-07:00', 'startOf(\'day\') across -1');
 
     // note that utc offset is -8
-    m = moment('2014-11-02T01:30:00-08:00').parseZone();
-    m.startOf('h');
-    assert.equal(m.format(), '2014-11-02T01:00:00-08:00', 'startOf(\'hour\') after +1');
+    m = moment.zoned('2014-11-02T01:30:00-08:00', tz);
+    assert.equal(m.startOf('h').format(), '2014-11-02T01:00:00-08:00', 'startOf(\'hour\') after +1');
 
     // note that utc offset is -7
-    m = moment('2014-11-02T01:30:00-07:00').parseZone();
-    m.startOf('h');
-    assert.equal(m.format(), '2014-11-02T01:00:00-07:00', 'startOf(\'hour\') before +1');
-
-    moment.updateOffset = oldUpdateOffset;
+    m = moment.zoned('2014-11-02T01:30:00-07:00', tz);
+    assert.equal(m.startOf('h').format(), '2014-11-02T01:00:00-07:00', 'startOf(\'hour\') before +1');
 });
 
 test('endOf millisecond and no-arg', function (assert) {
     var m = moment();
-    assert.equal(+m, +m.clone().endOf(), 'endOf without argument should change time');
-    assert.equal(+m, +m.clone().endOf('ms'), 'endOf with ms argument should change time');
-    assert.equal(+m, +m.clone().endOf('millisecond'), 'endOf with millisecond argument should change time');
-    assert.equal(+m, +m.clone().endOf('milliseconds'), 'endOf with milliseconds argument should change time');
+    assert.equal(+m, +m.endOf(), 'endOf without argument should not change time');
+    assert.equal(+m, +m.endOf('ms'), 'endOf with ms argument should not change time');
+    assert.equal(+m, +m.endOf('millisecond'), 'endOf with millisecond argument should not change time');
+    assert.equal(+m, +m.endOf('milliseconds'), 'endOf with milliseconds argument should not change time');
 });

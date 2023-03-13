@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2022
  * @package yii2-tabs-x
- * @version 1.2.7
+ * @version 1.2.9
  */
 
 namespace kartik\tabs;
@@ -20,10 +20,13 @@ use kartik\base\PluginAssetBundle;
  */
 class TabsXAsset extends PluginAssetBundle
 {
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->setSourcePath('@vendor/kartik-v/bootstrap-tabs-x');
-        $this->setupAssets('css', ['css/bootstrap-tabs-x' . ($this->isBs4() ? '-bs4' : '')]);
+        $this->setupAssets('css', ['css/bootstrap-tabs-x' . (!$this->isBs(3) ? '-bs4' : '')]);
         $this->setupAssets('js', ['js/bootstrap-tabs-x']);
         parent::init();
     }

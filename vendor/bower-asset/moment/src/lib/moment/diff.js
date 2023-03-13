@@ -1,6 +1,7 @@
 import absFloor from '../utils/abs-floor';
-import { cloneWithOffset } from '../units/offset';
+import { changeTimezone } from '../units/offset';
 import { normalizeUnits } from '../units/aliases';
+import { momentize } from '../create/constructors';
 
 export function diff (input, units, asFloat) {
     var that,
@@ -11,7 +12,7 @@ export function diff (input, units, asFloat) {
         return NaN;
     }
 
-    that = cloneWithOffset(input, this);
+    that = changeTimezone(momentize(input), this._tz);
 
     if (!that.isValid()) {
         return NaN;
@@ -44,15 +45,15 @@ function monthDiff (a, b) {
     // difference in months
     var wholeMonthDiff = ((b.year() - a.year()) * 12) + (b.month() - a.month()),
         // b is in (anchor - 1 month, anchor + 1 month)
-        anchor = a.clone().add(wholeMonthDiff, 'months'),
+        anchor = a.add(wholeMonthDiff, 'months'),
         anchor2, adjust;
 
     if (b - anchor < 0) {
-        anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
+        anchor2 = a.add(wholeMonthDiff - 1, 'months');
         // linear across the month
         adjust = (b - anchor) / (anchor - anchor2);
     } else {
-        anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
+        anchor2 = a.add(wholeMonthDiff + 1, 'months');
         // linear across the month
         adjust = (b - anchor) / (anchor2 - anchor);
     }

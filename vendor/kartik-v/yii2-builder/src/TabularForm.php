@@ -3,13 +3,14 @@
 /**
  * @package   yii2-builder
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   1.6.6
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2022
+ * @version   1.6.9
  */
 
 namespace kartik\builder;
 
 use Closure;
+use Exception;
 use kartik\form\ActiveForm;
 use kartik\grid\GridView;
 use Yii;
@@ -26,47 +27,50 @@ use yii\i18n\Formatter;
  * TabularForm builder widget allows easy way to configure tabular form layouts with ability to implement various input
  * types and input widgets. It works with and is complemented by [[ActiveForm]] and [[GridView]] functionality .
  *
- * Usage example:
+ * For example,
  *
- * ```
- *   use kartik\form\ActiveForm;
- *   use kartik\builder\TabularForm;
- *   $form = ActiveForm::begin($options); // $options is array for your form config
- *   echo TabularForm::widget([
- *       'model' => $model, // your model
- *       'form' => $form,
- *       'gridSettings' => [
- *           'toolbar' => \yii\helpers\Html::submitButton('Submit')
- *       ],
- *       'attributes' => [
- *           'id' => ['type' => TabularForm::INPUT_STATIC],
- *           'name' => ['type' => TabularForm::INPUT_TEXT],
- *           'description' => ['type' => TabularForm::INPUT_TEXT],
- *           'status' => ['type' => TabularForm::INPUT_CHECKBOX, 'enclosedByLabel' => true],
- *       ]
- *   ]);
- *   ActiveForm::end();
- * ```
+ * ```php
+ * use kartik\form\ActiveForm;
+ * use kartik\builder\TabularForm;
  *
- * Most of each of the properties in the attribute settings array (except `label` & `columnOptions`) can be also setup
- * as a [[Closure]] callback i.e. `function ($model, $key, $index, $widget)`. For example:
- *
- * ```
+ * $options = []; // $options is your ActiveForm configuration
+ * $form = ActiveForm::begin($options);
  * echo TabularForm::widget([
- *       'model' => $model, // your model
- *       'form' => $form,
- *       'attributes' => [
- *           'id' => [
- *              'type' => function($model, $key, $index, $widget) {
- *                  return (!$model->active) ? TabularForm::INPUT_HIDDEN : TabularForm::INPUT_STATIC]
- *              }
- *           ],
- *       ]
+ *     'model' => $model, // your model
+ *     'form' => $form,
+ *     'gridSettings' => [
+ *         'toolbar' => \yii\helpers\Html::submitButton('Submit')
+ *     ],
+ *     'attributes' => [
+ *         'id' => ['type' => TabularForm::INPUT_STATIC],
+ *         'name' => ['type' => TabularForm::INPUT_TEXT],
+ *         'description' => ['type' => TabularForm::INPUT_TEXT],
+ *         'status' => ['type' => TabularForm::INPUT_CHECKBOX, 'enclosedByLabel' => true],
+ *     ]
+ * ]);
+ * ActiveForm::end();
+ * ```
+ *
+ * Most of each of the properties in the attribute settings array (except `label` & `columnOptions`) can also be setup
+ * as a [[Closure]] callback i.e. `function ($model, $key, $index, $widget)`.
+ *
+ * For example,
+ *
+ * ```php
+ * echo TabularForm::widget([
+ *     'model' => $model, // your model
+ *     'form' => $form,
+ *     'attributes' => [
+ *         'id' => [
+ *             'type' => function($model, $key, $index, $widget) {
+ *                 return (!$model->active) ? TabularForm::INPUT_HIDDEN : TabularForm::INPUT_STATIC]
+ *             }
+ *         ],
+ *     ]
  * ]);
  * ```
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
- * @since  1.0
  */
 class TabularForm extends BaseForm
 {
@@ -89,11 +93,11 @@ class TabularForm extends BaseForm
     /**
      * @var string the CSS class to apply to a row when the row is selected.
      */
-    public $rowSelectedClass = GridView::TYPE_DANGER;
+    public $rowSelectedClass;
 
     /**
      * @var string the namespaced GridView class name. Defaults to '\kartik\grid\GridView'. Any other class set here
-     * must extend from '\kartik\grid\GridView'.
+     * must extend from [[kartik\grid\GridView]] class.
      */
     public $gridClass;
 
@@ -186,6 +190,9 @@ class TabularForm extends BaseForm
     public function init()
     {
         parent::init();
+        if (!isset($this->rowSelectedClass)) {
+            $this->rowSelectedClass = $this->getCssClass(GridView::BS_TABLE_DANGER);
+        }
         $dp = static::slash(BaseDataProvider::class);
         if (empty($this->dataProvider) || !$this->dataProvider instanceof BaseDataProvider) {
             throw new InvalidConfigException(
@@ -211,7 +218,7 @@ class TabularForm extends BaseForm
     }
 
     /**
-     * Initializes the widget options
+     * Initializes the [[TabularForm]] widget options
      */
     protected function initOptions()
     {
@@ -225,7 +232,7 @@ class TabularForm extends BaseForm
     }
 
     /**
-     * Initializes special columns
+     * Initializes special columns for the [[TabularForm]] grid view.
      *
      * @param string $type the grid column type (one of 'serial', 'action', 'checkbox')
      */
@@ -247,9 +254,10 @@ class TabularForm extends BaseForm
     /**
      * Checks if a grid column is set correctly.
      *
-     * @param string $type the grid column type (one of 'serial', 'action', 'checkbox').
+     * @param  string  $type  the grid column type (one of 'serial', 'action', 'checkbox').
      *
      * @return boolean whether the column is set.
+     * @throws Exception
      */
     protected function isColumnSet($type)
     {
@@ -306,7 +314,7 @@ class TabularForm extends BaseForm
      * @param Formatter $formatter the formatter instance.
      *
      * @return string the generated static input.
-     * @throws InvalidConfigException
+     * @throws Exception
      */
     protected function getStaticInput($type, $model, $index, $settings, $attribute, $formatter)
     {
@@ -339,10 +347,11 @@ class TabularForm extends BaseForm
     /**
      * Generates a cell value.
      *
-     * @param string $attribute the model attribute.
-     * @param mixed  $settings the configuration for the attribute.
+     * @param  string  $attribute  the model attribute.
+     * @param  mixed  $settings  the configuration for the attribute.
      *
-     * @return string the parsed cell value.
+     * @return Closure the parsed cell value.
+     * @throws Exception
      */
     protected function getCellValue($attribute, $settings)
     {
@@ -382,6 +391,25 @@ class TabularForm extends BaseForm
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function renderRawActiveInput($form, $model, $attribute, $settings)
+    {
+        if ($this->isBs(5)) {
+            $fieldConfig = ArrayHelper::getValue($settings, 'fieldConfig', []);
+            $opts = ArrayHelper::getValue($fieldConfig, 'options', []);
+            if (empty($opts) || empty($opts['class'])) {
+                $opts['class'] = 'mb-0';
+            } else {
+                Html::removeCssClass($opts, 'mb-3');
+            }
+            $fieldConfig['options'] = $opts;
+            $settings['fieldConfig'] = $fieldConfig;
+        }
+        return parent::renderRawActiveInput($form, $model, $attribute, $settings);
+    }
+
+    /**
      * Initializes the data columns.
      *
      * @throws InvalidConfigException
@@ -396,9 +424,9 @@ class TabularForm extends BaseForm
             $settings['label'] = false;
             $columnOptions = ArrayHelper::getValue($settings, 'columnOptions', []);
             if (!$this->staticOnly && isset($settings['type']) && $settings['type'] === self::INPUT_RAW) {
-                $value = $settings['value'];
+                $content = $settings['value'];
             } else {
-                $value = $this->getCellValue($attribute, $settings);
+                $content = $this->getCellValue($attribute, $settings);
             }
             // auto alignment for certain input types - if the `type` is setup as a Closure, then the
             // following condition will not work, and one would need to set the alignment manually.
@@ -409,7 +437,7 @@ class TabularForm extends BaseForm
                 ['vAlign' => $alignMiddle ? GridView::ALIGN_MIDDLE : GridView::ALIGN_TOP],
                 $columnOptions,
                 $label,
-                ['attribute' => $attribute, 'value' => $value, 'format' => 'raw']
+                ['attribute' => $attribute, 'content' => $content, 'format' => 'raw']
             );
         }
     }
@@ -418,7 +446,7 @@ class TabularForm extends BaseForm
      * Render the grid content.
      *
      * @return string the rendered gridview
-     * @throws \Exception
+     * @throws Exception
      */
     protected function renderGrid()
     {

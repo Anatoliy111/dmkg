@@ -29,9 +29,9 @@ import {
     monthsShortRegex
 } from '../units/month';
 
-proto.months            =        localeMonths;
-proto.monthsShort       =        localeMonthsShort;
-proto.monthsParse       =        localeMonthsParse;
+proto.months            = localeMonths;
+proto.monthsShort       = localeMonthsShort;
+proto.monthsParse       = localeMonthsParse;
 proto.monthsRegex       = monthsRegex;
 proto.monthsShortRegex  = monthsShortRegex;
 
@@ -53,14 +53,14 @@ import {
     weekdaysMinRegex
 } from '../units/day-of-week';
 
-proto.weekdays       =        localeWeekdays;
-proto.weekdaysMin    =        localeWeekdaysMin;
-proto.weekdaysShort  =        localeWeekdaysShort;
-proto.weekdaysParse  =        localeWeekdaysParse;
+proto.weekdays       = localeWeekdays;
+proto.weekdaysMin    = localeWeekdaysMin;
+proto.weekdaysShort  = localeWeekdaysShort;
+proto.weekdaysParse  = localeWeekdaysParse;
 
-proto.weekdaysRegex       =        weekdaysRegex;
-proto.weekdaysShortRegex  =        weekdaysShortRegex;
-proto.weekdaysMinRegex    =        weekdaysMinRegex;
+proto.weekdaysRegex       = weekdaysRegex;
+proto.weekdaysShortRegex  = weekdaysShortRegex;
+proto.weekdaysMinRegex    = weekdaysMinRegex;
 
 // Hours
 import { localeIsPM, localeMeridiem } from '../units/hour';

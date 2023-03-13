@@ -14,10 +14,6 @@ addFormatToken('m', ['mm', 2], 0, 'minute');
 
 addUnitAlias('minute', 'm');
 
-// PRIORITY
-
-addUnitPriority('minute', 14);
-
 // PARSING
 
 addRegexToken('m',  match1to2);
@@ -26,4 +22,8 @@ addParseToken(['m', 'mm'], MINUTE);
 
 // MOMENTS
 
-export var getSetMinute = makeGetSet('Minutes', false);
+export var getSetMinute = makeGetSet('Minutes', 60 * 1000);
+
+// PRIORITY
+
+addUnitPriority('minute', 14, getSetMinute);

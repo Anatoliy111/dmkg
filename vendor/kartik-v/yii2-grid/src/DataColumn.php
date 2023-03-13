@@ -3,13 +3,16 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   3.2.9
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2023
+ * @version   3.5.1
  */
 
 namespace kartik\grid;
 
 use Closure;
+use Exception;
+use kartik\base\Widget;
+use yii\base\InvalidConfigException;
 use yii\grid\DataColumn as YiiDataColumn;
 use kartik\base\Config;
 use yii\helpers\Html;
@@ -211,7 +214,7 @@ class DataColumn extends YiiDataColumn
 
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -239,6 +242,7 @@ class DataColumn extends YiiDataColumn
         $this->parseGrouping($options, $model, $key, $index);
         $this->parseExcelFormats($options, $model, $key, $index);
         $this->initPjax($this->_clientScript);
+
         return Html::tag('td', $this->renderDataCellContent($model, $key, $index), $options);
     }
 
@@ -246,14 +250,14 @@ class DataColumn extends YiiDataColumn
      * Renders filter inputs based on the `filterType`
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     protected function renderFilterCellContent()
     {
         $content = parent::renderFilterCellContent();
-        $chkType = !empty($this->filterType) && $this->filterType !== GridView::FILTER_CHECKBOX &&
-            $this->filterType !== GridView::FILTER_RADIO && !class_exists($this->filterType);
-        if ($this->filter === false || empty($this->filterType) || $content === $this->grid->emptyCell || $chkType) {
+        if ($this->filter === false || empty($this->filterType) || $content === $this->grid->emptyCell || 
+            (class_exists($this->filterType) && $this->isFilterEqual(GridView::FILTER_CHECKBOX) && $this->isFilterEqual
+                (GridView::FILTER_RADIO))) {
             return $content;
         }
         $widgetClass = $this->filterType;
@@ -264,12 +268,12 @@ class DataColumn extends YiiDataColumn
         ];
         if (is_array($this->filter)) {
             if (Config::isInputWidget($this->filterType) && $this->grid->pjax) {
-                $options['pjaxContainerId'] = $this->grid->pjaxSettings['options']['id'];
+                $options['pjaxContainerId'] = $this->grid->getPjaxContainerId();
             }
-            if ($this->filterType === GridView::FILTER_SELECT2 || $this->filterType === GridView::FILTER_TYPEAHEAD) {
+            if ($this->isFilterEqual(GridView::FILTER_SELECT2) || $this->isFilterEqual(GridView::FILTER_TYPEAHEAD)) {
                 $options['data'] = $this->filter;
             }
-            if ($this->filterType === GridView::FILTER_RADIO) {
+            if ($this->isFilterEqual(GridView::FILTER_RADIO)) {
                 return Html::activeRadioList(
                     $this->grid->filterModel,
                     $this->attribute,
@@ -278,11 +282,39 @@ class DataColumn extends YiiDataColumn
                 );
             }
         }
-        if ($this->filterType === GridView::FILTER_CHECKBOX) {
+        if ($this->isFilterEqual(GridView::FILTER_CHECKBOX)) {
             return Html::activeCheckbox($this->grid->filterModel, $this->attribute, $this->filterInputOptions);
         }
         $options = array_replace_recursive($this->filterWidgetOptions, $options);
-        /** @var \kartik\base\Widget $widgetClass */
+
+        /** @var Widget $widgetClass */
         return $widgetClass::widget($options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function renderHeaderCellContent()
+    {
+        if ($this->header !== null || $this->label === null && $this->attribute === null) {
+            return parent::renderHeaderCellContent();
+        }
+
+        $label = $this->getHeaderCellLabel();
+        if ($this->encodeLabel) {
+            $label = Html::encode($label);
+        }
+
+        if ($this->attribute !== null && $this->enableSorting &&
+            ($sort = $this->grid->dataProvider->getSort()) !== false && $sort->hasAttribute($this->attribute)) {
+            if (($direction = $sort->getAttributeOrder($this->attribute)) !== null) {
+                $label .= Html::tag('span', $this->grid->sorterIcons[$direction], ['class' => 'kv-sort-icon']);
+                Html::addCssClass($this->sortLinkOptions, 'kv-sort-link');
+            }
+
+            return $sort->link($this->attribute, array_merge($this->sortLinkOptions, ['label' => $label]));
+        }
+
+        return $label;
     }
 }

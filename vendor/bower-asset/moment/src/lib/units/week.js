@@ -4,7 +4,6 @@ import { addUnitPriority } from './priorities';
 import { addRegexToken, match1to2, match2 } from '../parse/regex';
 import { addWeekParseToken } from '../parse/token';
 import toInt from '../utils/to-int';
-import { createLocal } from '../create/local';
 import { weekOfYear } from './week-calendar-utils';
 
 // FORMATTING
@@ -16,11 +15,6 @@ addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
 
 addUnitAlias('week', 'w');
 addUnitAlias('isoWeek', 'W');
-
-// PRIORITIES
-
-addUnitPriority('week', 5);
-addUnitPriority('isoWeek', 5);
 
 // PARSING
 
@@ -65,3 +59,8 @@ export function getSetISOWeek (input) {
     var week = weekOfYear(this, 1, 4).week;
     return input == null ? week : this.add((input - week) * 7, 'd');
 }
+
+// PRIORITIES
+
+addUnitPriority('week', 5, getSetWeek);
+addUnitPriority('isoWeek', 5, getSetISOWeek);

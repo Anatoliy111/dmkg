@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 if (version_compare(PHP_VERSION, '4.3', '<')) {
@@ -17,7 +17,7 @@ if (version_compare(PHP_VERSION, '4.3', '<')) {
  * Example:
  *
  * ```php
- * require_once('path/to/YiiRequirementChecker.php');
+ * require_once 'path/to/YiiRequirementChecker.php';
  * $requirementsChecker = new YiiRequirementChecker();
  * $requirements = array(
  *     array(
@@ -57,6 +57,11 @@ if (version_compare(PHP_VERSION, '4.3', '<')) {
 class YiiRequirementChecker
 {
     /**
+     * @var Check result
+     */
+    public $result;
+
+    /**
      * Check the given requirements, collecting results into internal field.
      * This method can be invoked several times checking different requirement sets.
      * Use [[getResult()]] or [[render()]] to get the results.
@@ -68,7 +73,7 @@ class YiiRequirementChecker
     function check($requirements)
     {
         if (is_string($requirements)) {
-            $requirements = require($requirements);
+            $requirements = require $requirements;
         }
         if (!is_array($requirements)) {
             $this->usageError('Requirements must be an array, "' . gettype($requirements) . '" has been given!');
@@ -247,8 +252,7 @@ class YiiRequirementChecker
             return (int) $verboseSize;
         }
         $sizeUnit = trim($verboseSize, '0123456789');
-        $size = str_replace($sizeUnit, '', $verboseSize);
-        $size = trim($size);
+        $size = trim(str_replace($sizeUnit, '', $verboseSize));
         if (!is_numeric($size)) {
             return 0;
         }
@@ -296,9 +300,9 @@ class YiiRequirementChecker
      * This method includes the view file as a PHP script
      * and captures the display result if required.
      * @param string $_viewFile_ view file
-     * @param array $_data_ data to be extracted and made available to the view file
+     * @param array|null $_data_ data to be extracted and made available to the view file
      * @param bool $_return_ whether the rendering result should be returned as a string
-     * @return string the rendering result. Null if the rendering result is not required.
+     * @return string|null the rendering result. Null if the rendering result is not required.
      */
     function renderViewFile($_viewFile_, $_data_ = null, $_return_ = false)
     {
@@ -311,11 +315,11 @@ class YiiRequirementChecker
         if ($_return_) {
             ob_start();
             ob_implicit_flush(false);
-            require($_viewFile_);
+            require $_viewFile_;
 
             return ob_get_clean();
         } else {
-            require($_viewFile_);
+            require $_viewFile_;
         }
     }
 

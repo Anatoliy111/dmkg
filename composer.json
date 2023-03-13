@@ -29,7 +29,8 @@
         "kartik-v/yii2-widget-switchinput": "*",
         "kartik-v/yii2-widget-growl": "*",
         "bogdaan/viber-bot-php": "dev-master",
-        "monolog/monolog": "1.x-dev"
+        "monolog/monolog": "1.x-dev",
+        "mdmsoft/yii2-admin": "dev-master#e9cc1d8adc as 2.8-p1"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
@@ -63,5 +64,10 @@
           "type": "composer",
            "url": "https://asset-packagist.org"
      }
-     ]
+     ],
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    }
 }

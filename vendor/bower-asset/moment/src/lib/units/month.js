@@ -1,3 +1,4 @@
+import { Moment } from '../moment/constructor';
 import { get } from '../moment/get-set';
 import hasOwnProp from '../utils/has-own-prop';
 import { addFormatToken } from '../format/format';
@@ -11,8 +12,9 @@ import toInt from '../utils/to-int';
 import isArray from '../utils/is-array';
 import isNumber from '../utils/is-number';
 import indexOf from '../utils/index-of';
-import { createUTC } from '../create/utc';
+import { quickCreateLocal } from '../create/from-anything';
 import getParsingFlags from '../create/parsing-flags';
+import { createUTC } from '../create/constructors';
 
 export function daysInMonth(year, month) {
     return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
@@ -35,10 +37,6 @@ addFormatToken('MMMM', 0, 0, function (format) {
 // ALIASES
 
 addUnitAlias('month', 'M');
-
-// PRIORITY
-
-addUnitPriority('month', 8);
 
 // PARSING
 
@@ -71,7 +69,8 @@ var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
 export var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
 export function localeMonths (m, format) {
     if (!m) {
-        return this._months;
+        return isArray(this._months) ? this._months :
+            this._months['standalone'];
     }
     return isArray(this._months) ? this._months[m.month()] :
         this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
@@ -80,7 +79,8 @@ export function localeMonths (m, format) {
 export var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
 export function localeMonthsShort (m, format) {
     if (!m) {
-        return this._monthsShort;
+        return isArray(this._monthsShort) ? this._monthsShort :
+            this._monthsShort['standalone'];
     }
     return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
         this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
@@ -168,7 +168,7 @@ export function localeMonthsParse (monthName, format, strict) {
 // MOMENTS
 
 export function setMonth (mom, value) {
-    var dayOfMonth;
+    var d;
 
     if (!mom.isValid()) {
         // No op
@@ -187,16 +187,19 @@ export function setMonth (mom, value) {
         }
     }
 
-    dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
-    mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
-    return mom;
+    d = new Date(mom._d);
+    smartSetUTCMonth(d, value);
+    return quickCreateLocal(d.valueOf(), mom._locale, mom._tz);
+}
+
+export function smartSetUTCMonth(d, month) {
+    var dayOfMonth = Math.min(d.getUTCDate(), daysInMonth(d.getUTCFullYear(), month));
+    d.setUTCMonth(month, dayOfMonth);
 }
 
 export function getSetMonth (value) {
     if (value != null) {
-        setMonth(this, value);
-        hooks.updateOffset(this, true);
-        return this;
+        return setMonth(this, value);
     } else {
         return get(this, 'Month');
     }
@@ -279,3 +282,7 @@ function computeMonthsParse () {
     this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
 }
+
+// PRIORITY
+
+addUnitPriority('month', 8, getSetMonth);

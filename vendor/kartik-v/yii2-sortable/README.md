@@ -1,7 +1,18 @@
-yii2-sortable
-=============
+<h1 align="center">
+    <a href="http://demos.krajee.com" title="Krajee Demos" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/krajee-logo-b.png" alt="Krajee Logo"/>
+    </a>
+    <br>
+    yii2-sortable
+    <hr>
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DTP3NZQ6G2AYU"
+       title="Donate via Paypal" target="_blank">
+        <img src="http://kartik-v.github.io/bootstrap-fileinput-samples/samples/donate.png" alt="Donate"/>
+    </a>
+</h1>
 
-[![Latest Stable Version](https://poser.pugx.org/kartik-v/yii2-sortable/v/stable)](https://packagist.org/packages/kartik-v/yii2-sortable)
+[![Stable Version](https://poser.pugx.org/kartik-v/yii2-widget-sortable/v/stable)](https://packagist.org/packages/kartik-v/yii2-widget-sortable)
+[![Unstable Version](https://poser.pugx.org/kartik-v/yii2-widget-sortable/v/unstable)](https://packagist.org/packages/kartik-v/yii2-widget-sortable)
 [![License](https://poser.pugx.org/kartik-v/yii2-sortable/license)](https://packagist.org/packages/kartik-v/yii2-sortable)
 [![Total Downloads](https://poser.pugx.org/kartik-v/yii2-sortable/downloads)](https://packagist.org/packages/kartik-v/yii2-sortable)
 [![Monthly Downloads](https://poser.pugx.org/kartik-v/yii2-sortable/d/monthly)](https://packagist.org/packages/kartik-v/yii2-sortable)
@@ -58,4 +69,4 @@ echo Sortable::widget([
 
 ## License
 
-**yii2-sortable** is released under the BSD 3-Clause License. See the bundled `LICENSE.md` for details.
+**yii2-sortable** is released under the BSD-3-Clause License. See the bundled `LICENSE.md` for details.

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\bootstrap;
@@ -47,7 +47,7 @@ use yii\helpers\ArrayHelper;
  * ]);
  * ```
  *
- * @see http://getbootstrap.com/javascript/#collapse
+ * @see https://getbootstrap.com/javascript/#collapse
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @since 2.0
  */
@@ -97,7 +97,7 @@ class Collapse extends Widget
      */
     public $autoCloseItems = true;
     /**
-     * @var string the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
+     * @var array the HTML options for the item toggle tag. Key 'tag' might be used here for the tag name specification.
      * For example:
      *
      * ```php
@@ -184,11 +184,21 @@ class Collapse extends Widget
                 $header = Html::encode($header);
             }
 
+            $active = false;
+            if (isset($options['class'])) {
+                $classes = is_string($options['class']) ? preg_split('/\s+/', $options['class'], -1, PREG_SPLIT_NO_EMPTY) : $options['class'];
+                $active = in_array('in', $classes, true);
+            }
+
             $itemToggleOptions = array_merge([
                 'tag' => 'a',
                 'data-toggle' => 'collapse',
             ], $this->itemToggleOptions);
             Html::addCssClass($itemToggleOptions, ['widget' => 'collapse-toggle']);
+
+            if (!$active) {
+                Html::addCssClass($itemToggleOptions, ['collapsed' => 'collapsed']);
+            }
 
             if ($this->autoCloseItems) {
                 $itemToggleOptions['data-parent'] = '#' . $this->options['id'];

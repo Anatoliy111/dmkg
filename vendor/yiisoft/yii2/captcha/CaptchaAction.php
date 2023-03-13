@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\captcha;
@@ -17,7 +17,7 @@ use yii\web\Response;
  * CaptchaAction renders a CAPTCHA image.
  *
  * CaptchaAction is used together with [[Captcha]] and [[\yii\captcha\CaptchaValidator]]
- * to provide the [CAPTCHA](http://en.wikipedia.org/wiki/Captcha) feature.
+ * to provide the [CAPTCHA](https://en.wikipedia.org/wiki/CAPTCHA) feature.
  *
  * By configuring the properties of CaptchaAction, you may customize the appearance of
  * the generated CAPTCHA images, such as the font color, the background color, etc.
@@ -31,7 +31,7 @@ use yii\web\Response;
  *    to be validated by the 'captcha' validator.
  * 3. In the controller view, insert a [[Captcha]] widget in the form.
  *
- * @property string $verifyCode The verification code. This property is read-only.
+ * @property-read string $verifyCode The verification code.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
@@ -87,11 +87,11 @@ class CaptchaAction extends Action
      */
     public $offset = -2;
     /**
-     * @var string the TrueType font file. This can be either a file path or path alias.
+     * @var string the TrueType font file. This can be either a file path or [path alias](guide:concept-aliases).
      */
     public $fontFile = '@yii/captcha/SpicyRice.ttf';
     /**
-     * @var string the fixed verification code. When this property is set,
+     * @var string|null the fixed verification code. When this property is set,
      * [[getVerifyCode()]] will always return the value of this property.
      * This is mainly used in automated tests where we want to be able to reproduce
      * the same verification code each time we run the tests.
@@ -99,7 +99,7 @@ class CaptchaAction extends Action
      */
     public $fixedVerifyCode;
     /**
-     * @var string the rendering library to use. Currently supported only 'gd' and 'imagick'.
+     * @var string|null the rendering library to use. Currently supported only 'gd' and 'imagick'.
      * If not set, library will be determined automatically.
      * @since 2.0.7
      */
@@ -132,13 +132,14 @@ class CaptchaAction extends Action
                 'hash2' => $this->generateValidationHash(strtolower($code)),
                 // we add a random 'v' parameter so that FireFox can refresh the image
                 // when src attribute of image tag is changed
-                'url' => Url::to([$this->id, 'v' => uniqid()]),
+                'url' => Url::to([$this->id, 'v' => uniqid('', true)]),
             ];
-        } else {
-            $this->setHttpHeaders();
-            Yii::$app->response->format = Response::FORMAT_RAW;
-            return $this->renderImage($this->getVerifyCode());
         }
+
+        $this->setHttpHeaders();
+        Yii::$app->response->format = Response::FORMAT_RAW;
+
+        return $this->renderImage($this->getVerifyCode());
     }
 
     /**
@@ -149,7 +150,7 @@ class CaptchaAction extends Action
     public function generateValidationHash($code)
     {
         for ($h = 0, $i = strlen($code) - 1; $i >= 0; --$i) {
-            $h += ord($code[$i]);
+            $h += ord($code[$i]) << $i;
         }
 
         return $h;
@@ -190,7 +191,7 @@ class CaptchaAction extends Action
         $session = Yii::$app->getSession();
         $session->open();
         $name = $this->getSessionKey() . 'count';
-        $session[$name] = $session[$name] + 1;
+        $session[$name] += 1;
         if ($valid || $session[$name] > $this->testLimit && $this->testLimit > 0) {
             $this->getVerifyCode(true);
         }
@@ -213,16 +214,17 @@ class CaptchaAction extends Action
         if ($this->maxLength > 20) {
             $this->maxLength = 20;
         }
-        $length = mt_rand($this->minLength, $this->maxLength);
+
+        $length = random_int($this->minLength, $this->maxLength);
 
         $letters = 'bcdfghjklmnpqrstvwxyz';
         $vowels = 'aeiou';
         $code = '';
         for ($i = 0; $i < $length; ++$i) {
-            if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {
-                $code .= $vowels[mt_rand(0, 4)];
+            if ($i % 2 && random_int(0, 10) > 2 || !($i % 2) && random_int(0, 10) > 9) {
+                $code .= $vowels[random_int(0, 4)];
             } else {
-                $code .= $letters[mt_rand(0, 20)];
+                $code .= $letters[random_int(0, 20)];
             }
         }
 
@@ -255,9 +257,9 @@ class CaptchaAction extends Action
             return $this->renderImageByGD($code);
         } elseif ($imageLibrary === 'imagick') {
             return $this->renderImageByImagick($code);
-        } else {
-            throw new InvalidConfigException("Defined library '{$imageLibrary}' is not supported");
         }
+
+        throw new InvalidConfigException("Defined library '{$imageLibrary}' is not supported");
     }
 
     /**
@@ -297,8 +299,8 @@ class CaptchaAction extends Action
         $x = 10;
         $y = round($this->height * 27 / 40);
         for ($i = 0; $i < $length; ++$i) {
-            $fontSize = (int) (mt_rand(26, 32) * $scale * 0.8);
-            $angle = mt_rand(-10, 10);
+            $fontSize = (int) (random_int(26, 32) * $scale * 0.8);
+            $angle = random_int(-10, 10);
             $letter = $code[$i];
             $box = imagettftext($image, $fontSize, $angle, $x, $y, $foreColor, $this->fontFile, $letter);
             $x = $box[2] + $this->offset;
@@ -340,9 +342,9 @@ class CaptchaAction extends Action
         for ($i = 0; $i < $length; ++$i) {
             $draw = new \ImagickDraw();
             $draw->setFont($this->fontFile);
-            $draw->setFontSize((int) (mt_rand(26, 32) * $scale * 0.8));
+            $draw->setFontSize((int) (random_int(26, 32) * $scale * 0.8));
             $draw->setFillColor($foreColor);
-            $image->annotateImage($draw, $x, $y, mt_rand(-10, 10), $code[$i]);
+            $image->annotateImage($draw, $x, $y, random_int(-10, 10), $code[$i]);
             $fontMetrics = $image->queryFontMetrics($draw, $code[$i]);
             $x += (int) $fontMetrics['textWidth'] + $this->offset;
         }

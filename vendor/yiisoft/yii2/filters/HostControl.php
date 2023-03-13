@@ -1,14 +1,15 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\filters;
 
 use Yii;
 use yii\base\ActionFilter;
+use yii\helpers\StringHelper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -44,7 +45,7 @@ use yii\web\NotFoundHttpException;
  *     {
  *         return [
  *             'hostControl' => [
- *                 'class' => HostControl::className(),
+ *                 'class' => HostControl::class,
  *                 'allowedHosts' => [
  *                     'example.com',
  *                     '*.example.com',
@@ -90,7 +91,7 @@ class HostControl extends ActionFilter
      */
     public $allowedHosts;
     /**
-     * @var callable a callback that will be called if the current host does not match [[allowedHosts]].
+     * @var callable|null a callback that will be called if the current host does not match [[allowedHosts]].
      * If not set, [[denyAccess()]] will be called.
      *
      * The signature of the callback should be as follows:
@@ -106,7 +107,7 @@ class HostControl extends ActionFilter
      */
     public $denyCallback;
     /**
-     * @var string|null fallback host info (e.g. `http://www.yiiframework.com`) used when [[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid.
+     * @var string|null fallback host info (e.g. `https://www.yiiframework.com`) used when [[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid.
      * This value will replace [[\yii\web\Request::$hostInfo|Request::$hostInfo]] before [[$denyCallback]] is called to make sure that
      * an invalid host will not be used for further processing. You can set it to `null` to leave [[\yii\web\Request::$hostInfo|Request::$hostInfo]] untouched.
      * Default value is empty string (this will result creating relative URLs instead of absolute).
@@ -116,7 +117,7 @@ class HostControl extends ActionFilter
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function beforeAction($action)
     {
@@ -129,13 +130,13 @@ class HostControl extends ActionFilter
         }
 
         if (!is_array($allowedHosts) && !$allowedHosts instanceof \Traversable) {
-            $allowedHosts = (array)$allowedHosts;
+            $allowedHosts = (array) $allowedHosts;
         }
 
         $currentHost = Yii::$app->getRequest()->getHostName();
 
         foreach ($allowedHosts as $allowedHost) {
-            if (fnmatch($allowedHost, $currentHost)) {
+            if (StringHelper::matchWildcard($allowedHost, $currentHost)) {
                 return true;
             }
         }

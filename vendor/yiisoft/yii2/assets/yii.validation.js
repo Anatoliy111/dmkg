@@ -3,9 +3,9 @@
  *
  * This JavaScript module provides the validation methods for the built-in validators.
  *
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
@@ -24,7 +24,7 @@ yii.validation = (function ($) {
             var valid = false;
             if (options.requiredValue === undefined) {
                 var isString = typeof value == 'string' || value instanceof String;
-                if (options.strict && value !== undefined || !options.strict && !pub.isEmpty(isString ? $.trim(value) : value)) {
+                if (options.strict && value !== undefined || !options.strict && !pub.isEmpty(isString ? trimString(value) : value)) {
                     valid = true;
                 }
             } else if (!options.strict && value == options.requiredValue || options.strict && value === options.requiredValue) {
@@ -236,13 +236,27 @@ yii.validation = (function ($) {
             }
         },
 
-        trim: function ($form, attribute, options) {
+        trim: function ($form, attribute, options, value) {
             var $input = $form.find(attribute.input);
-            var value = $input.val();
-            if (!options.skipOnEmpty || !pub.isEmpty(value)) {
-                value = $.trim(value);
+            if ($input.is(':checkbox, :radio')) {
+                return value;
+            }
+
+            value = $input.val();
+            if (
+                (!options.skipOnEmpty || !pub.isEmpty(value))
+                && (!options.skipOnArray || !Array.isArray(value))
+            ) {
+                if (Array.isArray(value)) {
+                    for (var i = 0; i < value.length; i++) {
+                        value[i] = trimString(value[i], options);
+                    }
+                } else {
+                    value = trimString(value, options);
+                }
                 $input.val(value);
             }
+
             return value;
         },
 
@@ -256,14 +270,14 @@ yii.validation = (function ($) {
             hash = hash == null ? options.hash : hash[options.caseSensitive ? 0 : 1];
             var v = options.caseSensitive ? value : value.toLowerCase();
             for (var i = v.length - 1, h = 0; i >= 0; --i) {
-                h += v.charCodeAt(i);
+                h += v.charCodeAt(i) << i;
             }
             if (h != hash) {
                 pub.addMessage(messages, options.message, value);
             }
         },
 
-        compare: function (value, messages, options) {
+        compare: function (value, messages, options, $form) {
             if (options.skipOnEmpty && pub.isEmpty(value)) {
                 return;
             }
@@ -273,12 +287,16 @@ yii.validation = (function ($) {
             if (options.compareAttribute === undefined) {
                 compareValue = options.compareValue;
             } else {
-                compareValue = $('#' + options.compareAttribute).val();
+                var $target = $('#' + options.compareAttribute);
+                if (!$target.length) {
+                    $target = $form.find('[name="' + options.compareAttributeName + '"]');
+                }
+                compareValue = $target.val();
             }
 
             if (options.type === 'number') {
-                value = parseFloat(value);
-                compareValue = parseFloat(compareValue);
+                value = value ? parseFloat(value) : 0;
+                compareValue = compareValue ? parseFloat(compareValue) : 0;
             }
             switch (options.operator) {
                 case '==':
@@ -367,7 +385,15 @@ yii.validation = (function ($) {
             return [];
         }
 
-        var files = $(attribute.input, attribute.$form).get(0).files;
+        var fileInput = $(attribute.input, attribute.$form).get(0);
+
+        // Skip validation if file input does not exist
+        // (in case file inputs are added dynamically and no file input has been added to the form)
+        if (typeof fileInput === "undefined") {
+            return [];
+        }
+
+        var files = fileInput.files;
         if (!files) {
             messages.push(options.message);
             return [];
@@ -377,6 +403,7 @@ yii.validation = (function ($) {
             if (!options.skipOnEmpty) {
                 messages.push(options.uploadRequired);
             }
+
             return [];
         }
 
@@ -390,10 +417,18 @@ yii.validation = (function ($) {
 
     function validateFile(file, messages, options) {
         if (options.extensions && options.extensions.length > 0) {
-            var index = file.name.lastIndexOf('.');
-            var ext = !~index ? '' : file.name.substr(index + 1, file.name.length).toLowerCase();
+            var found = false;
+            var filename = file.name.toLowerCase();
 
-            if (!~options.extensions.indexOf(ext)) {
+            for (var index=0; index < options.extensions.length; index++) {
+                var ext = options.extensions[index].toLowerCase();
+                if ((ext === '' && filename.indexOf('.') === -1) || (filename.substr(filename.length - options.extensions[index].length - 1) === ('.' + ext))) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
                 messages.push(options.wrongExtension.replace(/\{file\}/g, file.name));
             }
         }
@@ -439,6 +474,26 @@ yii.validation = (function ($) {
         if (options.maxHeight && image.height > options.maxHeight) {
             messages.push(options.overHeight.replace(/\{file\}/g, file.name));
         }
+    }
+
+    /**
+     * PHP: `trim($path, ' /')`, JS: `yii.helpers.trim(path, {chars: ' /'})`
+     */
+    function trimString(value, options = {skipOnEmpty: true, chars: null}) {
+        if (options.skipOnEmpty !== false && pub.isEmpty(value)) {
+            return value;
+        }
+
+        value = new String(value);
+        if (options.chars || !String.prototype.trim) {
+            var chars = !options.chars
+                ? ' \\s\xA0'
+                : options.chars.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\$1');
+
+            return value.replace(new RegExp('^[' + chars + ']+|[' + chars + ']+$', 'g'), '');
+        }
+
+        return value.trim();
     }
 
     return pub;

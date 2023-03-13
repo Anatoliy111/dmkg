@@ -1,36 +1,37 @@
 import { module, test } from '../qunit';
 import moment from '../../moment';
+import { dstTimeZone } from '../helpers/dst-time-zone';
 
 module('utc offset');
 
 test('setter / getter blackbox', function (assert) {
     var m = moment([2010]);
 
-    assert.equal(m.clone().utcOffset(0).utcOffset(), 0, 'utcOffset 0');
+    assert.equal(m.utcOffset(0).utcOffset(), 0, 'utcOffset 0');
 
-    assert.equal(m.clone().utcOffset(1).utcOffset(), 60, 'utcOffset 1 is 60');
-    assert.equal(m.clone().utcOffset(60).utcOffset(), 60, 'utcOffset 60');
-    assert.equal(m.clone().utcOffset('+01:00').utcOffset(), 60, 'utcOffset +01:00 is 60');
-    assert.equal(m.clone().utcOffset('+0100').utcOffset(), 60, 'utcOffset +0100 is 60');
+    assert.equal(m.utcOffset(1).utcOffset(), 60, 'utcOffset 1 is 60');
+    assert.equal(m.utcOffset(60).utcOffset(), 60, 'utcOffset 60');
+    assert.equal(m.utcOffset('+01:00').utcOffset(), 60, 'utcOffset +01:00 is 60');
+    assert.equal(m.utcOffset('+0100').utcOffset(), 60, 'utcOffset +0100 is 60');
 
-    assert.equal(m.clone().utcOffset(-1).utcOffset(), -60, 'utcOffset -1 is -60');
-    assert.equal(m.clone().utcOffset(-60).utcOffset(), -60, 'utcOffset -60');
-    assert.equal(m.clone().utcOffset('-01:00').utcOffset(), -60, 'utcOffset -01:00 is -60');
-    assert.equal(m.clone().utcOffset('-0100').utcOffset(), -60, 'utcOffset -0100 is -60');
+    assert.equal(m.utcOffset(-1).utcOffset(), -60, 'utcOffset -1 is -60');
+    assert.equal(m.utcOffset(-60).utcOffset(), -60, 'utcOffset -60');
+    assert.equal(m.utcOffset('-01:00').utcOffset(), -60, 'utcOffset -01:00 is -60');
+    assert.equal(m.utcOffset('-0100').utcOffset(), -60, 'utcOffset -0100 is -60');
 
-    assert.equal(m.clone().utcOffset(1.5).utcOffset(), 90, 'utcOffset 1.5 is 90');
-    assert.equal(m.clone().utcOffset(90).utcOffset(), 90, 'utcOffset 1.5 is 90');
-    assert.equal(m.clone().utcOffset('+01:30').utcOffset(), 90, 'utcOffset +01:30 is 90');
-    assert.equal(m.clone().utcOffset('+0130').utcOffset(), 90, 'utcOffset +0130 is 90');
+    assert.equal(m.utcOffset(1.5).utcOffset(), 90, 'utcOffset 1.5 is 90');
+    assert.equal(m.utcOffset(90).utcOffset(), 90, 'utcOffset 1.5 is 90');
+    assert.equal(m.utcOffset('+01:30').utcOffset(), 90, 'utcOffset +01:30 is 90');
+    assert.equal(m.utcOffset('+0130').utcOffset(), 90, 'utcOffset +0130 is 90');
 
-    assert.equal(m.clone().utcOffset(-1.5).utcOffset(), -90, 'utcOffset -1.5');
-    assert.equal(m.clone().utcOffset(-90).utcOffset(), -90, 'utcOffset -90');
-    assert.equal(m.clone().utcOffset('-01:30').utcOffset(), -90, 'utcOffset +01:30 is 90');
-    assert.equal(m.clone().utcOffset('-0130').utcOffset(), -90, 'utcOffset +0130 is 90');
-    assert.equal(m.clone().utcOffset('+00:10').utcOffset(), 10, 'utcOffset +00:10 is 10');
-    assert.equal(m.clone().utcOffset('-00:10').utcOffset(), -10, 'utcOffset +00:10 is 10');
-    assert.equal(m.clone().utcOffset('+0010').utcOffset(), 10, 'utcOffset +0010 is 10');
-    assert.equal(m.clone().utcOffset('-0010').utcOffset(), -10, 'utcOffset +0010 is 10');
+    assert.equal(m.utcOffset(-1.5).utcOffset(), -90, 'utcOffset -1.5');
+    assert.equal(m.utcOffset(-90).utcOffset(), -90, 'utcOffset -90');
+    assert.equal(m.utcOffset('-01:30').utcOffset(), -90, 'utcOffset +01:30 is 90');
+    assert.equal(m.utcOffset('-0130').utcOffset(), -90, 'utcOffset +0130 is 90');
+    assert.equal(m.utcOffset('+00:10').utcOffset(), 10, 'utcOffset +00:10 is 10');
+    assert.equal(m.utcOffset('-00:10').utcOffset(), -10, 'utcOffset +00:10 is 10');
+    assert.equal(m.utcOffset('+0010').utcOffset(), 10, 'utcOffset +0010 is 10');
+    assert.equal(m.utcOffset('-0010').utcOffset(), -10, 'utcOffset +0010 is 10');
 });
 
 test('utcOffset shorthand hours -> minutes', function (assert) {
@@ -71,117 +72,97 @@ test('change hours when changing the utc offset', function (assert) {
     assert.equal(m.hour(), 6, 'UTC 6AM should be 6AM at +0000');
 
     // sanity check
-    m.utcOffset(0);
+    m = m.utcOffset(0);
     assert.equal(m.hour(), 6, 'UTC 6AM should be 6AM at +0000');
 
-    m.utcOffset(-60);
+    m = m.utcOffset(-60);
     assert.equal(m.hour(), 5, 'UTC 6AM should be 5AM at -0100');
 
-    m.utcOffset(60);
+    m = m.utcOffset(60);
     assert.equal(m.hour(), 7, 'UTC 6AM should be 7AM at +0100');
 });
 
 test('change minutes when changing the utc offset', function (assert) {
     var m = moment.utc([2000, 0, 1, 6, 31]);
 
-    m.utcOffset(0);
+    m = m.utcOffset(0);
     assert.equal(m.format('HH:mm'), '06:31', 'UTC 6:31AM should be 6:31AM at +0000');
 
-    m.utcOffset(-30);
+    m = m.utcOffset(-30);
     assert.equal(m.format('HH:mm'), '06:01', 'UTC 6:31AM should be 6:01AM at -0030');
 
-    m.utcOffset(30);
+    m = m.utcOffset(30);
     assert.equal(m.format('HH:mm'), '07:01', 'UTC 6:31AM should be 7:01AM at +0030');
 
-    m.utcOffset(-1380);
+    m = m.utcOffset(-1380);
     assert.equal(m.format('HH:mm'), '07:31', 'UTC 6:31AM should be 7:31AM at +1380');
 });
 
 test('distance from the unix epoch', function (assert) {
     var zoneA = moment(),
-        zoneB = moment(zoneA),
-        zoneC = moment(zoneA),
-        zoneD = moment(zoneA),
-        zoneE = moment(zoneA);
+        zoneB = moment(zoneA).utc(),
+        zoneC = moment(zoneA).utcOffset(60),
+        zoneD = moment(zoneA).utcOffset(-480),
+        zoneE = moment(zoneA).utcOffset(-1000);
 
-    zoneB.utc();
     assert.equal(+zoneA, +zoneB, 'moment should equal moment.utc');
-
-    zoneC.utcOffset(60);
     assert.equal(+zoneA, +zoneC, 'moment should equal moment.utcOffset(60)');
-
-    zoneD.utcOffset(-480);
     assert.equal(+zoneA, +zoneD,
             'moment should equal moment.utcOffset(-480)');
-
-    zoneE.utcOffset(-1000);
     assert.equal(+zoneA, +zoneE,
             'moment should equal moment.utcOffset(-1000)');
 });
 
 test('update offset after changing any values', function (assert) {
-    var oldOffset = moment.updateOffset,
-        m = moment.utc([2000, 6, 1]);
-
-    moment.updateOffset = function (mom, keepTime) {
-        if (mom.__doChange) {
-            if (+mom > 962409600000) {
-                mom.utcOffset(-120, keepTime);
-            } else {
-                mom.utcOffset(-60, keepTime);
-            }
-        }
-    };
+    var m = moment.utc([2000, 6, 1]),
+        tz = dstTimeZone(-1, 962409600001, -2);
 
     assert.equal(m.format('ZZ'), '+0000', 'should be at +0000');
     assert.equal(m.format('HH:mm'), '00:00', 'should start 12AM at +0000 timezone');
 
-    m.__doChange = true;
-    m.add(1, 'h');
+    m = moment.zoned(moment.utc([2000, 6, 1]), tz);
+    m = m.add(1, 'h');
 
     assert.equal(m.format('ZZ'), '-0200', 'should be at -0200');
     assert.equal(m.format('HH:mm'), '23:00', '1AM at +0000 should be 11PM at -0200 timezone');
 
-    m.subtract(1, 'h');
+    m = m.subtract(1, 'h');
 
     assert.equal(m.format('ZZ'), '-0100', 'should be at -0100');
     assert.equal(m.format('HH:mm'), '23:00', '12AM at +0000 should be 11PM at -0100 timezone');
-
-    moment.updateOffset = oldOffset;
 });
 
-//////////////////
 test('getters and setters', function (assert) {
     var a = moment([2011, 5, 20]);
 
-    assert.equal(a.clone().utcOffset(-120).year(2012).year(), 2012, 'should get and set year correctly');
-    assert.equal(a.clone().utcOffset(-120).month(1).month(), 1, 'should get and set month correctly');
-    assert.equal(a.clone().utcOffset(-120).date(2).date(), 2, 'should get and set date correctly');
-    assert.equal(a.clone().utcOffset(-120).day(1).day(), 1, 'should get and set day correctly');
-    assert.equal(a.clone().utcOffset(-120).hour(1).hour(), 1, 'should get and set hour correctly');
-    assert.equal(a.clone().utcOffset(-120).minute(1).minute(), 1, 'should get and set minute correctly');
+    assert.equal(a.utcOffset(-120).year(2012).year(), 2012, 'should get and set year correctly');
+    assert.equal(a.utcOffset(-120).month(1).month(), 1, 'should get and set month correctly');
+    assert.equal(a.utcOffset(-120).date(2).date(), 2, 'should get and set date correctly');
+    assert.equal(a.utcOffset(-120).day(1).day(), 1, 'should get and set day correctly');
+    assert.equal(a.utcOffset(-120).hour(1).hour(), 1, 'should get and set hour correctly');
+    assert.equal(a.utcOffset(-120).minute(1).minute(), 1, 'should get and set minute correctly');
 });
 
 test('getters', function (assert) {
     var a = moment.utc([2012, 0, 1, 0, 0, 0]);
 
-    assert.equal(a.clone().utcOffset(-120).year(),  2011, 'should get year correctly');
-    assert.equal(a.clone().utcOffset(-120).month(),   11, 'should get month correctly');
-    assert.equal(a.clone().utcOffset(-120).date(),    31, 'should get date correctly');
-    assert.equal(a.clone().utcOffset(-120).hour(),    22, 'should get hour correctly');
-    assert.equal(a.clone().utcOffset(-120).minute(),   0, 'should get minute correctly');
+    assert.equal(a.utcOffset(-120).year(),  2011, 'should get year correctly');
+    assert.equal(a.utcOffset(-120).month(),   11, 'should get month correctly');
+    assert.equal(a.utcOffset(-120).date(),    31, 'should get date correctly');
+    assert.equal(a.utcOffset(-120).hour(),    22, 'should get hour correctly');
+    assert.equal(a.utcOffset(-120).minute(),   0, 'should get minute correctly');
 
-    assert.equal(a.clone().utcOffset(120).year(),  2012, 'should get year correctly');
-    assert.equal(a.clone().utcOffset(120).month(),    0, 'should get month correctly');
-    assert.equal(a.clone().utcOffset(120).date(),     1, 'should get date correctly');
-    assert.equal(a.clone().utcOffset(120).hour(),     2, 'should get hour correctly');
-    assert.equal(a.clone().utcOffset(120).minute(),   0, 'should get minute correctly');
+    assert.equal(a.utcOffset(120).year(),  2012, 'should get year correctly');
+    assert.equal(a.utcOffset(120).month(),    0, 'should get month correctly');
+    assert.equal(a.utcOffset(120).date(),     1, 'should get date correctly');
+    assert.equal(a.utcOffset(120).hour(),     2, 'should get hour correctly');
+    assert.equal(a.utcOffset(120).minute(),   0, 'should get minute correctly');
 
-    assert.equal(a.clone().utcOffset(90).year(),  2012, 'should get year correctly');
-    assert.equal(a.clone().utcOffset(90).month(),    0, 'should get month correctly');
-    assert.equal(a.clone().utcOffset(90).date(),     1, 'should get date correctly');
-    assert.equal(a.clone().utcOffset(90).hour(),     1, 'should get hour correctly');
-    assert.equal(a.clone().utcOffset(90).minute(),  30, 'should get minute correctly');
+    assert.equal(a.utcOffset(90).year(),  2012, 'should get year correctly');
+    assert.equal(a.utcOffset(90).month(),    0, 'should get month correctly');
+    assert.equal(a.utcOffset(90).date(),     1, 'should get date correctly');
+    assert.equal(a.utcOffset(90).hour(),     1, 'should get hour correctly');
+    assert.equal(a.utcOffset(90).minute(),  30, 'should get minute correctly');
 });
 
 test('from', function (assert) {
@@ -232,45 +213,41 @@ test('unix offset and timestamp', function (assert) {
 });
 
 test('cloning', function (assert) {
-    assert.equal(moment().utcOffset(-120).clone().utcOffset(), -120,
-            'explicit cloning should retain the offset');
-    assert.equal(moment().utcOffset(120).clone().utcOffset(), 120,
-            'explicit cloning should retain the offset');
-    assert.equal(moment(moment().utcOffset(-120)).utcOffset(), -120,
-            'implicit cloning should retain the offset');
-    assert.equal(moment(moment().utcOffset(120)).utcOffset(), 120,
-            'implicit cloning should retain the offset');
+    assert.equal(moment.utc(moment().utcOffset(-120)).utcOffset(), 0,
+            'copying should not retain the offset');
+    assert.equal(moment.fixedOffset(moment().utcOffset(120), -120).utcOffset(), -120,
+            'copying should not retain the offset');
 });
 
 test('start of / end of', function (assert) {
     var a = moment.utc([2010, 1, 2, 0, 0, 0]).utcOffset(-450);
 
-    assert.equal(a.clone().startOf('day').hour(), 0,
+    assert.equal(a.startOf('day').hour(), 0,
             'start of day should work on moments with utc offset');
-    assert.equal(a.clone().startOf('day').minute(), 0,
+    assert.equal(a.startOf('day').minute(), 0,
             'start of day should work on moments with utc offset');
-    assert.equal(a.clone().startOf('hour').minute(), 0,
+    assert.equal(a.startOf('hour').minute(), 0,
             'start of hour should work on moments with utc offset');
 
-    assert.equal(a.clone().endOf('day').hour(), 23,
+    assert.equal(a.endOf('day').hour(), 23,
             'end of day should work on moments with utc offset');
-    assert.equal(a.clone().endOf('day').minute(), 59,
+    assert.equal(a.endOf('day').minute(), 59,
             'end of day should work on moments with utc offset');
-    assert.equal(a.clone().endOf('hour').minute(), 59,
+    assert.equal(a.endOf('hour').minute(), 59,
             'end of hour should work on moments with utc offset');
 });
 
 test('reset offset with moment#utc', function (assert) {
     var a = moment.utc([2012]).utcOffset(-480);
 
-    assert.equal(a.clone().hour(),      16, 'different utc offset should have different hour');
-    assert.equal(a.clone().utc().hour(), 0, 'calling moment#utc should reset the offset');
+    assert.equal(a.hour(),      16, 'different utc offset should have different hour');
+    assert.equal(a.utc().hour(), 0, 'calling moment#utc should reset the offset');
 });
 
 test('reset offset with moment#local', function (assert) {
     var a = moment([2012]).utcOffset(-480);
 
-    assert.equal(a.clone().local().hour(), 0, 'calling moment#local should reset the offset');
+    assert.equal(a.local().hour(), 0, 'calling moment#local should reset the offset');
 });
 
 test('toDate', function (assert) {
@@ -286,8 +263,8 @@ test('toDate', function (assert) {
 
 test('same / before / after', function (assert) {
     var zoneA = moment().utc(),
-        zoneB = moment(zoneA).utcOffset(-120),
-        zoneC = moment(zoneA).utcOffset(120);
+        zoneB = zoneA.utcOffset(-120),
+        zoneC = zoneA.utcOffset(120);
 
     assert.ok(zoneA.isSame(zoneB), 'two moments with different offsets should be the same');
     assert.ok(zoneA.isSame(zoneC), 'two moments with different offsets should be the same');
@@ -295,7 +272,7 @@ test('same / before / after', function (assert) {
     assert.ok(zoneA.isSame(zoneB, 'hour'), 'two moments with different offsets should be the same hour');
     assert.ok(zoneA.isSame(zoneC, 'hour'), 'two moments with different offsets should be the same hour');
 
-    zoneA.add(1, 'hour');
+    zoneA = zoneA.add(1, 'hour');
 
     assert.ok(zoneA.isAfter(zoneB), 'isAfter should work with two moments with different offsets');
     assert.ok(zoneA.isAfter(zoneC), 'isAfter should work with two moments with different offsets');
@@ -303,7 +280,7 @@ test('same / before / after', function (assert) {
     assert.ok(zoneA.isAfter(zoneB, 'hour'), 'isAfter:hour should work with two moments with different offsets');
     assert.ok(zoneA.isAfter(zoneC, 'hour'), 'isAfter:hour should work with two moments with different offsets');
 
-    zoneA.subtract(2, 'hour');
+    zoneA = zoneA.subtract(2, 'hour');
 
     assert.ok(zoneA.isBefore(zoneB), 'isBefore should work with two moments with different offsets');
     assert.ok(zoneA.isBefore(zoneC), 'isBefore should work with two moments with different offsets');
@@ -313,74 +290,64 @@ test('same / before / after', function (assert) {
 });
 
 test('add / subtract over dst', function (assert) {
-    var oldOffset = moment.updateOffset,
-        m = moment.utc([2000, 2, 31, 3]);
-
-    moment.updateOffset = function (mom, keepTime) {
-        if (mom.clone().utc().month() > 2) {
-            mom.utcOffset(60, keepTime);
-        } else {
-            mom.utcOffset(0, keepTime);
-        }
-    };
+    var dstAt = moment.parseZone('2000-04-01T00:00:00+01:00'),
+        tz = dstTimeZone(0, dstAt, +1),
+        m = moment.zoned(moment.utc([2000, 2, 31, 3]), tz);
 
     assert.equal(m.hour(), 3, 'should start at 00:00');
 
-    m.add(24, 'hour');
-
+    m = m.add(24, 'hour');
     assert.equal(m.hour(), 4, 'adding 24 hours should disregard dst');
 
-    m.subtract(24, 'hour');
-
+    m = m.subtract(24, 'hour');
     assert.equal(m.hour(), 3, 'subtracting 24 hours should disregard dst');
 
-    m.add(1, 'day');
-
+    m = m.add(1, 'day');
     assert.equal(m.hour(), 3, 'adding 1 day should have the same hour');
 
-    m.subtract(1, 'day');
-
+    m = m.subtract(1, 'day');
     assert.equal(m.hour(), 3, 'subtracting 1 day should have the same hour');
 
-    m.add(1, 'month');
-
+    m = m.add(1, 'month');
     assert.equal(m.hour(), 3, 'adding 1 month should have the same hour');
 
-    m.subtract(1, 'month');
-
+    m = m.subtract(1, 'month');
     assert.equal(m.hour(), 3, 'subtracting 1 month should have the same hour');
-
-    moment.updateOffset = oldOffset;
 });
 
 test('isDST', function (assert) {
-    var oldOffset = moment.updateOffset;
+    var tz = dstTimeZone(
+        0,
+        moment.parseZone('2012-04-01T00:00:00+01:00'),
+        +1,
+        moment.parseZone('2012-09-01T00:00:00+00:00'),
+        0);
 
-    moment.updateOffset = function (mom, keepTime) {
-        if (mom.month() > 2 && mom.month() < 9) {
-            mom.utcOffset(60, keepTime);
-        } else {
-            mom.utcOffset(0, keepTime);
-        }
-    };
+    // var oldOffset = moment.updateOffset;
 
-    assert.ok(!moment().month(0).isDST(),  'Jan should not be summer dst');
-    assert.ok(moment().month(6).isDST(),   'Jul should be summer dst');
-    assert.ok(!moment().month(11).isDST(), 'Dec should not be summer dst');
+    // moment.updateOffset = function (mom, keepTime) {
+    //     if (mom.month() > 2 && mom.month() < 9) {
+    //         mom = mom.utcOffset(60, keepTime);
+    //     } else {
+    //         mom = mom.utcOffset(0, keepTime);
+    //     }
+    //     return mom;
+    // };
 
-    moment.updateOffset = function (mom) {
-        if (mom.month() > 2 && mom.month() < 9) {
-            mom.utcOffset(0);
-        } else {
-            mom.utcOffset(60);
-        }
-    };
+    assert.ok(!moment.zoned([2012, 0], tz).isDST(),  'Jan should not be summer dst');
+    assert.ok(moment.zoned([2012, 6], tz).isDST(),   'Jul should be summer dst');
+    assert.ok(!moment.zoned([2012, 11], tz).isDST(), 'Dec should not be summer dst');
 
-    assert.ok(moment().month(0).isDST(),  'Jan should be winter dst');
-    assert.ok(!moment().month(6).isDST(), 'Jul should not be winter dst');
-    assert.ok(moment().month(11).isDST(), 'Dec should be winter dst');
+    tz = dstTimeZone(
+        +1,
+        moment.parseZone('2012-04-01T00:00:00+00:00'),
+        0,
+        moment.parseZone('2012-09-01T00:00:00+01:00'),
+        +1);
 
-    moment.updateOffset = oldOffset;
+    assert.ok(moment.zoned([2012, 0], tz).isDST(),  'Jan should be winter dst');
+    assert.ok(!moment.zoned([2012, 6], tz).isDST(), 'Jul should not be winter dst');
+    assert.ok(moment.zoned([2012, 11], tz).isDST(), 'Dec should be winter dst');
 });
 
 test('zone names', function (assert) {
@@ -434,13 +401,13 @@ test('hours alignment with other zone', function (assert) {
 });
 
 test('parse zone', function (assert) {
-    var m = moment('2013-01-01T00:00:00-13:00').parseZone();
+    var m = moment.parseZone('2013-01-01T00:00:00-13:00');
     assert.equal(m.utcOffset(), -13 * 60);
     assert.equal(m.hours(), 0);
 });
 
 test('parse UTC zone', function (assert) {
-    var m = moment('2013-01-01T05:00:00+00:00').parseZone();
+    var m = moment.parseZone('2013-01-01T05:00:00+00:00');
     assert.equal(m.utcOffset(), 0);
     assert.equal(m.hours(), 5);
 });
@@ -462,16 +429,17 @@ test('parse zone with more arguments', function (assert) {
 });
 
 test('parse zone with a timezone from the format string', function (assert) {
-    var m = moment('11-12-2013 -0400 +1100', 'DD-MM-YYYY ZZ #####').parseZone();
+    var m = moment.parseZone('11-12-2013 -0400 +1100', 'DD-MM-YYYY ZZ #####');
 
     assert.equal(m.utcOffset(), -4 * 60);
 });
 
-test('parse zone without a timezone included in the format string', function (assert) {
-    var m = moment('11-12-2013 -0400 +1100', 'DD-MM-YYYY').parseZone();
+// TODO: We drop this ... whf
+// test('parse zone without a timezone included in the format string', function (assert) {
+//     var m = moment.parseZone('11-12-2013 -0400 +1100', 'DD-MM-YYYY');
 
-    assert.equal(m.utcOffset(), 11 * 60);
-});
+//     assert.equal(m.utcOffset(), 11 * 60);
+// });
 
 test('timezone format', function (assert) {
     assert.equal(moment().utcOffset(60).format('ZZ'), '+0100', '-60 -> +0100');

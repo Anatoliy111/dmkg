@@ -1,5 +1,5 @@
 /* jquery.switcher - 1.2.4
- * Copyright (c) 2014-11-04 Janic Beauchemin - https://github.com/djanix/ */
+ * Copyright (c) 2014-09-03 Janic Beauchemin - https://github.com/djanix/ */
 
  ;(function ($, undefined) {
     var pluginName = "switcher";
@@ -105,7 +105,7 @@
             }
 
             self.settings.selected = val;
-            $input.prop("checked", val).trigger('change');
+            $input.prop("checked", val);
 
             if ($input.attr('type') == 'radio') {
                 var name = $input.attr('name');

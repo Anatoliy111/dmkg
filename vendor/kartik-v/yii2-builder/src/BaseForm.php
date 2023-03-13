@@ -3,12 +3,13 @@
 /**
  * @package   yii2-builder
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   1.6.6
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2022
+ * @version   1.6.9
  */
 
 namespace kartik\builder;
 
+use Exception;
 use kartik\base\Widget;
 use kartik\form\ActiveField;
 use kartik\form\ActiveForm;
@@ -19,7 +20,7 @@ use kartik\helpers\Html;
 use yii\widgets\InputWidget;
 
 /**
- * BaseForm is the base class for all builder widgets.
+ * BaseForm is the base class for the [[Form]] and [[TabularForm]] builder widgets in this extension.
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @since 1.0
@@ -29,79 +30,79 @@ class BaseForm extends Widget
     use FormTrait;
 
     /**
-     * Static input (styled using bootstrap style)
+     * @var string static input (styled using bootstrap style)
      */
     const INPUT_STATIC = 'staticInput';
     /**
-     * Hidden input
+     * @var string hidden input
      */
     const INPUT_HIDDEN = 'hiddenInput';
     /**
-     * Hidden static input
+     * @var string hidden static input
      */
     const INPUT_HIDDEN_STATIC = 'hiddenStaticInput';
     /**
-     * Text input
+     * @var string text input
      */
     const INPUT_TEXT = 'textInput';
     /**
-     * Text area
+     * @var string text area
      */
     const INPUT_TEXTAREA = 'textarea';
     /**
-     * Password input
+     * @var string password input
      */
     const INPUT_PASSWORD = 'passwordInput';
     /**
-     * Dropdown list allowing single select
+     * @var string dropdown list allowing single select
      */
     const INPUT_DROPDOWN_LIST = 'dropdownList';
     /**
-     * List box allowing multiple select
+     * @var string list box allowing multiple select
      */
     const INPUT_LIST_BOX = 'listBox';
     /**
-     * Checkbox input
+     * @var string checkbox input
      */
     const INPUT_CHECKBOX = 'checkbox';
     /**
-     * Radio input
+     * @var string radio input
      */
     const INPUT_RADIO = 'radio';
     /**
-     * Checkbox inputs as a list allowing multiple selection
+     * @var string checkbox inputs as a list allowing multiple selection
      */
     const INPUT_CHECKBOX_LIST = 'checkboxList';
     /**
-     * Radio inputs as a list
+     * @var string radio inputs as a list
      */
     const INPUT_RADIO_LIST = 'radioList';
     /**
-     * Bootstrap styled checkbox button group
+     * @var string bootstrap styled checkbox button group
      */
     const INPUT_CHECKBOX_BUTTON_GROUP = 'checkboxButtonGroup';
     /**
-     * Bootstrap styled radio button group
+     * @var string bootstrap styled radio button group
      */
     const INPUT_RADIO_BUTTON_GROUP = 'radioButtonGroup';
     /**
-     * Krajee styled multiselect input that allows formatted checkbox list and radio list
+     * @var string Krajee styled multiselect input that allows formatted checkbox list and radio list
      */
     const INPUT_MULTISELECT = 'multiselect';
     /**
-     * File input
+     * @var string file input
      */
     const INPUT_FILE = 'fileInput';
     /**
-     * Other HTML5 input (e.g. color, range, email etc.)
+     * @var string HTML5 input (e.g. color, range, email etc.)
      */
     const INPUT_HTML5 = 'input';
     /**
-     * Input widget
+     * @var string input widget
      */
     const INPUT_WIDGET = 'widget';
     /**
-     * Raw HTML markup
+     * @var string raw HTML markup
      */
     const INPUT_RAW = 'raw'; // any free text or html markup
 
@@ -161,7 +162,7 @@ class BaseForm extends Widget
     public $form;
 
     /**
-     * @var string the form name to be provided if not using with model and ActiveForm.
+     * @var string the form name to be provided if not using with model and [[ActiveForm]].
      */
     public $formName;
 
@@ -242,7 +243,8 @@ class BaseForm extends Widget
     /**
      * Prepares attributes based on visibility setting
      *
-     * @param array $attributes the attributes to be prepared
+     * @param  array  $attributes  the attributes to be prepared
+     * @throws Exception
      */
     protected static function prepareAttributes(&$attributes = [])
     {
@@ -297,7 +299,7 @@ class BaseForm extends Widget
         $labelOptions = ArrayHelper::getValue($settings, 'labelOptions', []);
         $isToggle = $type === self::INPUT_CHECKBOX || $type === self::INPUT_RADIO;
         $f = $this->form;
-        $styleLabel = $f && $f instanceof ActiveForm && ($f->isHorizontal() || (!$this->isBs4() && !$f->isInline()));
+        $styleLabel = $f && $f instanceof ActiveForm && ($f->isHorizontal() || (!!$this->isBs(3) && !$f->isInline()));
         if (!$isToggle && !isset($labelOptions['class']) && $styleLabel) {
             $labelOptions['class'] = $this->getCssClass(self::BS_CONTROL_LABEL);
         }
@@ -325,7 +327,7 @@ class BaseForm extends Widget
      * @throws InvalidConfigException
      *
      */
-    protected static function renderRawActiveInput($form, $model, $attribute, $settings)
+    protected function renderRawActiveInput($form, $model, $attribute, $settings)
     {
         $type = ArrayHelper::getValue($settings, 'type', self::INPUT_TEXT);
         $i = strpos($attribute, ']');
@@ -337,10 +339,8 @@ class BaseForm extends Widget
         }
         $fieldConfig = ArrayHelper::getValue($settings, 'fieldConfig', []);
         $options = ArrayHelper::getValue($settings, 'options', []);
-        $label = ArrayHelper::getValue($settings, 'label', null);
-        $hint = ArrayHelper::getValue($settings, 'hint', null);
-        /** @var ActiveField $field */
-        /** @noinspection PhpParamsInspection */
+        $label = ArrayHelper::getValue($settings, 'label');
+        $hint = ArrayHelper::getValue($settings, 'hint');
         $field = $form->field($model, $attribute, $fieldConfig);
         if (isset(static::$_basicInputs[$type])) {
             return static::getInput($field->$type($options), $label, $hint);
@@ -393,11 +393,11 @@ class BaseForm extends Widget
      *
      * @return string the form input markup.
      * @throws InvalidConfigException
-     * @throws \Exception
+     * @throws Exception
      */
     protected function renderRawInput($attribute, &$id, $settings = [])
     {
-        $isBs4 = $this->isBs4();
+        $notBs3 = !$this->isBs(3);
         $type = ArrayHelper::getValue($settings, 'type', self::INPUT_TEXT);
         $i = strpos($attribute, ']');
         $attribName = $i > 0 ? substr($attribute, $i + 1) : $attribute;
@@ -406,7 +406,7 @@ class BaseForm extends Widget
                 "Invalid input type '{$type}' configured for the attribute '{$attribName}'.'"
             );
         }
-        $value = ArrayHelper::getValue($settings, 'value', null);
+        $value = ArrayHelper::getValue($settings, 'value');
         $options = ArrayHelper::getValue($settings, 'options', []);
         $id = str_replace(['[]', '][', '[', ']', ' '], ['', '-', '-', '', '-'], $attribute);
         $id = strtolower($id);
@@ -447,8 +447,8 @@ class BaseForm extends Widget
         }
         if ($type === self::INPUT_CHECKBOX || $type === self::INPUT_RADIO) {
             $enclosedByLabel = ArrayHelper::getValue($settings, 'enclosedByLabel', true);
-            $checked = !empty($value) && ($value !== false) ? true : false;
-            if ($isBs4) {
+            $checked = !empty($value) && ($value !== false);
+            if ($notBs3) {
                 $custom = ArrayHelper::remove($options, 'custom', false);
                 $prefix = $custom ? 'custom-control' : 'form-check';
                 $labelOptions = ArrayHelper::remove($options, 'labelOptions', []);

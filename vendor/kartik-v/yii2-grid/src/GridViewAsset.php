@@ -3,8 +3,8 @@
 /**
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2018
- * @version   3.2.9
+ * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2023
+ * @version   3.5.1
  */
 
 namespace kartik\grid;
@@ -24,7 +24,7 @@ class GridViewAsset extends AssetBundle
      */
     public function init()
     {
-        $this->depends = array_merge(["kartik\\dialog\\DialogAsset"], $this->depends);
+        $this->depends = array_merge(["kartik\\dialog\\DialogAsset", "yii\\grid\\GridViewAsset"], $this->depends);
         $this->setSourcePath(__DIR__ . '/assets');
         $this->setupAssets('css', ['css/kv-grid']);
         parent::init();
