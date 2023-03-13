@@ -57,5 +57,11 @@
             "uploads",
             "runtime"
         ]
-    }
+    },
+    "repositories": [
+     {
+          "type": "composer",
+           "url": "https://asset-packagist.org"
+     }
+     ]
 }
