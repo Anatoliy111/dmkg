@@ -1,6 +1,7 @@
 <?php
 
-	use kartik\nav\NavX;
+use app\controllers\UtDomController;
+use kartik\nav\NavX;
 	use kartik\tabs\TabsX;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\NavBar;
@@ -13,6 +14,11 @@ use yii\widgets\DetailView;
 
 	/* @var $this yii\web\View */
 /* @var $model app\poslug\models\UtDom */
+/** @var $dPtarif UtDomController */
+/** @var $dominfo UtDomController */
+/** @var $dPnach UtDomController */
+
+
 ?>
 <?php Pjax::begin(); ?>
 <?php
@@ -52,17 +58,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     $items = [
     [
-    'label'=>'Тарифи',
-    'content'=>$this->render('tarview', ['model' => $model,'dataProvider' => $dPtarif]),
+        'label'=>'Тарифи',
+        'content'=>$this->render('tarview', ['model' => $model,'dataProvider' => $dPtarif]),
     ],
-		[
-			'label'=>'Інформація по будинку',
-			'content'=>$this->render('infoview', ['model' => $model,'dominfo' => $dominfo,]),
-		],
-		[
-			'label'=>'Нарахування',
-			'content'=>$this->render('nachview', ['model' => $model,'dataProvider' => $dPnach]),
-		],
+	[
+    	'label'=>'Інформація по будинку',
+	    'content'=>$this->render('infoview', ['model' => $model,'dominfo' => $dominfo,]),
+	],
+	[
+		'label'=>'Нарахування',
+		'content'=>$this->render('nachview', ['model' => $model,'dataProvider' => $dPnach]),
+	],
     ];
 
 //		$postId =  Yii::$app->request->post('UtDominfo');

@@ -13,10 +13,8 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 	/* @var $model app\poslug\models\UtKart */
 
-
-
-
 ?>
+
 <div class="ut-dom-view">
 
 	<?php 		Modal::begin([

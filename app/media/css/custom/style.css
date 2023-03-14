@@ -900,7 +900,7 @@ button#buttperiod{
 .main .ut-kart .table thead {
     /*     margin-top: 18px; */
     /*     text-align: center; */
-    background-color: #0070bf;
+	background: #0070bf;
 }
 
 .main .ut-kart h2:before {
