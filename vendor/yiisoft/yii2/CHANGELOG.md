@@ -1,28 +1,6 @@
 Yii Framework 2 Change Log
 ==========================
 
-2.0.48 under development
-------------------------
-
-- Enh #19766: Add support for PHP generators to JSON helper (vladis84)
-- Bug #19683: Updated `framework\mimeType.php` to the actual value. Fix typo in `build/controllers/MimeTypeController.php` (DeryabinSergey)
-- Bug #19705: Add binary and other data type to `$typeMap` list for MySQL (sohelahmed7)
-- Enh #19741: Added option to use a closure for `$variations` definition in `yii\filters\PageCache` (nadar)
-- Bug #15376: Added $userId for RBAC roles cache (manchenkoff)
-- Bug #18867: Fixed multiple issues with `yii\grid\CheckboxColumn`: "check all" checkbox not being checked on page load when all data row checkboxes are initially checked; clicking checkboxes triggered "change" event for other checkboxes that do not change their state; "check all" checkbox not being checked when disabled checkboxes are present and clicking last non-checked data row checkbox (PowerGamer1)
-- Bug #19635: PHP 8.2 compatibility fix for `yii\validators\DateValidator` (PowerGamer1)
-- Bug #17194: Fix unnecessary SQL updates in the database on attributes typecast via `yii\behaviors\AttributeTypecastBehavior` (aivchen)
-- Bug #19693: Fix db/Command not caching `NULL` result with scalar fetchMode (Arkeins)
-- Enh #15376: Added cache usage for `yii\rbac\DbManager::getRolesByUser()` (manchenkoff)
-- Enh #9740: Usage of DI instead of new keyword in Schemas (manchenkoff)
-- Enh #19689: Remove empty elements from the `class` array in `yii\helpers\BaseHtml::renderTagAttributes()` to prevent unwanted spaces (MoritzLost)
-- Chg #19696: Change visibility of `yii\web\View::isPageEnded` to `protected` (lubosdz, samdark)
-- Bug #19712: Cast shell_exec() output to string for jsCompressor (impayru)
-- Bug #19734: PHP 8.1 compatibility fix for `$query->orderBy(null)` (uaoleg)
-- Bug #19731: Fix `yii\data\Sort` to generate proper link when multisort is on and attribute has a default sort order set (bizley)
-- Bug #19735: Fix `yii\validators\NumberValidator` to use programmable message for the value validation (bizley)
-- Bug #19770: Fix `yii\mutex\MysqlMutex` `keyPrefix` expression param binding (kamarton)
-
 2.0.47 November 18, 2022
 ------------------------
 

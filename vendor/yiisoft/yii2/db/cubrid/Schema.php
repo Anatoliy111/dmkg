@@ -7,7 +7,6 @@
 
 namespace yii\db\cubrid;
 
-use Yii;
 use yii\base\NotSupportedException;
 use yii\db\Constraint;
 use yii\db\ConstraintFinderInterface;
@@ -249,7 +248,7 @@ class Schema extends \yii\db\Schema implements ConstraintFinderInterface
      */
     public function createQueryBuilder()
     {
-        return Yii::createObject(QueryBuilder::className(), [$this->db]);
+        return new QueryBuilder($this->db);
     }
 
     /**

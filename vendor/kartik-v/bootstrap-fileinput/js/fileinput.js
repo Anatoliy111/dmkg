@@ -1,5 +1,5 @@
 /*!
- * bootstrap-fileinput v5.5.3
+ * bootstrap-fileinput v5.5.2
  * http://plugins.krajee.com/file-input
  *
  * Author: Kartik Visweswaran
@@ -6234,12 +6234,8 @@
         var args = Array.apply(null, arguments), retvals = [];
         args.shift();
         this.each(function () {
-            var options = {};
-            if (typeof option === 'object') {
-                options = $.extend(true, {}, $.fn.fileinput.defaults, option);
-            }
-            var self = $(this), data = self.data('fileinput'),
-                theme = options.theme || self.data('theme') || $.fn.fileinput.defaults.theme, l = {}, t = {},
+            var self = $(this), data = self.data('fileinput'), options = typeof option === 'object' && option,
+                theme = options.theme || self.data('theme'), l = {}, t = {},
                 lang = options.language || self.data('language') || $.fn.fileinput.defaults.language || 'en', opt;
             if (!data) {
                 if (theme) {

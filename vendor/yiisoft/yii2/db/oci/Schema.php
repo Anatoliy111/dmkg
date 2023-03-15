@@ -7,7 +7,6 @@
 
 namespace yii\db\oci;
 
-use Yii;
 use yii\base\InvalidCallException;
 use yii\base\NotSupportedException;
 use yii\db\CheckConstraint;
@@ -262,7 +261,7 @@ SQL;
      */
     public function createQueryBuilder()
     {
-        return Yii::createObject(QueryBuilder::className(), [$this->db]);
+        return new QueryBuilder($this->db);
     }
 
     /**
@@ -270,7 +269,7 @@ SQL;
      */
     public function createColumnSchemaBuilder($type, $length = null)
     {
-        return Yii::createObject(ColumnSchemaBuilder::className(), [$type, $length]);
+        return new ColumnSchemaBuilder($type, $length, $this->db);
     }
 
     /**

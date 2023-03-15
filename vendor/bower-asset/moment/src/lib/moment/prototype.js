@@ -1,7 +1,18 @@
 import { Moment } from './constructor';
+
+var proto = Moment.prototype;
+
 import { add, subtract } from './add-subtract';
-import { calendar, getCalendarFormat } from './calendar';
-import { isBefore, isBetween, isSame, isAfter, isSameOrAfter, isSameOrBefore } from './compare';
+import { calendar } from './calendar';
+import { clone } from './clone';
+import {
+    isBefore,
+    isBetween,
+    isSame,
+    isAfter,
+    isSameOrAfter,
+    isSameOrBefore,
+} from './compare';
 import { diff } from './diff';
 import { format, toString, toISOString, inspect } from './format';
 import { from, fromNow } from './from';
@@ -14,50 +25,72 @@ import { valueOf, toDate, toArray, toObject, toJSON, unix } from './to-type';
 import { isValid, parsingFlags, invalidAt } from './valid';
 import { creationData } from './creation-data';
 
-var proto = Moment.prototype;
-proto.add            = add;
-proto.calendar       = calendar;
-proto.diff           = diff;
-proto.endOf          = endOf;
-proto.format         = format;
-proto.from           = from;
-proto.fromNow        = fromNow;
-proto.to             = to;
-proto.toNow          = toNow;
-proto.get            = stringGet;
-proto.invalidAt      = invalidAt;
-proto.isAfter        = isAfter;
-proto.isBefore       = isBefore;
-proto.isBetween      = isBetween;
-proto.isSame         = isSame;
-proto.isSameOrAfter  = isSameOrAfter;
+proto.add = add;
+proto.calendar = calendar;
+proto.clone = clone;
+proto.diff = diff;
+proto.endOf = endOf;
+proto.format = format;
+proto.from = from;
+proto.fromNow = fromNow;
+proto.to = to;
+proto.toNow = toNow;
+proto.get = stringGet;
+proto.invalidAt = invalidAt;
+proto.isAfter = isAfter;
+proto.isBefore = isBefore;
+proto.isBetween = isBetween;
+proto.isSame = isSame;
+proto.isSameOrAfter = isSameOrAfter;
 proto.isSameOrBefore = isSameOrBefore;
-proto.isValid        = isValid;
-proto.locale         = locale;
-proto.localeData     = localeData;
-proto.parsingFlags   = parsingFlags;
-proto.set            = stringSet;
-proto.startOf        = startOf;
-proto.subtract       = subtract;
-proto.toArray        = toArray;
-proto.toObject       = toObject;
-proto.toDate         = toDate;
-proto.toISOString    = toISOString;
-proto.inspect        = inspect;
-proto.toJSON         = toJSON;
-proto.toString       = toString;
-proto.unix           = unix;
-proto.valueOf        = valueOf;
-proto.creationData   = creationData;
+proto.isValid = isValid;
+proto.lang = lang;
+proto.locale = locale;
+proto.localeData = localeData;
+proto.max = prototypeMax;
+proto.min = prototypeMin;
+proto.parsingFlags = parsingFlags;
+proto.set = stringSet;
+proto.startOf = startOf;
+proto.subtract = subtract;
+proto.toArray = toArray;
+proto.toObject = toObject;
+proto.toDate = toDate;
+proto.toISOString = toISOString;
+proto.inspect = inspect;
+if (typeof Symbol !== 'undefined' && Symbol.for != null) {
+    proto[Symbol.for('nodejs.util.inspect.custom')] = function () {
+        return 'Moment<' + this.format() + '>';
+    };
+}
+proto.toJSON = toJSON;
+proto.toString = toString;
+proto.unix = unix;
+proto.valueOf = valueOf;
+proto.creationData = creationData;
+
+// Era
+import { getEraName, getEraNarrow, getEraAbbr, getEraYear } from '../units/era';
+proto.eraName = getEraName;
+proto.eraNarrow = getEraNarrow;
+proto.eraAbbr = getEraAbbr;
+proto.eraYear = getEraYear;
 
 // Year
 import { getSetYear, getIsLeapYear } from '../units/year';
-proto.year       = getSetYear;
+proto.year = getSetYear;
 proto.isLeapYear = getIsLeapYear;
 
 // Week Year
-import { getSetWeekYear, getSetISOWeekYear, getWeeksInYear, getISOWeeksInYear } from '../units/week-year';
-proto.weekYear    = getSetWeekYear;
+import {
+    getSetWeekYear,
+    getSetISOWeekYear,
+    getWeeksInYear,
+    getWeeksInWeekYear,
+    getISOWeeksInYear,
+    getISOWeeksInISOWeekYear,
+} from '../units/week-year';
+proto.weekYear = getSetWeekYear;
 proto.isoWeekYear = getSetISOWeekYear;
 
 // Quarter
@@ -66,25 +99,31 @@ proto.quarter = proto.quarters = getSetQuarter;
 
 // Month
 import { getSetMonth, getDaysInMonth } from '../units/month';
-proto.month       = getSetMonth;
+proto.month = getSetMonth;
 proto.daysInMonth = getDaysInMonth;
 
 // Week
 import { getSetWeek, getSetISOWeek } from '../units/week';
-proto.week    = proto.weeks    = getSetWeek;
+proto.week = proto.weeks = getSetWeek;
 proto.isoWeek = proto.isoWeeks = getSetISOWeek;
-proto.weeksInYear              = getWeeksInYear;
-proto.isoWeeksInYear           = getISOWeeksInYear;
+proto.weeksInYear = getWeeksInYear;
+proto.weeksInWeekYear = getWeeksInWeekYear;
+proto.isoWeeksInYear = getISOWeeksInYear;
+proto.isoWeeksInISOWeekYear = getISOWeeksInISOWeekYear;
 
 // Day
 import { getSetDayOfMonth } from '../units/day-of-month';
-import { getSetDayOfWeek, getSetISODayOfWeek, getSetLocaleDayOfWeek } from '../units/day-of-week';
+import {
+    getSetDayOfWeek,
+    getSetISODayOfWeek,
+    getSetLocaleDayOfWeek,
+} from '../units/day-of-week';
 import { getSetDayOfYear } from '../units/day-of-year';
-proto.date             = getSetDayOfMonth;
+proto.date = getSetDayOfMonth;
 proto.day = proto.days = getSetDayOfWeek;
-proto.weekday          = getSetLocaleDayOfWeek;
-proto.isoWeekday       = getSetISODayOfWeek;
-proto.dayOfYear        = getSetDayOfYear;
+proto.weekday = getSetLocaleDayOfWeek;
+proto.isoWeekday = getSetISODayOfWeek;
+proto.dayOfYear = getSetDayOfYear;
 
 // Hour
 import { getSetHour } from '../units/hour';
@@ -110,58 +149,49 @@ import {
     setOffsetToParsedOffset,
     hasAlignedHourOffset,
     isDaylightSavingTime,
+    isDaylightSavingTimeShifted,
     getSetZone,
     isLocal,
     isUtcOffset,
-    isUtc
+    isUtc,
 } from '../units/offset';
-proto.utcOffset            = getSetOffset;
-proto.utc                  = setOffsetToUTC;
-proto.local                = setOffsetToLocal;
-proto.parseZone            = setOffsetToParsedOffset;
+proto.utcOffset = getSetOffset;
+proto.utc = setOffsetToUTC;
+proto.local = setOffsetToLocal;
+proto.parseZone = setOffsetToParsedOffset;
 proto.hasAlignedHourOffset = hasAlignedHourOffset;
-proto.isDST                = isDaylightSavingTime;
-proto.isLocal              = isLocal;
-proto.isUtcOffset          = isUtcOffset;
-proto.isUtc                = isUtc;
-proto.isUTC                = isUtc;
+proto.isDST = isDaylightSavingTime;
+proto.isLocal = isLocal;
+proto.isUtcOffset = isUtcOffset;
+proto.isUtc = isUtc;
+proto.isUTC = isUtc;
 
 // Timezone
-import { getZoneAbbr, getZoneName, getSetZoneData } from '../units/timezone';
+import { getZoneAbbr, getZoneName } from '../units/timezone';
 proto.zoneAbbr = getZoneAbbr;
 proto.zoneName = getZoneName;
-proto.zoneData = getSetZoneData;
 
 // Deprecations
 import { deprecate } from '../utils/deprecate';
-proto.clone = deprecate(
-    'clone does nothing in Moment v3.x because the API is now immutable. Use moment(instance) to make a copy.',
-    function clone() {
-        return this;
-    });
 proto.dates = deprecate(
     'dates accessor is deprecated. Use date instead.',
-    getSetDayOfMonth);
-proto.lang = deprecate(
-    'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
-    lang);
-proto.max = deprecate(
-    'moment().max() is deprecated. Use moment.min() instead (notice lack of parentheses).',
-    prototypeMax);
-proto.min = deprecate(
-    'moment().min() is deprecated. Use moment.max() instead (notice lack of parentheses).',
-    prototypeMin);
+    getSetDayOfMonth
+);
 proto.months = deprecate(
     'months accessor is deprecated. Use month instead',
-    getSetMonth);
+    getSetMonth
+);
 proto.years = deprecate(
     'years accessor is deprecated. Use year instead',
-    getSetYear);
+    getSetYear
+);
 proto.zone = deprecate(
     'moment().zone is deprecated, use moment().utcOffset instead. http://momentjs.com/guides/#/warnings/zone/',
-    getSetZone);
-// proto.isDSTShifted = deprecate(
-//     'isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information',
-//     isDaylightSavingTimeShifted);
+    getSetZone
+);
+proto.isDSTShifted = deprecate(
+    'isDSTShifted is deprecated. See http://momentjs.com/guides/#/warnings/dst-shifted/ for more information',
+    isDaylightSavingTimeShifted
+);
 
 export default proto;

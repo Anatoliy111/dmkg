@@ -1,8 +1,8 @@
 <?php
 /**
- * @link https://www.yiiframework.com/
+ * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
+ * @license http://www.yiiframework.com/license/
  */
 
 namespace yii\bootstrap;
@@ -83,7 +83,7 @@ use yii\helpers\ArrayHelper;
  * ```
  *
  * @see \yii\bootstrap\ActiveForm
- * @see https://getbootstrap.com/css/#forms
+ * @see http://getbootstrap.com/css/#forms
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  * @since 2.0
@@ -310,7 +310,7 @@ class ActiveField extends \yii\widgets\ActiveField
      *
      * @return $this the field object itself
      * @since 2.0.5
-     * @see https://getbootstrap.com/css/#forms-controls-static
+     * @see http://getbootstrap.com/css/#forms-controls-static
      */
     public function staticControl($options = [])
     {

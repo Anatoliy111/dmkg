@@ -1,8 +1,8 @@
 <?php
 /**
- * @link https://www.yiiframework.com/
+ * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
+ * @license http://www.yiiframework.com/license/
  */
 
 namespace yii\bootstrap;
@@ -36,14 +36,14 @@ trait BootstrapWidgetTrait
     /**
      * @var array the options for the underlying Bootstrap JS plugin.
      * Please refer to the corresponding Bootstrap plugin Web page for possible options.
-     * For example, [this page](https://getbootstrap.com/javascript/#modals) shows
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows
      * how to use the "Modal" plugin and the supported options (e.g. "remote").
      */
     public $clientOptions = [];
     /**
      * @var array the event handlers for the underlying Bootstrap JS plugin.
      * Please refer to the corresponding Bootstrap plugin Web page for possible events.
-     * For example, [this page](https://getbootstrap.com/javascript/#modals) shows
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows
      * how to use the "Modal" plugin and the supported events (e.g. "shown").
      */
     public $clientEvents = [];

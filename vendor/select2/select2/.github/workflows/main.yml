@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js 12
+      - name: Use Node.js 8
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 8
       - name: npm install
         run: npm install
       - name: Run linting
@@ -21,10 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js 12
+      - name: Use Node.js 8
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 8
       - name: npm install
         run: npm install
       - name: Run tests
@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js 12
+      - name: Use Node.js 8
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 8
       - name: npm install
         run: npm install
       - name: Run minification

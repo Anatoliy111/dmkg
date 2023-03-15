@@ -87,11 +87,6 @@ class DbManager extends BaseManager
      * @since 2.0.3
      */
     public $cacheKey = 'rbac';
-    /**
-     * @var string the key used to store user RBAC roles in cache
-     * @since 2.0.48
-     */
-    public $rolesCacheSuffix = 'roles';
 
     /**
      * @var Item[] all auth items (name => Item)
@@ -476,14 +471,6 @@ class DbManager extends BaseManager
             return [];
         }
 
-        if ($this->cache !== null) {
-            $data = $this->cache->get($this->getUserRolesCacheKey($userId));
-
-            if ($data !== false) {
-                return $data;
-            }
-        }
-
         $query = (new Query())->select('b.*')
             ->from(['a' => $this->assignmentTable, 'b' => $this->itemTable])
             ->where('{{a}}.[[item_name]]={{b}}.[[name]]')
@@ -493,10 +480,6 @@ class DbManager extends BaseManager
         $roles = $this->getDefaultRoleInstances();
         foreach ($query->all($this->db) as $row) {
             $roles[$row['name']] = $this->populateItem($row);
-        }
-
-        if ($this->cache !== null) {
-            $this->cacheUserRolesData($userId, $roles);
         }
 
         return $roles;
@@ -1005,16 +988,6 @@ class DbManager extends BaseManager
             $this->items = null;
             $this->rules = null;
             $this->parents = null;
-
-            $cachedUserIds = $this->cache->get($this->getUserRolesCachedSetKey());
-
-            if ($cachedUserIds !== false) {
-                foreach ($cachedUserIds as $userId) {
-                    $this->cache->delete($this->getUserRolesCacheKey($userId));
-                }
-
-                $this->cache->delete($this->getUserRolesCachedSetKey());
-            }
         }
         $this->checkAccessAssignments = [];
     }
@@ -1087,29 +1060,5 @@ class DbManager extends BaseManager
     protected function isEmptyUserId($userId)
     {
         return !isset($userId) || $userId === '';
-    }
-
-    private function getUserRolesCacheKey($userId)
-    {
-        return $this->cacheKey . $this->rolesCacheSuffix . $userId;
-    }
-
-    private function getUserRolesCachedSetKey()
-    {
-        return $this->cacheKey . $this->rolesCacheSuffix;
-    }
-
-    private function cacheUserRolesData($userId, $roles)
-    {
-        $cachedUserIds = $this->cache->get($this->getUserRolesCachedSetKey());
-
-        if ($cachedUserIds === false) {
-            $cachedUserIds = [];
-        }
-
-        $cachedUserIds[] = $userId;
-
-        $this->cache->set($this->getUserRolesCacheKey($userId), $roles);
-        $this->cache->set($this->getUserRolesCachedSetKey(), $cachedUserIds);
     }
 }

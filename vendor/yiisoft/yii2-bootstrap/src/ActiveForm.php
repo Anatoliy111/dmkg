@@ -1,8 +1,8 @@
 <?php
 /**
- * @link https://www.yiiframework.com/
+ * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
+ * @license http://www.yiiframework.com/license/
  */
 
 namespace yii\bootstrap;
@@ -57,7 +57,7 @@ use yii\base\InvalidConfigException;
  * ```
  *
  * @see ActiveField for details on the [[fieldConfig]] options
- * @see https://getbootstrap.com/css/#forms
+ * @see http://getbootstrap.com/css/#forms
  *
  * @author Michael Härtl <haertl.mike@gmail.com>
  * @since 2.0

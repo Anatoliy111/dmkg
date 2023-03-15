@@ -33,10 +33,10 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
         NavBar::begin([
             'brandLabel' => Html::label('<h4>Компослуги</h4>'),
             'brandUrl' => ['default/index'],
-//            'options' => ['class' => 'navbar-inverse navbar-fixed-top'],
+            'options' => ['class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',],
         ]);
         echo Nav::widget([
-//            'options' => ['class' => 'nav navbar-nav navbar-right'],
+            'options' => ['class' => 'nav navbar-nav navbar-right'],
             'items' => [
                 ['label' => 'Головна', 'url' => ['default/index']],
 				['label' => 'Gii', 'url' => '/gii'],
@@ -46,10 +46,15 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 		],
         ]);
         NavBar::end();
+
+
         ?>
 
 
-		<?php
+
+
+
+<?php
 
 
 //			NavBar::begin([
@@ -57,7 +62,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 ////				'brandUrl' => ['default/index'],
 //				'options' => ['class' => 'navbar-default','style'=>'padding-top: 80px'],
 //			]);
-//			?>
+			?>
 <!---->
 <!--		<div class="col-xs-12">-->
 <!--			<div class="col-xs-4 pull-left">-->
@@ -68,7 +73,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 <!---->
 <!---->
 <!--			--><?php
-//
+
 //			echo Nav::widget([
 //				'options' => ['class' => 'nav navbar-nav navbar-left'],
 //				'items' => [
@@ -167,17 +172,17 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 
 
 		<div class="container">
-
-			<?php echo Breadcrumbs::widget([
-				'homeLink' => ['label' => 'Головна', 'url' => '/poslug'],
-				'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-			]) ?>
-
-
-
-
-            <?= $content ?>
-
+<!---->
+<!--			--><?php //echo Breadcrumbs::widget([
+//				'homeLink' => ['label' => 'Головна', 'url' => '/poslug'],
+//				'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+//			]) ?>
+<!---->
+<!---->
+<!---->
+<!---->
+<!--            --><?//= $content ?>
+<!---->
 
        </div>
 

@@ -1,50 +1,52 @@
-import { Moment } from './constructor';
 import { normalizeUnits, normalizeObjectUnits } from '../units/aliases';
 import { getPrioritizedUnits } from '../units/priorities';
-import { smartSetUTCMonth } from '../units/month';
 import { hooks } from '../utils/hooks';
-import { quickCreateUTC, quickCreateLocal } from '../create/from-anything';
 import isFunction from '../utils/is-function';
+import { daysInMonth } from '../units/month';
+import { isLeapYear } from '../utils/is-leap-year';
+import toInt from '../utils/to-int';
 
-
-export function makeGetSet (unit, msCoef) {
+export function makeGetSet(unit, keepTime) {
     return function (value) {
         if (value != null) {
-            return set(this, unit, value, msCoef);
+            set(this, unit, value);
+            hooks.updateOffset(this, keepTime);
+            return this;
         } else {
             return get(this, unit);
         }
     };
 }
 
-export function get (mom, unit) {
-    return mom.isValid() ?
-        mom._d['getUTC' + unit]() : NaN;
+export function get(mom, unit) {
+    return mom.isValid()
+        ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]()
+        : NaN;
 }
 
-function set (mom, unit, value, msCoef) {
-    if (!mom.isValid()) {
-        return mom;
-    }
-    var d, uts;
-    // console.log('SET', arguments);
-    if (msCoef != null) {
-        // this is one of ms, second, minute
-        uts = mom.valueOf();
-        uts += (value - get(mom, unit)) * msCoef;
-        return quickCreateUTC(uts, mom._locale, mom._tz);
-    } else {
-        // hour, day or year, NOT month
-        d = new Date(mom._d);
-        d['setUTC' + unit](value);
-        return quickCreateLocal(d.valueOf(), mom._locale, mom._tz);
+export function set(mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+        if (
+            unit === 'FullYear' &&
+            isLeapYear(mom.year()) &&
+            mom.month() === 1 &&
+            mom.date() === 29
+        ) {
+            value = toInt(value);
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](
+                value,
+                mom.month(),
+                daysInMonth(value, mom.month())
+            );
+        } else {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
     }
 }
-
 
 // MOMENTS
 
-export function stringGet (units) {
+export function stringGet(units) {
     units = normalizeUnits(units);
     if (isFunction(this[units])) {
         return this[units]();
@@ -52,20 +54,20 @@ export function stringGet (units) {
     return this;
 }
 
-
-export function stringSet (units, value) {
-    var mom = this;
+export function stringSet(units, value) {
     if (typeof units === 'object') {
         units = normalizeObjectUnits(units);
-        var prioritized = getPrioritizedUnits(units);
-        for (var i = 0; i < prioritized.length; i++) {
-            mom = prioritized[i].getSet.call(mom, prioritized[i].value);
+        var prioritized = getPrioritizedUnits(units),
+            i,
+            prioritizedLen = prioritized.length;
+        for (i = 0; i < prioritizedLen; i++) {
+            this[prioritized[i].unit](units[prioritized[i].unit]);
         }
     } else {
         units = normalizeUnits(units);
-        if (isFunction(mom[units])) {
-            return mom[units](value);
+        if (isFunction(this[units])) {
+            return this[units](value);
         }
     }
-    return mom;
+    return this;
 }

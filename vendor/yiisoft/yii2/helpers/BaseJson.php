@@ -185,12 +185,6 @@ class BaseJson
 
             if ($data instanceof Arrayable) {
                 $data = $data->toArray();
-            } elseif ($data instanceof \Generator) {
-                $_data = [];
-                foreach ($data as $name => $value) {
-                    $_data[$name] = static::processData($value, $expressions, $expPrefix);
-                }
-                $data = $_data;
             } elseif ($data instanceof \SimpleXMLElement) {
                 $data = (array) $data;
 
