@@ -1,0 +1,78 @@
+CREATE TABLE `ut_abschet` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_abonent` int NOT NULL,
+  `schet` varchar(11) COLLATE 'utf8_general_ci' NOT NULL,
+  `id_kart` int NOT NULL
+) ENGINE='InnoDB' COLLATE 'utf8_general_ci';
+
+INSERT INTO ut_abschet (id_abonent, schet, id_kart)
+SELECT id, schet, id_kart
+FROM ut_abonent 
+WHERE pass is not null
+;
+
+ALTER TABLE `ut_tarifab`
+ADD `id_kart` int(11) NOT NULL AFTER `id_abonent`;
+
+update ut_tarifab set id_kart=
+(select id_kart from ut_abonent
+where ut_tarifab.id_abonent=ut_abonent.id)
+;
+
+ALTER TABLE `ut_tarifab`
+DROP FOREIGN KEY `FK_ut_tarifab_ut_abonent`;
+
+ALTER TABLE `ut_utrim`
+ADD `id_kart` int(11) NOT NULL AFTER `id_abonent`;
+
+update ut_utrim set id_kart=
+(select id_kart from ut_abonent
+where ut_utrim.id_abonent=ut_abonent.id)
+;
+
+ALTER TABLE `ut_utrim`
+DROP FOREIGN KEY `FK_ut_utrim_ut_abonent`;
+
+delete FROM ut_abonent 
+WHERE pass is null
+;
+
+ALTER TABLE `ut_abonent`
+CHANGE `id_org` `id_org` int(11) NULL COMMENT 'организация' AFTER `id`,
+CHANGE `schet` `schet` varchar(11) COLLATE 'utf8_general_ci' NULL COMMENT 'особовий рахунок' AFTER `id_org`,
+CHANGE `id_kart` `id_kart` int(11) NULL COMMENT 'адресна картка ' AFTER `fio`;
+
+ALTER TABLE `ut_abschet`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_abschet`
+ADD FOREIGN KEY (`id_abonent`) REFERENCES `ut_abonent` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `ut_abonent`
+ADD `vb_api_key` varchar(50) NULL,
+ADD `vb_date` timestamp NULL ON UPDATE CURRENT_TIMESTAMP AFTER `vb_api_key`,
+ADD `vb_org` varchar(7) NULL AFTER `vb_date`,
+ADD `vb_receiver` varchar(30) NULL AFTER `vb_org`,
+ADD `vb_name` varchar(64) NULL AFTER `vb_receiver`,
+ADD `vb_status` varchar(64) NULL AFTER `vb_name`;
+
+ALTER TABLE `ut_abonent`
+CHANGE `vb_date` `vb_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP AFTER `vb_api_key`;
+
+INSERT INTO ut_abonent (vb_api_key, vb_date, vb_org, vb_receiver, vb_name, vb_status) 
+select api_key,date_ins,org,id_receiver,name,status from viber;
+
+INSERT INTO ut_abschet(id_abonent, schet, id_kart) 
+select ut_abonent.id,viber_abon.schet,ut_kart.id from ut_abonent
+join viber on (viber.id_receiver=ut_abonent.vb_receiver)
+join viber_abon on (viber.id=viber_abon.id_viber)
+join ut_kart on (ut_kart.schet=viber_abon.schet)
+;
+
+
+
+
+
+
+
+

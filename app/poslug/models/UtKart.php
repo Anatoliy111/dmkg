@@ -76,13 +76,13 @@ class UtKart extends \yii\db\ActiveRecord
 			['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
 //			['pass1', 'compare',  'compareAttribute' => 'pass2', 'message' => 'Паролі не співпадають !!!'],
 //			['pass1', 'required', 'when' => function($this) { return $this->status == '1'; }],
-			['pass1', 'required', 'when' => function ($this) {
-				return $this->status == '1';
+			['pass1', 'required', 'when' => function ($model) {
+				return $model->status == '1';
 			}, 'whenClient' => "function (attribute, value) {
         return $('#status').val() == '1';
     }"],
-			['pass2', 'required', 'when' => function ($this) {
-				return $this->status == '1';
+			['pass2', 'required', 'when' => function ($model) {
+				return $model->status == '1';
 			}, 'whenClient' => "function (attribute, value) {
         return $('#status').val() == '1';
     }"],

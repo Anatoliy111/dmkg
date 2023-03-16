@@ -97,11 +97,6 @@ class DefaultController extends Controller
 						Alert::end();
 					}
 //				}
-				else
-				{
-
-				}
-
 			}
 
 		}
@@ -159,7 +154,8 @@ class DefaultController extends Controller
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
-			Yii::$app->session['periodoblik']=$data['period'];
+            $session = Yii::$app->session;
+            $session['periodoblik']=$data['period'];
 		}
 
 
