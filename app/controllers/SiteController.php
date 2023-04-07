@@ -80,9 +80,6 @@ class SiteController extends Controller
 			Yii::$app->session['perioddom']=$data['period'];
 
 		}
-
-
-
 	}
 
 	public function actionSaveperiodkab()
@@ -93,9 +90,6 @@ class SiteController extends Controller
 			Yii::$app->session['periodkab']=$data['period'];
 
 		}
-
-
-
 	}
 
 	public function actionOfferta()

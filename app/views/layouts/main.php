@@ -23,7 +23,7 @@ use yii\widgets\Breadcrumbs;
 $search = '';
 
 $my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
-$year = $my_date->format('Y');
+$year = $my_date->format('php:Y');
 
 ?>
 
@@ -139,7 +139,7 @@ $year = $my_date->format('Y');
 					</div>
 					<div class="find-advisor pull-right">
 <!--						<a href="--><?//= Url::home() ?><!--ut-kart\index" class="advisor ">Кабінет споживача</a>-->
-						<a href='/ut-kart/index' class="advisor ">Кабінет споживача</a>
+						<a href='/ut-abonent/index' class="advisor ">Кабінет споживача</a>
 					</div>
 				</nav> <!-- End Nav -->
 			</div> <!-- End Container -->

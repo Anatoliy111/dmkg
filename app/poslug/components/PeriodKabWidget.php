@@ -72,14 +72,14 @@ class PeriodKabWidget extends Widget
 			$dat = ArrayHelper::map($ar, 'period', 'period');
 			foreach ($dat as $dt)
 			{
-				$val=ArrayHelper::getValue($per, Yii::$app->formatter->asDate($dt, 'Y'));
+				$val=ArrayHelper::getValue($per, Yii::$app->formatter->asDate($dt, 'php:Y'));
 				if ($val==null)
 				{
-					ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'Y'), [$dt => Yii::$app->formatter->asDate($dt, 'LLLL')]);
+					ArrayHelper::setValue($per, Yii::$app->formatter->asDate($dt, 'php:Y'), [$dt => Yii::$app->formatter->asDate($dt, 'LLLL')]);
 				}
 				else
 				{
-					ArrayHelper::setValue($per, [Yii::$app->formatter->asDate($dt, 'Y'),$dt], Yii::$app->formatter->asDate($dt, 'LLLL'));
+					ArrayHelper::setValue($per, [Yii::$app->formatter->asDate($dt, 'php:Y'),$dt], Yii::$app->formatter->asDate($dt, 'LLLL'));
 
 				}
 			}

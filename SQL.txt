@@ -1,0 +1,184 @@
+
+ALTER TABLE `ut_tarifab` DROP FOREIGN KEY `FK_ut_tarifab_ut_abonent`;
+ALTER TABLE `ut_tarifab` ADD `id_kart` int(11) NOT NULL AFTER `id_abonent`;
+
+update ut_tarifab set id_kart=
+(select id_kart from ut_abonent
+where ut_tarifab.id_abonent=ut_abonent.id)
+;
+
+ALTER TABLE `ut_tarifab` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_tarifab` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_utrim` DROP FOREIGN KEY `FK_ut_utrim_ut_abonent`;
+ALTER TABLE `ut_utrim` ADD `id_kart` int(11) NOT NULL AFTER `id_abonent`;
+
+update ut_utrim set id_kart=
+(select id_kart from ut_abonent
+where ut_utrim.id_abonent=ut_abonent.id)
+;
+
+ALTER TABLE `ut_utrim` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_utrim` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+
+ALTER TABLE `ut_lgot` ADD `id_kart` int(11) NOT NULL;
+
+update ut_lgot set id_kart=
+(select id_kart from ut_abonent
+where ut_lgot.id_abonent=ut_abonent.id)
+;
+
+ALTER TABLE `ut_lgot` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_lgot` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+ALTER TABLE `ut_lich` ADD `id_kart` int(11) NOT NULL;
+
+update ut_lich set id_kart=
+(select id_kart from ut_abonent
+where ut_lich.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_lich` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_lich` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+ALTER TABLE `ut_opl` ADD `id_kart` int(11) NOT NULL;
+
+update ut_opl set id_kart=
+(select id_kart from ut_abonent
+where ut_opl.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_opl` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_opl` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+ALTER TABLE `ut_lichskl` ADD `id_kart` int(11) NOT NULL;
+
+update ut_lichskl set id_kart=
+(select id_kart from ut_abonent
+where ut_lichskl.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_lichskl` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_lichskl` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_narah` ADD `id_kart` int(11) NOT NULL;
+
+update ut_narah set id_kart=
+(select id_kart from ut_abonent
+where ut_narah.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_narah` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_narah` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_obor` ADD `id_kart` int(11) NOT NULL;
+
+update ut_obor set id_kart=
+(select id_kart from ut_abonent
+where ut_obor.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_obor` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_obor` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+/*
+ALTER TABLE `ut_pay` ADD `id_kart` int(11) NOT NULL;
+
+update ut_pay set id_kart=
+(select id_kart from ut_abonent
+where ut_pay.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_pay` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_pay` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+*/
+
+ALTER TABLE `ut_pokaz` ADD `id_kart` int(11) NOT NULL;
+
+update ut_pokaz set id_kart=
+(select id_kart from ut_abonent
+where ut_pokaz.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_pokaz` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_pokaz` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_posl` ADD `id_kart` int(11) NOT NULL;
+
+update ut_posl set id_kart=
+(select id_kart from ut_abonent
+where ut_posl.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_posl` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_posl` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_subs` ADD `id_kart` int(11) NOT NULL;
+
+update ut_subs set id_kart=
+(select id_kart from ut_abonent
+where ut_subs.id_abonent=ut_abonent.id)
+;
+ALTER TABLE `ut_subs` ADD INDEX `id_kart` (`id_kart`);
+ALTER TABLE `ut_subs` ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+delete FROM ut_abonent 
+WHERE pass is null
+;
+
+CREATE TABLE `ut_abschet` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_abonent` int NOT NULL,
+  `schet` varchar(11) COLLATE 'utf8_general_ci' NOT NULL,
+  `id_kart` int NOT NULL
+) ENGINE='InnoDB' COLLATE 'utf8_general_ci';
+
+INSERT INTO ut_abschet (id_abonent, schet, id_kart)
+SELECT id, schet, id_kart
+FROM ut_abonent 
+WHERE pass is not null
+;
+
+ALTER TABLE `ut_abschet`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_abschet`
+ADD FOREIGN KEY (`id_abonent`) REFERENCES `ut_abonent` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+ALTER TABLE `ut_abonent`
+ADD `vb_api_key` varchar(50) NULL,
+ADD `vb_date` timestamp NULL ON UPDATE CURRENT_TIMESTAMP AFTER `vb_api_key`,
+ADD `vb_org` varchar(7) NULL AFTER `vb_date`,
+ADD `vb_receiver` varchar(30) NULL AFTER `vb_org`,
+ADD `vb_name` varchar(64) NULL AFTER `vb_receiver`,
+ADD `vb_status` varchar(64) NULL AFTER `vb_name`;
+
+ALTER TABLE `ut_abonent`
+CHANGE `vb_date` `vb_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP AFTER `vb_api_key`;
+
+ALTER TABLE `ut_abonent`
+CHANGE `schet` `schet` varchar(11) COLLATE 'utf8_general_ci' NULL COMMENT 'особовий рахунок' AFTER `id_org`,
+CHANGE `id_kart` `id_kart` int(11) NULL COMMENT 'адресна картка ' AFTER `fio`,
+CHANGE `vb_date` `vb_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE CURRENT_TIMESTAMP AFTER `vb_api_key`;
+
+INSERT INTO ut_abonent (id_org,vb_api_key, vb_date, vb_org, vb_receiver, vb_name, vb_status) 
+select 1,api_key,date_ins,org,id_receiver,name,status from viber;
+
+INSERT INTO ut_abschet(id_abonent, schet, id_kart) 
+select ut_abonent.id,viber_abon.schet,ut_kart.id from ut_abonent
+join viber on (viber.id_receiver=ut_abonent.vb_receiver)
+join viber_abon on (viber.id=viber_abon.id_viber)
+join ut_kart on (ut_kart.schet=viber_abon.schet)
+;
+
+ALTER TABLE `ut_abonent` ADD `old_auth` varchar(64) COLLATE 'utf8_general_ci' NULL;
+
+update ut_abonent set old_auth=
+(select concat(CONVERT(id_ulica, CHAR),dom,kv) addr from ut_kart
+where ut_abonent.id_kart=ut_kart.id)
+;
+
+
+
+
+

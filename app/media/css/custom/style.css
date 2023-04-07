@@ -800,6 +800,32 @@ header .bottom_header .address .top-info .icon-box span:after {
 
 }
 
+@media screen and (max-width: 480px) {
+	.kv-table-wrap th, .kv-table-wrap td {
+		display: revert;
+	}
+
+	.kv-table-wrap tr > td:first-child {
+
+	}
+}
+
+@media screen and (max-width: 280px) {
+	.kv-table-wrap th, .kv-table-wrap td {
+		display: block;
+		width: 100% !important;
+		text-align: center;
+		font-size: 1.2em;
+	}
+
+	.kv-table-wrap tr > td:first-child {
+		border-top: 3px double #ccc;
+		margin-top: 10px;
+		font-size: 2em;
+	}
+}
+
+
 .main {
     /*width: 1200px;*/
     margin-top: 10px;
@@ -811,6 +837,8 @@ button#buttperiod{
 
     display: none;
 }
+
+
 
 .main .ut-kart .container {
     padding-top: 18px;

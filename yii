@@ -26,6 +26,9 @@ require(__DIR__ . '/app/config/aliase.php');
 
 $config = require(__DIR__ . '/app/config/console.php');
 
+
+/*unset($config['components']['request']);*/
+
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
 exit($exitCode);
