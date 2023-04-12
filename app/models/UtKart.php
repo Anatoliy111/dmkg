@@ -44,6 +44,7 @@ class UtKart extends \yii\db\ActiveRecord
 
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';
+    const SCENARIO_EMAIL = 'email';
 
     public static function tableName()
     {
@@ -117,6 +118,7 @@ class UtKart extends \yii\db\ActiveRecord
 		$scenarios = parent::scenarios();
 		$scenarios[self::SCENARIO_ADDR] = [['id_ulica', 'dom', 'enterpass'], 'required'];
 		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
+        $scenarios[self::SCENARIO_EMAIL] = [['email'], 'required'];
 		return $scenarios;
 	}
 

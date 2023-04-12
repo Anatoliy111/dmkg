@@ -48,7 +48,6 @@ use yii\widgets\Pjax;
 		]);
 ?>
 
-
 <h1><?= Html::encode($this->title) ?></h1>
 
 
@@ -67,6 +66,67 @@ use yii\widgets\Pjax;
 ?>
 
 <?php Modal::end(); ?>
+
+<?php 	Modal::begin([
+    'header' => '<h2>Зареєструвати електронну пошту</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+    'id' => 'emailreg',
+    'size' => 'modal-md',
+
+]);
+?>
+
+<h1><?= Html::encode($this->title) ?></h1>
+
+
+<?php $form = ActiveForm::begin([
+    'id' => 'email-form1',
+
+]); ?>
+
+<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']])->inputOptions(['maxlength' => true]);?>
+
+<div class="buttons" style="padding-bottom: 20px">
+    <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+</div>
+<?php
+ActiveForm::end();
+?>
+
+<?php Modal::end(); ?>
+
+<?php 	Modal::begin([
+    'header' => '<h2>Змінити електронну пошту</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+    'id' => 'emailchange',
+    'size' => 'modal-md',
+
+]);
+?>
+
+<h1><?= Html::encode($this->title) ?></h1>
+
+
+<?php $form = ActiveForm::begin([
+    'id' => 'email-form2',
+
+]); ?>
+
+<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']])->inputOptions(['maxlength' => true]);?>
+
+<div class="buttons" style="padding-bottom: 20px">
+    <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+</div>
+<?php
+ActiveForm::end();
+?>
+
+<?php Modal::end(); ?>
+
 
 <?php
 yii\bootstrap\Modal::begin([
@@ -176,7 +236,7 @@ yii\bootstrap\Modal::begin([
 			<div class="col-sm-12">
 
 						<?=
-							DetailView::widget([
+                        DetailView::widget([
 								'model' => $model,
 								'hover'=>true,
 //								'condensed'=>true,
@@ -193,15 +253,30 @@ yii\bootstrap\Modal::begin([
 									'idcod',
 									'telef',
                                     'email',
+//                                    [
+//                                        'label' => 'email',
+//                                        'value' => function ($key) {
+//                                            if ($key->email==null) {
+//                                                $res = '-----------------';
+//                                            }
+//                                            else
+//                                                $res = $key->email;
+//                                            return $res;
+//                                        }
+//                                    ],
                                     [
-                                        'label' => 'email',
-                                        'value' => function ($key) {
-                                            if ($key->email==null) {
-                                                $res = '-----------------';
+                                        'label'=>' ',
+                                        'format'=>'raw',
+                                        'value'=>function ($model, $key){
+                                            if (!empty($key->model['email']))
+                                            {
+                                                return Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
                                             }
                                             else
-                                                $res = $key->email;
-                                            return $res;
+                                            {
+                                                return Html::a("Зареєструвати пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailreg','class'=>'btn-sm btn-danger']);
+                                            }
+
                                         }
                                     ],
 									[

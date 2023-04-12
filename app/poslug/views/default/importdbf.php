@@ -34,22 +34,8 @@ use yii\bootstrap\Modal;
 	use yii\helpers\Html;
 
 global $period;
+?>
 
-
-	//	$_SESSION['RowsCount'] = $RowsCount;
-//	$process = $_SESSION['process'];
-//	$_SESSION['Progress'] = $_SESSION['Progress'] + 1;
-
-//	$_SESSION['NameBase'] = $NameBase;
-//	$_SESSION['NomBase']= 0;
-//	$_SESSION['EndCount'] = $RowsCount;
-//
-//	$Base = $_SESSION['NameBase'][$_SESSION['NomBase']];
-//?>
-<!---->
-<!--	--><?//= Html::tag('p', Html::encode($Base), ['class' => 'base']) ?>
-<!---->
-<!---->
 
 <?php
 //	$filename = $_SESSION['DirFiles'].'/'.$Base;
@@ -129,6 +115,10 @@ $t = true;
 	    $dbf = @dbase_open($filename, 0) or die("Error!!!  Opening $filename");
 	    @dbase_pack($dbf);
 	     $rowsCount = dbase_numrecords($dbf);
+        if ($rowsCount == 0) {
+            $nombase = $nombase + 1;
+            break;
+        }
 		$GLOBALS["period"]="";
 		$fname = '';
 		$dirname = mb_strtolower(substr(strrchr(key($Base), '/'), -6));
@@ -184,15 +174,11 @@ $t = true;
 //		  $process=$_SESSION['NomRec']+$_SESSION['process'];
 //	     else $process=$rowsCount;
 		$functionname = 'import'.strstr($fname, '.', true);
-        $nn =0;
 		if (function_exists($functionname)) {
 
 			for ($i = $start+1; $i <= $process; $i++)
 			{
 				$nomrec = $nomrec +1;
-				if ($nomrec==6596) {
-                    $nn = $nomrec;
-                }
 
 				if (!$functionname($dbf,$nomrec,current($Base)))
 					  Yii::$app->session->AddFlash('alert-danger', 'Return to false '.$functionname);
