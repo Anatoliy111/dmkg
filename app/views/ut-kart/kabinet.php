@@ -192,6 +192,18 @@ yii\bootstrap\Modal::begin([
 									'fio',
 									'idcod',
 									'telef',
+                                    'email',
+                                    [
+                                        'label' => 'email',
+                                        'value' => function ($key) {
+                                            if ($key->email==null) {
+                                                $res = '-----------------';
+                                            }
+                                            else
+                                                $res = $key->email;
+                                            return $res;
+                                        }
+                                    ],
 									[
 										'label' => Yii::t('easyii', 'Adress'),
 
@@ -203,6 +215,18 @@ yii\bootstrap\Modal::begin([
 
 							]) ?>
 			</div>
+
+        <?php
+           if (strlen(trim($model->email)) == 0 ) {
+        ?>
+               <div class="mess col-xs-12" style="color: #c91017;">
+                   <h4>Увага!!! Заповніть та пройдіть верифікацію електронної пошти!!! В майбутньому буде змінено формат входу в кабінет за допомогою електронної пошти.</h4>
+               </div>
+
+        <?php
+           }
+        ?>
+
 
 
 

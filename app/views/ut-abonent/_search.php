@@ -18,15 +18,15 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php // echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'id_org') ?>
+    <?php // echo  $form->field($model, 'id_org') ?>
 
-    <?= $form->field($model, 'schet') ?>
+    <?php // echo  $form->field($model, 'schet') ?>
 
-    <?= $form->field($model, 'fio') ?>
+    <?php // echo $form->field($model, 'fio') ?>
 
-    <?= $form->field($model, 'id_kart') ?>
+    <?php // echo  $form->field($model, 'id_kart') ?>
 
     <?php // echo $form->field($model, 'note') ?>
 
@@ -34,13 +34,15 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'del') ?>
 
-    <?php // echo $form->field($model, 'pass') ?>
+
 
     <?php // echo $form->field($model, 'date_pass') ?>
 
     <?php // echo $form->field($model, 'passopen') ?>
 
-    <?php // echo $form->field($model, 'email') ?>
+    <?= $form->field($model, 'email') ?>
+
+    <?= $form->field($model, 'pass')->passwordInput(); ?>
 
     <?php // echo $form->field($model, 'telefon') ?>
 
@@ -58,9 +60,13 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'vb_status') ?>
 
+<!--    <div class="form-group">-->
+<!--        --><?//= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+<!--        --><?//= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+<!--    </div>-->
+
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton('Далі',['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -15,50 +15,61 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ut-abonent-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="well well-large">
+        <?php  echo $this->render('_search', ['model' => $searchModel, 'dataProvider' => $dataProvider]);
+        ?>
+        <div class="text">
+            <p> * Для отримання коду доступу, потрібно з'явитись в КП "ДОЛИНСЬКИЙ МІСЬККОМУНГОСП" вул. Нова 80-А, в кабінет №2.</p>
+            <p> При собі мати паспорт та документ що засвідчує право власності.</p>
+        </div>
+    </div>
 
-    <p>
-        <?= Html::a('Create Ut Abonent', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'id_org',
-            'schet',
-            'fio',
-            'id_kart',
-            //'note:ntext',
-            //'val',
-            //'del',
-            //'pass',
-            //'date_pass',
-            //'passopen',
-            //'email:email',
-            //'telefon',
-            //'date_entry',
-            //'vb_api_key',
-            //'vb_date',
-            //'vb_org',
-            //'vb_receiver',
-            //'vb_name',
-            //'vb_status',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, UtAbonent $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-    <?php Pjax::end(); ?>
+<!--    <h1>--><?//= Html::encode($this->title) ?><!--</h1>-->
+<!---->
+<!--    <p>-->
+<!--        --><?//= Html::a('Create Ut Abonent', ['create'], ['class' => 'btn btn-success']) ?>
+<!--    </p>-->
+<!---->
+<!--    --><?php //Pjax::begin(); ?>
+<!--    --><?php //// echo $this->render('_search', ['model' => $searchModel]); ?>
+<!---->
+<!--    --><?//= GridView::widget([
+//        'dataProvider' => $dataProvider,
+//        'filterModel' => $searchModel,
+//        'columns' => [
+//            ['class' => 'yii\grid\SerialColumn'],
+//
+//            'id',
+//            'id_org',
+//            'schet',
+//            'fio',
+//            'id_kart',
+//            //'note:ntext',
+//            //'val',
+//            //'del',
+//            //'pass',
+//            //'date_pass',
+//            //'passopen',
+//            //'email:email',
+//            //'telefon',
+//            //'date_entry',
+//            //'vb_api_key',
+//            //'vb_date',
+//            //'vb_org',
+//            //'vb_receiver',
+//            //'vb_name',
+//            //'vb_status',
+//            [
+//                'class' => ActionColumn::className(),
+//                'urlCreator' => function ($action, UtAbonent $model, $key, $index, $column) {
+//                    return Url::toRoute([$action, 'id' => $model->id]);
+//                 }
+//            ],
+//        ],
+//    ]); ?>
+<!---->
+<!--    --><?php //Pjax::end(); ?>
 
 </div>

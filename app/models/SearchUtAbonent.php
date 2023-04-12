@@ -14,11 +14,14 @@ class SearchUtAbonent extends UtAbonent
     /**
      * {@inheritdoc}
      */
+    const SCENARIO_AUTH = 'auth';
+    const SCENARIO_REG = 'registr';
+
     public function rules()
     {
         return [
             [['id', 'id_org', 'id_kart', 'val', 'del', 'telefon'], 'integer'],
-            [['schet', 'fio', 'note', 'pass', 'date_pass', 'passopen', 'email', 'date_entry', 'vb_api_key', 'vb_date', 'vb_org', 'vb_receiver', 'vb_name', 'vb_status'], 'safe'],
+            [['schet', 'fio', 'note', 'pass', 'date_pass', 'passopen','date_entry','email', 'vb_api_key', 'vb_date', 'vb_org', 'vb_receiver', 'vb_name', 'vb_status'], 'safe'],
         ];
     }
 
@@ -28,7 +31,12 @@ class SearchUtAbonent extends UtAbonent
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_AUTH] = ['email', 'pass',];
+        $scenarios[self::SCENARIO_REG] = ['email', 'pass', 'fio'];
+        return $scenarios;
+
+//        return Model::scenarios();
     }
 
     /**

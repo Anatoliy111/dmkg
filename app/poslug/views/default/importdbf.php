@@ -184,12 +184,16 @@ $t = true;
 //		  $process=$_SESSION['NomRec']+$_SESSION['process'];
 //	     else $process=$rowsCount;
 		$functionname = 'import'.strstr($fname, '.', true);
-
+        $nn =0;
 		if (function_exists($functionname)) {
 
 			for ($i = $start+1; $i <= $process; $i++)
 			{
 				$nomrec = $nomrec +1;
+				if ($nomrec==6596) {
+                    $nn = $nomrec;
+                }
+
 				if (!$functionname($dbf,$nomrec,current($Base)))
 					  Yii::$app->session->AddFlash('alert-danger', 'Return to false '.$functionname);
 //				      die("Error!!!  Return to false $functionname");
@@ -233,6 +237,9 @@ function importUL($dbf,$i,$Base)
 	if ($fields['deleted'] <> 1)
 	{
 		$ulic = encodestr(trim(iconv('CP866','utf-8',$fields['UL'])));
+		if (strlen(trim($ulic))==0) {
+            $ulic = 'Немає вулиці';
+        }
 		$FindModel = UtUlica::findOne(['kl' => $fields['KL']]);
 		if ($FindModel== null)
 		{
@@ -372,7 +379,7 @@ function importORGAN($dbf,$i,$Base)
 function importKART($dbf,$i,$Base)
 {
 	$fields = dbase_get_record_with_names($dbf,$i);
-	if ($fields['deleted'] <> 1)
+	if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0)
 	{
 		$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
 		if ($schet<>0 or $schet<>null)
@@ -647,7 +654,7 @@ function importPokaz($fields,$modelAb,$st)
 	function importPOSLTAR($dbf,$i,$Base)
 	{
 		$fields = dbase_get_record_with_names($dbf,$i);
-		if ($fields['deleted'] <> 1)
+		if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0)
 		{
 			$schet = trim(iconv('CP866','utf-8',$fields['SCHET']));
 
@@ -917,7 +924,7 @@ function importIN($dbf,$i,$Base)
     function importNach($dbf, $i, $Base)
     {
         $fields = dbase_get_record_with_names($dbf, $i);
-        if ($fields['deleted'] <> 1) {
+        if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0) {
             $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
             $lgot = encodestr(trim(iconv('CP866', 'utf-8', $fields['LGOTA'])));
             $FindAbon = UtAbonent::findOne(['schet' => $schet]);
@@ -963,7 +970,7 @@ function importIN($dbf,$i,$Base)
     function importObor($dbf, $i, $Base)
     {
         $fields = dbase_get_record_with_names($dbf, $i);
-        if ($fields['deleted'] <> 1) {
+        if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0) {
             $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
             $wid = trim($fields['WID']);
 //							if ($dom == '8026')
@@ -980,7 +987,7 @@ function importIN($dbf,$i,$Base)
                         $abonposl->id_org = 1;
                         $abonposl->id_abonent = $abon->id;
                         $abonposl->id_tipposl = $posl->id;
-                        $abonposl->n_dog = trim($fields['N_DOG']);
+                        $abonposl->n_dog = trim(iconv('CP866','utf-8',$fields['N_DOG']));
                         $abonposl->date_dog = trim($fields['D_DOG']) <> '' ? trim($fields['D_DOG']) : null;
 
                         if ($abonposl->validate() & $abonposl->save()) {
@@ -992,7 +999,7 @@ function importIN($dbf,$i,$Base)
                         }
                     } else {
 
-                        $findposl->n_dog = trim($fields['N_DOG']);
+                        $findposl->n_dog = trim(iconv('CP866','utf-8',$fields['N_DOG']));
                         $findposl->date_dog = trim($fields['D_DOG']) <> '' ? trim($fields['D_DOG']) : null;
                         $findposl->save();
                         NewObor($findposl, $fields);
@@ -1043,7 +1050,7 @@ function importIN($dbf,$i,$Base)
     {
         $fields = dbase_get_record_with_names($dbf, $i);
 
-        if ($fields['deleted'] <> 1) {
+        if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0) {
             $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
 //					$sum = $fields['SUM'];
 //							if ($dom == '8026')
@@ -1127,6 +1134,10 @@ function importIN($dbf,$i,$Base)
     {
         $narah = new UtOpl();
 
+        if ($findposl->id_abonent == 1717) {
+            $idab = 1717;
+        }
+
         $narah->id_org = 1;
         $narah->period = $GLOBALS["period"];
         $narah->id_abonent = $findposl->id_abonent;
@@ -1136,7 +1147,7 @@ function importIN($dbf,$i,$Base)
         $narah->dt = date('Y-m-d', strtotime(substr($fields['DT'], 0, 4) . '-' . substr($fields['DT'], 4, 2) . '-' . substr($fields['DT'], 6, 2)));
         $narah->pach = $fields['PACH'];
         $narah->sum = $v;
-        $narah->note = trim($fields['NOTE']);
+        $narah->note = trim(iconv('CP866', 'utf-8', $fields['NOTE']));
 
 
         if ($narah->validate()) {
@@ -1152,7 +1163,7 @@ function importIN($dbf,$i,$Base)
     {
         $fields = dbase_get_record_with_names($dbf, $i);
 
-        if ($fields['deleted'] <> 1) {
+        if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0) {
             $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
 //					$sum = $fields['SUM'];
 //							if ($dom == '8026')
@@ -1264,7 +1275,7 @@ function importIN($dbf,$i,$Base)
     {
         $fields = dbase_get_record_with_names($dbf, $i);
 
-        if ($fields['deleted'] <> 1) {
+        if ($fields['deleted'] <> 1 and strlen(trim($fields['SCHET']))<>0) {
             $schet = trim(iconv('CP866', 'utf-8', $fields['SCHET']));
 //					$sum = $fields['SUM'];
 //							if ($dom == '8026')
