@@ -67,7 +67,7 @@ class UtKart extends \yii\db\ActiveRecord
             [['dom'], 'string', 'max' => 4],
             [['kv'], 'string', 'max' => 5],
 			[['MonthYear'], 'safe'],
-			['email', 'email'],
+			[['email'], 'email'],
             [['korp'], 'string', 'max' => 1],
             [['telef'], 'string', 'max' => 15],
             [['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],

@@ -86,7 +86,7 @@ use yii\widgets\Pjax;
 
 ]); ?>
 
-<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
+<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']])->inputOptions(['maxlength' => true]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -116,7 +116,7 @@ ActiveForm::end();
 
 ]); ?>
 
-<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
+<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']])->inputOptions(['maxlength' => true]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -264,21 +264,21 @@ yii\bootstrap\Modal::begin([
 //                                            return $res;
 //                                        }
 //                                    ],
-//                                    [
-//                                        'label'=>' ',
-//                                        'format'=>'raw',
-//                                        'value'=>function ($model, $key){
-//                                            if (!empty($key->model['email']))
-//                                            {
-//                                                return Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
-//                                            }
-//                                            else
-//                                            {
-//                                                return Html::a("Зареєструвати пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailreg','class'=>'btn-sm btn-danger']);
-//                                            }
-//
-//                                        }
-//                                    ],
+                                    [
+                                        'label'=>' ',
+                                        'format'=>'raw',
+                                        'value'=>function ($model, $key){
+                                            if (!empty($key->model['email']))
+                                            {
+                                                return Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
+                                            }
+                                            else
+                                            {
+                                                return Html::a("Зареєструвати пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailreg','class'=>'btn-sm btn-danger']);
+                                            }
+
+                                        }
+                                    ],
 									[
 										'label' => Yii::t('easyii', 'Adress'),
 
@@ -291,16 +291,16 @@ yii\bootstrap\Modal::begin([
 							]) ?>
 			</div>
 
-<!--        --><?php
-//           if (strlen(trim($model->email)) == 0 ) {
-//        ?>
-<!--               <div class="mess col-xs-12" style="color: #c91017;">-->
-<!--                   <h4>Увага!!! Заповніть та пройдіть верифікацію електронної пошти!!! В майбутньому буде змінено формат входу в кабінет за допомогою електронної пошти.</h4>-->
-<!--               </div>-->
-<!---->
-<!--        --><?php
-//           }
-//        ?>
+        <?php
+           if (strlen(trim($model->email)) == 0 ) {
+        ?>
+               <div class="mess col-xs-12" style="color: #c91017;">
+                   <h4>Увага!!! Заповніть та пройдіть верифікацію електронної пошти!!! В майбутньому буде змінено формат входу в кабінет за допомогою електронної пошти.</h4>
+               </div>
+
+        <?php
+           }
+        ?>
 
 
 

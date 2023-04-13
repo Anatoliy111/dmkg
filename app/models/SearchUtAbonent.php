@@ -83,11 +83,7 @@ class SearchUtAbonent extends UtAbonent
             ->andFilterWhere(['like', 'pass', $this->pass])
             ->andFilterWhere(['like', 'passopen', $this->passopen])
             ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'vb_api_key', $this->vb_api_key])
-            ->andFilterWhere(['like', 'vb_org', $this->vb_org])
-            ->andFilterWhere(['like', 'vb_receiver', $this->vb_receiver])
-            ->andFilterWhere(['like', 'vb_name', $this->vb_name])
-            ->andFilterWhere(['like', 'vb_status', $this->vb_status]);
+
 
         return $dataProvider;
     }
