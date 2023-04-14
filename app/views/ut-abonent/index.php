@@ -8,6 +8,8 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\bootstrap\NavBar;
+
 /** @var yii\web\View $this */
 /** @var app\models\SearchUtAbonent $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -23,22 +25,9 @@ use yii\widgets\Pjax;
     <div class="well well-large">
 
         <?php
-            echo NavX::widget([
-                'options' => ['class' => 'nav nav-pills'],
-                'items' => [
-                    ['label' => 'Action', 'url' => '#'],
-                    ['label' => 'Submenu', 'items' => [
-                        ['label' => 'Action', 'url' => '#'],
-                        ['label' => 'Another action', 'url' => '#'],
-                        ['label' => 'Something else here', 'url' => '#'],
-                    ]],
-                    ['label' => 'Something else here', 'url' => '#'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Separated link', 'url' => '#'],
-                ],
-                'encodeLabels' => false
-            ]);
-        ?>
+
+
+       ?>
 
 
 <!--        --><?php // echo $this->render('_search', ['model' => $searchModel, 'dataProvider' => $dataProvider]);

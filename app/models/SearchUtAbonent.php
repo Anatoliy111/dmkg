@@ -74,7 +74,6 @@ class SearchUtAbonent extends UtAbonent
             'date_pass' => $this->date_pass,
             'telefon' => $this->telefon,
             'date_entry' => $this->date_entry,
-            'vb_date' => $this->vb_date,
         ]);
 
         $query->andFilterWhere(['like', 'schet', $this->schet])
@@ -82,7 +81,7 @@ class SearchUtAbonent extends UtAbonent
             ->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', 'pass', $this->pass])
             ->andFilterWhere(['like', 'passopen', $this->passopen])
-            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'email', $this->email]);
 
 
         return $dataProvider;

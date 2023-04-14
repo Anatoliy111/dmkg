@@ -57,10 +57,11 @@ class UtAbonentController extends Controller
 
         $searchModel = new SearchUtAbonent();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        $findmodel='';
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'findmodel' => $findmodel,
         ]);
     }
 
