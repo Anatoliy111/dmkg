@@ -15,6 +15,7 @@ use Yii;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -42,6 +43,11 @@ class UtAbonentController extends Controller
         );
     }
 
+    public function actionTabsData() {
+        $html = $this->renderPartial('/contact/index');
+        return Json::encode($html);
+    }
+
     /**
      * Lists all UtAbonent models.
      *
@@ -55,14 +61,19 @@ class UtAbonentController extends Controller
             return $this->redirect(['kabinet', 'id' => $session['model']->id]);
         }
 
-        $searchModel = new SearchUtAbonent();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-        $findmodel='';
+//        $searchModel = new SearchUtAbonent();
+//        $dataProvider = $searchModel->search($this->request->queryParams);
+//        $findmodel='';
+//        return $this->render('index', [
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
+//            'findmodel' => $findmodel,
+//        ]);
+        $model = new UtAbonent();
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'findmodel' => $findmodel,
+            'model' => $model,
         ]);
+
     }
 
     /**
@@ -353,5 +364,7 @@ class UtAbonentController extends Controller
             'lastperiod' => $session['period'],
         ]);
     }
+
+
 
 }

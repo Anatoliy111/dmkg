@@ -38,18 +38,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'date_entry')->textInput() ?>
 
-    <?= $form->field($model, 'vb_api_key')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'vb_date')->textInput() ?>
-
-    <?= $form->field($model, 'vb_org')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'vb_receiver')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'vb_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'vb_status')->textInput(['maxlength' => true]) ?>
-
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
