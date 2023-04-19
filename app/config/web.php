@@ -20,6 +20,7 @@ $config = [
     'runtimePath' => $webroot . '/runtime',
     'vendorPath' => $webroot . '/vendor',
     'components' => [
+        'local' => 'ua',
 		'response' => [
 			'formatters' => [
 				\yii\web\Response::FORMAT_JSON => [
