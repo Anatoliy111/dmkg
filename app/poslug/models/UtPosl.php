@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $id_org організація
- * @property int $id_abonent абонент
+ * @property int $id_kart абонент
  * @property int $id_tipposl тип послуг
  * @property int $flag_vrem признак тимчасової
  * @property string $date_n дата початку
@@ -44,14 +44,14 @@ class UtPosl extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'id_abonent', 'id_tipposl'], 'required'],
-            [['id_org', 'id_abonent', 'id_tipposl', 'flag_vrem', 'flag_dom', 'id_dom', 'del'], 'integer'],
+            [['id_org', 'id_kart', 'id_tipposl'], 'required'],
+            [['id_org', 'id_kart', 'id_tipposl', 'flag_vrem', 'flag_dom', 'id_dom', 'del'], 'integer'],
             [['date_n', 'date_k', 'date_dog'], 'safe'],
             [['nnorma'], 'number'],
             [['n_dog'], 'string', 'max' => 24],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
-            [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
+            [['id_kart'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_kart' => 'id']],
             [['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
         ];
     }
@@ -64,7 +64,7 @@ class UtPosl extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('easyii', 'ID'),
             'id_org' => Yii::t('easyii', 'Id Org'),
-            'id_abonent' => Yii::t('easyii', 'Id Abonent'),
+            'id_kart' => Yii::t('easyii', 'Id Kart'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'flag_vrem' => Yii::t('easyii', 'Flag Vrem'),
             'date_n' => Yii::t('easyii', 'Date N'),
@@ -105,9 +105,9 @@ class UtPosl extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAbonent()
+    public function getKart()
     {
-        return $this->hasOne(UtAbonent::className(), ['id' => 'id_abonent']);
+        return $this->hasOne(UtKart::className(), ['id' => 'id_kart']);
     }
 
     /**

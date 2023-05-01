@@ -18,21 +18,10 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
-//        $lastperiod = UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
-//        $period = $lastperiod->modify('+1 month');;
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 ?>
 
-<!--<script type="text/javascript">-->
-<!--	function ($)({-->
-<!--		$("#btn-mod-pay").click(function(){-->
-<!--			// нужный блок выбирается относительно this как предыдущий (prev)-->
-<!--			var textBlock = $(this).prev('#block').text();-->
-<!--			alert(textBlock);-->
-<!--		});-->
-<!---->
-<!--	})/*end  ready*/-->
-<!--</script>-->
+
 
 
 	<?php Pjax::begin(); ?>
@@ -86,7 +75,7 @@ use yii\widgets\Pjax;
 
 ]); ?>
 
-<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']])->inputOptions(['maxlength' => true]);?>
+<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -116,7 +105,7 @@ ActiveForm::end();
 
 ]); ?>
 
-<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']])->inputOptions(['maxlength' => true]);?>
+<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -167,55 +156,12 @@ yii\bootstrap\Modal::begin([
 	?>
 </div>
 
-<?php
 
-
-	$this->title = $model->fio;
-//$this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Karts'), 'url' => ['index']];
-//$this->params['breadcrumbs'][] = $this->title;
-
-
-	$items = [
-//		[
-//			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
-////			'content'=>'dgfdgggggggggggggggggggg',
-//			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
-//			'active'=>true
-//		],
-//		[
-//			'label'=>'Загальна інформація',
-//			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-//		],
-		[
-			'label'=>'Послуги/Тарифи',
-			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos,'dataProvider2' => $dptar,'abonents'=>$abonents]),
-		],
-		[
-			'label'=>'Нарахування',
-			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abonents'=>$abonents]),
-		],
-		[
-			'label'=>'Оплата/Утримання',
-			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abonents'=>$abonents]),
-		],
-		[
-			'label'=>'Субсидія',
-			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abonents'=>$abonents]),
-		],
-		[
-			'label'=>'Зведена відомість',
-			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abonents'=>$abonents]),
-		],
-	];
-
-
-
-?>
 <div class="ut-kart">
 	<div class="mywell well-large container">
 		<div class="col-sm-1">
 
-			<?= Html::a('Вихід', ['ut-kart/logout'], ['class' => 'btn btn-primary']) ?>
+			<?= Html::a('Вихід', ['ut-abonent/logout'], ['class' => 'btn btn-primary']) ?>
 
 		</div>
 		<div class="col-sm-1">
@@ -250,8 +196,7 @@ yii\bootstrap\Modal::begin([
 								'attributes' => [
 
 									'fio',
-									'idcod',
-									'telef',
+									'telefon',
                                     'email',
 //                                    [
 //                                        'label' => 'email',
@@ -279,11 +224,6 @@ yii\bootstrap\Modal::begin([
 
                                         }
                                     ],
-									[
-										'label' => Yii::t('easyii', 'Adress'),
-
-										'value' => $model->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$model->dom.' '.Yii::t('easyii', 'ap.').$model->kv,
-									],
 								],
 								'hAlign'=>DetailView::ALIGN_RIGHT ,
 								'vAlign'=>DetailView::ALIGN_TOP  ,
@@ -310,242 +250,3 @@ yii\bootstrap\Modal::begin([
 		<div class="col-xs-12">
 			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
 		</div>
-<!--		<div class="col-xs-12">-->
-
-					<?php
-					foreach ($abonents as $abon) {
-
-					?>
-			<div class="schet col-xs-12">
-				<div class="rah">
-					<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
-
-				</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 box-sum">
-						<h4>Сума до сплати</h4>
-						<?php
-						if (round($summa[$abon->id],2)<500){
-							?>
-							<div class="summa" style="color: #2e8e5a;">
-								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '') ?></h3>
-							</div>
-
-							<?php
-						}
-						if (round($summa[$abon->id],2)>=500 and round($summa[$abon->id],2)<1000){
-							?>
-							<div class="summa" style="color: #a937c9;">
-								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '')  ?></h3>
-							</div>
-							<?php
-
-							?>
-							<?php
-						}
-						if (round($summa[$abon->id],2)>=1000) {
-							?>
-							<div class="summa" style="color: #c91017;">
-								<h3><?= number_format(round($summa[$abon->id], 2), 2, '.', '')  ?></h3>
-							</div>
-							<?php
-						}
-						?>
-						<?php
-						echo Html::a('Сплатити', Url::to('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'), ['http','class' => 'btn-lg btn-success','target'=>"_blank"]);
-
-
-//						if ($abon->id==2071) {
-//							echo Html::button("Сплатити", [
-//							//	'value'=>Url::to("https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D"),
-//								'class' => 'btn btn-success btn-lg btn-block',
-//							//	'onclick' => "PrePay($abon->id)",
-//								//'onclick' => "location.href='https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'",
-//								'href' => "https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D",
-//								'target'=> "_blank",
-//							]);
-
-
-
-//						}
-//						?>
-<!--						--><?php
-//						if ($abon->id==3703) {
-//							echo Html::button("Сплатити", [
-//							//	'value'=>Url::to("https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D"),
-//								'class' => 'btn btn-success btn-lg btn-block',
-//								//'onclick' => "PrePay($abon->id)",
-//								//'onclick' => "location.href='https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'",
-//								'href' => "https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D",
-//								'target'=> "_blank",
-//							]);
-////							echo Html::a('Сплатити', [Url::to('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')], ['class' => 'btn-lg btn-success','target'=>"_blank"]);
-//
-//
-//						}
-//						?>
-
-					</div>
-
-
-					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-
-						<?php
-								echo GridView::widget([
-									'dataProvider' =>  $dpdolg[$abon->id],
-
-				//				'showPageSummary' => true,
-									'columns' => [
-		//								['class' => '\kartik\grid\SerialColumn'],
-										'tipposl',
-										[
-											'attribute' => 'sal',
-											'label'=>'Борг'
-				//									'format'=>['decimal', 2],
-				//									'pageSummary'=>true,
-										],
-										[
-											'attribute' => 'summ',
-											'label'=>'Оплата'
-											//									'format'=>['decimal', 2],
-											//									'pageSummary'=>true,
-										],
-										[
-											'attribute' => 'dolgopl',
-											'label'=>'Борг після оплати'
-											//									'format'=>['decimal', 2],
-											//									'pageSummary'=>true,
-										],
-		//								[
-		//									'attribute' => 'opl',
-		//									'label' => 'Оплата',
-		////										'format'=>['decimal', 2],
-		////										'pageSummary'=>true,
-		//								],
-				//				['class' => 'yii\grid\ActionColumn'],
-									],
-
-									'striped'=>false,
-								'layout'=>"{items}",
-				//					'layout' => $layout,
-									'resizableColumns'=>true,
-		//							'hover'=>true,
-									'pjax'=>true,
-									'pjaxSettings'=>[
-										'neverTimeout'=>true,
-
-									],
-									'panel' => [
-		//								'after'=>'',
-				//					'footer'=>true,
-
-									],
-
-		//							'containerOptions'=>['style'=>'overflow: auto'], // only set when $responsive = false
-									'toolbar'=> [
-				//						'{export}',
-		//								'{toggleData}',
-									]
-								]);
-						?>
-					</div>
-			</div>
-
-				<?php
-					}
-					?>
-
-	</div>
-	<div class="mywell well-large2 container">
-
-<!--		</div>-->
-		<div class="col-xs-12">
-			<div class="col-lg-4 .col-sm-4 .col-md-4">
-
-				<?= PeriodKabWidget::widget() ?>
-			</div>
-		</div>
-
-
-		<div class="col-xs-12 .col-sm-6 .col-lg-8">
-
-		<?php
-		echo TabsX::widget([
-			'items'=>$items,
-			'position'=>TabsX::POS_ABOVE,
-			'encodeLabels'=>false,
-			'bordered'=>true,
-		]);
-		?>
-
-	</div>
-
-
-
-    </div>
-	<?php Pjax::end(); ?>
-</div>
-
-
-<script type="text/javascript">
-	function PrePay(id)
-	{
-     var payid_abonent = id;
-//		var keys = $('#gridfile').yiiGridView('getSelectedRows');
-//		if (keys.length != 0){
-//			var hi= confirm("Ви впевненні що хочете видалити ці файли?");
-//			if (hi== true){
-
-				$.ajax({
-					url: "/ut-kart/pay",
-					type: 'post',
-					data: {payid_abonent},
-					success: function(s) {
-						//				alert(s);
-					$('#modalpay').modal('show').modal({backdrop: false});
-					$('#modal-content').html(s);
-//						.load($(this).attr('href'));
-
-					}
-
-				});
-
-//			}
-//		}
-
-
-	}
-
-
-//		$("#pay-form").on("submit", function (event) {
-//			alert("1");
-//			event.preventDefault();
-//			var $this = $(this);
-//			var frmValues = $this.serialize();
-//			$.ajax({
-//					type: $this.attr('method'),
-//					url: $this.attr('action'),
-//					data: frmValues
-//				})
-//				.done(function () {
-//					$("#para").text("Done!" + frmValues);
-//				})
-//				.fail(function () {
-//					$("#para").text("An error occured!");
-//				});
-//		});
-//
-//
-//
-//
-//		$(document).on('click', '#modalpay', function (e) {
-//				e.modalWindow = true;
-//			})
-//			.on('click', function (e) {
-//				if (!e.modalWindow) {
-//					console.log('Это — не моя клетка!');
-//				}
-//			});
-
-
-
-</script>

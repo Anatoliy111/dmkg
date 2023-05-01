@@ -113,6 +113,7 @@ class PeriodKabWidget extends Widget
 			'options' => [
 				'data-pjax' => 1,
 //				'class' => 'form-inline',
+
 			]
 
 		]);
@@ -129,6 +130,7 @@ class PeriodKabWidget extends Widget
 				['options' =>
 					 [
 //						 $this->model->periodoblik => ['selected' => true]
+
 					 ]
 				]
 			])

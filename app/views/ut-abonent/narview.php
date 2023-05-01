@@ -2,6 +2,7 @@
 
 
 	use kartik\grid\GridView;
+	use yii\bootstrap\Tabs;
 	use yii\helpers\Html;
 
 
@@ -16,59 +17,94 @@
 
 
 
-<div class="utkart-sub-view">
+<div class="utkart">
 
 
-	<?php
 
-
-			?>
 	<div class="rah">
-	<h4>Особовий рахунок <?= Html::encode($model->schet)?></h4>
+	<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 </div>
 
-			<?php
+	<?php
 
-				$layout = <<< HTML
+		$layout = <<< HTML
 			<div class="NameTab">
-			     <h4>Субсидія</h4>
+			     <h4>Нарахування</h4>
 
 			</div>
-			{items}
+{items}
 HTML;
-
 			echo GridView::widget([
 				'dataProvider' =>  $dataProvider[$abon->id],
 				'showPageSummary' => true,
-							'columns' => [
-								['class' => '\kartik\grid\SerialColumn'],
-								[
-									'attribute' => 'period',
-									'label' => 'Період',
-									'format' => ['date', 'php:MY'],
-									'pageSummary' => 'Всього',
-									'pageSummaryOptions' => ['class' =>'text-left text-warning'],
-								],
-				'tipposl',
-								[
-									'attribute' => 'subs',
-									'format'=>['decimal', 2],
-									'pageSummary'=>true,
-								],
+				'columns' => [
+					['class' => '\kartik\grid\SerialColumn'],
+
+
+				[
+						'attribute' => 'period',
+					    'label' => 'Період',
+						'format' => ['date', 'php:MY'],
+					'pageSummary' => 'Всього',
+					'pageSummaryOptions' => ['class' =>'text-left text-warning'],
+				],
 //								[
-//									'attribute' => 'sum_ob',
-//									'format'=>['decimal', 2],
-//									'pageSummary'=>true,
+//									'attribute' => 'tipposl',
+//									'label' => 'Послуга',
+//								],
+//								[
+//									'attribute' => 'lgot',
+//									'label' => 'Льгота',
+//								],
+//								[
+//									'attribute' => 'tarif',
+//									'label' => 'Тариф',
+//								],
+//								[
+//									'attribute' => 'vidpokaz',
+//									'label' => 'Вид показника',
+//								],
+//								[
+//									'attribute' => 'pokaznik',
+//									'label' => 'Показник',
+//								],
+//								[
+//									'attribute' => 'ed_izm',
+//									'label' => 'Од. вим',
 //								],
 
+//				'period',
+				'tipposl',
+				'lgot',
+				'tarif',
+//					[
+//						'attribute' => 'id_tipposl',
+//						'label' => 'Вид показника',
+//						'format' => 'raw',
+//						'value' => 'poslvid.vid_pokaz',
+//						'group'=>true,
+//					],
+					[
+						'attribute' => 'id_tipposl',
+						'label' => 'Показник',
+						'format' => 'raw',
+						'value' => 'poslvid.vid_pokaz',
+						'group'=>true,
+					],
+				'pokaznik',
+				'ed_izm',
+					[
+						'attribute' => 'sum',
+						'format'=>['decimal', 2],
+						'pageSummary'=>true,
+					],
+//				'nnorma',
 //				['class' => 'yii\grid\ActionColumn'],
 				],
 				'layout' => $layout,
 				'resizableColumns'=>true,
 				'hover'=>true,
-//				'floatHeader'=>true,
-//				'floatHeaderOptions'=>['scrollingTop'=>'50'],
 //		'resizeStorageKey'=>Yii::$app->user->id . '-' . date("m"),
 //		'floatHeader'=>true,
 //				'floatHeaderOptions'=>['scrollingTop'=>'50'],
@@ -84,7 +120,7 @@ HTML;
 //					'type'=>'primary',
 ////					'before'=>Html::a(Yii::t('easyii', 'Create Ut Olddom'), ['create'], ['class' => 'btn btn-success']),
 ////					'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
-//					'footer'=>false
+//					'footer'=>true
 //				],
 //		'panelBeforeTemplate' => [
 //			'{before}' => 'true',
@@ -101,6 +137,7 @@ HTML;
 //					'{export}',
 //					'{toggleData}',
 				],
+//				'showPageSummary' => true
 			]);
 
 	?>
