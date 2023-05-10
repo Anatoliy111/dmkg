@@ -161,26 +161,26 @@ class UtKart extends \yii\db\ActiveRecord
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_ADDR] =
-         [
-            'id',
-            'name_f',
-            'name_i',
-            'name_o',
-            'fio',
-            'idcod',
-            'id_ulica',
-            'ulica',
-            'dom',
-            'korp',
-            'kv',
-            'ur_fiz',
-            'telef',
-            'id_rabota',
-            'id_dom',
-            'privat',
-        ];
-		$scenarios[self::SCENARIO_PASS] = ['pass1', 'pass2'];
+        $scenarios[self::SCENARIO_ADDR] =
+            [
+                'id',
+                'name_f',
+                'name_i',
+                'name_o',
+                'fio',
+                'idcod',
+                'id_ulica',
+                'ulica',
+                'dom',
+                'korp',
+                'kv',
+                'ur_fiz',
+                'telef',
+                'id_rabota',
+                'id_dom',
+                'privat',
+            ];
+		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
 //            [['status'], 'integer'],
 //			[['date_pass'], 'safe'],
 //            [['pass1'], 'string', 'max' => 64],

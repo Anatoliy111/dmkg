@@ -2,33 +2,23 @@
 
 namespace app\models;
 
+use app\poslug\models\UtDom;
 use Yii;
 
 /**
  * This is the model class for table "ut_abonent".
  *
  * @property int $id
- * @property int $id_org организация
- * @property string|null $schet особовий рахунок
- * @property string|null $fio ФИО
- * @property int|null $id_kart адресна картка 
- * @property string|null $note заметки
- * @property int|null $val
- * @property int $del видалена
- * @property string|null $pass
+ * @property string $fio власник
+ * @property string|null $pass пароль
  * @property string|null $date_pass
  * @property string|null $passopen
+ * @property string|null $telef телефон
+ * @property int|null $del
  * @property string|null $email
- * @property int|null $telefon
- * @property string|null $date_entry
- * @property string|null $vb_api_key
- * @property string $vb_date
- * @property string|null $vb_org
- * @property string|null $vb_receiver
- * @property string|null $vb_name
- * @property string|null $vb_status
+ * @property int|null $status
  *
- * @property UtAbschet[] $utAbschets
+ * @property UtAbonkart[] $utAbonkarts
  */
 class UtAbonent extends \yii\db\ActiveRecord
 {
@@ -46,16 +36,12 @@ class UtAbonent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org'], 'required'],
-            [['id_org', 'id_kart', 'val', 'del', 'telefon'], 'integer'],
-            [['note'], 'string'],
-            [['date_pass', 'date_entry', 'vb_date'], 'safe'],
-            [['schet'], 'string', 'max' => 11],
-            [['fio'], 'string', 'max' => 124],
-            [['pass', 'passopen', 'vb_name', 'vb_status'], 'string', 'max' => 64],
-            [['email', 'vb_api_key'], 'string', 'max' => 50],
-            [['vb_org'], 'string', 'max' => 7],
-            [['vb_receiver'], 'string', 'max' => 30],
+            [['fio'], 'required'],
+            [['date_pass'], 'safe'],
+            [['del', 'status'], 'integer'],
+            [['fio', 'pass', 'passopen'], 'string', 'max' => 64],
+            [['telef'], 'string', 'max' => 15],
+            [['email'], 'string', 'max' => 30],
         ];
     }
 
@@ -66,44 +52,32 @@ class UtAbonent extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_org' => 'организация',
-            'schet' => 'особовий рахунок',
-            'fio' => 'ФИО',
-            'id_kart' => 'адресна картка ',
-            'note' => 'заметки',
-            'val' => 'Val',
-            'del' => 'видалена',
-            'pass' => 'Pass',
+            'fio' => 'власник',
+            'pass' => 'пароль',
             'date_pass' => 'Date Pass',
             'passopen' => 'Passopen',
+            'telef' => 'телефон',
+            'del' => 'Del',
             'email' => 'Email',
-            'telefon' => 'Telefon',
-            'date_entry' => 'Date Entry',
-            'vb_api_key' => 'Vb Api Key',
-            'vb_date' => 'Vb Date',
-            'vb_org' => 'Vb Org',
-            'vb_receiver' => 'Vb Receiver',
-            'vb_name' => 'Vb Name',
-            'vb_status' => 'Vb Status',
+            'status' => 'Status',
         ];
     }
 
     /**
-     * Gets query for [[UtAbschets]].
+     * Gets query for [[UtAbonkarts]].
      *
-     * @return \yii\db\ActiveQuery|UtAbschetQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getUtAbschets()
+    public function getAbonkarts()
     {
-        return $this->hasMany(UtAbschet::class, ['id_abonent' => 'id']);
+        return $this->hasMany(UtAbonkart::class, ['id_abon' => 'id']);
     }
 
-    /**
-     * {@inheritdoc}
-     * @return UtAbonentQuery the active query used by this AR class.
-     */
-    public static function find()
+    public function getKarts()
     {
-        return new UtAbonentQuery(get_called_class());
+        $abkarts =$this->hasMany(UtAbonkart::class, ['id_abon' => 'id']);
+
+        return $abkarts->primaryModel['dom']->getUlica();
+
     }
 }

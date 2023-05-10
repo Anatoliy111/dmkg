@@ -27,7 +27,7 @@
 				'content' => 'КП "Долинський міськкомунгосп"',
 			],
 			'C' => [
-				'content' => 'Зведена відомість '.$model->schet,
+				'content' => 'Зведена відомість '.$abon->schet,
 				'font-size' => 10,
 				'font-style' => 'B',
 				'font-family' => 'arial',
@@ -45,7 +45,7 @@
 
 			?>
 			<div class="rah">
-				<h4>Особовий рахунок <?= Html::encode($model->schet)?></h4>
+				<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 			</div>
 
@@ -154,7 +154,7 @@ HTML;
 //						'filename' => 'yii',
 //						'alertMsg' => 'created',
 //						'options' => ['title' => 'Semicolon -  Separated Values'],
-						'filename' => 'Зведена відомість '.$model->schet,
+						'filename' => 'Зведена відомість '.$abon->schet,
 //						'alertMsg' => 'The PDF export file will be generated for download.',
 						'options' => ['title' => 'Portable Document Format'],
 						'mime' => 'application/pdf',

@@ -159,10 +159,19 @@ class SearchUtKart extends UtKart
         $models = $dataProvider->getModels();
 //		$models = $this->findByUsers($this->id_ulica,$this->dom,$this->kv);
         foreach($models as $model){
-           if ($model->pass == md5($model->id.$this->enterpass)){
+
+           $abons =  $model->getAbonents();
+
+            foreach($abons as $abon){
+
+                if ($abon->pass == md5($model->id.$this->enterpass)){
 //				Yii::$app->users->login($model->fio);
-			   return $model;
-		   }
+                    return $abon;
+                }
+
+            }
+
+
 		}
 
 

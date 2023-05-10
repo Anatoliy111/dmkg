@@ -61,10 +61,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'label'=>'Тарифи',
         'content'=>$this->render('tarview', ['model' => $model,'dataProvider' => $dPtarif]),
     ],
-	[
-    	'label'=>'Інформація по будинку',
-	    'content'=>$this->render('infoview', ['model' => $model,'dominfo' => $dominfo,]),
-	],
+//	[
+//    	'label'=>'Інформація по будинку',
+//	    'content'=>$this->render('infoview', ['model' => $model,'dominfo' => $dominfo,]),
+//	],
 	[
 		'label'=>'Нарахування',
 		'content'=>$this->render('nachview', ['model' => $model,'dataProvider' => $dPnach]),

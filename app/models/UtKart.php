@@ -3,8 +3,11 @@
 namespace app\models;
 
 use app\poslug\models\UtObor;
+use app\poslug\models\UtOpl;
 use app\poslug\models\UtUlica;
 use Yii;
+use yii\base\BaseObject;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "ut_kart".
@@ -143,6 +146,19 @@ class UtKart extends \yii\db\ActiveRecord
 //        $lastperiod = UtObor::find()->select(['period, id_org'])->distinct();
 //        $lastperiod = ArrayHelper::map(UtUlica::find()->asArray()->all(), 'ID', 'ul'),
         return $lastperiod;
+    }
+
+    public function getAbonents()
+    {
+        $abons = UtAbonent::find();
+//        $abons->joinWith('abonkarts')->where(['ut_abonkart.id_kart' => 'id','ut_abonent.id'=> 'ut_abonkart.id_abon'])->all();
+        $abons->joinWith('abonkarts')->where(['ut_abonkart.id_kart' => $this->id]);
+
+        $dpabons = new ActiveDataProvider([
+            'query' => $abons,
+        ]);
+
+        return $models = $dpabons->getModels();
     }
 
 

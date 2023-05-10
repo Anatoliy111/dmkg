@@ -100,14 +100,14 @@ class UtDomController extends Controller
 			Yii::$app->session['perioddom']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 
-		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
-		if ($dominfo==null)
-		{
-			$newinfo = new UtDominfo();
-			$newinfo->id_dom=$model->id;
-			$newinfo->save();
-			$dominfo=$newinfo;
-		}
+//		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
+//		if ($dominfo==null)
+//		{
+//			$newinfo = new UtDominfo();
+//			$newinfo->id_dom=$model->id;
+//			$newinfo->save();
+//			$dominfo=$newinfo;
+//		}
 
 		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['perioddom']])->all();
         if ($Find<>null)
@@ -143,8 +143,8 @@ class UtDomController extends Controller
 		}
 
 		$nachdom = UtObor::find()->select('period, tipposl, sum(dolg) as dolg, sum(nach) as nach, sum(subs) as subs, sum(opl) as opl, sum(sal) as sal');
-		$nachdom->leftJoin('ut_abonent','ut_abonent.id = ut_obor.id_abonent');
-		$nachdom->leftJoin('ut_kart','ut_kart.id = ut_abonent.id_kart');
+//		$nachdom->leftJoin('ut_abonent','ut_abonent.id = ut_obor.id_kart');
+		$nachdom->leftJoin('ut_kart','ut_kart.id = ut_obor.id_kart');
 		$nachdom->where(['ut_kart.id_dom' => $model->id]);
 		$nachdom->andWhere(['ut_obor.period' => Yii::$app->session['perioddom']]);
 		$nachdom->andWhere(['!=', '`ut_obor`.`dolg`+`ut_obor`.`nach`+`ut_obor`.`subs`+`ut_obor`.`opl`+`ut_obor`.`sal`', 0]);
@@ -165,7 +165,7 @@ class UtDomController extends Controller
 
 		return $this->render('view', [
 			'model' => $model,
-			'dominfo' => $dominfo,
+//			'dominfo' => $dominfo,
 			'dPtarif' => $dPtarif,
 			'dPnach' => $dPnach,
 		]);

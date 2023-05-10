@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property int $id_org організація
  * @property string $period
- * @property int $id_abonent абонент
+ * @property int $id_kart абонент
  * @property int $id_posl послуга
  * @property int $id_tipposl тип послуги
  * @property string $tipposl
@@ -43,15 +43,15 @@ class UtNarah extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'period', 'id_abonent'], 'required'],
-            [['id_org', 'id_abonent', 'id_posl', 'id_tipposl', 'id_vidlgot', 'id_vidpokaz'], 'integer'],
+            [['id_org', 'period', 'id_kart'], 'required'],
+            [['id_org', 'id_kart', 'id_posl', 'id_tipposl', 'id_vidlgot', 'id_vidpokaz'], 'integer'],
             [['period'], 'safe'],
             [['tarif', 'pokaznik', 'nnorma', 'sum'], 'number'],
             [['tipposl', 'vidpokaz'], 'string', 'max' => 64],
             [['lgot'], 'string', 'max' => 5],
             [['ed_izm'], 'string', 'max' => 11],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
-            [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
+            [['id_kart'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_kart' => 'id']],
             [['id_tipposl'], 'exist', 'skipOnError' => true, 'targetClass' => UtTipposl::className(), 'targetAttribute' => ['id_tipposl' => 'id']],
             [['id_vidpokaz'], 'exist', 'skipOnError' => true, 'targetClass' => UtVidpokaz::className(), 'targetAttribute' => ['id_vidpokaz' => 'id']],
         ];
@@ -66,7 +66,7 @@ class UtNarah extends \yii\db\ActiveRecord
             'id' => Yii::t('easyii', 'ID'),
             'id_org' => Yii::t('easyii', 'Id Org'),
             'period' => Yii::t('easyii', 'Period'),
-            'id_abonent' => Yii::t('easyii', 'Id Abonent'),
+            'id_kart' => Yii::t('easyii', 'Id Kart'),
             'id_posl' => Yii::t('easyii', 'Id Posl'),
             'id_tipposl' => Yii::t('easyii', 'Id Tipposl'),
             'tipposl' => Yii::t('easyii', 'Tipposl'),
@@ -93,9 +93,9 @@ class UtNarah extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAbonent()
+    public function getKart()
     {
-        return $this->hasOne(UtAbonent::className(), ['id' => 'id_abonent']);
+        return $this->hasOne(UtKart::className(), ['id' => 'id_kart']);
     }
 
 //    public function getTipposl1()
