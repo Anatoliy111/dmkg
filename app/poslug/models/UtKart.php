@@ -161,24 +161,26 @@ class UtKart extends \yii\db\ActiveRecord
 	public function scenarios()
 	{
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_ADDR] = [
-			[['name_f', 'fio', 'id_ulica','dom'], 'required'],
-			[['id_ulica', 'ur_fiz', 'id_dom', 'privat','id_rabota','status'], 'integer'],
-			[['date_pass'], 'safe'],
-			[['name_f'], 'string', 'max' => 50],
-			[['name_i', 'name_o'], 'string', 'max' => 30],
-			[['dom'], 'string', 'max' => 4],
-			[['kv'], 'string', 'max' => 5],
-			[['korp'], 'string', 'max' => 1],
-			['email', 'email'],
-			[['fio','email'], 'string', 'max' => 64],
-			[['telef'], 'string', 'max' => 20],
-			[['idcod'], 'string', 'max' => 25],
-			[['id_ulica'], 'exist', 'skipOnError' => true, 'targetClass' => UtUlica::className(), 'targetAttribute' => ['id_ulica' => 'id']],
-			[['id_dom'], 'exist', 'skipOnError' => true, 'targetClass' => UtDom::className(), 'targetAttribute' => ['id_dom' => 'id']],
-			[['id_rabota'], 'exist', 'skipOnError' => true, 'targetClass' => UtRabota::className(), 'targetAttribute' => ['id_rabota' => 'id']],
-		];
-		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
+		$scenarios[self::SCENARIO_ADDR] =
+         [
+            'id',
+            'name_f',
+            'name_i',
+            'name_o',
+            'fio',
+            'idcod',
+            'id_ulica',
+            'ulica',
+            'dom',
+            'korp',
+            'kv',
+            'ur_fiz',
+            'telef',
+            'id_rabota',
+            'id_dom',
+            'privat',
+        ];
+		$scenarios[self::SCENARIO_PASS] = ['pass1', 'pass2'];
 //            [['status'], 'integer'],
 //			[['date_pass'], 'safe'],
 //            [['pass1'], 'string', 'max' => 64],
