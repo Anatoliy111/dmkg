@@ -79,16 +79,16 @@ use yii\widgets\ActiveForm;
 	<?php foreach(Yii::$app->session->getAllFlashes() as $type => $messages):
 		 foreach($messages as $message):
 
-            Alert::begin([
-            'options' => [
-            'class' => $type, 'style' => 'float:bottom; margin-top:50px',
-            ],
-            ]);
+	Alert::begin([
+	'options' => [
+	'class' => $type, 'style' => 'float:bottom; margin-top:50px',
+	],
+	]);
 
-            echo $message;
+	echo $message;
 
-            Alert::end();
-         endforeach;
+	Alert::end();
+ endforeach;
 	endforeach ?>
 
 </div>

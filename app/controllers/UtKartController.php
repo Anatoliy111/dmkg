@@ -87,26 +87,26 @@ class UtKartController extends Controller
 		$post = Yii::$app->request->post();
 
 		if (\Yii::$app->request->isAjax) {
-			if (array_key_exists('payid_kart', Yii::$app->request->post())) {
+			if (array_key_exists('payid_abonent', Yii::$app->request->post())) {
 
 
-				$model->id_kart = Yii::$app->request->post()['payid_kart'];
+				$model->id_abonent = Yii::$app->request->post()['payid_abonent'];
 				$model->id_kart = $session['model']->id;
 				$model->tippay = 1;
 
 
 				$oplab = UtOpl::find()
-					->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-					->where(['ut_opl.id_kart' => $model->id_kart])
+					->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+					->where(['ut_opl.id_abonent' => $model->id_abonent])
 					->andwhere(['>', 'ut_opl.period', $session['period']])
-					->groupBy('ut_opl.id_kart, ut_opl.id_posl')
+					->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
 					->asArray();
 
 
 				$dolg = UtObor::find();
 				$dolg->select(["ut_obor.*", "round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl", "case when (ut_obor.sal-COALESCE(b.summ,0)) > 0 then round((ut_obor.sal-COALESCE(b.summ,0)),2) else 0  end as sendopl"]);
-				$dolg->where(['ut_obor.id_kart' => $model->id_kart, 'ut_obor.period' => $session['period']]);
-				$dolg->leftJoin(['b' => $oplab], '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+				$dolg->where(['ut_obor.id_abonent' => $model->id_abonent, 'ut_obor.period' => $session['period']]);
+				$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
 
 
 				$dataProvider = new ActiveDataProvider([
@@ -121,7 +121,7 @@ class UtKartController extends Controller
 				if ($model->load(Yii::$app->request->post())) {
 					$my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
 					$model->datepay = $my_date->format('Y-m-d H:i:s');
-					$schet = UtAbonent::findOne($model->id_kart)['schet'];
+					$schet = UtAbonent::findOne($model->id_abonent)['schet'];
 					$textpay='Oplata po rah. '.$schet.' Summa '.$model->summ.' :';
 					$posluga='';
 					foreach ($post['UtObor'] as $idobor=>$impopl)
@@ -423,7 +423,7 @@ class UtKartController extends Controller
 
 
 
-		$abonen = UtAbonent::find()->where(['id' => $model->id])->orderBy('id_org');
+		$abonen = UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
 
 
 
@@ -433,13 +433,13 @@ class UtKartController extends Controller
 			$dpinfo = new ActiveDataProvider([
 				'query' => $abonen,
 			]);
-			$abon = UtAbonent::find()->where(['id' => $model->id])->one();
-
+			$abonents = UtAbonent::find()->where(['id_kart' => $model->id])->all();
+			foreach ($abonents as $abon) {
 				$summa[$abon->id]=0;
 				//-----------------------------------------------------------------------------
 				$obor= UtObor::find()
 //			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				->joinWith('kart')->where(['ut_kart.id' => $model->id,'ut_obor.period'=> $session['periodkab']]);
+				->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
 
 
 
@@ -452,46 +452,46 @@ class UtKartController extends Controller
 				$dpobor[$abon->id] = $dataProvider1;
 				//-----------------------------------------------------------------------------
 
-//				$oboropl= UtObor::find();
+				$oboropl= UtObor::find();
 //  			    $obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 
 
 				$oplab=UtOpl::find()
-						->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-						->where(['ut_opl.id_kart'=> $model->id])
+						->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+						->where(['ut_opl.id_abonent'=> $abon->id])
 					    ->andwhere(['>', 'ut_opl.period', $session['period']])
-						->groupBy('ut_opl.id_kart, ut_opl.id_posl')
+						->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
 					    ->asArray();
 
 				$subQuery = (new \yii\db\Query())
 					->from('ut_opl')
-					->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-					->where(['ut_opl.id_kart'=> $model->id])
+					->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+					->where(['ut_opl.id_abonent'=> $abon->id])
 					->andwhere(['>', 'ut_opl.period', $session['period']])
-					->groupBy('ut_opl.id_kart, ut_opl.id_posl');
+					->groupBy('ut_opl.id_abonent, ut_opl.id_posl');
 
 
 
 				$dolg= UtObor::find();
-//					->select(["ut_obor.id_kart as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-					$dolg->select(["ut_obor.id_kart as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
+//					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
+					$dolg->select(["ut_obor.id_abonent as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
 //  				    $dolg->select('ut_obor.*,b.summ,');
-     				$dolg->where(['ut_obor.id_kart'=> $model->id,'ut_obor.period'=> $session['period']]);
-    				$dolg->leftJoin(['b' => $oplab], '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-//				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`');
-//				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_kart` = ut_obor.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
+     				$dolg->where(['ut_obor.id_abonent'=> $abon->id,'ut_obor.period'=> $session['period']]);
+    				$dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+//				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`');
+//				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_abonent` = ut_obor.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
 
 
 
 
-//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_kart`=`ut_obor`.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
+//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_abonent`=`ut_obor`.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
 //				$oboropl->asArray();
 
 				foreach($dolg->asArray()->all() as $obb)
 				{
 					if ($obb['dolgopl']>0)
 					{
-						$summa[$model->id] = $summa[$model->id] + $obb['dolgopl'];
+						$summa[$abon->id] = $summa[$abon->id] + $obb['dolgopl'];
 					}
 				}
 
@@ -513,7 +513,7 @@ class UtKartController extends Controller
 				//-----------------------------------------------------------------------------
 //				$oborsum= UtObor::find();
 //				$oborsum->select('sum(ut_obor.sal) as summ');
-//				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_kart`)');
+//				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
 //				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 ////				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> "2018-10-01"]);
 ////				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
@@ -530,7 +530,7 @@ class UtKartController extends Controller
 
 				//-----------------------------------------------------------------------------
 				$opl = UtOpl::find();
-				$opl->joinWith('kart')->where(['ut_kart.id' => $model->id,'ut_opl.period'=> $session['periodkab']]);
+				$opl->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_opl.period'=> $session['periodkab']]);
 				$dataProvider2 = new ActiveDataProvider([
 					'query' => $opl,
 				]);
@@ -538,7 +538,7 @@ class UtKartController extends Controller
 				$dpopl[$abon->id] = $dataProvider2;
 				//-----------------------------------------------------------------------------
 				$nar= UtNarah::find();
-				$nar->joinWith('kart')->where(['ut_kart.id' => $model->id,'ut_narah.period'=> $session['periodkab']]);
+				$nar->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_narah.period'=> $session['periodkab']]);
 				$dataProvider3 = new ActiveDataProvider([
 					'query' => $nar,
 				]);
@@ -546,7 +546,7 @@ class UtKartController extends Controller
 				$dpnar[$abon->id] = $dataProvider3;
 				//-----------------------------------------------------------------------------
 				$pos = UtPosl::find();
-				$pos->joinWith('kart')->where(['ut_kart.id' => $model->id]);
+				$pos->joinWith('abonent')->where(['ut_abonent.id' => $abon->id]);
 				$dataProvider4 = new ActiveDataProvider([
 					'query' => $pos,
 				]);
@@ -556,12 +556,12 @@ class UtKartController extends Controller
 				//-----------------------------------------------------------------------------
 				$tar = UtTarif::find();
 				$tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
-				$tar->joinWith('utTarifabs')->where(['ut_tarifab.id_kart' => $model->id,'ut_tarifab.period'=> $session['periodkab']]);
+				$tar->joinWith('utTarifabs')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
 				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 
 
 
-//				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_kart' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
+//				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
 //				$tar->joinWith('tarif0');
 
 
@@ -570,7 +570,7 @@ class UtKartController extends Controller
 //				$tar->joinWith('utTarifabs');
 //				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 //				$tar->where(['ut_tarif.period' => Yii::$app->session['perioddom']]);
-//				$tar->andWhere(['ut_tarifab.id_kart' => $abon->id]);
+//				$tar->andWhere(['ut_tarifab.id_abonent' => $abon->id]);
 //				$tar->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
 //
 //                $rrr = $tar->asArray()->all();
@@ -584,7 +584,7 @@ class UtKartController extends Controller
 
 				$sub= UtObor::find();
 //			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-				$sub->joinWith('kart')->where(['ut_kart.id' => $model->id,'ut_obor.period'=> $session['periodkab']]);
+				$sub->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
 				$sub->andWhere(['<>','ut_obor.subs', 0]);
 
 
@@ -596,19 +596,19 @@ class UtKartController extends Controller
 					'query' => $sub,
 				]);
 
-				$dpsub[$model->id] = $dataProvider8;
+				$dpsub[$abon->id] = $dataProvider8;
 
 				$uder = UtUtrim::find();
-				$uder->joinWith('kart')->where(['ut_kart.id' => $model->id,'ut_utrim.period'=> $session['periodkab']]);
+				$uder->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_utrim.period'=> $session['periodkab']]);
 				$dataProvider9 = new ActiveDataProvider([
 					'query' => $uder,
 				]);
 
-				$dpuder[$model->id] = $dataProvider9;
+				$dpuder[$abon->id] = $dataProvider9;
 
 
 
-
+			}
 
 //
 //		$searchModel = new OrderSearch();
@@ -620,7 +620,7 @@ class UtKartController extends Controller
 
 		return $this->render('kabinet', [
 			'model' => $model,
-			'abon' => $abon,
+			'abonents' => $abonents,
 //			'dpinfo' => $dpinfo,
 			'dpobor' => $dpobor,
 			'dpopl' => $dpopl,

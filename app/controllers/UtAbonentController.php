@@ -2,10 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\SearchUtKart;
 use app\models\UtAbonent;
 use app\models\SearchUtAbonent;
-use app\models\UtKart;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
@@ -45,11 +43,15 @@ class UtAbonentController extends Controller
         );
     }
 
+    public function actionTabsData() {
+        $html = $this->renderPartial('/contact/index');
+        return Json::encode($html);
+    }
 
     /**
      * Lists all UtAbonent models.
      *
-     * @return string|\yii\web\Response
+     * @return string
      */
     public function actionIndex()
     {
@@ -58,69 +60,119 @@ class UtAbonentController extends Controller
         {
             return $this->redirect(['kabinet', 'id' => $session['model']->id]);
         }
-        $modeladres = new SearchUtKart();
-        $modelemail = new SearchUtAbonent();
-        $findmodeladres = null;
-        $findmodel = null;
-        Yii::$app->session['periodkab']=null;
-        $modeladres->scenario = 'adres';
-//		$searchModel->scenario = isset($_REQUEST['SearchUtKart']['enterpass']) ? $searchModel->scenario = 'password' : $searchModel->scenario = 'adres';
-        $dataProviderAdres = $modeladres->search(Yii::$app->request->queryParams);
-//		if ($dataProvider->className()){
-//
-//		}
-        if ($dataProviderAdres->getTotalCount() <> 0){
-            $modeladres->scenario = 'password';
-            $findmodeladres = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderAdres);
-            $findmodeladres = $dataProviderAdres->getModels()[0];
-            if ($findmodeladres <> null and $findmodeladres <> 'bad'){
-                $findmodel=$this->findModelwithKart($findmodeladres->id);
+
+//        $searchModel = new SearchUtAbonent();
+//        $dataProvider = $searchModel->search($this->request->queryParams);
+//        $findmodel='';
+//        return $this->render('index', [
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
+//            'findmodel' => $findmodel,
+//        ]);
+        $model = new UtAbonent();
+        return $this->render('index', [
+            'model' => $model,
+        ]);
+
+    }
+
+    /**
+     * Displays a single UtAbonent model.
+     * @param int $id ID
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new UtAbonent model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
+    public function actionCreate()
+    {
+        $model = new UtAbonent();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-
+        } else {
+            $model->loadDefaultValues();
         }
 
-//		}
-        if ($findmodel <> null and $findmodel <> 'bad'){
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
 
-            $session['model'] = $findmodel;
-            return $this->redirect(['kabinet', 'id' => $findmodel->id]);
+    /**
+     * Updates an existing UtAbonent model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id ID
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-            return $this->render('index', [
-                'modeladres' => $modeladres,
-                'modelemail' => $modelemail,
-                'dataProviderAdres' => $dataProviderAdres,
-                'findmodeladres' => $findmodeladres,
-            ]);
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
 
+    /**
+     * Deletes an existing UtAbonent model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
 
+    /**
+     * Finds the UtAbonent model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return UtAbonent the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = UtAbonent::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
 
-
-
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     public function actionKabinet($id)
     {
-//		$session = Yii::$app->session;
-//		if (isset($_POST['UtKart']['MonthYear']))
-//		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
 
         if (Yii::$app->session['periodkab']==null)
             Yii::$app->session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
-//		if (Yii::$app->session['period']==null)
         Yii::$app->session['period']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
-
-//		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
-////		if (Yii::$app->session['period']==null)
-//		Yii::$app->session['period']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
         $model = $this->findModel($id);
         $session = Yii::$app->session;
         if ($session['model']==null || $session['model']<>$model )
         {
-            $session['model']=null;
-            return $this->redirect(['ut-abonent/index']);
+            return $this->redirect(['ut-kart/index']);
         }
 
 //		$model->scenario = 'password';
@@ -156,14 +208,12 @@ class UtAbonentController extends Controller
             $summa[$abon->id]=0;
             //-----------------------------------------------------------------------------
             $obor= UtObor::find()
-//			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
                 ->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
 
 
 
 
 
-//				$ff = ArrayHelper::toArray($obor);
             $dataProvider1 = new ActiveDataProvider([
                 'query' => $obor,
             ]);
@@ -171,7 +221,6 @@ class UtAbonentController extends Controller
             //-----------------------------------------------------------------------------
 
             $oboropl= UtObor::find();
-//  			    $obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
 
 
             $oplab=UtOpl::find()
@@ -191,19 +240,9 @@ class UtAbonentController extends Controller
 
 
             $dolg= UtObor::find();
-//					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
             $dolg->select(["ut_obor.id_abonent as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
-//  				    $dolg->select('ut_obor.*,b.summ,');
             $dolg->where(['ut_obor.id_abonent'=> $abon->id,'ut_obor.period'=> $session['period']]);
             $dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-//				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`');
-//				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_abonent` = ut_obor.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
-
-
-
-
-//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_abonent`=`ut_obor`.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
-//				$oboropl->asArray();
 
             foreach($dolg->asArray()->all() as $obb)
             {
@@ -213,37 +252,10 @@ class UtAbonentController extends Controller
                 }
             }
 
-//				$dolg= UtObor::find();
-////			$obor->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-//				$dolg->joinWith('abonent')->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
-//				$ff = ArrayHelper::toArray($obor);
-
             $dataProvider11 = new ActiveDataProvider([
                 'query' => $dolg,
             ]);
             $dpdolg[$abon->id] = $dataProvider11;
-
-
-
-
-
-
-            //-----------------------------------------------------------------------------
-//				$oborsum= UtObor::find();
-//				$oborsum->select('sum(ut_obor.sal) as summ');
-//				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
-//				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> $session['period']]);
-////				$oborsum->where(['ut_abonent.id' => $abon->id,'ut_obor.period'=> "2018-10-01"]);
-////				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
-//				$rrr = is_null($oborsum->asArray()->all()[0]['summ']) ? 0.00 : $oborsum->asArray()->all()[0]['summ'];
-//				foreach($oborsum->asArray()->all() as $obb)
-//				{
-//					if ($obb['summ']>0)
-//					{
-//						$summa = $summa + $obb['summ'];
-//					}
-//				}
-
 
 
             //-----------------------------------------------------------------------------
@@ -354,107 +366,5 @@ class UtAbonentController extends Controller
     }
 
 
-
-    /**
-     * Displays a single UtAbonent model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    public function actionLogout()
-    {
-        $session = Yii::$app->session;
-        $session->destroy();
-        return $this->redirect(['ut-abonent/index']);
-    }
-
-
-    /**
-     * Creates a new UtAbonent model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
-    {
-        $model = new UtAbonent();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing UtAbonent model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing UtAbonent model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the UtAbonent model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return UtAbonent the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = UtAbonent::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    protected function findModelwithKart($id)
-    {
-        if (($model = UtAbonent::findOne(['id_kart' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
 
 }

@@ -11,7 +11,7 @@ use Yii;
  * @property int $id
  * @property int $id_org
  * @property string $period
- * @property int $id_kart
+ * @property int $id_abonent
  * @property int $id_posl
  * @property string $tipposl
  * @property double $dolg
@@ -45,13 +45,13 @@ class UtObor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_org', 'period', 'id_kart'], 'required'],
-            [['id_org', 'id_kart', 'id_posl'], 'integer'],
+            [['id_org', 'period', 'id_abonent'], 'required'],
+            [['id_org', 'id_abonent', 'id_posl'], 'integer'],
             [['period'], 'safe'],
 			[['tipposl'], 'string', 'max' => 64],
             [['dolg', 'nach', 'subs', 'opl', 'pere', 'sal','dolgopl','sendopl'], 'number'],
             [['id_org'], 'exist', 'skipOnError' => true, 'targetClass' => UtOrg::className(), 'targetAttribute' => ['id_org' => 'id']],
-            [['id_kart'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_kart' => 'id']],
+            [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::className(), 'targetAttribute' => ['id_abonent' => 'id']],
             [['id_posl'], 'exist', 'skipOnError' => true, 'targetClass' => UtPosl::className(), 'targetAttribute' => ['id_posl' => 'id']],
         ];
     }
@@ -65,7 +65,7 @@ class UtObor extends \yii\db\ActiveRecord
             'id' => Yii::t('easyii', 'ID'),
             'id_org' => Yii::t('easyii', 'Id Org'),
             'period' => Yii::t('easyii', 'Period'),
-            'id_kart' => Yii::t('easyii', 'Id Kart'),
+            'id_abonent' => Yii::t('easyii', 'Id Abonent'),
             'id_posl' => Yii::t('easyii', 'Id Posl'),
 			'tipposl' => Yii::t('easyii', 'Tipposl'),
             'dolg' => Yii::t('easyii', 'Dolg'),
@@ -88,9 +88,9 @@ class UtObor extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getKart()
+    public function getAbonent()
     {
-        return $this->hasOne(UtAbonent::className(), ['id' => 'id_kart']);
+        return $this->hasOne(UtAbonent::className(), ['id' => 'id_abonent']);
     }
 
     /**

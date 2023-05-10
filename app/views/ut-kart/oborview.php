@@ -22,12 +22,14 @@
 
 
 	<?php
+		foreach ($abonents as $abon) {
+
 		$pdfHeader = [
 			'L' => [
 				'content' => 'КП "Долинський міськкомунгосп"',
 			],
 			'C' => [
-				'content' => 'Зведена відомість '.$model->schet,
+				'content' => 'Зведена відомість '.$abon->schet,
 				'font-size' => 10,
 				'font-style' => 'B',
 				'font-family' => 'arial',
@@ -45,7 +47,7 @@
 
 			?>
 			<div class="rah">
-				<h4>Особовий рахунок <?= Html::encode($model->schet)?></h4>
+				<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 			</div>
 
@@ -245,7 +247,7 @@ HTML;
 					'{toggleData}',
 				]
 			]);
-
+		}
 	?>
 
 

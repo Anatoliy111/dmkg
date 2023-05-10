@@ -21,7 +21,12 @@ use Yii;
  * @property string|null $email
  * @property int|null $telefon
  * @property string|null $date_entry
-
+ * @property string|null $vb_api_key
+ * @property string $vb_date
+ * @property string|null $vb_org
+ * @property string|null $vb_receiver
+ * @property string|null $vb_name
+ * @property string|null $vb_status
  *
  * @property UtAbschet[] $utAbschets
  */
@@ -30,13 +35,6 @@ class UtAbonent extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public $pass1;
-    public $pass2;
-    public $enterpass;
-
-    const SCENARIO_PASS = 'password';
-    const SCENARIO_EMAIL = 'email';
-
     public static function tableName()
     {
         return 'ut_abonent';
@@ -48,22 +46,16 @@ class UtAbonent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pass1', 'pass2'], 'required'],
             [['id_org'], 'required'],
             [['id_org', 'id_kart', 'val', 'del', 'telefon'], 'integer'],
             [['note'], 'string'],
             [['date_pass', 'date_entry', 'vb_date'], 'safe'],
             [['schet'], 'string', 'max' => 11],
             [['fio'], 'string', 'max' => 124],
-            [['pass', 'passopen'], 'string', 'max' => 64],
-            [['email'], 'string', 'max' => 50],
-            [['enterpass'], 'string', 'min' => 5],
-            [['pass1'], 'string', 'max' => 64],
-            [['pass2','pass','passopen'], 'string', 'max' => 64],
-            [['pass1'], 'string', 'min' => 5],
-            [['pass2'], 'string', 'min' => 5],
-            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
-            [['enterpass'], 'compare',  'compareValue' => $this->pass, 'operator' => '==', 'message' => 'Код доступу не вірний !!!'],
+            [['pass', 'passopen', 'vb_name', 'vb_status'], 'string', 'max' => 64],
+            [['email', 'vb_api_key'], 'string', 'max' => 50],
+            [['vb_org'], 'string', 'max' => 7],
+            [['vb_receiver'], 'string', 'max' => 30],
         ];
     }
 
@@ -87,15 +79,13 @@ class UtAbonent extends \yii\db\ActiveRecord
             'email' => 'Email',
             'telefon' => 'Telefon',
             'date_entry' => 'Date Entry',
+            'vb_api_key' => 'Vb Api Key',
+            'vb_date' => 'Vb Date',
+            'vb_org' => 'Vb Org',
+            'vb_receiver' => 'Vb Receiver',
+            'vb_name' => 'Vb Name',
+            'vb_status' => 'Vb Status',
         ];
-    }
-
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
-        $scenarios[self::SCENARIO_EMAIL] = [['email', 'enterpass'], 'required'];
-        return $scenarios;
     }
 
     /**

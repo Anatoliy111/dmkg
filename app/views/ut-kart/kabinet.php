@@ -188,47 +188,25 @@ yii\bootstrap\Modal::begin([
 //		],
 		[
 			'label'=>'Послуги/Тарифи',
-			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos,'dataProvider2' => $dptar,'abon'=>$abon]),
+			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos,'dataProvider2' => $dptar,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Нарахування',
-			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
+			'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Оплата/Утримання',
-			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$abon]),
+			'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Субсидія',
-			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$abon]),
+			'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abonents'=>$abonents]),
 		],
 		[
 			'label'=>'Зведена відомість',
-			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+			'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abonents'=>$abonents]),
 		],
-        [
-            'label'=>'Зведена відомість',
-            'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-        ],
-        [
-            'label'=>'Зведена відомість',
-            'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-        ],
-        [
-            'label'=>'Зведена відомість',
-            'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-        ],
-        [
-            'label'=>'Зведена відомість',
-            'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-        ],
-        [
-            'label'=>'Зведена відомість',
-            'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-        ],
-
-
-    ];
+	];
 
 
 
@@ -334,10 +312,13 @@ yii\bootstrap\Modal::begin([
 		</div>
 <!--		<div class="col-xs-12">-->
 
+					<?php
+					foreach ($abonents as $abon) {
 
+					?>
 			<div class="schet col-xs-12">
 				<div class="rah">
-					<h4>Особовий рахунок <?= Html::encode($model->schet)?></h4>
+					<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 				</div>
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 box-sum">
@@ -469,7 +450,9 @@ yii\bootstrap\Modal::begin([
 					</div>
 			</div>
 
-
+				<?php
+					}
+					?>
 
 	</div>
 	<div class="mywell well-large2 container">
@@ -491,13 +474,7 @@ yii\bootstrap\Modal::begin([
 			'position'=>TabsX::POS_ABOVE,
 			'encodeLabels'=>false,
 			'bordered'=>true,
-            'enableStickyTabs' => true,
-         //   'pluginOptions' => ['enableCache' => false],
-//            'stickyTabsOptions' => [
-//                'selectorAttribute' => 'data-target',
-//                'backToTop' => false,
-//            ],
-        ]);
+		]);
 		?>
 
 	</div>

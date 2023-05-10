@@ -456,7 +456,7 @@ function importKART($dbf,$i,$Base)
 			$modelKt = new UtKart();
 		else
 			$modelKt=$model;
-		$modelKt->scenario = 'adres';
+	//	$modelKt->scenario = 'adres';
 		$modelKt->name_f =encodestr(trim(iconv('CP866','utf-8',$fields['FIO'])));
 		$modelKt->name_i =encodestr(trim(iconv('CP866','utf-8',$fields['IM'])));
 		$modelKt->name_o =encodestr(trim(iconv('CP866','utf-8',$fields['OT'])));

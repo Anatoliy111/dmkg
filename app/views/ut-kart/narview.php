@@ -20,9 +20,12 @@
 <div class="utkart">
 
 
+	<?php
+		foreach ($abonents as $abon) {
 
+	?>
 	<div class="rah">
-	<h4>Особовий рахунок <?= Html::encode($model->schet)?></h4>
+	<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
 </div>
 
@@ -139,7 +142,7 @@ HTML;
 				],
 //				'showPageSummary' => true
 			]);
-
+		}
 	?>
 
 

@@ -1,7 +1,6 @@
 <?php
 
 use app\models\UtAbonent;
-use app\models\UtKart;
 use kartik\nav\NavX;
 use kartik\growl\Growl;
 use kartik\tabs\TabsX;
@@ -14,9 +13,7 @@ use yii\bootstrap\NavBar;
 
 /** @var yii\web\View $this */
 /** @var app\models\SearchUtAbonent $searchModel */
-/** @var app\models\UtKart $modeladres */
-/** @var app\models\UtAbonent $modelemail */
-/** @var yii\data\ActiveDataProvider $dataProviderAdres */
+/** @var yii\data\ActiveDataProvider $dataProvider */
 
 ?>
 <?php Pjax::begin(); ?>
@@ -33,12 +30,18 @@ use yii\bootstrap\NavBar;
         $items = [
             [
                 'label'=>'Вхід за адресою',
-                'active'=>true,
-                'content'=>$this->render('authadres', ['model' => $modeladres, 'dataProvider' => $dataProviderAdres]),
+                'content'=>$this->render('create', ['model' => $model]),
             ],
             [
                 'label'=>'Вхід за електронною поштою',
-                'content'=>$this->render('authemail', ['model' => $modelemail]),
+        //        'content'=>$this->render('inemail', ['model' => $model]),
+            ],
+            [
+                'label'=>'Home',
+//                'content'=>$content1,
+                'content'=>'55555555555555',
+                'active'=>true,
+                'linkOptions'=>['data-url'=>Url::to(['/ut_abonent/tabsdata'])]
             ],
         ];
 
@@ -52,6 +55,9 @@ use yii\bootstrap\NavBar;
 
        ?>
 
+
+<!--        --><?php // echo $this->render('_search', ['model' => $searchModel, 'dataProvider' => $dataProvider]);
+//        ?>
         <div class="text">
             <p> * Для отримання коду доступу, потрібно з'явитись в КП "ДОЛИНСЬКИЙ МІСЬККОМУНГОСП" вул. Нова 80-А, в кабінет №2.</p>
             <p> При собі мати паспорт та документ що засвідчує право власності.</p>
@@ -60,43 +66,43 @@ use yii\bootstrap\NavBar;
 
     <div class="row">
         <?php
-        if ($dataProviderAdres->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
-
-            echo Growl::widget([
-                'type' => Growl::TYPE_DANGER,
-                'title' => 'Помилка!',
-                'icon' => 'glyphicon glyphicon-remove-sign',
-                'body' => 'По вашій адресі абонентів не знайдено. Спробуйте знову!!!',
-                'showSeparator' => true,
-                'delay' => 0,
-                'pluginOptions' => [
-//						'showProgressbar' => true,
-                    'placement' => [
-                        'from' => 'top',
-                        'align' => 'right',
-                    ]
-                ]
-            ]);
-        }
-
-        if ($dataProviderAdres->getTotalCount() <> 0  and $findmodeladres == 'bad') {
-
-            echo Growl::widget([
-                'type' => Growl::TYPE_DANGER,
-                'title' => 'Помилка!',
-                'icon' => 'glyphicon glyphicon-remove-sign',
-                'body' => 'Не вірний код доступу !!!',
-                'showSeparator' => true,
-                'delay' => false,
-                'pluginOptions' => [
-//						'showProgressbar' => true,
-                    'placement' => [
-                        'from' => 'top',
-                        'align' => 'right',
-                    ]
-                ]
-            ]);
-        }
+//        if ($dataProvider->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
+//
+//            echo Growl::widget([
+//                'type' => Growl::TYPE_DANGER,
+//                'title' => 'Помилка!',
+//                'icon' => 'glyphicon glyphicon-remove-sign',
+//                'body' => 'По вашій адресі абонентів не знайдено. Спробуйте знову!!!',
+//                'showSeparator' => true,
+//                'delay' => 0,
+//                'pluginOptions' => [
+////						'showProgressbar' => true,
+//                    'placement' => [
+//                        'from' => 'top',
+//                        'align' => 'right',
+//                    ]
+//                ]
+//            ]);
+//        }
+//
+//        if ($dataProvider->getTotalCount() <> 0  and $findmodel == 'bad') {
+//
+//            echo Growl::widget([
+//                'type' => Growl::TYPE_DANGER,
+//                'title' => 'Помилка!',
+//                'icon' => 'glyphicon glyphicon-remove-sign',
+//                'body' => 'Не вірний код доступу !!!',
+//                'showSeparator' => true,
+//                'delay' => false,
+//                'pluginOptions' => [
+////						'showProgressbar' => true,
+//                    'placement' => [
+//                        'from' => 'top',
+//                        'align' => 'right',
+//                    ]
+//                ]
+//            ]);
+//        }
         ?>
     </div>
 
