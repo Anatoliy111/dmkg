@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\SearchUtKart;
 use app\models\UtAbonent;
 use app\models\SearchUtAbonent;
+use app\models\UtAbonkart;
 use app\models\UtKart;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
@@ -69,7 +70,14 @@ class UtAbonentController extends Controller
         $modeladres->scenario = 'adres';
         $dataProviderAdres = $modeladres->search(Yii::$app->request->queryParams);
 
+        $modelemail->scenario = 'auth';
+        $dataProviderEmail = $modelemail->searchauth(Yii::$app->request->queryParams);
+
+        $tab='';
+
         if (array_key_exists('SearchUtKart', Yii::$app->request->queryParams))  {
+
+            $tab='adres';
 
 
 
@@ -85,9 +93,11 @@ class UtAbonentController extends Controller
 
         if (array_key_exists('SearchUtAbonent', Yii::$app->request->queryParams))  {
 
-            if ($dataProviderAdres->getTotalCount() <> 0){
+            $tab='email';
+
+            if ($dataProviderEmail->getTotalCount() <> 0){
                 $modeladres->scenario = 'password';
-                $findmodeladres = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderAdres);
+                $findmodeladres = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderEmail);
        //         $findmodeladres = $dataProviderAdres->getModels()[0];
                 if ($findmodeladres <> null and $findmodeladres <> 'bad'){
                     $findmodel=$this->findModelwithKart($findmodeladres->id);
@@ -108,15 +118,31 @@ class UtAbonentController extends Controller
                 'modelemail' => $modelemail,
                 'dataProviderAdres' => $dataProviderAdres,
                 'findmodeladres' => $findmodeladres,
+                'tab' => $tab,
             ]);
 
     }
 
-    public function actionKabinet($id)
+    public function actionKabinet()
     {
 //		$session = Yii::$app->session;
 //		if (isset($_POST['UtKart']['MonthYear']))
 //		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
+
+        $id=null;
+        $idkart=null;
+
+        $get = Yii::$app->request->get();
+
+        if (array_key_exists('id', $get)) {
+            $id = $get["id"];
+        }
+
+
+        if (array_key_exists('idkart', $get)) {
+            $idkart = $get["idkart"];
+        }
+
 
         if (Yii::$app->session['periodkab']==null)
             Yii::$app->session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
@@ -135,7 +161,7 @@ class UtAbonentController extends Controller
             return $this->redirect(['ut-abonent/index']);
         }
 
-//		$model->scenario = 'password';
+		$model->scenario = 'password';
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
@@ -145,7 +171,7 @@ class UtAbonentController extends Controller
 
             $model->save();
             $session->setFlash('pass', 'Пароль змінено');
-            return $this->redirect(['kabinet', 'id' => $model->id]);
+            return $this->redirect(['kabinet','id' => $id,'idkart' => $idkart]);
         }
 
         $model->pass1 = '';
@@ -153,23 +179,29 @@ class UtAbonentController extends Controller
 
 
 
-        $abonen = \app\poslug\models\UtAbonent::find()->where(['id_kart' => $model->id])->orderBy('id_org');
+//        $abonen = UtAbonkart::find()->where(['id' => $model->id])->orderBy('id_org');
+//
+//
+//
+//
+//        $summa = array();
+//
+//        $dpinfo = new ActiveDataProvider([
+//            'query' => $abonen,
+//        ]);
+        $abonents = UtAbonkart::find()->where(['id_abon' => $model->id])->all();
 
 
+        if ($idkart==null)
+            $idkart=$abonents[0]->id_kart;
 
+        $abon = UtKart::find()->where(['id' => $idkart])->all()[0];
 
-        $summa = array();
-
-        $dpinfo = new ActiveDataProvider([
-            'query' => $abonen,
-        ]);
-        $abonents = UtAbonent::find()->where(['id_kart' => $model->id])->all();
-        foreach ($abonents as $abon) {
-            $summa[$abon->id]=0;
+            $summa=0;
             //-----------------------------------------------------------------------------
             $obor= UtObor::find()
 //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                ->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+                ->joinWith('kart')->where(['ut_kart.id' => $idkart,'ut_obor.period'=> $session['periodkab']]);
 
 
 
@@ -179,7 +211,7 @@ class UtAbonentController extends Controller
             $dataProvider1 = new ActiveDataProvider([
                 'query' => $obor,
             ]);
-            $dpobor[$abon->id] = $dataProvider1;
+            $dpobor = $dataProvider1;
             //-----------------------------------------------------------------------------
 
             $oboropl= UtObor::find();
@@ -187,41 +219,41 @@ class UtAbonentController extends Controller
 
 
             $oplab=UtOpl::find()
-                ->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-                ->where(['ut_opl.id_abonent'=> $abon->id])
+                ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+                ->where(['ut_opl.id_kart'=> $idkart])
                 ->andwhere(['>', 'ut_opl.period', $session['period']])
-                ->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
+                ->groupBy('ut_opl.id_kart, ut_opl.id_posl')
                 ->asArray();
 
             $subQuery = (new \yii\db\Query())
                 ->from('ut_opl')
-                ->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-                ->where(['ut_opl.id_abonent'=> $abon->id])
+                ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+                ->where(['ut_opl.id_kart'=> $idkart])
                 ->andwhere(['>', 'ut_opl.period', $session['period']])
-                ->groupBy('ut_opl.id_abonent, ut_opl.id_posl');
+                ->groupBy('ut_opl.id_kart, ut_opl.id_posl');
 
 
 
             $dolg= UtObor::find();
-//					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-            $dolg->select(["ut_obor.id_abonent as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
+//					->select(["ut_obor.id_kart as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
+            $dolg->select(["ut_obor.id_kart as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
 //  				    $dolg->select('ut_obor.*,b.summ,');
-            $dolg->where(['ut_obor.id_abonent'=> $abon->id,'ut_obor.period'=> $session['period']]);
-            $dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-//				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`');
-//				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_abonent` = ut_obor.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
+            $dolg->where(['ut_obor.id_kart'=> $idkart,'ut_obor.period'=> $session['period']]);
+            $dolg->leftJoin(['b' => $oplab], '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+//				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`');
+//				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_kart` = ut_obor.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
 
 
 
 
-//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_abonent`=`ut_obor`.`id_abonent` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
+//				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_kart`=`ut_obor`.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
 //				$oboropl->asArray();
 
             foreach($dolg->asArray()->all() as $obb)
             {
                 if ($obb['dolgopl']>0)
                 {
-                    $summa[$abon->id] = $summa[$abon->id] + $obb['dolgopl'];
+                    $summa = $summa + $obb['dolgopl'];
                 }
             }
 
@@ -233,7 +265,7 @@ class UtAbonentController extends Controller
             $dataProvider11 = new ActiveDataProvider([
                 'query' => $dolg,
             ]);
-            $dpdolg[$abon->id] = $dataProvider11;
+            $dpdolg = $dataProvider11;
 
 
 
@@ -243,7 +275,7 @@ class UtAbonentController extends Controller
             //-----------------------------------------------------------------------------
 //				$oborsum= UtObor::find();
 //				$oborsum->select('sum(ut_obor.sal) as summ');
-//				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_abonent`)');
+//				$oborsum->leftJoin('ut_abonent','(`ut_abonent`.`id`=`ut_obor`.`id_kart`)');
 //				$oborsum->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period']]);
 ////				$oborsum->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> "2018-10-01"]);
 ////				$oborsum->groupBy('ut_obor.period,ut_abonent.id');
@@ -260,38 +292,38 @@ class UtAbonentController extends Controller
 
             //-----------------------------------------------------------------------------
             $opl = UtOpl::find();
-            $opl->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_opl.period'=> $session['periodkab']]);
+            $opl->joinWith('kart')->where(['ut_kart.id' => $idkart,'ut_opl.period'=> $session['periodkab']]);
             $dataProvider2 = new ActiveDataProvider([
                 'query' => $opl,
             ]);
 
-            $dpopl[$abon->id] = $dataProvider2;
+            $dpopl = $dataProvider2;
             //-----------------------------------------------------------------------------
             $nar= UtNarah::find();
-            $nar->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_narah.period'=> $session['periodkab']]);
+            $nar->joinWith('kart')->where(['ut_kart.id' => $idkart,'ut_narah.period'=> $session['periodkab']]);
             $dataProvider3 = new ActiveDataProvider([
                 'query' => $nar,
             ]);
 
-            $dpnar[$abon->id] = $dataProvider3;
+            $dpnar = $dataProvider3;
             //-----------------------------------------------------------------------------
             $pos = UtPosl::find();
-            $pos->joinWith('kart')->where(['ut_kart.id' => $abon->id]);
+            $pos->joinWith('kart')->where(['ut_kart.id' => $idkart]);
             $dataProvider4 = new ActiveDataProvider([
                 'query' => $pos,
             ]);
 
-            $dppos[$abon->id] = $dataProvider4;
+            $dppos = $dataProvider4;
 
             //-----------------------------------------------------------------------------
             $tar = UtTarif::find();
             $tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
-            $tar->joinWith('utTarifabs')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
+            $tar->joinWith('utTarifabs')->where(['ut_tarifab.id_kart' => $idkart,'ut_tarifab.period'=> $session['periodkab']]);
             $tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 
 
 
-//				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_abonent' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
+//				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_kart' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
 //				$tar->joinWith('tarif0');
 
 
@@ -300,7 +332,7 @@ class UtAbonentController extends Controller
 //				$tar->joinWith('utTarifabs');
 //				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
 //				$tar->where(['ut_tarif.period' => Yii::$app->session['perioddom']]);
-//				$tar->andWhere(['ut_tarifab.id_abonent' => $abon->id]);
+//				$tar->andWhere(['ut_tarifab.id_kart' => $abon->id]);
 //				$tar->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
 //
 //                $rrr = $tar->asArray()->all();
@@ -310,11 +342,11 @@ class UtAbonentController extends Controller
                 'query' => $tar,
             ]);
             $tt = ArrayHelper::toArray($tar);
-            $dptar[$abon->id] = $dataProvider6;
+            $dptar = $dataProvider6;
 
             $sub= UtObor::find();
 //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-            $sub->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['periodkab']]);
+            $sub->joinWith('kart')->where(['ut_kart.id' => $idkart,'ut_obor.period'=> $session['periodkab']]);
             $sub->andWhere(['<>','ut_obor.subs', 0]);
 
 
@@ -326,19 +358,19 @@ class UtAbonentController extends Controller
                 'query' => $sub,
             ]);
 
-            $dpsub[$abon->id] = $dataProvider8;
+            $dpsub = $dataProvider8;
 
             $uder = UtUtrim::find();
-            $uder->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_utrim.period'=> $session['periodkab']]);
+            $uder->joinWith('kart')->where(['ut_kart.id' => $idkart,'ut_utrim.period'=> $session['periodkab']]);
             $dataProvider9 = new ActiveDataProvider([
                 'query' => $uder,
             ]);
 
-            $dpuder[$abon->id] = $dataProvider9;
+            $dpuder = $dataProvider9;
 
 
 
-        }
+
 
 //
 //		$searchModel = new OrderSearch();
@@ -349,6 +381,7 @@ class UtAbonentController extends Controller
 //		]);
 
         return $this->render('kabinet', [
+            'abon' => $abon,
             'model' => $model,
             'abonents' => $abonents,
 //			'dpinfo' => $dpinfo,

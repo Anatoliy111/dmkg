@@ -25,6 +25,14 @@ class UtAbonent extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $pass1;
+    public $pass2;
+    public $enterpass;
+
+
+    const SCENARIO_PASS = 'password';
+
+
     public static function tableName()
     {
         return 'ut_abonent';
@@ -39,9 +47,10 @@ class UtAbonent extends \yii\db\ActiveRecord
             [['fio'], 'required'],
             [['date_pass'], 'safe'],
             [['del', 'status'], 'integer'],
-            [['fio', 'pass', 'passopen'], 'string', 'max' => 64],
+            [['fio', 'passopen'], 'string', 'max' => 64],
             [['telef'], 'string', 'max' => 15],
-            [['email'], 'string', 'max' => 30],
+            [['email'], 'email'],
+            [['pass'], 'string', 'min' => 5],
         ];
     }
 
@@ -52,7 +61,7 @@ class UtAbonent extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fio' => 'власник',
+            'fio' => 'ПІБ',
             'pass' => 'пароль',
             'date_pass' => 'Date Pass',
             'passopen' => 'Passopen',
@@ -68,6 +77,14 @@ class UtAbonent extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_PASS] = ['pass1', 'pass2'];
+        return $scenarios;
+    }
+
     public function getAbonkarts()
     {
         return $this->hasMany(UtAbonkart::class, ['id_abon' => 'id']);

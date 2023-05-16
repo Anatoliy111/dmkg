@@ -33,11 +33,22 @@ use yii\bootstrap\NavBar;
         $items = [
             [
                 'label'=>'Вхід за адресою',
-                'active'=>true,
+//                'active'=>function ($tab, $key){
+//                          if ($tab<>'email'){
+//                              return 'true';
+//                          }
+//                          return 'false';
+//                },
+                function($tab) {
+                    return $tab <> 'email' ? "'active'=>true" : "'active'=>false";
+                },
                 'content'=>$this->render('authadres', ['model' => $modeladres, 'dataProvider' => $dataProviderAdres]),
             ],
             [
                 'label'=>'Вхід за електронною поштою',
+                function($tab) {
+                    return $tab == 'email' ? "'active'=>true" : "'active'=>false";
+                },
                 'content'=>$this->render('authemail', ['model' => $modelemail]),
             ],
         ];
