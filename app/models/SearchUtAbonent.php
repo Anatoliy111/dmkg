@@ -26,6 +26,7 @@ class SearchUtAbonent extends UtAbonent
             [['fio', 'date_pass', 'passopen', 'telef'], 'safe'],
             [['email'], 'email'],
             [['pass'], 'string', 'min' => 5],
+            [['email', 'pass'], 'required'],
         ];
     }
 

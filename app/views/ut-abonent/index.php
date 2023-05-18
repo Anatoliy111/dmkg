@@ -33,25 +33,18 @@ use yii\bootstrap\NavBar;
         $items = [
             [
                 'label'=>'Вхід за адресою',
-//                'active'=>function ($tab, $key){
-//                          if ($tab<>'email'){
-//                              return 'true';
-//                          }
-//                          return 'false';
-//                },
-                function($tab) {
-                    return $tab <> 'email' ? "'active'=>true" : "'active'=>false";
-                },
                 'content'=>$this->render('authadres', ['model' => $modeladres, 'dataProvider' => $dataProviderAdres]),
             ],
             [
                 'label'=>'Вхід за електронною поштою',
-                function($tab) {
-                    return $tab == 'email' ? "'active'=>true" : "'active'=>false";
-                },
                 'content'=>$this->render('authemail', ['model' => $modelemail]),
             ],
         ];
+
+        if ($tab<>'email')
+            $items[0]['active'] = true;
+        else
+            $items[1]['active'] = true;
 
         echo TabsX::widget([
             'items'=>$items,
@@ -63,51 +56,77 @@ use yii\bootstrap\NavBar;
 
        ?>
 
-        <div class="text">
-            <p> * Для отримання коду доступу, потрібно з'явитись в КП "ДОЛИНСЬКИЙ МІСЬККОМУНГОСП" вул. Нова 80-А, в кабінет №2.</p>
-            <p> При собі мати паспорт та документ що засвідчує право власності.</p>
-        </div>
     </div>
 
     <div class="row">
         <?php
-        if ($dataProviderAdres->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
 
-            echo Growl::widget([
-                'type' => Growl::TYPE_DANGER,
-                'title' => 'Помилка!',
-                'icon' => 'glyphicon glyphicon-remove-sign',
-                'body' => 'По вашій адресі абонентів не знайдено. Спробуйте знову!!!',
-                'showSeparator' => true,
-                'delay' => 0,
-                'pluginOptions' => [
-//						'showProgressbar' => true,
-                    'placement' => [
-                        'from' => 'top',
-                        'align' => 'right',
+        if ($tab<>'email') {
+
+            if ($dataProviderAdres->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
+
+                echo Growl::widget([
+                    'type' => Growl::TYPE_DANGER,
+                    'title' => 'Помилка!',
+                    'icon' => 'glyphicon glyphicon-remove-sign',
+                    'body' => 'По вашій адресі абонентів не знайдено. Спробуйте знову!!!',
+                    'showSeparator' => true,
+                    'delay' => 0,
+                    'pluginOptions' => [
+    //						'showProgressbar' => true,
+                        'placement' => [
+                            'from' => 'top',
+                            'align' => 'right',
+                        ]
                     ]
-                ]
-            ]);
+                ]);
+            }
+
+            if ($dataProviderAdres->getTotalCount() <> 0  and $findmodel == 'bad') {
+
+                echo Growl::widget([
+                    'type' => Growl::TYPE_DANGER,
+                    'title' => 'Помилка!',
+                    'icon' => 'glyphicon glyphicon-remove-sign',
+                    'body' => 'Не вірний код доступу !!!',
+                    'showSeparator' => true,
+                    'delay' => false,
+                    'pluginOptions' => [
+    //						'showProgressbar' => true,
+                        'placement' => [
+                            'from' => 'top',
+                            'align' => 'right',
+                        ]
+                    ]
+                ]);
+            }
+
+        }
+        else {
+
+            if ($findmodel == 'bad') {
+
+                echo Growl::widget([
+                    'type' => Growl::TYPE_DANGER,
+                    'title' => 'Помилка!',
+                    'icon' => 'glyphicon glyphicon-remove-sign',
+                    'body' => 'Не вірна електронна пошта або пароль !!!',
+                    'showSeparator' => true,
+                    'delay' => false,
+                    'pluginOptions' => [
+                        //						'showProgressbar' => true,
+                        'placement' => [
+                            'from' => 'top',
+                            'align' => 'right',
+                        ]
+                    ]
+                ]);
+            }
+
+
+
         }
 
-        if ($dataProviderAdres->getTotalCount() <> 0  and $findmodeladres == 'bad') {
-
-            echo Growl::widget([
-                'type' => Growl::TYPE_DANGER,
-                'title' => 'Помилка!',
-                'icon' => 'glyphicon glyphicon-remove-sign',
-                'body' => 'Не вірний код доступу !!!',
-                'showSeparator' => true,
-                'delay' => false,
-                'pluginOptions' => [
-//						'showProgressbar' => true,
-                    'placement' => [
-                        'from' => 'top',
-                        'align' => 'right',
-                    ]
-                ]
-            ]);
-        }
         ?>
     </div>
 

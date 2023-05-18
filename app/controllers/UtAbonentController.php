@@ -83,11 +83,7 @@ class UtAbonentController extends Controller
 
             if ($dataProviderAdres->getTotalCount() <> 0){
                 $modeladres->scenario = 'password';
-                $findmodeladres = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderAdres);
-//                $findmodeladres = $dataProviderAdres->getModels()[0];
-                if ($findmodeladres <> null and $findmodeladres <> 'bad'){
-                    $findmodel=$findmodeladres;
-                }
+                $findmodel = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderAdres);
             }
         }
 
@@ -96,12 +92,7 @@ class UtAbonentController extends Controller
             $tab='email';
 
             if ($dataProviderEmail->getTotalCount() <> 0){
-                $modeladres->scenario = 'password';
-                $findmodeladres = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderEmail);
-       //         $findmodeladres = $dataProviderAdres->getModels()[0];
-                if ($findmodeladres <> null and $findmodeladres <> 'bad'){
-                    $findmodel=$this->findModelwithKart($findmodeladres->id);
-                }
+                $findmodel = $dataProviderEmail->getModels()[0];
             }
         }
 
@@ -110,6 +101,7 @@ class UtAbonentController extends Controller
             $session['model'] = $findmodel;
             return $this->redirect(['kabinet', 'id' => $findmodel->id]);
         }
+        else $findmodel = 'bad';
 
 
 
@@ -117,7 +109,7 @@ class UtAbonentController extends Controller
                 'modeladres' => $modeladres,
                 'modelemail' => $modelemail,
                 'dataProviderAdres' => $dataProviderAdres,
-                'findmodeladres' => $findmodeladres,
+                'findmodel' => $findmodel,
                 'tab' => $tab,
             ]);
 
@@ -396,6 +388,13 @@ class UtAbonentController extends Controller
             'summa' => $summa,
             'lastperiod' => $session['period'],
         ]);
+    }
+
+    public function actionRegister()
+    {
+        $session = Yii::$app->session;
+        $session->destroy();
+        return $this->redirect(['ut-abonent/index']);
     }
 
 
