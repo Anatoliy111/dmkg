@@ -42,10 +42,10 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-sm-offset-2 col-sm-6">
 
-                            <?= Html::a('Реєстрація', ['ut-abonent/register'], ['class' => 'btn btn-danger']) ?>
+                            <?= Html::a('Реєстрація', ['ut-abonent/auth'], ['class' => 'btn btn-danger']) ?>
 
-                        <div class="empty pass" style="float: left">
-                            <?= Html::a('Забули пароль?', ['ut-abonent/register'], ['class="label label-info']) ?>
+                        <div class="empty pass" style="float: right">
+                            <?= Html::a('Забули пароль?', ['ut-abonent/fogotpass'], ['class="label label-info']) ?>
                         </div>
 
                 </div>

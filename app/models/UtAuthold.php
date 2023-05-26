@@ -23,7 +23,7 @@ use Yii;
  * @property UtKart $kart
  * @property UtAuthfoto[] $utAuthfotos
  */
-class UtAuth extends \yii\db\ActiveRecord
+class UtAuthold extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -93,8 +93,4 @@ class UtAuth extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUtAuthfotos()
-    {
-        return $this->hasMany(UtAuthfoto::className(), ['id_auth' => 'id']);
-    }
 }

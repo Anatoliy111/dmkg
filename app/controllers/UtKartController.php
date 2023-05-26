@@ -5,7 +5,7 @@ namespace app\controllers;
 use app\models\LiqPay;
 use app\models\UtPay;
 use app\poslug\models\UtAbonent;
-use app\models\UtAuth;
+use app\models\UtAuthold;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
@@ -663,7 +663,7 @@ class UtKartController extends Controller
 
 	public function actionAuth()
 	{
-		$model = new UtAuth();
+		$model = new UtAuthold();
 
 		if ($model->load(Yii::$app->request->post()))  {
 			$Abon = UtAbonent::findOne(['schet' => $model->schet]);

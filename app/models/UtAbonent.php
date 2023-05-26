@@ -27,11 +27,12 @@ class UtAbonent extends \yii\db\ActiveRecord
      */
     public $pass1;
     public $pass2;
-    public $enterpass;
+
 
 
     const SCENARIO_PASS = 'password';
-
+    const SCENARIO_REG = 'reg';
+    const SCENARIO_EMAIL = 'email';
 
     public static function tableName()
     {
@@ -44,13 +45,16 @@ class UtAbonent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fio'], 'required'],
+            [['fio','pass1','pass2','email'], 'required'],
             [['date_pass'], 'safe'],
             [['del', 'status'], 'integer'],
             [['fio', 'passopen'], 'string', 'max' => 64],
             [['telef'], 'string', 'max' => 15],
             [['email'], 'email'],
             [['pass'], 'string', 'min' => 5],
+            [['pass1'], 'string', 'min' => 5],
+            [['pass2'], 'string', 'min' => 5],
+            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
         ];
     }
 
@@ -62,13 +66,15 @@ class UtAbonent extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'fio' => 'ПІБ',
-            'pass' => 'пароль',
+            'pass' => 'Введіть пароль',
             'date_pass' => 'Date Pass',
             'passopen' => 'Passopen',
             'telef' => 'телефон',
             'del' => 'Del',
             'email' => 'Email',
             'status' => 'Status',
+            'pass1' => 'Введіть пароль',
+            'pass2' => 'Повторіть пароль',
         ];
     }
 
@@ -82,6 +88,8 @@ class UtAbonent extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_PASS] = ['pass1', 'pass2'];
+        $scenarios[self::SCENARIO_REG] = ['fio','pass1','pass2','email'];
+        $scenarios[self::SCENARIO_EMAIL] = ['email'];
         return $scenarios;
     }
 

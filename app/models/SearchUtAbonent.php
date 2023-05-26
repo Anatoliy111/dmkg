@@ -17,7 +17,6 @@ class SearchUtAbonent extends UtAbonent
      * {@inheritdoc}
      */
     const SCENARIO_AUTH = 'auth';
-    const SCENARIO_REG = 'reg';
 
     public function rules()
     {
@@ -39,7 +38,6 @@ class SearchUtAbonent extends UtAbonent
 //        return Model::scenarios();
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_AUTH] = ['email', 'pass'];
-        $scenarios[self::SCENARIO_REG] = ['email', 'pass', 'fio'];
         return $scenarios;
     }
 

@@ -5,6 +5,8 @@ use app\models\UtKart;
 use kartik\nav\NavX;
 use kartik\growl\Growl;
 use kartik\tabs\TabsX;
+use yii\bootstrap\Alert;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -24,11 +26,32 @@ use yii\bootstrap\NavBar;
 <div class="ut-kart-index">
 
 
+    <?php 	Modal::begin([
+        'header' => '<h2>Змінити пароль</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+        'id' => 'emailsendauth',
+        'size' => 'modal-md',
+
+    ]);
+    ?>
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+
+    <?php Modal::end(); ?>
+
+
+
 
 
     <div class="well well-large">
 
         <?php
+
+
+
 
         $items = [
             [
@@ -61,9 +84,15 @@ use yii\bootstrap\NavBar;
     <div class="row">
         <?php
 
-        if ($tab<>'email') {
+        if ($message=='sendauth') {
+                    $this->registerJs(
+                        "$('#emailsendauth').modal('show');",
+                        yii\web\View::POS_READY
+                    );
 
-            if ($dataProviderAdres->getTotalCount() == 0  and Yii::$app->request->queryParams <> null) {
+        }
+
+            if ($message=='notadres') {
 
                 echo Growl::widget([
                     'type' => Growl::TYPE_DANGER,
@@ -82,7 +111,7 @@ use yii\bootstrap\NavBar;
                 ]);
             }
 
-            if ($dataProviderAdres->getTotalCount() <> 0  and $findmodel == 'bad') {
+            if ($message=='notadrespass') {
 
                 echo Growl::widget([
                     'type' => Growl::TYPE_DANGER,
@@ -101,10 +130,7 @@ use yii\bootstrap\NavBar;
                 ]);
             }
 
-        }
-        else {
-
-            if ($findmodel == 'bad') {
+            if ($message=='notemail') {
 
                 echo Growl::widget([
                     'type' => Growl::TYPE_DANGER,
@@ -121,10 +147,6 @@ use yii\bootstrap\NavBar;
                         ]
                     ]
                 ]);
-            }
-
-
-
         }
 
         ?>
@@ -136,5 +158,20 @@ use yii\bootstrap\NavBar;
 
 </div>
 <?php Pjax::end(); ?>
+
+<?php foreach(Yii::$app->session->getAllFlashes() as $type => $messages):
+    foreach($messages as $message):
+
+        Alert::begin([
+            'options' => [
+                'class' => $type, 'style' => 'float:bottom; margin-top:50px',
+            ],
+        ]);
+
+        echo $message;
+
+        Alert::end();
+    endforeach;
+endforeach ?>
 
 

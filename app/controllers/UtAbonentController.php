@@ -6,6 +6,7 @@ use app\models\SearchUtKart;
 use app\models\UtAbonent;
 use app\models\SearchUtAbonent;
 use app\models\UtAbonkart;
+use app\models\UtAuth;
 use app\models\UtKart;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
@@ -74,17 +75,23 @@ class UtAbonentController extends Controller
         $dataProviderEmail = $modelemail->searchauth(Yii::$app->request->queryParams);
 
         $tab='';
+        $message='';
+        if (array_key_exists('email', Yii::$app->request->queryParams))  {
+            $tab='email';
+            $message=Yii::$app->request->get()['email'];
+        }
 
         if (array_key_exists('SearchUtKart', Yii::$app->request->queryParams))  {
 
             $tab='adres';
 
-
-
             if ($dataProviderAdres->getTotalCount() <> 0){
                 $modeladres->scenario = 'password';
                 $findmodel = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderAdres);
+                if ($findmodel == 'bad') $message='notadrespass';
             }
+            else $message='notadres';
+
         }
 
         if (array_key_exists('SearchUtAbonent', Yii::$app->request->queryParams))  {
@@ -94,6 +101,7 @@ class UtAbonentController extends Controller
             if ($dataProviderEmail->getTotalCount() <> 0){
                 $findmodel = $dataProviderEmail->getModels()[0];
             }
+            else $message='notemail';
         }
 
         if ($findmodel <> null and $findmodel <> 'bad'){
@@ -101,7 +109,6 @@ class UtAbonentController extends Controller
             $session['model'] = $findmodel;
             return $this->redirect(['kabinet', 'id' => $findmodel->id]);
         }
-        else $findmodel = 'bad';
 
 
 
@@ -109,8 +116,9 @@ class UtAbonentController extends Controller
                 'modeladres' => $modeladres,
                 'modelemail' => $modelemail,
                 'dataProviderAdres' => $dataProviderAdres,
-                'findmodel' => $findmodel,
+                'dataProviderEmail' => $dataProviderEmail,
                 'tab' => $tab,
+                'message' => $message,
             ]);
 
     }
@@ -390,7 +398,7 @@ class UtAbonentController extends Controller
         ]);
     }
 
-    public function actionRegister()
+    public function actionFogotpass()
     {
         $session = Yii::$app->session;
         $session->destroy();
@@ -425,13 +433,22 @@ class UtAbonentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionAuth()
     {
-        $model = new UtAbonent();
-
+        $model = new UtAuth();
+        $model->scenario = 'reg';
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->authtoken = md5($model->email.time());
+                $model->vid = 'authsite';
+                $model->pass = $model->pass1;
+                if ($model->validate()) {
+                    $model->save();
+                    return $this->redirect(['index', 'email' => 'sendauth']);
+//                return $this->redirectIndex($id, Yii::$app->request->get($this->editedRowConfig['gridIdGetParam']));
+//                return $this->redirect($this->shopInstalled ? ['/'] : ['/install/step3']);
+                    //return $this->redirect(['view',  $urlParams ]);
+                }
             }
         } else {
             $model->loadDefaultValues();
