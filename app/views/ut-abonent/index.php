@@ -27,7 +27,7 @@ use yii\bootstrap\NavBar;
 
 
     <?php 	Modal::begin([
-        'header' => '<h2>Змінити пароль</h2>',
+        'header' => '<h2>Реєстрація</h2>',
 
 //			'toggleButton' => ['label' => 'click me'],
 //			'footer' => 'Низ окна',
@@ -37,7 +37,11 @@ use yii\bootstrap\NavBar;
     ]);
     ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="modal-email">
+
+    <p>Please fill out the following fields to login:</p>
+
+    </div>
 
 
     <?php Modal::end(); ?>
@@ -51,7 +55,10 @@ use yii\bootstrap\NavBar;
         <?php
 
 
-
+        $this->registerJs(
+            "$('#emailsendauth').modal('show');",
+            yii\web\View::POS_READY
+        );
 
         $items = [
             [
