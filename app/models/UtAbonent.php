@@ -20,7 +20,8 @@ use Yii;
  *
  * @property UtAbonkart[] $utAbonkarts
  */
-class UtAbonent extends \yii\db\ActiveRecord
+class
+UtAbonent extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

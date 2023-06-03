@@ -88,16 +88,16 @@ class SearchUtKart extends UtKart
 			'kv' => $this->kv,
 		]);
 
-		if ($Get['korp']<>null)
-		{
-			$this->korp=$Get['korp'];
-			$domkorp = $Get['dom'].$Get['korp'];
-			$query->andWhere(['=', 'dom', $domkorp]);
-		}
-		else {
-			$this->korp=null;
+//		if ($Get['korp']<>null)
+//		{
+//			$this->korp=$Get['korp'];
+//			$domkorp = $Get['dom'].$Get['korp'];
+//			$query->andWhere(['=', 'dom', $domkorp]);
+//		}
+//		else {
+//			$this->korp=null;
 			$query->andWhere(['=', 'dom', $this->dom]);
-		}
+//		}
 
 //		if ($this->enterpass<>null){
 //			$query->andWhere(['=', 'pass', $this->enterpass]);

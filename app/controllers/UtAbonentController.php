@@ -76,9 +76,17 @@ class UtAbonentController extends Controller
 
         $tab='';
         $message='';
-        if (array_key_exists('email', Yii::$app->request->queryParams))  {
+        $email='';
+        if (array_key_exists('emailauth', Yii::$app->request->queryParams))  {
             $tab='email';
-            $message=Yii::$app->request->get()['email'];
+            $message='authsite';
+            $email=Yii::$app->request->get()['emailauth'];
+        }
+
+        if (array_key_exists('emailfog', Yii::$app->request->queryParams))  {
+            $tab='email';
+            $message='fogpass';
+            $email=Yii::$app->request->get()['emailfog'];
         }
 
         if (array_key_exists('SearchUtKart', Yii::$app->request->queryParams))  {
@@ -119,6 +127,7 @@ class UtAbonentController extends Controller
                 'dataProviderEmail' => $dataProviderEmail,
                 'tab' => $tab,
                 'message' => $message,
+                'email' => $email,
             ]);
 
     }
@@ -395,14 +404,40 @@ class UtAbonentController extends Controller
             'dpdolg' => $dpdolg,
             'summa' => $summa,
             'lastperiod' => $session['period'],
+            'periodkab' => $session['periodkab'],
         ]);
     }
 
     public function actionFogotpass()
     {
-        $session = Yii::$app->session;
-        $session->destroy();
-        return $this->redirect(['ut-abonent/index']);
+
+        $message='';
+        $modelemail = new SearchUtAbonent();
+
+        $modelemail->scenario = 'email';
+        if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
+
+
+            $model = new UtAuth();
+            $model->scenario = 'email';
+            $model->email = $modelemail->email;
+            $model->authtoken = md5($model->email.time());
+            $model->vid = 'fogpass';
+                    if ($model->validate()) {
+                        $model->save();
+                        return $this->redirect(['index', 'emailfog' => $model->email]);
+                    }
+
+
+        }
+//        else $message='notemail';
+
+
+
+        return $this->render('fogpass', [
+            'model' => $modelemail,
+            'message' => $message,
+        ]);
     }
 
 
@@ -433,29 +468,36 @@ class UtAbonentController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionAuth()
+    public function actionReg()
     {
-        $model = new UtAuth();
-        $model->scenario = 'reg';
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->authtoken = md5($model->email.time());
+
+        $message='';
+        $modelemail = new SearchUtAbonent();
+
+        $modelemail->scenario = 'reg';
+//        $dataProviderEmail = $modelemail->searchemail(Yii::$app->request->bodyParams);
+        if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
+
+
+
+                $model = new UtAuth();
+                $model->scenario = 'reg';
+                $model->fio = $modelemail->fio;
+                $model->email = $modelemail->email;
+                $model->authtoken = md5($modelemail->email.time());
                 $model->vid = 'authsite';
-                $model->pass = $model->pass1;
-                if ($model->validate()) {
-                    $model->save();
-                    return $this->redirect(['index', 'email' => 'sendauth']);
-//                return $this->redirectIndex($id, Yii::$app->request->get($this->editedRowConfig['gridIdGetParam']));
-//                return $this->redirect($this->shopInstalled ? ['/'] : ['/install/step3']);
-                    //return $this->redirect(['view',  $urlParams ]);
-                }
-            }
-        } else {
-            $model->loadDefaultValues();
+                $model->pass = $modelemail->pass1;
+                        if ($model->validate()) {
+                            $model->save();
+                            return $this->redirect(['index', 'emailauth' => $model->email]);
+
+                        }
+
+
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $modelemail,
         ]);
     }
 

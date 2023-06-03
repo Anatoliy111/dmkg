@@ -22,15 +22,9 @@ class UtAuth extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public $pass1;
-    public $pass2;
 
     const SCENARIO_REG = 'reg';
     const SCENARIO_EMAIL = 'email';
-
-    const VID_AUTHSITE = 'authsite';
-    const VID_AUTHVIBER = 'authviber';
-    const VID_FOGPASS = 'fogpass';
 
     public static function tableName()
     {
@@ -43,14 +37,13 @@ class UtAuth extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_abonent', 'fio', 'pass', 'email', 'authtoken','pass1','pass2','vid'], 'required'],
+            [['id_abonent', 'fio', 'pass', 'email', 'authtoken','vid'], 'required'],
             [['id_abonent'], 'integer'],
-            [['pass1'], 'string', 'min' => 5],
-            [['pass2'], 'string', 'min' => 5],
             ['email', 'email'],
             [['fio', 'pass', 'email', 'authtoken','vid'], 'string', 'max' => 64],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['id_abonent' => 'id']],
-            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
+//            [['email'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email вже зареєстрований!!!'],
+     //       ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
         ];
     }
 
@@ -74,7 +67,7 @@ class UtAuth extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_REG] = ['fio','pass1','pass2','email','authtoken','vid'];
+        $scenarios[self::SCENARIO_REG] = ['fio','pass','email','authtoken','vid'];
         $scenarios[self::SCENARIO_EMAIL] = ['email','authtoken','vid'];
         return $scenarios;
     }

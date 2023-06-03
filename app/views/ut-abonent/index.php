@@ -20,27 +20,48 @@ use yii\bootstrap\NavBar;
 /** @var app\models\UtAbonent $modelemail */
 /** @var yii\data\ActiveDataProvider $dataProviderAdres */
 
+  $asset = \app\assets\AppAsset::register($this);
+
 ?>
 <?php Pjax::begin(); ?>
 
-<div class="ut-kart-index">
+<div class="ut-abonent col-xs-12 col-sm-8 col-md-8 col-lg-6 col-xl-6 col-xxl-6 align-self-center">
 
+<!--    col-lg-offset-2-->
+    <?php
+    $header='';
 
-    <?php 	Modal::begin([
-        'header' => '<h2>Реєстрація</h2>',
+    if ($message=='authsite')
+        $header= '<h2>Реєстрація</h2>';
+    if ($message=='fogpass')
+        $header= '<h2>Відновлення паролю</h2>';
 
+    Modal::begin([
+
+            'header' => $header,
 //			'toggleButton' => ['label' => 'click me'],
 //			'footer' => 'Низ окна',
         'id' => 'emailsendauth',
         'size' => 'modal-md',
+        'headerOptions' => [
+            'style' => 'text-align: center;'
+        ],
 
     ]);
     ?>
 
+
+
     <div class="modal-email">
 
-    <p>Please fill out the following fields to login:</p>
+    <img itemprop="image" src="<?= $asset->baseUrl ?>/email.png" alt="EMAIL">
 
+    <?php if ($message=='authsite')
+             echo '<h3 style="line-height: 1.5;">На вашу пошту '.$email.' відправлено лист з посиланням для підтвердження реєстрації. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!</h3>';
+          if ($message=='fogpass')
+             echo '<h3 style="line-height: 1.5;">На вашу пошту '.$email.' відправлено лист з посиланням для підтвердження відновлення паролю. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!</h3>';
+
+    ?>
     </div>
 
 
@@ -50,15 +71,15 @@ use yii\bootstrap\NavBar;
 
 
 
-    <div class="well well-large">
+    <div class="well well-lg">
 
         <?php
 
 
-        $this->registerJs(
-            "$('#emailsendauth').modal('show');",
-            yii\web\View::POS_READY
-        );
+//        $this->registerJs(
+//            "$('#emailsendauth').modal('show');",
+//            yii\web\View::POS_READY
+//        );
 
         $items = [
             [
@@ -67,7 +88,7 @@ use yii\bootstrap\NavBar;
             ],
             [
                 'label'=>'Вхід за електронною поштою',
-                'content'=>$this->render('authemail', ['model' => $modelemail]),
+                'content'=>$this->render('authemail', ['modelemail' => $modelemail]),
             ],
         ];
 
@@ -79,6 +100,7 @@ use yii\bootstrap\NavBar;
         echo TabsX::widget([
             'items'=>$items,
             'position'=>TabsX::POS_ABOVE,
+            'align'=>TabsX::ALIGN_CENTER,
             'encodeLabels'=>false,
 //            'bordered'=>true,
         ]);
@@ -91,7 +113,7 @@ use yii\bootstrap\NavBar;
     <div class="row">
         <?php
 
-        if ($message=='sendauth') {
+        if ($email<>'') {
                     $this->registerJs(
                         "$('#emailsendauth').modal('show');",
                         yii\web\View::POS_READY

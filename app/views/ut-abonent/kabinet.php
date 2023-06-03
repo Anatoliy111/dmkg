@@ -28,6 +28,9 @@ use yii\widgets\Pjax;
 //			'footer' => 'Низ окна',
 			'id' => 'passmodal-5',
 			'size' => 'modal-md',
+            'headerOptions' => [
+                'style' => 'text-align: center;'
+            ],
 
 		]);
 ?>
@@ -372,6 +375,10 @@ yii\bootstrap\Modal::begin([
             <div class="col-lg-4 .col-sm-4 .col-md-4">
 
                 <?= PeriodKabWidget::widget() ?>
+            </div>
+
+            <div class="col-lg-4 .col-sm-4 .col-md-4">
+                <h2><?=Yii::$app->formatter->asDate($periodkab, 'LLLL Y')?></h2>
             </div>
         </div>
 

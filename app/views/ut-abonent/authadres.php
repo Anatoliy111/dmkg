@@ -23,7 +23,7 @@ use yii\widgets\Pjax;
 
     <div class="row">
 
-        <div class="col-sm-3">
+        <div class="col-sm-8">
             <?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
                 'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),
                 'language' => 'uk',
@@ -37,14 +37,7 @@ use yii\widgets\Pjax;
         <div class="col-sm-2">
             <?= $form->field($model, 'dom')?>
         </div>
-        <div class="col-sm-1">
-            <?=  $form->field($model, 'korp')->dropDownList([
-                'а'=>'а','б'=>'б','в'=>'в','г'=>'г'
-            ],
-                [
-                    'prompt' => Yii::t('easyii', 'Select the body if there is...')
-                ]); ?>
-        </div>
+
         <div class="col-sm-2">
             <?= $form->field($model, 'kv') ?>
 

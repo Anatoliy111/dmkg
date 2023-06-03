@@ -13,7 +13,7 @@ $this->title = 'Реєстрація в кабінет споживача';
 
 ?>
 
-    <div class="well well-large">
+    <div class="ut-abonent col-xs-12 col-sm-8 col-md-8 col-lg-6 col-xl-6 col-xxl-6 align-self-center well">
 
         <h1><?= Html::encode($this->title) ?></h1>
 

@@ -16,16 +16,27 @@ class SearchUtAbonent extends UtAbonent
     /**
      * {@inheritdoc}
      */
+    public $pass1;
+    public $pass2;
+
     const SCENARIO_AUTH = 'auth';
+    const SCENARIO_REG = 'reg';
+    const SCENARIO_EMAIL = 'email';
 
     public function rules()
     {
         return [
             [['id', 'del', 'status'], 'integer'],
-            [['fio', 'date_pass', 'passopen', 'telef'], 'safe'],
-            [['email'], 'email'],
-            [['pass'], 'string', 'min' => 5],
-            [['email', 'pass'], 'required'],
+            [['date_pass', 'passopen', 'telef'], 'safe'],
+            [['fio', 'email', 'pass1','pass2','pass'], 'required'],
+            [['pass1','pass2','pass'], 'string', 'min' => 5],
+            ['email', 'email'],
+            [['fio', 'pass', 'email'], 'string', 'max' => 64],
+            [['email'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email не зареєстрований!!!','on' => self::SCENARIO_EMAIL],
+            [['email'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email не зареєстрований!!!','on' => self::SCENARIO_AUTH],
+            [['email'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email вже зареєстрований!!!','on' => self::SCENARIO_REG],
+            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають!!!'],
+
         ];
     }
 
@@ -38,6 +49,8 @@ class SearchUtAbonent extends UtAbonent
 //        return Model::scenarios();
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_AUTH] = ['email', 'pass'];
+        $scenarios[self::SCENARIO_REG] = ['fio','pass1','pass2','email'];
+        $scenarios[self::SCENARIO_EMAIL] = ['email'];
         return $scenarios;
     }
 
@@ -97,14 +110,39 @@ class SearchUtAbonent extends UtAbonent
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
 
-        $query->andFilterWhere(['like', 'passopen', $this->pass])
+        $query->FilterWhere(['like', 'passopen', $this->pass])
             ->andFilterWhere(['like', 'email', $this->email]);
+
+        return $dataProvider;
+    }
+
+    public function searchemail($params)
+    {
+        $query = UtAbonent::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+
+        $query->FilterWhere(['like', 'email', $this->email]);
 
         return $dataProvider;
     }

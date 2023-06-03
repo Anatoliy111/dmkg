@@ -136,9 +136,44 @@ p {
 	line-height: 26px;
 }
 
+.modal-dialog {
+	border: 10px solid #f3ef06;
+	outline: 10px solid #fffefe;
+	border-radius: 15px;
+}
 
+.modal-header {
+	font-family: Impact;
+	font-size: 30px;
+	letter-spacing: 4px;
+	word-spacing: 0px;
+	color: #0c08f7;
+	font-weight: bold;
+	text-decoration: none;
+	font-style: italic;
+	font-variant: small-caps;
+	text-transform: uppercase;
+}
 
+.modal-email {
+	text-align: center;
+	/*font-family: Arial;*/
+	/*letter-spacing: 5px;*/
+}
 
+/*.ut-kart-index {*/
+/*	margin-left: auto;*/
+/*	margin-right: auto;*/
+/*	width: 50em;*/
+/*}*/
+
+/*.ut-abonent {*/
+/*	display: flex;*/
+/*	justify-content: center;*/
+/*	!*margin-left: auto;*!*/
+/*	!*margin-right: auto;*!*/
+
+/*}*/
 
 /*==================  Stuck menu  ======================*/
 .stuck_container {

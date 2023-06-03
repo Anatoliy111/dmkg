@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\SearchUtAbonent $model */
+/** @var app\models\SearchUtAbonent $modelemail */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
@@ -20,11 +20,11 @@ use yii\widgets\ActiveForm;
 
             <div class="row">
 
-                <div class="col-sm-offset-2 col-sm-6">
+                <div class="col-sm-offset-2 col-sm-8">
 
-                    <?= $form->field($model, 'email') ?>
+                    <?= $form->field($modelemail, 'email') ?>
 
-                    <?= $form->field($model, 'pass')->passwordInput(); ?>
+                    <?= $form->field($modelemail, 'pass')->passwordInput(); ?>
 
 
 
@@ -40,9 +40,9 @@ use yii\widgets\ActiveForm;
 
                 </div>
 
-                <div class="col-sm-offset-2 col-sm-6">
+                <div class="col-sm-offset-2 col-sm-8">
 
-                            <?= Html::a('Реєстрація', ['ut-abonent/auth'], ['class' => 'btn btn-danger']) ?>
+                            <?= Html::a('Реєстрація', ['ut-abonent/reg'], ['class' => 'btn btn-danger']) ?>
 
                         <div class="empty pass" style="float: right">
                             <?= Html::a('Забули пароль?', ['ut-abonent/fogotpass'], ['class="label label-info']) ?>
