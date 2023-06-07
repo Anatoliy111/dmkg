@@ -165,14 +165,7 @@ $t = true;
 		}
 
 
-//		if ($_SESSION['Progress']>=1000 and $nombase==$endbase)
-//		{
-//			$process = $rowsCount-$nomrec;
-//		}
-//	     $countRec = $rowsCount - $_SESSION['NomRec'];
-//	     if ($countRec>$_SESSION['process'])
-//		  $process=$_SESSION['NomRec']+$_SESSION['process'];
-//	     else $process=$rowsCount;
+
 		$functionname = 'import'.strstr($fname, '.', true);
 		if (function_exists($functionname)) {
 
@@ -490,6 +483,8 @@ function importKART($dbf,$i,$Base)
 		}
 		$modelKt->dom = encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM'])));
 		$modelKt->kv = encodestr(trim(iconv('CP866','utf-8',$fields['NOMKV'])));
+
+
 		$FindRb = UtRabota::findOne(['id_oldorg' => $fields['ORG']]);
 		if ($FindRb <> null)
 		{
