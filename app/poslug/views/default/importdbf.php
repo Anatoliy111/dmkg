@@ -489,7 +489,7 @@ function importKART($dbf,$i,$Base)
 				$modelKt->id_ulica = 1;
 		}
 		$modelKt->dom = encodestr(trim(iconv('CP866','utf-8',$fields['NOMDOM'])));
-		$modelKt->kv = trim($fields['NOMKV']);
+		$modelKt->kv = encodestr(trim(iconv('CP866','utf-8',$fields['NOMKV'])));
 		$FindRb = UtRabota::findOne(['id_oldorg' => $fields['ORG']]);
 		if ($FindRb <> null)
 		{
