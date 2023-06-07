@@ -459,7 +459,7 @@ function importKART($dbf,$i,$Base)
 			$modelKt->name_f = 'невідомий абонент';
 			$modelKt->fio = 'невідомий абонент';
 		}
-		$modelKt->idcod = trim($fields['IDCOD']);
+		$modelKt->idcod = encodestr(trim(iconv('CP866','utf-8',$fields['IDCOD'])));
 		$ulica = $fields['KL_UL'];
 		$FindUl = UtUlica::findOne(['kl' => $ulica]);
 		if ($FindUl <> null)
