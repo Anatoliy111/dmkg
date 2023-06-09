@@ -29,16 +29,11 @@ use yii\bootstrap\NavBar;
 
 <!--    col-lg-offset-2-->
     <?php
-    $header='';
 
-    if ($message=='authsite')
-        $header= '<h2>Реєстрація</h2>';
-    if ($message=='fogpass')
-        $header= '<h2>Відновлення паролю</h2>';
 
     Modal::begin([
 
-            'header' => $header,
+            'header' => '<h2>'.$modalformheader.'</h2>',
 //			'toggleButton' => ['label' => 'click me'],
 //			'footer' => 'Низ окна',
         'id' => 'emailsendauth',
@@ -54,13 +49,10 @@ use yii\bootstrap\NavBar;
 
     <div class="modal-email">
 
-    <img itemprop="image" src="<?= $asset->baseUrl ?>/email.png" alt="EMAIL">
+    <img itemprop="image" src="<?= $asset->baseUrl.'/'.$modalformimage ?>" alt="EMAIL">
 
-    <?php if ($message=='authsite')
-             echo '<h3 style="line-height: 1.5;">На вашу пошту '.$email.' відправлено лист з посиланням для підтвердження реєстрації. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!</h3>';
-          if ($message=='fogpass')
-             echo '<h3 style="line-height: 1.5;">На вашу пошту '.$email.' відправлено лист з посиланням для підтвердження відновлення паролю. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!</h3>';
-
+    <?php
+             echo '<h3 style="line-height: 1.5;">'.$modalformtext.'</h3>';
     ?>
     </div>
 
@@ -113,7 +105,7 @@ use yii\bootstrap\NavBar;
     <div class="row">
         <?php
 
-        if ($email<>'') {
+        if ($modalformheader<>'') {
                     $this->registerJs(
                         "$('#emailsendauth').modal('show');",
                         yii\web\View::POS_READY

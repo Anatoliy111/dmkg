@@ -25,6 +25,7 @@ class UtAuth extends \yii\db\ActiveRecord
 
     const SCENARIO_REG = 'reg';
     const SCENARIO_EMAIL = 'email';
+//    const SCENARIO_TOKEN= 'token';
 
     public static function tableName()
     {
@@ -42,6 +43,9 @@ class UtAuth extends \yii\db\ActiveRecord
             ['email', 'email'],
             [['fio', 'pass', 'email', 'authtoken','vid'], 'string', 'max' => 64],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['id_abonent' => 'id']],
+//            [['authtoken'], 'compare',  'compareValue' => $this->authtoken, 'operator' => '==', 'message' => 'token not found'],
+//            [['authtoken'], 'exist', 'skipOnError' => true, 'targetClass' => UtAuth::class, 'targetAttribute' => ['authtoken' => 'authtoken'],'message' => 'token not found','on' => self::SCENARIO_TOKEN],
+
 //            [['email'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email вже зареєстрований!!!'],
      //       ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
         ];
@@ -69,6 +73,7 @@ class UtAuth extends \yii\db\ActiveRecord
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_REG] = ['fio','pass','email','authtoken','vid'];
         $scenarios[self::SCENARIO_EMAIL] = ['email','authtoken','vid'];
+//        $scenarios[self::SCENARIO_TOKEN] = [['authtoken'], 'required'];
         return $scenarios;
     }
 
