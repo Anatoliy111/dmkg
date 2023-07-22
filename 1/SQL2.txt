@@ -1,0 +1,172 @@
+ALTER TABLE `ut_utrim`
+DROP FOREIGN KEY `FK_ut_utrim_ut_abonent`;
+
+ALTER TABLE `ut_tarifab`
+DROP FOREIGN KEY `FK_ut_tarifab_ut_abonent`;
+
+DROP TABLE `ut_abonent`;
+
+TRUNCATE TABLE `ut_abonkart`;
+
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+CREATE TABLE `ut_abonent` LIKE `ut_kart`;
+INSERT INTO `ut_abonent` SELECT * FROM `ut_kart`;
+
+ALTER TABLE `ut_abonent`
+DROP `schet`,
+DROP `name_f`,
+DROP `name_i`,
+DROP `name_o`,
+DROP `idcod`,
+DROP `id_ulica`,
+DROP `dom`,
+DROP `korp`,
+DROP `kv`,
+DROP `id_rabota`,
+DROP `id_dom`,
+DROP `privat`,
+DROP `ur_fiz`,
+DROP `val`,
+DROP `id_org`;
+
+DROP TABLE `ut_lgot`;
+DROP TABLE `ut_lich`;
+DROP TABLE `ut_lichskl`;
+DROP TABLE `ut_mat`;
+DROP TABLE `ut_normrab`;
+DROP TABLE `ut_notevid`;
+DROP TABLE `ut_domakt`;
+DROP TABLE `ut_dominfo`;
+DROP TABLE `ut_dommat`;
+DROP TABLE `ut_domnaryad`;
+DROP TABLE `ut_domnaryadmat`;
+DROP TABLE `ut_domrab`;
+DROP TABLE `ut_plgot`;
+DROP TABLE `ut_postach`;
+DROP TABLE `ut_setting`;
+DROP TABLE `ut_sotr`;
+DROP TABLE `ut_vidlgot`;
+
+ALTER TABLE `ut_abonkart`
+ADD `schet` varchar(11) NULL;
+
+INSERT INTO ut_abonkart (id_abon, schet, id_kart)
+SELECT id, schet, id
+FROM ut_kart
+WHERE pass is not null;
+
+ALTER TABLE `ut_opl`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL AFTER `period`;
+
+ALTER TABLE `ut_opl`
+DROP FOREIGN KEY `ut_opl_ibfk_1`,
+ADD FOREIGN KEY (`id_org`) REFERENCES `ut_org` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_opl`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_tarifab`
+DROP FOREIGN KEY `ut_tarifab_ibfk_1`,
+ADD FOREIGN KEY (`id_org`) REFERENCES `ut_org` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_tarifab`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL AFTER `id_org`;
+
+ALTER TABLE `ut_tarifab`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_obor`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL AFTER `period`;
+
+ALTER TABLE `ut_obor`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_narah`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL COMMENT 'абонент' AFTER `period`;
+
+ALTER TABLE `ut_narah`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_pay`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_pokaz`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL COMMENT 'абонент' AFTER `id_org`;
+
+ALTER TABLE `ut_pokaz`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_posl`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL COMMENT 'абонент' AFTER `id_org`;
+
+ALTER TABLE `ut_posl`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_subs`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL COMMENT 'абонент' AFTER `id_org`;
+
+ALTER TABLE `ut_subs`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_utrim`
+CHANGE `id_abonent` `id_kart` int(11) NOT NULL COMMENT 'абонент' AFTER `id_org`;
+
+ALTER TABLE `ut_utrim`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_abonkart`
+ADD FOREIGN KEY (`id_abon`) REFERENCES `ut_abonent` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_abonkart`
+ADD FOREIGN KEY (`id_kart`) REFERENCES `ut_kart` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `ut_opl`
+DROP FOREIGN KEY `ut_opl_ibfk_2`;
+
+ALTER TABLE `ut_tarifab`
+DROP FOREIGN KEY `ut_tarifab_ibfk_2`;
+
+ALTER TABLE `ut_posl`
+DROP FOREIGN KEY `ut_posl_ibfk_1`;
+
+ALTER TABLE `ut_pokaz`
+DROP FOREIGN KEY `ut_pokaz_ibfk_1`;
+
+ALTER TABLE `ut_subs`
+DROP FOREIGN KEY `ut_subs_ibfk_3`;
+
+ALTER TABLE `ut_tarif`
+DROP FOREIGN KEY `ut_tarif_ibfk_1`;
+
+ALTER TABLE `ut_tipposl`
+DROP FOREIGN KEY `ut_tipposl_ibfk_1`;
+
+ALTER TABLE `ut_utrim`
+DROP FOREIGN KEY `ut_utrim_ibfk_1`;
+
+ALTER TABLE `ut_narah`
+DROP FOREIGN KEY `ut_narah_ibfk_1`;
+
+ALTER TABLE `ut_abonent`
+CHANGE `email` `email` varchar(64) COLLATE 'utf8_general_ci' NULL AFTER `del`;
+
+CREATE TABLE `ut_auth` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_abonent` int DEFAULT NULL,
+  `fio` varchar(64) DEFAULT NULL,
+  `pass` varchar(64) DEFAULT NULL,
+  `email` varchar(64) NOT NULL,
+  `authtoken` varchar(64) NOT NULL,
+  `vid` varchar(64) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) COLLATE 'utf8_general_ci';
+
+
+
+ALTER TABLE `ut_auth`
+ADD FOREIGN KEY (`id_abonent`) REFERENCES `ut_abonent` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+
+
+
