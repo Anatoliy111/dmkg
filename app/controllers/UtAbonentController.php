@@ -178,6 +178,8 @@ class UtAbonentController extends Controller
 
     }
 
+
+
     public function actionKabinet()
     {
 //		$session = Yii::$app->session;
@@ -188,6 +190,7 @@ class UtAbonentController extends Controller
         $idkart=null;
 
         $get = Yii::$app->request->get();
+        $get = Yii::$app->request->post();
 
         if (array_key_exists('id', $get)) {
             $id = $get["id"];
@@ -506,8 +509,6 @@ class UtAbonentController extends Controller
 
         $modelemail->scenario = 'email';
         if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
-
-
             $model = new UtAuth();
             $model->scenario = 'email';
             $model->email = $modelemail->email;
@@ -544,6 +545,46 @@ class UtAbonentController extends Controller
         ]);
     }
 
+    public function actionChangePass()
+    {
+
+        $message='';
+        $modelemail = new SearchUtAbonent();
+
+        $modelemail->scenario = 'email';
+        if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
+            $model = new UtAuth();
+            $model->scenario = 'email';
+            $model->email = $modelemail->email;
+            $model->authtoken = md5($model->email.time());
+            $model->vid = 'changepass';
+            if ($model->validate()) {
+                $model->save();
+                $email = $model->email;
+
+                $sent = Yii::$app->mailer
+                    ->compose(
+                        ['html' => 'user-changeemail-html'],
+                        ['model' => $model])
+                    ->setTo($email)
+                    ->setFrom('supportdmkg@ukr.net')
+                    ->setSubject('Зміна пошти на сайті ДМКГ!')
+                    ->send();
+
+                if (!$sent) {
+                    throw new \RuntimeException('Sending error.');
+                }
+                return $this->redirect(['kabinet', 'emailchange' => $model->email]);
+            }
+
+
+        }
+//        else $message='notemail';
+
+
+
+        return $this->redirect(['kabinet']);
+    }
 
 
     /**

@@ -104,6 +104,7 @@ ActiveForm::end();
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Зберегти', ['ut-abonent/logout'], ['class' => 'btn btn-primary']) ?>
 </div>
 <?php
 ActiveForm::end();
@@ -188,7 +189,7 @@ yii\bootstrap\Modal::begin([
                                         'value'=>function ($model, $key){
                                             if (!empty($key->model['email']))
                                             {
-                                                return Html::a("Змінити пошту", ['ut-abonent/logout'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
+                                                return Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
                                             }
                                             else
                                             {
