@@ -70,7 +70,7 @@ use yii\widgets\Pjax;
 
 ]); ?>
 
-<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
+<?=	 $form->field($modelemail, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -100,17 +100,21 @@ ActiveForm::end();
 
 ]); ?>
 
-<?=	 $form->field($model, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
+<?=	 $form->field($modelemail, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Зберегти', ['ut-abonent/logout'], ['class' => 'btn btn-primary']) ?>
+    <?//= Html::a('Зберегти', ['ut-abonent/changeemail'], ['class' => 'btn btn-primary']) ?>
 </div>
+
+
 <?php
 ActiveForm::end();
 ?>
 
 <?php Modal::end(); ?>
+
+
 
 
 <?php
@@ -127,8 +131,34 @@ yii\bootstrap\Modal::begin([
 
 
 
+<?=  $this->render('modalmess', ['modalformheader' => 'Змінити електронну пошту','modalformimage' => 'email.png','modalformtext' => 'На вашу пошту '.$emailchange.' відправлено лист з посиланням для підтвердження зміни пошти. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!']);?>
+
+
+
+
 <div class="row">
+
+
+
 	<?php
+
+
+    if ($emailchange<>'') {
+            if ($emailchange=='error') {
+                $this->registerJs(
+                "$('#emailchange').modal('show');",
+                yii\web\View::POS_READY
+                );
+            }
+            else{
+                $this->registerJs(
+                "$('#modalmess1').modal('show');",
+                yii\web\View::POS_READY
+                );
+
+            }
+
+    }
 
 		$session = Yii::$app->session;
 		if ($session->hasFlash('pass')) {
@@ -209,7 +239,7 @@ yii\bootstrap\Modal::begin([
            if (strlen(trim($model->email)) == 0 ) {
         ?>
                <div class="mess col-xs-12" style="color: #c91017;">
-                   <h4>Увага!!! Заповніть та пройдіть верифікацію електронної пошти!!! В майбутньому буде змінено формат входу в кабінет за допомогою електронної пошти.</h4>
+                   <h4>Увага!!! Заповніть та пройдіть верифікацію електронної пошти!!! В майбутньому буде змінено формат входу в кабінет тільки за допомогою електронної пошти.</h4>
                </div>
 
         <?php

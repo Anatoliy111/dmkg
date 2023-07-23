@@ -14,7 +14,8 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\NavBar;
 
-/** @var yii\web\View $this */
+
+/* @var $this yii\web\View */
 /** @var app\models\SearchUtAbonent $searchModel */
 /** @var app\models\UtKart $modeladres */
 /** @var app\models\UtAbonent $modelemail */
@@ -23,44 +24,14 @@ use yii\bootstrap\NavBar;
   $asset = \app\assets\AppAsset::register($this);
 
 ?>
+
+<?= $this->render('modalmess', ['modalformheader' => $modalformheader,'modalformimage' => $modalformimage,'modalformtext' => $modalformtext]);?>
+
 <?php Pjax::begin(); ?>
 
 <div class="ut-abonent col-xs-12 col-sm-8 col-md-8 col-lg-6 col-xl-6 col-xxl-6 align-self-center">
 
 <!--    col-lg-offset-2-->
-    <?php
-
-
-    Modal::begin([
-
-            'header' => '<h2>'.$modalformheader.'</h2>',
-//			'toggleButton' => ['label' => 'click me'],
-//			'footer' => 'Низ окна',
-        'id' => 'emailsendauth',
-        'size' => 'modal-md',
-        'headerOptions' => [
-            'style' => 'text-align: center;'
-        ],
-
-    ]);
-    ?>
-
-
-
-    <div class="modal-email">
-
-    <img itemprop="image" src="<?= $asset->baseUrl.'/'.$modalformimage ?>" alt="EMAIL">
-
-    <?php
-             echo '<h3 style="line-height: 1.5;">'.$modalformtext.'</h3>';
-    ?>
-    </div>
-
-
-    <?php Modal::end(); ?>
-
-
-
 
 
     <div class="well well-lg">
@@ -100,6 +71,7 @@ use yii\bootstrap\NavBar;
 
        ?>
 
+
     </div>
 
     <div class="row">
@@ -107,7 +79,7 @@ use yii\bootstrap\NavBar;
 
         if ($modalformheader<>'') {
                     $this->registerJs(
-                        "$('#emailsendauth').modal('show');",
+                        "$('#modalmess1').modal('show');",
                         yii\web\View::POS_READY
                     );
 
@@ -179,6 +151,8 @@ use yii\bootstrap\NavBar;
 
 </div>
 <?php Pjax::end(); ?>
+
+
 
 <?php foreach(Yii::$app->session->getAllFlashes() as $type => $messages):
     foreach($messages as $message):

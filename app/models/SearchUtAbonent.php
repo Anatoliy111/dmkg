@@ -22,6 +22,7 @@ class SearchUtAbonent extends UtAbonent
     const SCENARIO_AUTH = 'auth';
     const SCENARIO_REG = 'reg';
     const SCENARIO_EMAIL = 'email';
+    const SCENARIO_CHEMAIL = 'chemail';
 
     public function rules()
     {
@@ -35,6 +36,7 @@ class SearchUtAbonent extends UtAbonent
             [['email'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email не зареєстрований!!!','on' => self::SCENARIO_EMAIL],
             [['email'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email не зареєстрований!!!','on' => self::SCENARIO_AUTH],
             [['email'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email вже зареєстрований!!!','on' => self::SCENARIO_REG],
+            [['email'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email вже зареєстрований!!!','on' => self::SCENARIO_CHEMAIL],
             ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають!!!'],
 
         ];
@@ -51,6 +53,7 @@ class SearchUtAbonent extends UtAbonent
         $scenarios[self::SCENARIO_AUTH] = ['email', 'pass'];
         $scenarios[self::SCENARIO_REG] = ['fio','pass1','pass2','email'];
         $scenarios[self::SCENARIO_EMAIL] = ['email'];
+        $scenarios[self::SCENARIO_CHEMAIL] = ['email'];
         return $scenarios;
     }
 

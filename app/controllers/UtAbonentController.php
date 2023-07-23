@@ -16,10 +16,8 @@ use app\poslug\models\UtPosl;
 use app\poslug\models\UtTarif;
 use app\poslug\models\UtUtrim;
 use Yii;
-use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -62,7 +60,6 @@ class UtAbonentController extends Controller
         }
         $modeladres = new SearchUtKart();
         $modelemail = new SearchUtAbonent();
-        $findmodeladres = null;
         $findmodel = null;
 
 
@@ -190,11 +187,12 @@ class UtAbonentController extends Controller
         $idkart=null;
 
         $get = Yii::$app->request->get();
-        $get = Yii::$app->request->post();
+        //$get = Yii::$app->request->post();
 
         if (array_key_exists('id', $get)) {
             $id = $get["id"];
         }
+        else $id = 0;
 
 
         if (array_key_exists('idkart', $get)) {
@@ -213,7 +211,7 @@ class UtAbonentController extends Controller
 
         $model = $this->findModel($id);
         $session = Yii::$app->session;
-        if ($session['model']==null || $session['model']->id<>$model->id)
+        if ($session['model']==null || $model==null || $session['model']->id<>$model->id)
         {
             $session['model']=null;
             return $this->redirect(['ut-abonent/index']);
@@ -231,6 +229,40 @@ class UtAbonentController extends Controller
             $session->setFlash('pass', 'Пароль змінено');
             return $this->redirect(['kabinet','id' => $id,'idkart' => $idkart]);
         }
+
+        $modelemail = new SearchUtAbonent();
+
+        $modelemail->scenario = 'chemail';
+        $emailchange = '';
+
+        if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
+            $modelauth = new UtAuth();
+            $modelauth->scenario = 'email';
+            $modelauth->id_abonent = $id;
+            $modelauth->email = $modelemail->email;
+            $modelauth->authtoken = md5($model->email.time());
+            $modelauth->vid = 'changeemail';
+            if ($modelauth->validate()) {
+                $modelauth->save();
+
+                $sent = Yii::$app->mailer
+                    ->compose(
+                        ['html' => 'user-changeemail-html'],
+                        ['model' => $modelauth])
+                    ->setTo($modelauth->email)
+                    ->setFrom('supportdmkg@ukr.net')
+                    ->setSubject('Зміна пошти на сайті ДМКГ в кабінеті споживача!')
+                    ->send();
+
+                if (!$sent) {
+                    throw new \RuntimeException('Sending error.');
+                }
+                $emailchange = $modelauth->email;
+            }
+
+
+        }
+        elseif ($modelemail->hasErrors()) $emailchange = 'error';
 
         $model->pass1 = '';
         $model->pass2 = '';
@@ -269,10 +301,6 @@ class UtAbonentController extends Controller
                 ]);
                 $dpobor = $dataProvider1;
                 //-----------------------------------------------------------------------------
-
-                $oboropl = UtObor::find();
-    //  			    $obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-
 
                 $oplab = UtOpl::find()
                     ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
@@ -386,7 +414,6 @@ class UtAbonentController extends Controller
                 $dataProvider6 = new ActiveDataProvider([
                     'query' => $tar,
                 ]);
-                $tt = ArrayHelper::toArray($tar);
                 $dptar = $dataProvider6;
 
                 $sub = UtObor::find();
@@ -424,6 +451,8 @@ class UtAbonentController extends Controller
 
             return $this->render('kabinet', [
                 'abon' => $abon,
+                'modelemail' => $modelemail,
+                'emailchange' => $emailchange,
                 'model' => $model,
                 'abonents' => $abonents,
                 'dpobor' => $dpobor,
@@ -443,6 +472,8 @@ class UtAbonentController extends Controller
 
         return $this->render('kabinet', [
             'model' => $model,
+            'modelemail' => $modelemail,
+            'emailchange' => $emailchange,
             'abonents' => $abonents,
             'lastperiod' => $session['period'],
             'periodkab' => $session['periodkab'],
@@ -451,7 +482,7 @@ class UtAbonentController extends Controller
 
     public function actionConfirmSignup($authtoken)
     {
-        $modelauth = new UtAuth();
+        //$modelauth = new UtAuth();
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
             if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) == null) {
                 $modelabon = new UtAbonent();
@@ -545,45 +576,20 @@ class UtAbonentController extends Controller
         ]);
     }
 
-    public function actionChangePass()
+    public function actionChangeEmail($authtoken)
     {
-
-        $message='';
-        $modelemail = new SearchUtAbonent();
-
-        $modelemail->scenario = 'email';
-        if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
-            $model = new UtAuth();
-            $model->scenario = 'email';
-            $model->email = $modelemail->email;
-            $model->authtoken = md5($model->email.time());
-            $model->vid = 'changepass';
-            if ($model->validate()) {
-                $model->save();
-                $email = $model->email;
-
-                $sent = Yii::$app->mailer
-                    ->compose(
-                        ['html' => 'user-changeemail-html'],
-                        ['model' => $model])
-                    ->setTo($email)
-                    ->setFrom('supportdmkg@ukr.net')
-                    ->setSubject('Зміна пошти на сайті ДМКГ!')
-                    ->send();
-
-                if (!$sent) {
-                    throw new \RuntimeException('Sending error.');
-                }
-                return $this->redirect(['kabinet', 'emailchange' => $model->email]);
+        $modelauth = new UtAuth();
+        if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
+            if (($modelabon = UtAbonent::findOne([$modelauth->id_abonent])) !== null) {
+                    $modelabon->scenario = 'email';
+                    $modelabon->email = trim($modelauth->email);
+                    $modelabon->save();
+                    UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
+                    return $this->redirect(['index', 'changeemail' => $modelabon->fio]);
             }
-
-
         }
-//        else $message='notemail';
 
-
-
-        return $this->redirect(['kabinet']);
+        return $this->redirect(['index', 'errtokenpass' => 'errtokenpass']);
     }
 
 
@@ -702,7 +708,9 @@ class UtAbonentController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+//        throw new NotFoundHttpException('The requested page does not exist.');
+
+        return $model=null;
     }
 
     protected function findModelwithKart($id)

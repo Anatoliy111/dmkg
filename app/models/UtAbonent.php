@@ -30,7 +30,6 @@ UtAbonent extends \yii\db\ActiveRecord
     public $pass2;
 
 
-
     const SCENARIO_PASS = 'password';
     const SCENARIO_REG = 'reg';
     const SCENARIO_CONFREG = 'confreg';
