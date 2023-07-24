@@ -238,7 +238,8 @@ class UtAbonentController extends Controller
         if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
             $modelauth = new UtAuth();
             $modelauth->scenario = 'email';
-            $modelauth->id_abonent = $id;
+            $modelauth->id_abonent = $model->id;
+            $modelauth->fio = $model->fio;
             $modelauth->email = $modelemail->email;
             $modelauth->authtoken = md5($model->email.time());
             $modelauth->vid = 'changeemail';
@@ -483,6 +484,9 @@ class UtAbonentController extends Controller
     public function actionConfirmSignup($authtoken)
     {
         //$modelauth = new UtAuth();
+        $session = Yii::$app->session;
+        $session['modalmess']
+
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
             if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) == null) {
                 $modelabon = new UtAbonent();
@@ -505,7 +509,7 @@ class UtAbonentController extends Controller
 
         }
 
-        return $this->redirect(['index', 'errtokenauth' => 'errtokenauth']);
+        return $this->redirect(['index', 'modalmess' => 'errtoken']);
     }
 
     public function actionConfirmPass($authtoken)
@@ -521,7 +525,7 @@ class UtAbonentController extends Controller
                     $modelabon->date_pass = date('Y-m-d');
                     $modelabon->save();
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    return $this->redirect(['index', 'updpass' => $modelabon->fio]);
+                    return $this->redirect(['index', 'modalmess' => $modelauth]);
                 }
                 return $this->render('updatepass', ['model' => $modelabon]);
 
@@ -540,29 +544,33 @@ class UtAbonentController extends Controller
 
         $modelemail->scenario = 'email';
         if ($modelemail->load(Yii::$app->request->post()) && $modelemail->validate()) {
-            $model = new UtAuth();
-            $model->scenario = 'email';
-            $model->email = $modelemail->email;
-            $model->authtoken = md5($model->email.time());
-            $model->vid = 'fogpass';
-                    if ($model->validate()) {
-                        $model->save();
-                        $email = $model->email;
+            if (($modelabon = UtAbonent::findOne(['email' => $modelemail->email])) !== null) {
+                $model = new UtAuth();
+                $model->scenario = 'email';
+                $model->id_abonent = $modelabon->id;
+                $model->fio = $modelabon->fio;
+                $model->email = $modelabon->email;
+                $model->authtoken = md5($model->email . time());
+                $model->vid = 'fogpass';
+                if ($model->validate()) {
+                    $model->save();
+                    $email = $model->email;
 
-                        $sent = Yii::$app->mailer
-                            ->compose(
-                                ['html' => 'user-fogpass-html'],
-                                ['model' => $model])
-                            ->setTo($email)
-                            ->setFrom('supportdmkg@ukr.net')
-                            ->setSubject('Відновлення пароля на сайті ДМКГ!')
-                            ->send();
+                    $sent = Yii::$app->mailer
+                        ->compose(
+                            ['html' => 'user-fogpass-html'],
+                            ['model' => $model])
+                        ->setTo($email)
+                        ->setFrom('supportdmkg@ukr.net')
+                        ->setSubject('Відновлення пароля на сайті ДМКГ!')
+                        ->send();
 
-                        if (!$sent) {
-                            throw new \RuntimeException('Sending error.');
-                        }
-                        return $this->redirect(['index', 'emailfog' => $model->email]);
+                    if (!$sent) {
+                        throw new \RuntimeException('Sending error.');
                     }
+                    return $this->redirect(['index', 'modalmess' => $model]);
+                }
+            }
 
 
         }
@@ -652,7 +660,7 @@ class UtAbonentController extends Controller
                                 throw new \RuntimeException('Sending error.');
                             }
 
-                            return $this->redirect(['index', 'emailauth' => $model->email]);
+                            return $this->redirect(['index', 'modalmess' => $model]);
 
                         }
         }

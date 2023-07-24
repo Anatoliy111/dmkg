@@ -15,6 +15,9 @@ use yii\helpers\Html;
 <?php
 
 
+
+
+
 Modal::begin([
 
     'header' => '<h2>'.$modalformheader.'</h2>',
