@@ -23,9 +23,17 @@ use yii\bootstrap\NavBar;
 
   $asset = \app\assets\AppAsset::register($this);
 
+if (isset($_SESSION['modalmess'])) {
+    $this->registerJs(
+        "$('#modalmess1').modal('show');",
+        yii\web\View::POS_READY
+    );
+
+}
+
 ?>
 
-<?= $this->render('modalmess', ['modalformheader' => $modalformheader,'modalformimage' => $modalformimage,'modalformtext' => $modalformtext]);?>
+<?= $this->render('modalmess');?>
 
 <?php Pjax::begin(); ?>
 
@@ -37,6 +45,8 @@ use yii\bootstrap\NavBar;
     <div class="well well-lg">
 
         <?php
+
+
 
 
 //        $this->registerJs(
@@ -76,14 +86,6 @@ use yii\bootstrap\NavBar;
 
     <div class="row">
         <?php
-
-        if ($modalformheader<>'') {
-                    $this->registerJs(
-                        "$('#modalmess1').modal('show');",
-                        yii\web\View::POS_READY
-                    );
-
-        }
 
             if ($message=='notadres') {
 

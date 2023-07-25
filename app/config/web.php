@@ -84,6 +84,14 @@ $config = [
                 'port' => '465',
                 'encryption' => 'ssl',
             ],
+//            'transport' => [
+//                'class' => 'Swift_SmtpTransport',
+//                'host' => 'smtp.gmail.com',
+//                'username' => 'kpdolinkomungosp@gmail.com',
+//                'password' => 'Dmkg~12345',
+//                'port' => '465',
+//                'encryption' => 'ssl',
+//            ],
         ],
         'urlManager' => [
 //			'enablePrettyUrl' => true,

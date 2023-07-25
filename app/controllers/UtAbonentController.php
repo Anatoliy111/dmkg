@@ -77,57 +77,14 @@ class UtAbonentController extends Controller
         $modalformtext='';
         $modalformimage='';
 
-
-        if (array_key_exists('errtokenpass', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Помилка';
-            $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру відновлення паролю заново.';
-            $modalformimage='nothyperlink.png';
-        }
-
-        if (array_key_exists('errtokenauth', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Помилка';
-            $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру реєстрації заново.';
-            $modalformimage='nothyperlink.png';
-        }
-
-        if (array_key_exists('erremail', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Помилка';
-            $modalformtext='Вибачте, але абонент з такою ел.поштою '.Yii::$app->request->get()['erremail'].' вже зареєстровано!!!';
-            $modalformimage='nothyperlink.png';
-        }
-
-        if (array_key_exists('emailauth', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Реєстрація';
-            $modalformtext='На вашу пошту '.Yii::$app->request->get()['emailauth'].' відправлено лист з посиланням для підтвердження реєстрації. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!';
-            $modalformimage='email.png';
-        }
-
-        if (array_key_exists('updpass', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Відновлення паролю';
-            $modalformtext='Вітаємо '.Yii::$app->request->get()['updpass'].', ваш пароль змінено!';
-            $modalformimage='password.png';
-
-        }
-
-        if (array_key_exists('addabon', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Успішна реєстрація';
-            $modalformtext='Вітаємо '.Yii::$app->request->get()['addabon'].', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну та паролю!';
-            $modalformimage='registration.png';
-
-        }
-
-        if (array_key_exists('emailfog', Yii::$app->request->queryParams))  {
-            $tab='email';
-            $modalformheader='Відновлення паролю';
-            $modalformtext='На вашу пошту '.Yii::$app->request->get()['emailfog'].' відправлено лист з посиланням для підтвердження зміни паролю. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!';
-            $modalformimage='email.png';
-
+        if (isset($_SESSION['modalmess'])) {
+            if (array_key_exists('errtokenpass',$_SESSION['modalmess'])) $tab='email';
+            if (array_key_exists('errtokenauth',$_SESSION['modalmess'])) $tab='email';
+            if (array_key_exists('erremail',$_SESSION['modalmess'])) $tab='email';
+            if (array_key_exists('emailauth',$_SESSION['modalmess'])) $tab='email';
+            if (array_key_exists('updpass',$_SESSION['modalmess'])) $tab='email';
+            if (array_key_exists('addabon',$_SESSION['modalmess'])) $tab='email';
+            if (array_key_exists('emailfog',$_SESSION['modalmess'])) $tab='email';
         }
 
         if (array_key_exists('SearchUtKart', Yii::$app->request->queryParams))  {
@@ -168,9 +125,6 @@ class UtAbonentController extends Controller
                 'dataProviderEmail' => $dataProviderEmail,
                 'tab' => $tab,
                 'message' => $message,
-                'modalformheader' => $modalformheader,
-                'modalformtext' => $modalformtext,
-                'modalformimage' => $modalformimage,
             ]);
 
     }
@@ -242,7 +196,7 @@ class UtAbonentController extends Controller
             $modelauth->fio = $model->fio;
             $modelauth->email = $modelemail->email;
             $modelauth->authtoken = md5($model->email.time());
-            $modelauth->vid = 'changeemail';
+            $modelauth->vid = 'emailchange';
             if ($modelauth->validate()) {
                 $modelauth->save();
 
@@ -258,7 +212,7 @@ class UtAbonentController extends Controller
                 if (!$sent) {
                     throw new \RuntimeException('Sending error.');
                 }
-                $emailchange = $modelauth->email;
+                $_SESSION['modalmess']['emailchange']=$modelauth;
             }
 
 
@@ -483,10 +437,6 @@ class UtAbonentController extends Controller
 
     public function actionConfirmSignup($authtoken)
     {
-        //$modelauth = new UtAuth();
-        $session = Yii::$app->session;
-        $session['modalmess']
-
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
             if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) == null) {
                 $modelabon = new UtAbonent();
@@ -499,22 +449,18 @@ class UtAbonentController extends Controller
                 $modelabon->date_pass = date('Y-m-d');
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    return $this->redirect(['index', 'addabon' => $modelabon->fio]);
-
+                    $_SESSION['modalmess']['addabon']=$modelabon;
                 }
-
-
             }
-            else return $this->redirect(['index', 'erremail' => $modelauth->email]);
+            else $_SESSION['modalmess']['erremail']=$modelauth;
+        } else  $_SESSION['modalmess']['errtokenauth']='';
 
-        }
-
-        return $this->redirect(['index', 'modalmess' => 'errtoken']);
+        return $this->redirect(['index']);
     }
 
     public function actionConfirmPass($authtoken)
     {
-        $modelauth = new UtAuth();
+         $modelauth = new UtAuth();
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
             if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) !== null) {
                 $modelabon->scenario = 'password';
@@ -525,21 +471,17 @@ class UtAbonentController extends Controller
                     $modelabon->date_pass = date('Y-m-d');
                     $modelabon->save();
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    return $this->redirect(['index', 'modalmess' => $modelauth]);
-                }
-                return $this->render('updatepass', ['model' => $modelabon]);
-
-
+                    $_SESSION['modalmess']['updpass']=$modelauth;
+                } else return $this->render('updatepass', ['model' => $modelabon]);
             }
-        }
+        } else $_SESSION['modalmess']['errtokenpass']='';
 
-        return $this->redirect(['index', 'errtokenpass' => 'errtokenpass']);
+        return $this->redirect(['index']);
     }
 
     public function actionFogotpass()
     {
 
-        $message='';
         $modelemail = new SearchUtAbonent();
 
         $modelemail->scenario = 'email';
@@ -568,10 +510,12 @@ class UtAbonentController extends Controller
                     if (!$sent) {
                         throw new \RuntimeException('Sending error.');
                     }
-                    return $this->redirect(['index', 'modalmess' => $model]);
+                    $_SESSION['modalmess']['emailfog']=$model;
+
+                    return $this->redirect(['index']);
                 }
             }
-
+//            else $message='notemail';
 
         }
 //        else $message='notemail';
@@ -580,7 +524,6 @@ class UtAbonentController extends Controller
 
         return $this->render('fogpass', [
             'model' => $modelemail,
-            'message' => $message,
         ]);
     }
 
@@ -593,11 +536,11 @@ class UtAbonentController extends Controller
                     $modelabon->email = trim($modelauth->email);
                     $modelabon->save();
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    return $this->redirect(['index', 'changeemail' => $modelabon->fio]);
+                    $_SESSION['modalmess']['changeemailsuccess']=$modelabon;
             }
-        }
+        } else $_SESSION['modalmess']['errtokenchemail']='';
 
-        return $this->redirect(['index', 'errtokenpass' => 'errtokenpass']);
+        return $this->redirect(['index']);
     }
 
 
@@ -659,10 +602,13 @@ class UtAbonentController extends Controller
                             if (!$sent) {
                                 throw new \RuntimeException('Sending error.');
                             }
-
-                            return $this->redirect(['index', 'modalmess' => $model]);
+                            $_SESSION['modalmess']['emailauth']=$model;
+                            return $this->redirect(['index']);
 
                         }
+
+
+
         }
         return $this->render('create', [
             'model' => $modelemail,

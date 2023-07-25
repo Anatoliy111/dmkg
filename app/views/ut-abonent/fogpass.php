@@ -38,28 +38,3 @@ $this->title = 'Відновлення паролю';
 
         </div>
     </div>
-
-    <div class="row">
-        <?php
-
-        if ($message=='notemail') {
-
-            echo Growl::widget([
-                'type' => Growl::TYPE_DANGER,
-                'title' => 'Помилка!',
-                'icon' => 'glyphicon glyphicon-remove-sign',
-                'body' => 'Електронна пошта '.$model->email.' не зареєстрована в системі. Спробуйте знову!!!',
-                'showSeparator' => true,
-                'delay' => 0,
-                'pluginOptions' => [
-                    //						'showProgressbar' => true,
-                    'placement' => [
-                        'from' => 'top',
-                        'align' => 'right',
-                    ]
-                ]
-            ]);
-        }
-
-        ?>
-    </div>

@@ -14,12 +14,26 @@ use yii\helpers\Url;
 use yii\widgets\Pjax;
 
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
+
+if ($emailchange=='error') {
+    $this->registerJs(
+        "$('#emailchange').modal('show');",
+        yii\web\View::POS_READY
+    );
+}
+
+if (isset($_SESSION['modalmess']))  {
+    $this->registerJs(
+        "$('#modalmess1').modal('show');",
+        yii\web\View::POS_READY
+    );
+}
 ?>
 
 
 
 
-	<?php Pjax::begin(); ?>
+
 
 <?php 	Modal::begin([
 			'header' => '<h2>Змінити пароль</h2>',
@@ -131,7 +145,7 @@ yii\bootstrap\Modal::begin([
 
 
 
-<?=  $this->render('modalmess', ['modalformheader' => 'Змінити електронну пошту','modalformimage' => 'email.png','modalformtext' => 'На вашу пошту '.$emailchange.' відправлено лист з посиланням для підтвердження зміни пошти. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!']);?>
+<?= $this->render('modalmess');?>
 
 
 
@@ -143,22 +157,7 @@ yii\bootstrap\Modal::begin([
 	<?php
 
 
-    if ($emailchange<>'') {
-            if ($emailchange=='error') {
-                $this->registerJs(
-                "$('#emailchange').modal('show');",
-                yii\web\View::POS_READY
-                );
-            }
-            else{
-                $this->registerJs(
-                "$('#modalmess1').modal('show');",
-                yii\web\View::POS_READY
-                );
 
-            }
-
-    }
 
 		$session = Yii::$app->session;
 		if ($session->hasFlash('pass')) {
@@ -182,8 +181,12 @@ yii\bootstrap\Modal::begin([
 	?>
 </div>
 
+<?php Pjax::begin(['id' => 'kart1']); ?>
 
-<div class="ut-kart">
+<div class="ut-kart" id="kart1">
+
+
+
 	<div class="mywell well-large container">
 		<div class="col-sm-1">
 
@@ -271,16 +274,16 @@ yii\bootstrap\Modal::begin([
 
             echo NavX::widget([
                 'options'=>['class'=>'nav nav-pills'],
-                'items' => $itemsnav
+                'items' => $itemsnav,
             ]);
 
 
 
             NavBar::begin();
             echo NavX::widget([
-                'options' => ['class' => 'navbar-nav'],
+                'options' => ['class' => 'navbar-nav','data-pjax' => 1],
                 'activateParents' => true,
-                'encodeLabels' => false
+                'encodeLabels' => false,
             ]);
             NavBar::end();
 
@@ -400,8 +403,13 @@ yii\bootstrap\Modal::begin([
 
 
 
-        </div>
-        <div class="mywell well-large2 container">
+    </div>
+
+<!--        --><?php // Pjax::end(); ?>
+<!---->
+<!--        --><?php //Pjax::begin(); ?>
+
+    <div class="mywell well-large2 container">
 
             <!--		</div>-->
             <div class="col-xs-12">
@@ -437,10 +445,9 @@ yii\bootstrap\Modal::begin([
 
 
 
-        </div>
+    </div>
 
 
         <?php
         }
-
-        Pjax::end(); ?>
+        ?>

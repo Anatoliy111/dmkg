@@ -14,9 +14,76 @@ use yii\helpers\Html;
 <!--    col-lg-offset-2-->
 <?php
 
+$session = Yii::$app->session;
+
+//if (array_key_exists('modalmess', $session)) {
+if (isset($_SESSION['modalmess']))  {
+
+    if (array_key_exists('errtokenpass', $session['modalmess'])) {
+        $modalformheader='Помилка';
+        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру відновлення паролю заново.';
+        $modalformimage='nothyperlink.png';
+    }
+
+    if (array_key_exists('errtokenauth', $session['modalmess'])) {
+        $modalformheader='Помилка';
+        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру реєстрації заново.';
+        $modalformimage='nothyperlink.png';
+    }
+
+    if (array_key_exists('errtokenchemail', $session['modalmess'])) {
+        $modalformheader='Помилка';
+        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру зміни ел.пошти заново.';
+        $modalformimage='nothyperlink.png';
+    }
+
+    if (array_key_exists('erremail', $session['modalmess'])) {
+        $modalformheader='Помилка';
+        $modalformtext='Вибачте, але абонент з такою ел.поштою '.$session['modalmess']['erremail']->email.' вже зареєстровано!!!';
+        $modalformimage='nothyperlink.png';
+    }
+
+    if (array_key_exists('updpass', $session['modalmess'])) {
+        $modalformheader='Відновлення паролю';
+        $modalformtext='Вітаємо '.$session['modalmess']['updpass']->fio.', ваш пароль змінено!';
+        $modalformimage='password.png';
+
+    }
+
+    if (array_key_exists('changeemailsuccess', $session['modalmess'])) {
+        $modalformheader='Зміна пошти';
+        $modalformtext='Вітаємо '.$session['modalmess']['changeemailsuccess']->fio.', ваша пошта змінена!';
+        $modalformimage='email.png';
+
+    }
+
+    if (array_key_exists('addabon', $session['modalmess'])) {
+        $modalformheader='Успішна реєстрація';
+        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну та паролю!';
+        $modalformimage='registration.png';
+
+    }
+
+    if (array_key_exists('emailfog', $session['modalmess'])) {
+        $modalformheader='Відновлення паролю';
+        $modalformtext='На вашу пошту '.$session['modalmess']['emailfog']->email.' відправлено лист з посиланням для підтвердження зміни паролю. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!';
+        $modalformimage='email.png';
+    }
+
+    if (array_key_exists('emailchange', $session['modalmess'])) {
+        $modalformheader='Зміна пошти';
+        $modalformtext='На вашу пошту '.$session['modalmess']['emailchange']->email.' відправлено лист з посиланням для підтвердження зміни пошти. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!';
+        $modalformimage='email.png';
+    }
+
+    if (array_key_exists('emailauth', $session['modalmess'])) {
+        $modalformheader='Реєстрація';
+        $modalformtext='На вашу пошту '.$session['modalmess']['emailauth']->email.' відправлено лист з посиланням для підтвердження реєстрації. Для підтвердження перейдіть (натисніть) на це посилання з листа!!!';
+        $modalformimage='email.png';
+    }
 
 
-
+    $session->remove('modalmess');
 
 Modal::begin([
 
@@ -42,7 +109,14 @@ Modal::begin([
 </div>
 
 
-<?php Modal::end(); ?>
+<?php Modal::end();
+}
+?>
+
+
+
+
+
 
 
 
