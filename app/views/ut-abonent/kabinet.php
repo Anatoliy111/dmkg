@@ -250,14 +250,33 @@ yii\bootstrap\Modal::begin([
         ?>
 
 
+        <div class="col-sm-3 col-md-2 col-lg-2">
+
+            <?= Html::a("Додати рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-5','class'=>'btn btn-success'])?>
+
+        </div>
+
+        <div class="col-sm-3 col-md-2 col-lg-2">
+
+            <?= Html::a("Видалити рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-5','class'=>'btn btn-danger'])?>
+
+        </div>
+
 		<div class="col-xs-12">
 			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
 		</div>
+
+
 
         <?php
 
         if ($abonents<>null) {
 
+        ?>
+
+
+
+        <?php
              foreach ($abonents as $abonkart) {
                  if ($abonkart->id_kart==$abon->id) {
                      $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'id' => $model->id,'idkart' => $abonkart->id_kart]];
@@ -271,6 +290,12 @@ yii\bootstrap\Modal::begin([
     //            ['label' => 'Action', 'active'=>true, 'url' => '#'],
     //            ['label' => 'My Link', 'url' => '#'],
     //        ];
+
+            ?>
+
+            <div class="menu-rahunok col-xs-12">
+
+            <?php
 
             echo NavX::widget([
                 'options'=>['class'=>'nav nav-pills'],
@@ -286,6 +311,12 @@ yii\bootstrap\Modal::begin([
                 'encodeLabels' => false,
             ]);
             NavBar::end();
+
+            ?>
+
+            </div>
+
+            <?php
 
             $items = [
     //		[

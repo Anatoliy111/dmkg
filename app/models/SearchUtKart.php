@@ -21,6 +21,7 @@ class SearchUtKart extends UtKart
 	public $enterpass;
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';
+    const SCENARIO_RAH = 'rahunok';
 
 
     public function rules()
@@ -30,6 +31,7 @@ class SearchUtKart extends UtKart
             [['id', 'id_ulica', 'ur_fiz', 'id_oldkart'], 'integer'],
             [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv'], 'safe'],
 			[['enterpass'], 'string', 'min' => 5],
+            [['schet'], 'string', 'min' => 7],
 //			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];
     }
@@ -49,7 +51,8 @@ class SearchUtKart extends UtKart
 		$scenarios = parent::scenarios();
 		$scenarios[self::SCENARIO_ADDR] = ['dom', 'id_ulica', 'kv', 'korp'];
 		$scenarios[self::SCENARIO_PASS] = ['dom', 'id_ulica', 'kv', 'korp', 'enterpass'];
-		return $scenarios;
+        $scenarios[self::SCENARIO_RAH] = ['schet', 'name_f'];
+        return $scenarios;
     }
 
     /**
