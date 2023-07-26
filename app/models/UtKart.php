@@ -29,6 +29,7 @@ use yii\data\ActiveDataProvider;
  * @property string $telef телефон
  * @property string $email
  * @property string $status
+ * @property string $schet
  *
  * @property UtUlica $ulica
  */
@@ -48,6 +49,7 @@ class UtKart extends \yii\db\ActiveRecord
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';
     const SCENARIO_EMAIL = 'email';
+    const SCENARIO_RAH = 'rahunok';
 
     public static function tableName()
     {
@@ -110,6 +112,7 @@ class UtKart extends \yii\db\ActiveRecord
 			'MonthYear' => 'Період',
 			'pass1' => Yii::t('easyii', 'Pass1'),
 			'pass2' => Yii::t('easyii', 'Pass2'),
+            'schet' => Yii::t('easyii', 'Schet'),
         ];
     }
 
@@ -122,6 +125,7 @@ class UtKart extends \yii\db\ActiveRecord
 		$scenarios[self::SCENARIO_ADDR] = [['id_ulica', 'dom', 'enterpass'], 'required'];
 		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
         $scenarios[self::SCENARIO_EMAIL] = [['email'], 'required'];
+        $scenarios[self::SCENARIO_RAH] = [['schet'], 'required'];
 		return $scenarios;
 	}
 

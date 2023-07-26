@@ -59,6 +59,7 @@ class UtAbonentController extends Controller
             return $this->redirect(['kabinet', 'id' => $session['model']->id]);
         }
         $modeladres = new SearchUtKart();
+
         $modelemail = new SearchUtAbonent();
         $findmodel = null;
 
@@ -183,6 +184,20 @@ class UtAbonentController extends Controller
             $session->setFlash('pass', 'Пароль змінено');
             return $this->redirect(['kabinet','id' => $id,'idkart' => $idkart]);
         }
+
+        $modelrah= new SearchUtKart();
+        $modelrah->scenario = 'rahunok';
+        if ($modelrah->load(Yii::$app->request->post()) && $modelrah->validate()) {
+            $modelkart = new UtAbonkart();
+            $modelkart->id_abon = $id;
+            $modelkart->id_kart = $modelrah->id;
+            $modelkart->schet = $modelrah->schet;
+            $modelkart->save();
+        }
+
+
+//        $dataProviderAdres = $modelrah->searchrah(Yii::$app->request->queryParams);
+
 
         $modelemail = new SearchUtAbonent();
 
@@ -405,6 +420,7 @@ class UtAbonentController extends Controller
     //		]);
 
             return $this->render('kabinet', [
+                'modelrah' => $modelrah,
                 'abon' => $abon,
                 'modelemail' => $modelemail,
                 'emailchange' => $emailchange,
@@ -426,6 +442,7 @@ class UtAbonentController extends Controller
         }
 
         return $this->render('kabinet', [
+            'modelrah' => $modelrah,
             'model' => $model,
             'modelemail' => $modelemail,
             'emailchange' => $emailchange,

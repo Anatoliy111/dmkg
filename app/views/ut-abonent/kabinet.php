@@ -1,5 +1,6 @@
 <?php
 
+use app\models\UtKart;
 use app\poslug\components\PeriodKabWidget;
 use kartik\form\ActiveForm;
 use kartik\grid\GridView;
@@ -8,10 +9,18 @@ use kartik\helpers\Html;
 use kartik\detail\DetailView;
 use kartik\nav\NavX;
 use kartik\tabs\TabsX;
+use yii\base\BaseObject;
 use yii\bootstrap\Modal;
 use yii\bootstrap\NavBar;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+
+/** @var app\models\UtKart $abon */
+/** @var app\models\SearchUtAbonent $modelemail */
+/** @var app\models\SearchUtKart $modelrah */
+
+
+
 
         $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
 
@@ -30,7 +39,7 @@ if (isset($_SESSION['modalmess']))  {
 }
 ?>
 
-
+<?php Pjax::begin([]); ?>
 
 
 
@@ -54,7 +63,8 @@ if (isset($_SESSION['modalmess']))  {
 
 <?php $form = ActiveForm::begin([
 	'id' => 'pass-form1',
-
+    'method' => 'post',
+    'options' => ['data-pjax' => true]
 ]); ?>
 
 <?=	 $form->field($model, 'pass1')->passwordInput(['maxlength' => true])?>
@@ -67,6 +77,42 @@ if (isset($_SESSION['modalmess']))  {
 ?>
 
 <?php Modal::end(); ?>
+
+
+<?php 	Modal::begin([
+    'header' => '<h2>Додати рахунок</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+    'id' => 'modalrah',
+    'size' => 'modal-md',
+    'headerOptions' => [
+        'style' => 'text-align: center;'
+    ],
+
+]);
+?>
+
+<h1><?= Html::encode($this->title) ?></h1>
+
+
+<?php $form = ActiveForm::begin([
+    'id' => 'rah-form1',
+    'method' => 'post',
+    'options' => ['data-pjax' => true]
+]); ?>
+
+<?=	 $form->field($modelrah, 'schet')->textInput()?>
+<?=    $form->field($modelrah, 'name_f')->textInput()?>
+<div class="buttons" style="padding-bottom: 20px">
+    <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+</div>
+<?php
+ActiveForm::end();
+?>
+
+<?php Modal::end(); ?>
+
 
 <?php 	Modal::begin([
     'header' => '<h2>Зареєструвати електронну пошту</h2>',
@@ -181,7 +227,7 @@ yii\bootstrap\Modal::begin([
 	?>
 </div>
 
-<?php Pjax::begin(['id' => 'kart1']); ?>
+
 
 <div class="ut-kart" id="kart1">
 
@@ -252,15 +298,23 @@ yii\bootstrap\Modal::begin([
 
         <div class="col-sm-3 col-md-2 col-lg-2">
 
-            <?= Html::a("Додати рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-5','class'=>'btn btn-success'])?>
+            <?= Html::a("Додати рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#modalrah','class'=>'btn btn-success'])?>
 
         </div>
+
+        <?php
+
+        if ($abonents<>null) {
+
+        ?>
 
         <div class="col-sm-3 col-md-2 col-lg-2">
 
             <?= Html::a("Видалити рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-5','class'=>'btn btn-danger'])?>
 
         </div>
+
+        <?php } ?>
 
 		<div class="col-xs-12">
 			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
@@ -481,4 +535,5 @@ yii\bootstrap\Modal::begin([
 
         <?php
         }
+        Pjax::end();
         ?>

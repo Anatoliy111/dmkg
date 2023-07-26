@@ -3,10 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Model;
 use yii\bootstrap\Alert;
 use yii\data\ActiveDataProvider;
-use app\models\UtKart;
 use yii\web\IdentityInterface;
 
 
@@ -22,6 +22,7 @@ class SearchUtKart extends UtKart
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';
     const SCENARIO_RAH = 'rahunok';
+//    const SCENARIO_NF = 'name_f';
 
 
     public function rules()
@@ -29,9 +30,12 @@ class SearchUtKart extends UtKart
         return [
 			[['dom', 'id_ulica','enterpass'], 'required'],
             [['id', 'id_ulica', 'ur_fiz', 'id_oldkart'], 'integer'],
-            [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv'], 'safe'],
+            [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv','schet'], 'safe'],
 			[['enterpass'], 'string', 'min' => 5],
             [['schet'], 'string', 'min' => 7],
+            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
+            [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
+
 //			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];
     }
@@ -51,7 +55,7 @@ class SearchUtKart extends UtKart
 		$scenarios = parent::scenarios();
 		$scenarios[self::SCENARIO_ADDR] = ['dom', 'id_ulica', 'kv', 'korp'];
 		$scenarios[self::SCENARIO_PASS] = ['dom', 'id_ulica', 'kv', 'korp', 'enterpass'];
-        $scenarios[self::SCENARIO_RAH] = ['schet', 'name_f'];
+        $scenarios[self::SCENARIO_RAH] = [['schet', 'name_f'], 'required'];
         return $scenarios;
     }
 
@@ -152,6 +156,33 @@ class SearchUtKart extends UtKart
 
         return $dataProvider;
     }
+
+    public function searchrah($params)
+    {
+        $query = UtKart::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+
+        $query->andFilterWhere(['like', 'name_f', $this->name_f])
+            ->andFilterWhere(['like', 'schet', $this->schet]);
+
+        return $dataProvider;
+    }
+
 
 	public function searchPass($params, $dataProvider)
 	{

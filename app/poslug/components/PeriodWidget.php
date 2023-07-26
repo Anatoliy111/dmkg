@@ -104,7 +104,7 @@ class PeriodWidget extends Widget
 //			'action' => ['index'],
 			'method' => 'post',
 			'options' => [
-//				'data-pjax' => 1,
+				'data-pjax' => 1,
 //				'class' => 'form-inline',
 			]
 
@@ -133,6 +133,7 @@ class PeriodWidget extends Widget
 
 
 ?>
+
 <script type="text/javascript">
 	function SavePeriod(per)
 	{
@@ -141,7 +142,7 @@ class PeriodWidget extends Widget
 			type: 'post',
 			data: {	period: per	},
 			success: function(s) {
-//				alert(s);
+				// alert(s);
 			}
 
 		});
