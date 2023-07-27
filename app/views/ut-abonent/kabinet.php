@@ -17,7 +17,7 @@ use yii\widgets\Pjax;
 
 /** @var app\models\UtKart $abon */
 /** @var app\models\SearchUtAbonent $modelemail */
-/** @var app\models\SearchUtKart $modelrah */
+/** @var app\models\SearchUtKart $modelkart */
 
 
 
@@ -41,6 +41,25 @@ if (isset($_SESSION['modalmess']))  {
 
 <?php Pjax::begin([]); ?>
 
+
+
+<?php 	Modal::begin([
+    'header' => '<h2>Додати рахунок</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+    'id' => 'modalrah',
+    'size' => 'modal-md',
+    'headerOptions' => [
+        'style' => 'text-align: center;'
+    ],
+
+]);
+?>
+
+<div id='modal-content'>Завантаження...</div>
+
+<?php Modal::end(); ?>
 
 
 
@@ -74,43 +93,6 @@ if (isset($_SESSION['modalmess']))  {
 </div>
 <?php
 	ActiveForm::end();
-?>
-
-<?php Modal::end(); ?>
-
-
-<?php 	Modal::begin([
-    'header' => '<h2>Додати рахунок</h2>',
-
-//			'toggleButton' => ['label' => 'click me'],
-//			'footer' => 'Низ окна',
-    'id' => 'modalrah',
-    'size' => 'modal-md',
-    'headerOptions' => [
-        'style' => 'text-align: center;'
-    ],
-
-]);
-?>
-
-<h1><?= Html::encode($this->title) ?></h1>
-
-
-<?php $form = ActiveForm::begin([
-    'id' => 'rah-form1',
-    'method' => 'post',
-  //  'enableAjaxValidation' => true,
- //   'enableClientValidation' => false,
-//    'options' => ['data-pjax' => true]
-]); ?>
-
-<?=  $form->field($modelrah, 'schet')->textInput(['maxlength' => true])  ?>
-<?=    $form->field($modelrah, 'name_f')->textInput(['maxlength' => true])  ?>
-<div class="buttons" style="padding-bottom: 20px">
-    <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
-</div>
-<?php
-ActiveForm::end();
 ?>
 
 <?php Modal::end(); ?>
@@ -176,24 +158,9 @@ ActiveForm::end();
 
 <?php Modal::end(); ?>
 
-
-
-
-<?php
-yii\bootstrap\Modal::begin([
-	'header' => '<h2>Формування платежу</h2>',
-	'id' => 'modalpay',
-	'size' => 'modal-md',
-]);
-?>
-
-<div id='modal-content'>Загружаю...</div>
-
-<?php yii\bootstrap\Modal::end(); ?>
-
-
-
 <?= $this->render('modalmess');?>
+
+<?//= $this->render('addrah',['modelkart' => $modelkart]);?>
 
 
 
@@ -300,7 +267,9 @@ yii\bootstrap\Modal::begin([
 
         <div class="col-sm-3 col-md-2 col-lg-2">
 
-            <?= Html::a("Додати рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#modalrah','class'=>'btn btn-success'])?>
+<!--            --><?//= Html::a("Додати рахунок", ['addrahunok'], ['data-toggle' =>'modal', 'data-target' =>'#modalrah','class'=>'btn btn-success'])?>
+
+            <?php echo Html::button("Додати рахунок", ['class' => 'btn btn-success','onclick' => "AddRah()",'target' => "_blank",]); ?>
 
         </div>
 
@@ -539,3 +508,19 @@ yii\bootstrap\Modal::begin([
         }
         Pjax::end();
         ?>
+
+<script type="text/javascript">
+        function AddRah() {
+            $.ajax({
+                url: "/ut-abonent/addrahunok",
+                type: 'post',
+                data: {},
+                success: function (s) {
+                   // alert(s);
+                    $('#modalrah').modal('show').modal({backdrop: false});
+                    $('#modal-content').html(s);
+                }
+
+            });
+        }
+</script>

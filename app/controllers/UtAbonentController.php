@@ -185,12 +185,12 @@ class UtAbonentController extends Controller
             return $this->redirect(['kabinet','id' => $id,'idkart' => $idkart]);
         }
 
-        $modelrah= new SearchUtKart();
-        $modelrah->scenario = 'rahunok';
-        if ($modelrah->load(Yii::$app->request->post())) {
-            $modelrah->validate();
-//            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
-        }
+        $modelkart= new SearchUtKart();
+        $modelkart->scenario = 'rahunok';
+//        if ($modelrah->load(Yii::$app->request->post())) {
+//            $modelrah->validate();
+////            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
+//        }
 //        $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
 //        if ($modelrah->load(Yii::$app->request->post()) && $modelrah->validate()) {
 //            $modelkart = new UtAbonkart();
@@ -425,7 +425,7 @@ class UtAbonentController extends Controller
     //		]);
 
             return $this->render('kabinet', [
-                'modelrah' => $modelrah,
+                'modelkart' => $modelkart,
                 'abon' => $abon,
                 'modelemail' => $modelemail,
                 'emailchange' => $emailchange,
@@ -455,6 +455,38 @@ class UtAbonentController extends Controller
             'lastperiod' => $session['period'],
             'periodkab' => $session['periodkab'],
         ]);
+    }
+
+    public function actionAddrahunok()
+    {
+        $modelkart= new SearchUtKart();
+        $modelkart->scenario = 'rahunok';
+        if (Yii::$app->request->isAjax && $modelkart->load(Yii::$app->request->post()))
+
+        {
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            return \yii\widgets\ActiveForm::validate($modelkart);
+
+        }
+
+        if ($modelkart->load(Yii::$app->request->post()) && $modelkart->validate()) {
+            $modelabonkart= new UtAbonkart();
+            $modelabonkart->id_abon = $_SESSION['model']->id;
+            $modelabonkart->id_kart = UtKart::findOne(['schet'=>$modelkart->schet])->id;
+            $modelabonkart->schet = $modelkart->schet;
+            $modelabonkart->save();
+//            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
+            return $this->redirect('index');
+        }
+        return $this->renderAjax('addrah', ['modelkart' => $modelkart]);
+
+    }
+
+    public function actionDelRahunok()
+    {
+
     }
 
     public function actionConfirmSignup($authtoken)

@@ -45,8 +45,6 @@ class SearchUtKart extends UtKart
 			[['enterpass'], 'string', 'min' => 5],
             [['schet'], 'string', 'min' => 7],
             [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
-//            [['schet'], 'unique', 'targetAttribute' => ['0092124','0092125'],'message' => 'Цей рахунок вже додано до вашого кабінету!!!','on' => self::SCENARIO_RAH],
-//            [['schet'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonkart::class, 'targetAttribute' => [$_SESSION['model']->id => 'id_abonent','schet'],'message' => 'Цей рахунок вже додано до вашого кабінету!!!','on' => self::SCENARIO_RAH],
             [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
             [['name_f'], 'exist', 'targetAttribute' => ['name_f','schet'] ,'message' => 'Прізвище не відповідає власнику рахунку!!!','on' => self::SCENARIO_RAH],
             [['schet'], function ($attribute, $params) {
@@ -57,16 +55,6 @@ class SearchUtKart extends UtKart
             }],
 
 
-
-
-
-
-            .3
-
-//            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
-//            [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
-
-//			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];
     }
 
