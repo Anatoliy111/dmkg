@@ -99,8 +99,8 @@ if (isset($_SESSION['modalmess']))  {
 <?php $form = ActiveForm::begin([
     'id' => 'rah-form1',
     'method' => 'post',
-    'enableAjaxValidation' => true,
-    'enableClientValidation' => false,
+  //  'enableAjaxValidation' => true,
+ //   'enableClientValidation' => false,
 //    'options' => ['data-pjax' => true]
 ]); ?>
 

@@ -29,7 +29,8 @@ class SearchUtKart extends UtKart
 
     public function init()
     {
-        $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->all();
+//        $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->all();
+//        $abonents1 = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => '0068024'])->all();
 
 
     }
@@ -49,12 +50,18 @@ class SearchUtKart extends UtKart
             [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
             [['name_f'], 'exist', 'targetAttribute' => ['name_f','schet'] ,'message' => 'Прізвище не відповідає власнику рахунку!!!','on' => self::SCENARIO_RAH],
             [['schet'], function ($attribute, $params) {
-                $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => $attribute])->all();
-                if (!count($abonents)) {
-                    $this->addError($attribute, "Цей рахунок вже додано до вашого кабінету!!!");
+                $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => $this->schet])->all();
+                if (count($abonents)>0) {
+                    $this->addError($attribute, $this->schet." Цей рахунок вже додано до вашого кабінету!!!");
                 }
             }],
 
+
+
+
+
+
+            .3
 
 //            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
 //            [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
