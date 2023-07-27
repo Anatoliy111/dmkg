@@ -19,22 +19,45 @@ class SearchUtKart extends UtKart
      * @inheritdoc
      */
 	public $enterpass;
+    public $abonents;
+
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';
     const SCENARIO_RAH = 'rahunok';
 //    const SCENARIO_NF = 'name_f';
 
 
+    public function init()
+    {
+        $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->all();
+
+
+    }
+
+
     public function rules()
     {
         return [
-			[['dom', 'id_ulica','enterpass'], 'required'],
+			[['dom', 'id_ulica','enterpass','schet','name_f'], 'required'],
             [['id', 'id_ulica', 'ur_fiz', 'id_oldkart'], 'integer'],
-            [['name_f', 'name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv','schet'], 'safe'],
+            [['name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv'], 'safe'],
 			[['enterpass'], 'string', 'min' => 5],
             [['schet'], 'string', 'min' => 7],
             [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
+//            [['schet'], 'unique', 'targetAttribute' => ['0092124','0092125'],'message' => 'Цей рахунок вже додано до вашого кабінету!!!','on' => self::SCENARIO_RAH],
+//            [['schet'], 'unique', 'skipOnError' => true, 'targetClass' => UtAbonkart::class, 'targetAttribute' => [$_SESSION['model']->id => 'id_abonent','schet'],'message' => 'Цей рахунок вже додано до вашого кабінету!!!','on' => self::SCENARIO_RAH],
             [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
+            [['name_f'], 'exist', 'targetAttribute' => ['name_f','schet'] ,'message' => 'Прізвище не відповідає власнику рахунку!!!','on' => self::SCENARIO_RAH],
+            [['schet'], function ($attribute, $params) {
+                $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => $attribute])->all();
+                if (!count($abonents)) {
+                    $this->addError($attribute, "Цей рахунок вже додано до вашого кабінету!!!");
+                }
+            }],
+
+
+//            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
+//            [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
 
 //			[['enterpass'], 'compare',  'compareValue' => $this->pass.'111', 'operator' => '==', 'message' => 'Код доступу не вірний !'],
         ];
@@ -55,7 +78,7 @@ class SearchUtKart extends UtKart
 		$scenarios = parent::scenarios();
 		$scenarios[self::SCENARIO_ADDR] = ['dom', 'id_ulica', 'kv', 'korp'];
 		$scenarios[self::SCENARIO_PASS] = ['dom', 'id_ulica', 'kv', 'korp', 'enterpass'];
-        $scenarios[self::SCENARIO_RAH] = [['schet', 'name_f'], 'required'];
+        $scenarios[self::SCENARIO_RAH] = ['schet', 'name_f'];
         return $scenarios;
     }
 

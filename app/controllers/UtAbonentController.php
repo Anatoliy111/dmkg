@@ -187,13 +187,18 @@ class UtAbonentController extends Controller
 
         $modelrah= new SearchUtKart();
         $modelrah->scenario = 'rahunok';
-        if ($modelrah->load(Yii::$app->request->post()) && $modelrah->validate()) {
-            $modelkart = new UtAbonkart();
-            $modelkart->id_abon = $id;
-            $modelkart->id_kart = $modelrah->id;
-            $modelkart->schet = $modelrah->schet;
-            $modelkart->save();
+        if ($modelrah->load(Yii::$app->request->post())) {
+            $modelrah->validate();
+//            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
         }
+//        $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
+//        if ($modelrah->load(Yii::$app->request->post()) && $modelrah->validate()) {
+//            $modelkart = new UtAbonkart();
+//            $modelkart->id_abon = $id;
+//            $modelkart->id_kart = $modelrah->id;
+//            $modelkart->schet = $modelrah->schet;
+//            $modelkart->save();
+//        }
 
 
 //        $dataProviderAdres = $modelrah->searchrah(Yii::$app->request->queryParams);

@@ -49,7 +49,6 @@ class UtKart extends \yii\db\ActiveRecord
 	const SCENARIO_ADDR = 'adres';
 	const SCENARIO_PASS = 'password';
     const SCENARIO_EMAIL = 'email';
-    const SCENARIO_RAH = 'rahunok';
 
     public static function tableName()
     {
@@ -71,6 +70,7 @@ class UtKart extends \yii\db\ActiveRecord
             [['idcod'], 'string', 'max' => 25],
             [['dom'], 'string', 'max' => 4],
             [['kv'], 'string', 'max' => 5],
+            [['schet'], 'string', 'max' => 7],
 			[['MonthYear'], 'safe'],
 			[['email'], 'email'],
             [['korp'], 'string', 'max' => 1],
@@ -94,7 +94,7 @@ class UtKart extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('easyii', 'ID'),
-            'name_f' => Yii::t('easyii', 'Name F'),
+            'name_f' => Yii::t('easyii', 'Прізвище абонента'),
             'name_i' => Yii::t('easyii', 'Name I'),
             'name_o' => Yii::t('easyii', 'Name O'),
             'fio' => Yii::t('easyii', 'Fio'),
@@ -125,7 +125,6 @@ class UtKart extends \yii\db\ActiveRecord
 		$scenarios[self::SCENARIO_ADDR] = [['id_ulica', 'dom', 'enterpass'], 'required'];
 		$scenarios[self::SCENARIO_PASS] = [['pass1', 'pass2'], 'required'];
         $scenarios[self::SCENARIO_EMAIL] = [['email'], 'required'];
-        $scenarios[self::SCENARIO_RAH] = [['schet'], 'required'];
 		return $scenarios;
 	}
 

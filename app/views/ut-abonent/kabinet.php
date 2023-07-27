@@ -99,11 +99,13 @@ if (isset($_SESSION['modalmess']))  {
 <?php $form = ActiveForm::begin([
     'id' => 'rah-form1',
     'method' => 'post',
-    'options' => ['data-pjax' => true]
+    'enableAjaxValidation' => true,
+    'enableClientValidation' => false,
+//    'options' => ['data-pjax' => true]
 ]); ?>
 
-<?=	 $form->field($modelrah, 'schet')->textInput()?>
-<?=    $form->field($modelrah, 'name_f')->textInput()?>
+<?=  $form->field($modelrah, 'schet')->textInput(['maxlength' => true])  ?>
+<?=    $form->field($modelrah, 'name_f')->textInput(['maxlength' => true])  ?>
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
 </div>
