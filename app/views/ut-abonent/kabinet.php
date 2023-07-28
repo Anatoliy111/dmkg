@@ -22,7 +22,9 @@ use yii\widgets\Pjax;
 
 
 
-        $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
+    $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
+//    $idkart = Yii::$app->request->post()['idkart'];
+
 
 if ($emailchange=='error') {
     $this->registerJs(
@@ -39,7 +41,7 @@ if (isset($_SESSION['modalmess']))  {
 }
 ?>
 
-<?php Pjax::begin([]); ?>
+
 
 
 
@@ -48,7 +50,7 @@ if (isset($_SESSION['modalmess']))  {
 
 //			'toggleButton' => ['label' => 'click me'],
 //			'footer' => 'Низ окна',
-    'id' => 'modalrah',
+    'id' => 'modaladdrah',
     'size' => 'modal-md',
     'headerOptions' => [
         'style' => 'text-align: center;'
@@ -60,6 +62,49 @@ if (isset($_SESSION['modalmess']))  {
 <div id='modal-content'>Завантаження...</div>
 
 <?php Modal::end(); ?>
+
+<?php 	Modal::begin([
+    'header' => '<h2>Видалити рахунок</h2>',
+    'id' => 'modaldelrah',
+    'size' => 'modal-md',
+    'headerOptions' => [
+        'style' => 'text-align: center;'
+    ],
+]);
+
+
+?>
+
+<div class="modal-body">
+
+        <div class="col" style="text-align:center">
+            <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?=$abon->schet?>?</h4>
+            <?= Html::button('Так', ['data-action' => Url::to(['delrahunok', 'schet' => $abon->schet]), 'data-method' => 'post','class'=>'btn-lg btn-danger']) ?>
+            <?= Html::button('Ні', ['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']) ?>
+        </div>
+
+</div>
+
+
+
+
+<?php Modal::end(); ?>
+
+
+<!--<div class="modal-dialog">-->
+<!--    <div class="col-sm-12" style="text-align:center">-->
+<!--        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок --><?//=$abon->schet?><!--?</h4>-->
+<!--    </div>-->
+<!---->
+<!--    <div class="col-sm-6" style="text-align:center">-->
+<!--        --><?//= Html::button('Так', ['data-action' => Url::to(['delrahunok', 'schet' => $abon->schet]), 'data-method' => 'post','class'=>'btn-lg btn-danger']) ?>
+<!---->
+<!--    </div>-->
+<!---->
+<!--    <div class="col-sm-6" style="text-align:center">-->
+<!--        --><?//= Html::button('Ні', ['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']) ?>
+<!--    </div>-->
+<!--</div>-->
 
 
 
@@ -196,7 +241,7 @@ ActiveForm::end();
 	?>
 </div>
 
-
+<?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
 
 <div class="ut-kart" id="kart1">
 
@@ -229,7 +274,7 @@ ActiveForm::end();
 								'attributes' => [
 
 									'fio',
-									'telef',
+//									'telef',
                                     'email',
                                     [
                                         'label'=>' ',
@@ -281,7 +326,7 @@ ActiveForm::end();
 
         <div class="col-sm-3 col-md-2 col-lg-2">
 
-            <?= Html::a("Видалити рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#passmodal-5','class'=>'btn btn-danger'])?>
+            <?= Html::a("Видалити рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#modaldelrah','class'=>'btn btn-danger'])?>
 
         </div>
 
@@ -307,7 +352,7 @@ ActiveForm::end();
                      $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'id' => $model->id,'idkart' => $abonkart->id_kart]];
                  }
                  else
-                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'id' => $model->id,'idkart' => $abonkart->id_kart]];
+                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'id' => $model->id,'idkart' => $abonkart->id_kart],'options' => ['data-pjax' => true]];
              }
 
 
@@ -380,12 +425,37 @@ ActiveForm::end();
 
             ?>
 
+        <div class="col-xs-12">
+            <h1>Особовий рахунок <?= Html::encode($abon->schet)?></h1>
+
+        </div>
+
+        <div class="col-sm-12">
+
+            <?=
+            DetailView::widget([
+                'model' => $abon,
+                'hover'=>true,
+                'striped'=>true,
+                'mode'=>DetailView::MODE_VIEW,
+                'attributes' => [
+                    'schet',
+                    'fio',
+                    [
+                        'label' => Yii::t('easyii', 'Adress'),
+
+                        'value' => $abon->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$abon->dom.' '.Yii::t('easyii', 'ap.').$abon->kv,
+                    ],
+                ],
+                'hAlign'=>DetailView::ALIGN_RIGHT ,
+                'vAlign'=>DetailView::ALIGN_TOP  ,
+
+            ]) ?>
+        </div>
+
 
             <div class="schet col-xs-12">
-                <div class="rah">
-                    <h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
 
-                </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 box-sum">
                     <h4>Сума до сплати</h4>
                     <?php
@@ -461,9 +531,9 @@ ActiveForm::end();
 
     </div>
 
-<!--        --><?php // Pjax::end(); ?>
-<!---->
-<!--        --><?php //Pjax::begin(); ?>
+
+
+
 
     <div class="mywell well-large2 container">
 
@@ -506,8 +576,11 @@ ActiveForm::end();
 
         <?php
         }
-        Pjax::end();
         ?>
+</div>
+
+
+<?php Pjax::end();?>
 
 <script type="text/javascript">
         function AddRah() {
@@ -517,7 +590,7 @@ ActiveForm::end();
                 data: {},
                 success: function (s) {
                    // alert(s);
-                    $('#modalrah').modal('show').modal({backdrop: false});
+                    $('#modaladdrah').modal('show').modal({backdrop: false});
                     $('#modal-content').html(s);
                 }
 

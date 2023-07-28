@@ -14,6 +14,7 @@ use app\poslug\models\UtOpl;
 use app\poslug\models\UtPeriod;
 use app\poslug\models\UtPosl;
 use app\poslug\models\UtTarif;
+use app\poslug\models\UtTarifinfo;
 use app\poslug\models\UtUtrim;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -484,9 +485,11 @@ class UtAbonentController extends Controller
 
     }
 
-    public function actionDelRahunok()
+    public function actionDelrahunok()
     {
-
+        $schet = Yii::$app->request->post()['schet'];
+        UtTarifinfo::deleteAll(['id_abon'=>$_SESSION['model']->id,'schet'=>$schet]);
+        return $this->redirect('index');
     }
 
     public function actionConfirmSignup($authtoken)

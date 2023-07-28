@@ -21,7 +21,7 @@ use yii\helpers\Html;
     'method' => 'post',
       'enableAjaxValidation' => true,
 //       'enableClientValidation' => false,
-//    'options' => ['data-pjax' => true]
+    'options' => ['data-pjax' => true]
 ]); ?>
 
 <?=  $form->field($modelkart, 'schet')->textInput(['maxlength' => true])  ?>
