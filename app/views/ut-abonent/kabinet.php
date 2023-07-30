@@ -23,7 +23,8 @@ use yii\widgets\Pjax;
 
 
     $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
-//    $idkart = Yii::$app->request->post()['idkart'];
+    $model = $_SESSION['model'];
+    $abon = $_SESSION['abon'];
 
 
 if ($emailchange=='error') {
@@ -63,32 +64,7 @@ if (isset($_SESSION['modalmess']))  {
 
 <?php Modal::end(); ?>
 
-<?php 	Modal::begin([
-    'header' => '<h2>Видалити рахунок</h2>',
-    'id' => 'modaldelrah',
-    'size' => 'modal-md',
-    'headerOptions' => [
-        'style' => 'text-align: center;'
-    ],
-]);
 
-
-?>
-
-<div class="modal-body">
-
-        <div class="col" style="text-align:center">
-            <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?=$abon->schet?>?</h4>
-            <?= Html::button('Так', ['data-action' => Url::to(['delrahunok', 'schet' => $abon->schet]), 'data-method' => 'post','class'=>'btn-lg btn-danger']) ?>
-            <?= Html::button('Ні', ['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']) ?>
-        </div>
-
-</div>
-
-
-
-
-<?php Modal::end(); ?>
 
 
 <!--<div class="modal-dialog">-->
@@ -241,7 +217,32 @@ ActiveForm::end();
 	?>
 </div>
 
-<?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+<?php //Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+
+<?php 	Modal::begin([
+    'header' => '<h2>Видалити рахунок</h2>',
+    'id' => 'modaldelrah',
+    'size' => 'modal-md',
+    'headerOptions' => [
+        'style' => 'text-align: center;'
+    ],
+]);
+
+
+?>
+
+<div class="modal-body">
+    <div class="col" style="text-align:center">
+        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?= Html::encode($_SESSION['abon']->schet)?>?</h4>
+        <?= Html::a('Так', ['delrahunok'], ['class'=>'btn-lg btn-danger']);?>
+        <?= Html::a('Ні', [''],['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']);?>
+    </div>
+</div>
+
+
+
+
+<?php Modal::end(); ?>
 
 <div class="ut-kart" id="kart1">
 
@@ -349,10 +350,10 @@ ActiveForm::end();
         <?php
              foreach ($abonents as $abonkart) {
                  if ($abonkart->id_kart==$abon->id) {
-                     $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'id' => $model->id,'idkart' => $abonkart->id_kart]];
+                     $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'idkart' => $abonkart->id_kart]];
                  }
                  else
-                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'id' => $model->id,'idkart' => $abonkart->id_kart],'options' => ['data-pjax' => true]];
+                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'idkart' => $abonkart->id_kart],'options' => ['data-pjax' => true]];
              }
 
 
@@ -363,7 +364,7 @@ ActiveForm::end();
 
             ?>
 
-            <div class="menu-rahunok col-xs-12">
+            <div class="menu-rahunok">
 
             <?php
 
@@ -531,6 +532,64 @@ ActiveForm::end();
 
     </div>
 
+    <?php
+
+    $itemshv = [
+        //		[
+        //			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
+        ////			'content'=>'dgfdgggggggggggggggggggg',
+        //			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
+        //			'active'=>true
+        //		],
+        //		[
+        //			'label'=>'Загальна інформація',
+        //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
+        //		],
+        [
+            'label'=>'Показники',
+            'content'=>$this->render('pokazview', ['model' => $model,'dataProvider' => $dppos,'dpdolg' => $dpdolg,'abon'=>$abon]),
+        ],
+        [
+            'label'=>'Лічильники',
+            'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
+        ],
+    ];
+
+
+
+    ?>
+
+    <div class="mywell well-large3 container">
+
+        <!--		</div>-->
+        <div class="col-xs-12">
+                <h2>Холодна вода</h2>
+        </div>
+
+
+        <div class="col-xs-12 .col-sm-6 .col-lg-8">
+
+            <?php
+            echo TabsX::widget([
+                'items'=>$itemshv,
+                'position'=>TabsX::POS_ABOVE,
+                'encodeLabels'=>false,
+                'bordered'=>true,
+                'enableStickyTabs' => true,
+                //   'pluginOptions' => ['enableCache' => false],
+                //            'stickyTabsOptions' => [
+                //                'selectorAttribute' => 'data-target',
+                //                'backToTop' => false,
+                //            ],
+            ]);
+            ?>
+
+        </div>
+
+
+
+    </div>
+
 
 
 
@@ -580,7 +639,7 @@ ActiveForm::end();
 </div>
 
 
-<?php Pjax::end();?>
+<?php //Pjax::end();?>
 
 <script type="text/javascript">
         function AddRah() {

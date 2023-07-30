@@ -30,7 +30,8 @@ $year = $my_date->format('php:Y');
 
 
 
-<span itemscope itemtype="http://schema.org/LocalBusiness"><header>
+
+    <header>
 
 		<?php PaceAsset::register($this);
 
@@ -42,38 +43,7 @@ $year = $my_date->format('php:Y');
 		<section class="search">
 			<div class="container-fluid top_head">
 				<div class="container">
-<!--					<div  id="search" class="col-xs-6 col-md-4 pull-right">-->
-<!--						<script>-->
-<!--							(function() {-->
-<!--								var cx = '015121369027183181960:uwnbsuww_sq';-->
-<!--								var gcse = document.createElement('script');-->
-<!--								gcse.type = 'text/javascript';-->
-<!--								gcse.async = true;-->
-<!--								gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;-->
-<!--								var s = document.getElementsByTagName('script')[0];-->
-<!--								s.parentNode.insertBefore(gcse, s);-->
-<!--							})();-->
-<!--						</script>-->
-<!--						<gcse:search></gcse:search>-->
-<!--					</div>-->
-					<!-- <p class="float_left">Welcome to Me Financial Services, we have over 12 years of expertise</p> -->
-<!--					<div class="float_right">-->
-<!--						<ul>-->
-<!--							<li>-->
 
-<!--								<form name="test" method="post" action="/site/search">
-<!--								<div  id="search_box">
-
-
-
-<!--									<input id="search" type="text" placeholder="Пошук...">-->
-<!--        							<button id="button" type="submit"><span class="icon icon-Search"></span></button>-->
-<!--								</div>
-<!--								</form>-->
-
-<!--							</li>-->
-<!--						</ul>-->
-<!--					</div>-->
 				</div> <!-- end container -->
 			</div><!-- end top_header -->
 		</section>
@@ -158,7 +128,8 @@ $year = $my_date->format('php:Y');
 
 
         <div class="push"></div>
-    </main></span>
+    </main>
+
 
 <footer>
 	<div class="bottom_footer container-fluid">
