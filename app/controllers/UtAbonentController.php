@@ -8,6 +8,9 @@ use app\models\SearchUtAbonent;
 use app\models\UtAbonkart;
 use app\models\UtAuth;
 use app\models\UtKart;
+use app\models\UtLich;
+use app\models\UtPokazn;
+use app\models\UtVoda;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
@@ -153,12 +156,6 @@ class UtAbonentController extends Controller
             $_SESSION['abon'] = UtKart::find()->where(['id' => $get["idkart"]])->all()[0];
         }
 
-
-
-
-
-
-
         if (Yii::$app->session['periodkab']==null)
             Yii::$app->session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
 //		if (Yii::$app->session['period']==null)
@@ -191,25 +188,8 @@ class UtAbonentController extends Controller
 
         $modelkart= new SearchUtKart();
         $modelkart->scenario = 'rahunok';
-//        if ($modelrah->load(Yii::$app->request->post())) {
-//            $modelrah->validate();
-////            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
-//        }
-//        $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
-//        if ($modelrah->load(Yii::$app->request->post()) && $modelrah->validate()) {
-//            $modelkart = new UtAbonkart();
-//            $modelkart->id_abon = $id;
-//            $modelkart->id_kart = $modelrah->id;
-//            $modelkart->schet = $modelrah->schet;
-//            $modelkart->save();
-//        }
-
-
-//        $dataProviderAdres = $modelrah->searchrah(Yii::$app->request->queryParams);
-
 
         $modelemail = new SearchUtAbonent();
-
         $modelemail->scenario = 'chemail';
         $emailchange = '';
 
@@ -270,12 +250,52 @@ class UtAbonentController extends Controller
                 $abon = UtKart::find()->where(['id' => $abonents[0]->id_kart])->all()[0];
                 $_SESSION['abon']=$abon;
             }
+                //-------Холодна вода-------------------------------------
+
+               $hv = UtObor::find()
+               ->leftJoin('ut_posl','(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
+               ->leftJoin('ut_tipposl','(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
+               ->where(['ut_obor.id_kart' => $abon->id,'ut_obor.period' => $session['periodkab'],'ut_tipposl.old_tipusl' => 'hv'])
+               ->asArray()->all()[0];
+               //-----------------------------------------------------------------------------
+
+                $voda = null;
+                if ($hv!=null) {
+//                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
+                    $voda = UtVoda::find()->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC]);
+
+                    $dataProvider= new ActiveDataProvider([
+                        'query' => $voda,
+                    ]);
+                    $dpvoda= $dataProvider;
+
+//                    $yearmon = UtVoda::find()->limit(1)->select('yearmon')->orderBy(['id' => SORT_DESC])->asArray()->all();
+
+                    $pokazn = UtPokazn::find()->where(['schet' => $abon->schet])
+//                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
+                    ->orderBy(['id' => SORT_DESC]);
+
+//                    $pokazn2 = $pokazn->asArray()->all();
+
+                    $dataProvider= new ActiveDataProvider([
+                        'query' => $pokazn,
+                    ]);
+                    $dppokazn = $dataProvider;
+
+
+                    $lich = UtLich::find()->where(['schet' => $abon->schet,'vid_zn'=>null]);
+                    $dataProvider = new ActiveDataProvider([
+                        'query' => $lich,
+                    ]);
+                    $dplich = $dataProvider;
+                }
 
                 $summa = 0;
                 //-----------------------------------------------------------------------------
                 $obor = UtObor::find()
     //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
                     ->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_obor.period' => $session['periodkab']]);
+
 
 
     //				$ff = ArrayHelper::toArray($obor);
@@ -445,6 +465,9 @@ class UtAbonentController extends Controller
                 'dpsub' => $dpsub,
                 'dpuder' => $dpuder,
                 'dpdolg' => $dpdolg,
+                'dplich' => $dplich,
+                'dppokazn' => $dppokazn,
+                'dpvoda' => $dpvoda,
                 'summa' => $summa,
                 'lastperiod' => $session['period'],
                 'periodkab' => $session['periodkab'],
@@ -601,6 +624,7 @@ class UtAbonentController extends Controller
                     $modelabon->save();
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
                     $_SESSION['modalmess']['changeemailsuccess']=$modelabon;
+                    $_SESSION['model']=$modelabon;
             }
         } else $_SESSION['modalmess']['errtokenchemail']='';
 

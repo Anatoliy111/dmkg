@@ -67,23 +67,6 @@ if (isset($_SESSION['modalmess']))  {
 
 
 
-<!--<div class="modal-dialog">-->
-<!--    <div class="col-sm-12" style="text-align:center">-->
-<!--        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок --><?//=$abon->schet?><!--?</h4>-->
-<!--    </div>-->
-<!---->
-<!--    <div class="col-sm-6" style="text-align:center">-->
-<!--        --><?//= Html::button('Так', ['data-action' => Url::to(['delrahunok', 'schet' => $abon->schet]), 'data-method' => 'post','class'=>'btn-lg btn-danger']) ?>
-<!---->
-<!--    </div>-->
-<!---->
-<!--    <div class="col-sm-6" style="text-align:center">-->
-<!--        --><?//= Html::button('Ні', ['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']) ?>
-<!--    </div>-->
-<!--</div>-->
-
-
-
 <?php 	Modal::begin([
 			'header' => '<h2>Змінити пароль</h2>',
 
@@ -217,7 +200,7 @@ ActiveForm::end();
 	?>
 </div>
 
-<?php //Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
+<?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
 
 <?php 	Modal::begin([
     'header' => '<h2>Видалити рахунок</h2>',
@@ -547,7 +530,7 @@ ActiveForm::end();
         //		],
         [
             'label'=>'Показники',
-            'content'=>$this->render('pokazview', ['model' => $model,'dataProvider' => $dppos,'dpdolg' => $dpdolg,'abon'=>$abon]),
+            'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'abon'=>$abon]),
         ],
         [
             'label'=>'Лічильники',
@@ -573,9 +556,9 @@ ActiveForm::end();
             echo TabsX::widget([
                 'items'=>$itemshv,
                 'position'=>TabsX::POS_ABOVE,
-                'encodeLabels'=>false,
-                'bordered'=>true,
-                'enableStickyTabs' => true,
+//                'encodeLabels'=>false,
+//                'bordered'=>true,
+//                'enableStickyTabs' => true,
                 //   'pluginOptions' => ['enableCache' => false],
                 //            'stickyTabsOptions' => [
                 //                'selectorAttribute' => 'data-target',
@@ -639,7 +622,7 @@ ActiveForm::end();
 </div>
 
 
-<?php //Pjax::end();?>
+<?php Pjax::end();?>
 
 <script type="text/javascript">
         function AddRah() {
