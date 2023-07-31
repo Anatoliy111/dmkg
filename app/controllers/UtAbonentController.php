@@ -522,6 +522,35 @@ class UtAbonentController extends Controller
         return $this->redirect('index');
     }
 
+    public function actionAddpokazn()
+    {
+        $model= new UtPokazn();
+        $model->scenario = 'rahunok';
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+
+        {
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            return \yii\widgets\ActiveForm::validate($model);
+
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $modelabonkart= new UtAbonkart();
+            $modelabonkart->id_abon = $_SESSION['model']->id;
+            $kart = UtKart::findOne(['schet'=>$modelkart->schet]);
+            $modelabonkart->id_kart = $kart->id;
+            $modelabonkart->schet = $modelkart->schet;
+            $modelabonkart->save();
+            $_SESSION['abon'] = $kart;
+//            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
+            return $this->redirect('index');
+        }
+        return $this->renderAjax('addrah', ['modelkart' => $modelkart]);
+
+    }
+
     public function actionConfirmSignup($authtoken)
     {
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
