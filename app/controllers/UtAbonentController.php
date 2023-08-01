@@ -6,6 +6,7 @@ use app\models\SearchUtKart;
 use app\models\UtAbonent;
 use app\models\SearchUtAbonent;
 use app\models\UtAbonkart;
+use app\models\UtAbonpokazn;
 use app\models\UtAuth;
 use app\models\UtKart;
 use app\models\UtLich;
@@ -291,6 +292,11 @@ class UtAbonentController extends Controller
                 }
 
                 $summa = 0;
+
+
+
+
+
                 //-----------------------------------------------------------------------------
                 $obor = UtObor::find()
     //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
@@ -508,7 +514,7 @@ class UtAbonentController extends Controller
             $modelabonkart->save();
             $_SESSION['abon'] = $kart;
 //            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
-            return $this->redirect('index');
+            return $this->redirect('kabinet');
         }
         return $this->renderAjax('addrah', ['modelkart' => $modelkart]);
 
@@ -519,35 +525,34 @@ class UtAbonentController extends Controller
 //        $schet = Yii::$app->request->post()['schet'];
         UtAbonkart::deleteAll(['id_abon'=>$_SESSION['model']->id,'id_kart'=>$_SESSION['abon']->id]);
         $_SESSION['abon']=null;
-        return $this->redirect('index');
+        return $this->redirect('kabinet');
     }
 
     public function actionAddpokazn()
     {
-        $model= new UtPokazn();
-        $model->scenario = 'rahunok';
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+        $modelabonpokazn= new UtAbonpokazn();
+        $modelabonpokazn->schet = $_SESSION['abon']->schet;
+        $modelabonpokazn->name = $_SESSION['model']->fio;
+        $modelabonpokazn->id_abonent = $_SESSION['model']->id;
+        $modelabonpokazn->data = date("Y-m-d");
+        $modelabonpokazn->vid = 'site';
+
+        if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post()))
 
         {
 
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-            return \yii\widgets\ActiveForm::validate($model);
+            return \yii\widgets\ActiveForm::validate($modelabonpokazn);
 
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $modelabonkart= new UtAbonkart();
-            $modelabonkart->id_abon = $_SESSION['model']->id;
-            $kart = UtKart::findOne(['schet'=>$modelkart->schet]);
-            $modelabonkart->id_kart = $kart->id;
-            $modelabonkart->schet = $modelkart->schet;
-            $modelabonkart->save();
-            $_SESSION['abon'] = $kart;
-//            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
-            return $this->redirect('index');
+        if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
+            $modelabonpokazn->save();
+          //  $_SESSION['modalmess']['addpokazn']=$modelabonpokazn;
+            return $this->redirect('kabinet');
         }
-        return $this->renderAjax('addrah', ['modelkart' => $modelkart]);
+        return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
 
     }
 
@@ -657,7 +662,7 @@ class UtAbonentController extends Controller
             }
         } else $_SESSION['modalmess']['errtokenchemail']='';
 
-        return $this->redirect(['index']);
+        return $this->redirect(['kabinet']);
     }
 
 

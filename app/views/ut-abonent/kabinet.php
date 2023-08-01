@@ -65,6 +65,23 @@ if (isset($_SESSION['modalmess']))  {
 <?php Modal::end(); ?>
 
 
+<?php 	Modal::begin([
+    'header' => '<h2>Додати показник</h2>',
+
+//			'toggleButton' => ['label' => 'click me'],
+//			'footer' => 'Низ окна',
+    'id' => 'modaladdpokaz',
+    'size' => 'modal-md',
+    'headerOptions' => [
+        'style' => 'text-align: center;'
+    ],
+
+]);
+?>
+
+<div id='modal-content'>Завантаження...</div>
+
+<?php Modal::end(); ?>
 
 
 <?php 	Modal::begin([
@@ -164,7 +181,6 @@ ActiveForm::end();
 
 <?= $this->render('modalmess');?>
 
-<?//= $this->render('addrah',['modelkart' => $modelkart]);?>
 
 
 
@@ -296,7 +312,6 @@ ActiveForm::end();
 
         <div class="col-sm-3 col-md-2 col-lg-2">
 
-<!--            --><?//= Html::a("Додати рахунок", ['addrahunok'], ['data-toggle' =>'modal', 'data-target' =>'#modalrah','class'=>'btn btn-success'])?>
 
             <?php echo Html::button("Додати рахунок", ['class' => 'btn btn-success','onclick' => "AddRah()",'target' => "_blank",]); ?>
 
@@ -534,7 +549,7 @@ ActiveForm::end();
         ],
         [
             'label'=>'Лічильники',
-            'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
+            'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich,'abon'=>$abon]),
         ],
     ];
 
@@ -639,3 +654,5 @@ ActiveForm::end();
             });
         }
 </script>
+
+

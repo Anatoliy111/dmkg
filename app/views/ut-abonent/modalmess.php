@@ -82,6 +82,14 @@ if (isset($_SESSION['modalmess']))  {
         $modalformimage='email.png';
     }
 
+    if (array_key_exists('addpokazn', $session['modalmess'])) {
+        $modalformheader='Холодна вода';
+        $modalformtext='Вітаємо '.$session['modalmess']['addpokazn']->name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn']->pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$session['modalmess']['addpokazn']->schet.' прийнято в обробку!'.'</h3>';
+        $modalformimage='registration.png';
+    }
+
+
+
 
     $session->remove('modalmess');
 

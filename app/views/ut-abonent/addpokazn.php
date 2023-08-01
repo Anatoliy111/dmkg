@@ -6,7 +6,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\SearchUtKart $modelkart */
+/** @var app\models\UtAbonpokazn $modelabonpokazn */
 
   $asset = \app\assets\AppAsset::register($this);
 
@@ -24,8 +24,7 @@ use yii\helpers\Html;
     'options' => ['data-pjax' => true]
 ]); ?>
 
-<?=  $form->field($modelkart, 'schet')->textInput(['maxlength' => true])  ?>
-<?=    $form->field($modelkart, 'name_f')->textInput(['maxlength' => true])  ?>
+<?=    $form->field($modelabonpokazn, 'pokazn')->textInput(['maxlength' => true])  ?>
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
 </div>

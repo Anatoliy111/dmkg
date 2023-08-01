@@ -83,7 +83,7 @@ HTML;
 					[
 						'attribute' => 'period',
 						'label' => 'Період',
-						'format' => ['date', 'php:MY'],
+						'format' => ['date', 'LLLL Y'],
 						'pageSummary' => 'Всього',
 						'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 					],

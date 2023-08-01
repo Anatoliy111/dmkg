@@ -21,7 +21,7 @@ use yii\helpers\Url;
              <h4>Період обробки поданих показників триває 1-3 дні, після успішної обробки ви побачите свій показник в таблиці ПОКАЗНИКИ та НАРАХУВАННЯ</h4>
 
             <?php
-            echo Html::a('Подати показник', Url::to('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D'), ['http','class' => 'btn-lg btn-success','target'=>"_blank"]);
+            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
             ?>
 
         </div>
@@ -43,7 +43,10 @@ HTML;
                 'columns' => [
                     [
                         'attribute' => 'YEARMON',
-                        'label'=>'Місяць обліку'
+                        'label'=>'Місяць обліку',
+                        'value'=>function ($model) {
+                            return Yii::$app->formatter->asDate('01.'.substr($model->YEARMON, 4, 2).'.'.substr($model->YEARMON, 0, 4), 'LLLL Y');
+                        }
                     ],
                     [
                         'attribute' => 'SCH_CUR',

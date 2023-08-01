@@ -45,11 +45,11 @@ class UtLich extends \yii\db\ActiveRecord
     {
         return [
             'ID' => 'ID',
-            'SCHET' => 'Schet',
-            'TIP' => 'Tip',
-            'N_LICH' => 'N Lich',
-            'DATA_POV' => 'Data Pov',
-            'DATA_VIG' => 'Data Vig',
+            'SCHET' => 'Рахунок',
+            'TIP' => 'Тип лічильника',
+            'N_LICH' => '№ лічильника',
+            'DATA_POV' => 'Дата повірки',
+            'DATA_VIG' => 'Дата виготовлення',
             'VID_ZN' => 'Vid Zn',
         ];
     }
