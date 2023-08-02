@@ -79,7 +79,7 @@ if (isset($_SESSION['modalmess']))  {
 ]);
 ?>
 
-<div id='modal-content'>Завантаження...</div>
+<div id='modal-content1'>Завантаження...</div>
 
 <?php Modal::end(); ?>
 
@@ -532,6 +532,8 @@ ActiveForm::end();
 
     <?php
 
+    if ($dpvoda<>null) {
+
     $itemshv = [
         //		[
         //			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
@@ -588,7 +590,7 @@ ActiveForm::end();
 
     </div>
 
-
+    <?php } ?>
 
 
 
@@ -654,5 +656,22 @@ ActiveForm::end();
             });
         }
 </script>
+
+<script type="text/javascript">
+    function AddPokaz() {
+        $.ajax({
+            url: "/ut-abonent/addpokazn",
+            type: 'post',
+            data: {},
+            success: function (s) {
+                // alert(s);
+                $('#modaladdpokaz').modal('show').modal({backdrop: false});
+                $('#modal-content1').html(s);
+            }
+
+        });
+    }
+</script>
+
 
 

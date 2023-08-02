@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
+use app\models\UtAbonpokazn;
 use app\models\UtPay;
 use app\poslug\models\Viber;
 use app\poslug\models\ViberAbon;
@@ -223,6 +224,16 @@ class SiteController extends Controller
 
 				}
 			}
+            if (($res['model']=='sitepokazn')) {
+                $findpokaz = UtAbonpokazn::find()->where(['>','id',$res['lastid']])->orderBy('id')->asArray()->all();
+//                    ->Where(['in','`id`',KpcentrViberpokazn::find()->select('max(id)')->where(['>','id',$res['lastid']])->groupBy('schet')])
+//				->Where(['=','`id`','(select max(kp2.id) from kpcentr_viberpokazn kp2 where kp2.id > '.$res['lastid'].' and kp2.schet=kpcentr_viberpokazn.schet)'])
+//                    ->asArray()->all();
+                if ($findpokaz!=null){
+                    $mes = json_encode($findpokaz);
+                }
+            }
+
 		}
 
 		return $mes;

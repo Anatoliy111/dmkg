@@ -42,13 +42,13 @@ $(function(){
     });
 })(jQuery);
 
-(function ($) {
-$('#btn-addpokaz').on('click', function() {
-    $('#modaladdpokaz').modal('show')
-        .find('#modal-content')
-        .load($(this).attr('data-target'));
-});
-})(jQuery);
+// (function ($) {
+// $('#btn-addpokaz').on('click', function() {
+//     $('#modaladdpokaz').modal('show')
+//         .find('#modal-content')
+//         .load($(this).attr('data-target'));
+// });
+// })(jQuery);
 
 
 /* delete file import

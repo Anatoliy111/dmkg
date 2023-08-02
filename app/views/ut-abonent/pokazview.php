@@ -21,7 +21,8 @@ use yii\helpers\Url;
              <h4>Період обробки поданих показників триває 1-3 дні, після успішної обробки ви побачите свій показник в таблиці ПОКАЗНИКИ та НАРАХУВАННЯ</h4>
 
             <?php
-            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
+//            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
+            echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
             ?>
 
         </div>

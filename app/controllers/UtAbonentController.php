@@ -257,10 +257,13 @@ class UtAbonentController extends Controller
                ->leftJoin('ut_posl','(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
                ->leftJoin('ut_tipposl','(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
                ->where(['ut_obor.id_kart' => $abon->id,'ut_obor.period' => $session['periodkab'],'ut_tipposl.old_tipusl' => 'hv'])
-               ->asArray()->all()[0];
+               ->asArray()->all();
                //-----------------------------------------------------------------------------
 
                 $voda = null;
+                $dpvoda = null;
+                $dppokazn= null;
+                $dplich= null;
                 if ($hv!=null) {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
                     $voda = UtVoda::find()->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC]);
@@ -534,8 +537,9 @@ class UtAbonentController extends Controller
         $modelabonpokazn->schet = $_SESSION['abon']->schet;
         $modelabonpokazn->name = $_SESSION['model']->fio;
         $modelabonpokazn->id_abonent = $_SESSION['model']->id;
-        $modelabonpokazn->data = date("Y-m-d");
+        $modelabonpokazn->date_pok = date("Y-m-d");
         $modelabonpokazn->vid = 'site';
+
 
         if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post()))
 
@@ -549,7 +553,7 @@ class UtAbonentController extends Controller
 
         if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
             $modelabonpokazn->save();
-          //  $_SESSION['modalmess']['addpokazn']=$modelabonpokazn;
+            $_SESSION['modalmess']['addpokazn']=$modelabonpokazn->pokazn;
             return $this->redirect('kabinet');
         }
         return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);

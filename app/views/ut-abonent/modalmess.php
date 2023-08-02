@@ -59,7 +59,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addabon', $session['modalmess'])) {
         $modalformheader='Успішна реєстрація';
-        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну та паролю!';
+        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну(email) та паролю!';
         $modalformimage='registration.png';
 
     }
@@ -84,7 +84,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addpokazn', $session['modalmess'])) {
         $modalformheader='Холодна вода';
-        $modalformtext='Вітаємо '.$session['modalmess']['addpokazn']->name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn']->pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$session['modalmess']['addpokazn']->schet.' прийнято в обробку!'.'</h3>';
+        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn'].'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$session['abon']->schet.' прийнято в обробку!'.'</h3>';
         $modalformimage='registration.png';
     }
 
