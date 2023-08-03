@@ -9,3 +9,4 @@ Thumbs.db
 
 
 runtime/.htaccess
+app/config/fdb.php

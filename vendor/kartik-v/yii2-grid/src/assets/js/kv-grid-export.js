@@ -2,7 +2,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2023
- * @version   3.5.1
+ * @version   3.5.3
  *
  * Grid Export Validation Module for Yii's Gridview. Supports export of
  * grid data as CSV, HTML, or Excel.
@@ -308,7 +308,7 @@
                 self.popup.focus();
                 self.setPopupAlert(self.messages.downloadProgress);
             }
-            $('<form/>', {'action': self.action, 'target': target, 'method': 'post', css: {'display': 'none'}})
+            $('<form/>', {'action': self.action, class: 'kv-export-form', 'target': target, 'method': 'post', css: {'display': 'none'}})
                 .append(getInput('export_filetype', type), getInput('export_filename', self.filename))
                 .append(getInput('export_encoding', self.encoding), getInput('export_bom', self.bom ? 1 : 0))
                 .append(getInput('export_content', content), getInput('module_id', self.module), $csrf)

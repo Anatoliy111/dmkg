@@ -252,47 +252,52 @@ class UtAbonentController extends Controller
                 $_SESSION['abon']=$abon;
             }
                 //-------Холодна вода-------------------------------------
+            $voda = null;
+            $dpvoda = null;
+            $dppokazn = null;
+            $dplich = null;
 
-               $hv = UtObor::find()
-               ->leftJoin('ut_posl','(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
-               ->leftJoin('ut_tipposl','(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
-               ->where(['ut_obor.id_kart' => $abon->id,'ut_obor.period' => $session['periodkab'],'ut_tipposl.old_tipusl' => 'hv'])
-               ->asArray()->all();
-               //-----------------------------------------------------------------------------
+               if ($abon->id==2071222) {
 
-                $voda = null;
-                $dpvoda = null;
-                $dppokazn= null;
-                $dplich= null;
-                if ($hv!=null) {
+                   $hv = UtObor::find()
+                       ->leftJoin('ut_posl', '(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
+                       ->leftJoin('ut_tipposl', '(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
+                       ->where(['ut_obor.id_kart' => $abon->id, 'ut_obor.period' => $session['periodkab'], 'ut_tipposl.old_tipusl' => 'hv'])
+                       ->asArray()->all();
+                   //-----------------------------------------------------------------------------
+
+
+                   if ($hv != null) {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
-                    $voda = UtVoda::find()->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC]);
+                       $voda = UtVoda::find()->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC]);
 
-                    $dataProvider= new ActiveDataProvider([
-                        'query' => $voda,
-                    ]);
-                    $dpvoda= $dataProvider;
+                       $dataProvider = new ActiveDataProvider([
+                           'query' => $voda,
+                       ]);
+                       $dpvoda = $dataProvider;
 
 //                    $yearmon = UtVoda::find()->limit(1)->select('yearmon')->orderBy(['id' => SORT_DESC])->asArray()->all();
 
-                    $pokazn = UtPokazn::find()->where(['schet' => $abon->schet])
+                       $pokazn = UtPokazn::find()->where(['schet' => $abon->schet])
 //                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
-                    ->orderBy(['id' => SORT_DESC]);
+                           ->orderBy(['id' => SORT_DESC]);
 
 //                    $pokazn2 = $pokazn->asArray()->all();
 
-                    $dataProvider= new ActiveDataProvider([
-                        'query' => $pokazn,
-                    ]);
-                    $dppokazn = $dataProvider;
+                       $dataProvider = new ActiveDataProvider([
+                           'query' => $pokazn,
+                       ]);
+                       $dppokazn = $dataProvider;
 
 
-                    $lich = UtLich::find()->where(['schet' => $abon->schet,'vid_zn'=>null]);
-                    $dataProvider = new ActiveDataProvider([
-                        'query' => $lich,
-                    ]);
-                    $dplich = $dataProvider;
-                }
+                       $lich = UtLich::find()->where(['schet' => $abon->schet, 'vid_zn' => null]);
+                       $dataProvider = new ActiveDataProvider([
+                           'query' => $lich,
+                       ]);
+                       $dplich = $dataProvider;
+                   }
+               }
+
 
                 $summa = 0;
 

@@ -30,7 +30,8 @@
         "kartik-v/yii2-widget-growl": "*",
         "bogdaan/viber-bot-php": "dev-master",
         "monolog/monolog": "1.x-dev",
-        "mdmsoft/yii2-admin": "dev-master#e9cc1d8adc as 2.8-p1"
+        "mdmsoft/yii2-admin": "dev-master#e9cc1d8adc as 2.8-p1",
+        "edgardmessias/yii2-firebird": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

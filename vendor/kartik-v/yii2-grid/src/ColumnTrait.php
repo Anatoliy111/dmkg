@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2023
- * @version   3.5.1
+ * @version   3.5.3
  */
 
 namespace kartik\grid;
@@ -28,7 +28,7 @@ use yii\web\View;
 trait ColumnTrait
 {
     /**
-     * @var string an unique identifier for the Column. If not set, it will be automatically generated.
+     * @var string unique identifier for the Column. If not set, it will be automatically generated.
      */
     public $columnKey;
 
@@ -185,6 +185,10 @@ trait ColumnTrait
             }
         }
         $this->initColumnKey();
+
+        if (!empty($this->filter) && empty($this->filterType) && $this->grid->isBs(5)) {
+            Html::addCssClass($this->filterInputOptions, 'form-select');
+        }
     }
 
     /**

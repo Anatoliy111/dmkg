@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2023
- * @version   3.5.1
+ * @version   3.5.3
  */
 
 namespace kartik\grid;
@@ -20,6 +20,8 @@ use yii\helpers\Html;
 /**
  * The DataColumn is the default column type for the [[GridView]] widget and extends the [[YiiDataColumn]] with various
  * enhancements.
+ *
+ * @property GridView $grid
  *
  * @author Kartik Visweswaran <kartikv2@gmail.com>
  * @since  1.0
@@ -263,7 +265,7 @@ class DataColumn extends YiiDataColumn
         $widgetClass = $this->filterType;
         $options = [
             'model' => $this->grid->filterModel,
-            'attribute' => $this->attribute,
+            'attribute' => $this->filterAttribute,
             'options' => $this->filterInputOptions,
         ];
         if (is_array($this->filter)) {
@@ -276,14 +278,14 @@ class DataColumn extends YiiDataColumn
             if ($this->isFilterEqual(GridView::FILTER_RADIO)) {
                 return Html::activeRadioList(
                     $this->grid->filterModel,
-                    $this->attribute,
+                    $this->filterAttribute,
                     $this->filter,
                     $this->filterInputOptions
                 );
             }
         }
         if ($this->isFilterEqual(GridView::FILTER_CHECKBOX)) {
-            return Html::activeCheckbox($this->grid->filterModel, $this->attribute, $this->filterInputOptions);
+            return Html::activeCheckbox($this->grid->filterModel, $this->filterAttribute, $this->filterInputOptions);
         }
         $options = array_replace_recursive($this->filterWidgetOptions, $options);
 

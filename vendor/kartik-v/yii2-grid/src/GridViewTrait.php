@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2023
- * @version   3.5.1
+ * @version   3.5.3
  */
 
 namespace kartik\grid;
@@ -14,6 +14,7 @@ use Exception;
 use kartik\base\Config;
 use kartik\base\Lib;
 use kartik\dialog\Dialog;
+use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\grid\Column;
@@ -294,17 +295,50 @@ HTML;
     public $toolbarContainerOptions = ['class' => 'btn-toolbar kv-grid-toolbar toolbar-container'];
 
     /**
-     * @var array tags to replace in the rendered layout. Enter this as `$key => $value` pairs, where:
-     * - `$key`: _string_, defines the flag.
-     * - `$value`: _string_|_Closure_, the value that will be replaced. You can set it as a callback function to return
-     *   a string of the signature: `function ($widget) { return 'custom'; }`.
-     *
-     * For example, a custom tag like `{star}` can be set as:
+     * @var array tags to replace in the rendered layout. Enter this as `$key => $callback` pairs, where:
+     * - `$key`: _string_, the token string that will be replaced.
+     * - `$callback`: _string_|_array_, the callback function name that will return the value to be replaced. This can
+     *    be a global function name or a callback setting in an array format as understood by PHP's
+     *    `call_user_func_array` method. For example:
      *
      * ```php
-     * [
-     *     '{star}' => '<span class="glyphicon glyphicon-asterisk"></span>'
-     * ]
+     * function renderTag1() { // global function
+     *     $string = ''; // do your stuff to render;
+     *     return $string;
+     * };
+     * echo GridView::widget([
+     *     'replaceTags' => [
+     *         '{tag1}' => 'renderTag1'
+     *     ]
+     *     // other gridview settings
+     * ]);
+     * ```
+     *
+     * Alternatively you can return a function name from your class or object as an array format. For example:
+     *
+     * ```php
+     *
+     * class YourClass {
+     *   public function renderToken2() {       // object function
+     *      $string = ''; // do your stuff to render;
+     *      return $string;
+     *   }
+     *
+     *   public static function renderToken3() { // static function
+     *      $string = ''; // do your stuff to render;
+     *      return $string;
+     *   }
+     *
+     *   public function render() {
+     *      return GridView::widget([
+     *          'replaceTags' => [
+     *              '{token2}' => [$this, 'renderToken2'],
+     *              '{token3}' => [YourClass::class, 'renderToken3']
+     *          ]
+     *          // other gridview settings
+     *     ]);
+     *   }
+     * }
      * ```
      */
     public $replaceTags = [];
@@ -455,7 +489,7 @@ HTML;
      * scrolling (e.g. in cases where you have a fixed bootstrap navbar on top). For example:
      *
      * ```
-     *    'headerContainer' => ['class' => 'kv-table-header, 'style' => 'top: 50px'] // to set an offset
+     *    'headerContainer' => ['class' => 'kv-table-header', 'style' => 'top: 50px'] // to set an offset
      * ```
      */
     public $headerContainer = ['class' => 'kv-table-header'];
@@ -474,12 +508,12 @@ HTML;
     public $footerContainer = ['class' => 'kv-table-footer'];
 
     /**
-     * @deprecated since release v3.5.1
+     * @deprecated since release v3.5.3
      */
     public $floatOverflowContainer = false;
 
     /**
-     * @deprecated since release v3.5.1
+     * @deprecated since release v3.5.3
      */
     public $floatHeaderOptions = [];
 
@@ -659,7 +693,7 @@ HTML;
      *   configuration options are read specific to each file type:
      *     - `HTML`: The following properties can be set as array key-value pairs:
      *          - `cssFile`: _string_, the css file that will be used in the exported HTML file. Defaults to:
-     *            `https://maxcdn.bootstrapcdn.com/bootstrap/3.5.1/css/bootstrap.min.css`.
+     *            `https://maxcdn.bootstrapcdn.com/bootstrap/3.5.3/css/bootstrap.min.css`.
      *     - `CSV` and `TEXT`: The following properties can be set as array key-value pairs:
      *          - `colDelimiter`: _string_, the column delimiter string for TEXT and CSV downloads.
      *          - `rowDelimiter`: _string_, the row delimiter string for TEXT and CSV downloads.
@@ -832,7 +866,7 @@ HTML;
          * @var Request $request
          */
         $request = $this->_module->get('request', false);
-        if ($request === null || !($request instanceof Request)) {
+        if (!($request instanceof Request)) {
             $request = Yii::$app->request;
         }
         $this->_isShowAll = $request->getQueryParam($this->_toggleDataKey, $this->defaultPagination) === 'all';
@@ -845,7 +879,7 @@ HTML;
     /**
      * Prepares the Krajee GridView widget for run
      *
-     * @throws InvalidConfigException
+     * @throws InvalidConfigException|Throwable
      */
     protected function prepareGridView()
     {
@@ -1583,7 +1617,7 @@ HTML;
     /**
      * Initialize the grid layout.
      *
-     * @throws InvalidConfigException
+     * @throws InvalidConfigException|Exception
      */
     protected function initLayout()
     {
@@ -1600,33 +1634,14 @@ HTML;
         if ($this->hideResizeMobile) {
             Html::addCssClass($this->options, 'hide-resize');
         }
-        $this->replaceLayoutTokens([
-            '{toolbarContainer}' => $this->renderToolbarContainer(),
-            '{toolbar}' => $this->renderToolbar(),
-            '{export}' => $this->renderExport(),
-            '{toggleData}' => $this->renderToggleData(),
-            '{items}' => Html::tag('div', '{items}', $this->containerOptions),
-        ]);
+        $this->replaceLayoutPart('{toolbarContainer}', [$this, 'renderToolbarContainer']);
+        $this->replaceLayoutPart('{toolbar}', [$this, 'renderToolbar']);
+        $this->replaceLayoutPart('{export}', [$this, 'renderExport']);
+        $this->replaceLayoutPart('{toggleData}', [$this, 'renderToggleData']);
+        $this->replaceLayoutPart('{items}', [$this, 'renderGridItems']);
         if (is_array($this->replaceTags) && !empty($this->replaceTags)) {
-            foreach ($this->replaceTags as $key => $value) {
-                if ($value instanceof Closure) {
-                    $value = call_user_func($value, $this);
-                }
-                $this->layout = Lib::str_replace($key, $value, $this->layout);
-            }
-        }
-    }
-
-    /**
-     * Replace layout tokens
-     *
-     * @param  array  $pairs  the token to find and its replaced value as key value pairs
-     */
-    protected function replaceLayoutTokens($pairs)
-    {
-        foreach ($pairs as $token => $replace) {
-            if (Lib::strpos($this->layout, $token) !== false) {
-                $this->layout = Lib::str_replace($token, $replace, $this->layout);
+            foreach ($this->replaceTags as $key => $callback) {
+                $this->replaceLayoutPart($key, $callback);
             }
         }
     }
@@ -1675,6 +1690,46 @@ HTML;
     }
 
     /**
+     * Replaces token within the grid's property value using custom callable.
+     *
+     * @param  string  $prop  the template property in this module
+     * @param  string  $needle the token to be replaced.
+     * @param  string|array  $callback  the callback function name
+     * @param  array  $params  arguments to the callback
+     */
+    protected function replacePart($prop, $needle, $callback, $params = [])
+    {
+        if (!property_exists($this, $prop)) {
+            return;
+        }
+        if (is_array($callback)) {
+            if (count($callback) > 1) {
+                $exists = method_exists($callback[0], $callback[1]);
+            } else {
+                return;
+            }
+        } else {
+            $exists = is_callable($callback);
+        }
+        if (Lib::strpos($this->$prop, $needle) !== false) {
+            $this->$prop = Lib::strtr($this->$prop,
+                [$needle => $exists ? call_user_func_array($callback, $params) : '']);
+        }
+    }
+
+    /**
+     * Replaces layout token part using custom callable.
+     *
+     * @param  string  $needle the token to be replaced.
+     * @param  string|array  $callback  the callback function name
+     * @param  array  $params  arguments to the callback
+     */
+    protected function replaceLayoutPart($needle, $callback, $params = [])
+    {
+        $this->replacePart('layout', $needle, $callback, $params);
+    }
+
+    /**
      * Initializes and sets the grid panel layout based on the [[template]] and [[panel]] settings.
      *
      * @throws Exception
@@ -1684,6 +1739,7 @@ HTML;
         if (!$this->bootstrap || !is_array($this->panel) || empty($this->panel)) {
             return;
         }
+        Html::addCssClass($this->options, 'kv-grid-panel');
         $options = ArrayHelper::getValue($this->panel, 'options', []);
         $type = ArrayHelper::getValue($this->panel, 'type', 'default');
         $heading = ArrayHelper::getValue($this->panel, 'heading', '');
@@ -1746,6 +1802,14 @@ HTML;
     }
 
     /**
+     * @return string
+     */
+    protected function renderGridItems()
+    {
+        return Html::tag('div', '{items}', $this->containerOptions);
+    }
+
+    /**
      * Generates the toolbar.
      *
      * @return string
@@ -1782,15 +1846,12 @@ HTML;
     protected function renderToolbarContainer()
     {
         $tag = ArrayHelper::remove($this->toolbarContainerOptions, 'tag', 'div');
-
         /**
          * allow to override the float declaration:
          * forcing float-right only if no float is defined in toolbarContainerOptions
          */
-        if (
-            !Lib::stripos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_RIGHT))
-            && !Lib::stripos($this->toolbarContainerOptions['class'], $this->getCssClass(self::BS_PULL_LEFT))
-        ) {
+        if (!Config::hasCssClass($this->toolbarContainerOptions, self::BS_PULL_RIGHT) &&
+            !Config::hasCssClass($this->toolbarContainerOptions, self::BS_PULL_LEFT)) {
             $this->addCssClass($this->toolbarContainerOptions, self::BS_PULL_RIGHT);
         }
 
@@ -1868,7 +1929,7 @@ HTML;
     /**
      * Registers client assets for the [[GridView]] widget.
      *
-     * @throws Exception
+     * @throws Exception|Throwable
      */
     protected function registerAssets()
     {
@@ -1879,7 +1940,7 @@ HTML;
         }
         Dialog::widget($this->krajeeDialogSettings);
         $gridId = $this->options['id'];
-        if ($this->export !== false && is_array($this->export) && !empty($this->export)) {
+        if (is_array($this->export) && !empty($this->export)) {
             GridExportAsset::register($view);
             if (!isset($this->_module->downloadAction)) {
                 $action = ["/{$this->moduleId}/export/download"];

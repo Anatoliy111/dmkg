@@ -167,6 +167,10 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+//        'fdb' => require(__DIR__ . '/fdb.php'),
+
+
+
     ],
     'params' => $params,
 
