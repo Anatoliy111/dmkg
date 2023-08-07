@@ -5,26 +5,35 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "ut_abonpokazn".
+ * This is the model class for table "pokazn".
  *
  * @property int $id
- * @property int|null $id_abonent
- * @property string $schet
- * @property string $date_ins
- * @property string $data
- * @property int $pokazn
- * @property string|null $name
- * @property int $status
- * @property string $vid
+ * @property int|null $yearmon
+ * @property float|null $pokazn
+ * @property string|null $date_pok
+ * @property int|null $vid_pok
+ * @property int|null $n_doc
+ * @property string|null $date_zn
+ * @property int|null $vid_zn
+ * @property string|null $schet
+ * @property int|null $id_lich
  */
-class UtAbonpokazn extends \yii\db\ActiveRecord
+class Pokazn extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'ut_abonpokazn';
+        return 'pokazn';
+    }
+
+    /**
+     * @return \yii\db\Connection the database connection used by this AR class.
+     */
+    public static function getDb()
+    {
+        return Yii::$app->get('fdb');
     }
 
     /**
@@ -33,12 +42,10 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pokazn', 'status'], 'integer'],
-            [['id_abonent','schet', 'date_pok', 'pokazn', 'vid'], 'required'],
-            [['date_ins', 'date_pok'], 'safe'],
+            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
+            [['pokazn'], 'number'],
+            [['date_pok', 'date_zn'], 'string'],
             [['schet'], 'string', 'max' => 10],
-            [['name'], 'string', 'max' => 64],
-            [['vid'], 'string', 'max' => 32],
             [['pokazn'], function ($attribute) {
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['date_pok' => SORT_DESC])->one();
                 if ($this->pokazn<=$pok->pokazn) {
@@ -54,11 +61,10 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
                             if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через кабінет споживача!!!");
                             if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через ViberBot!!!");
                         }
-                    }
+                }
 
 
             }],
-
         ];
     }
 
@@ -69,14 +75,20 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_abonent' => 'Id Abonent',
-            'schet' => 'Schet',
-            'date_ins' => 'Date Ins',
+            'yearmon' => 'Yearmon',
+            'pokazn' => 'Pokazn',
             'date_pok' => 'Date Pok',
-            'pokazn' => 'Показник',
-            'name' => 'Name',
-            'status' => 'Status',
-            'vid' => 'Vid',
+            'vid_pok' => 'Vid Pok',
+            'n_doc' => 'N Doc',
+            'date_zn' => 'Date Zn',
+            'vid_zn' => 'Vid Zn',
+            'schet' => 'Schet',
+            'id_lich' => 'Id Lich',
         ];
+    }
+
+    public function getSprzn()
+    {
+        return $this->hasOne(SprZn::className(), ['id' => 'vid_pok']);
     }
 }

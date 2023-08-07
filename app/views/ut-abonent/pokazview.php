@@ -43,18 +43,15 @@ HTML;
                 'dataProvider' =>$dpvoda,
                 'columns' => [
                     [
-                        'attribute' => 'YEARMON',
+                        'attribute' => 'yearmon',
                         'label'=>'Місяць обліку',
                         'value'=>function ($model) {
-                            return Yii::$app->formatter->asDate('01.'.substr($model->YEARMON, 4, 2).'.'.substr($model->YEARMON, 0, 4), 'LLLL Y');
+                            return Yii::$app->formatter->asDate('01.'.substr($model["yearmon"], 4, 2).'.'.substr($model["yearmon"], 0, 4), 'LLLL Y');
                         }
                     ],
+                    'sch_cur',
                     [
-                        'attribute' => 'SCH_CUR',
-                        'label'=>'Показник'
-                    ],
-                    [
-                        'attribute' => 'KUB',
+                        'attribute' => 'sch_razn',
                         'label'=>'Нараховано кубів'
                     ],
                 ],
@@ -97,16 +94,19 @@ HTML;
                 'dataProvider' =>$dppokazn,
                 'columns' => [
                     [
-                        'attribute' => 'DATE_POK',
+                        'attribute' => 'date_pok',
                         'label'=>'Дата прийнятого показника'
                     ],
                     [
-                        'attribute' => 'POKAZN',
+                        'attribute' => 'pokazn',
                         'label'=>'Показник'
                     ],
                     [
-                        'attribute' => 'VID',
-                        'label'=>'Вид'
+                        'attribute' => 'sprzn.vid_zn',
+                        'label'=>'Вид',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["sprzn"]->vid_zn);
+                        }
                     ],
                 ],
                 'layout' => $layout2,

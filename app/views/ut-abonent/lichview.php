@@ -20,9 +20,9 @@ use yii\helpers\Url;
             $lich=$dplich->getModels();
 
              foreach($lich as $value){
-                 if ($value['DATA_POV']<date("Y-m-d")){
+                 if ($value['data_pov']<date("Y-m-d")){
 //                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
-                     echo '<div class="info' . $value['N_LICH'] . '" style="color: #b92c28; text-align: center"><h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4></div>';
+                     echo '<div class="info' . $value['n_lich'] . '" style="color: #b92c28; text-align: center"><h4>Увага!!! Лічильник №'.$value['n_lich'].' потребує повірки!</h4></div>';
                  }
              }
             ?>
@@ -42,10 +42,22 @@ HTML;
             echo GridView::widget([
                 'dataProvider' =>$dplich,
                 'columns' => [
-                    'TIP',
-                    'N_LICH',
-                    'DATA_POV',
-                    'DATA_VIG',
+                    [
+                        'attribute' => 'tip',
+                        'label'=>'Тип лічильника',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model->tip);
+                        }
+                    ],
+                    [
+                        'attribute' => 'n_lich',
+                        'label'=>'№ лічильника',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model->n_lich);
+                        }
+                    ],
+                    'data_pov',
+                    'data_vig',
 
                 ],
                 'layout' => $layout1,

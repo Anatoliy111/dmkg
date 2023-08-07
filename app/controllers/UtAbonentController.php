@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\HVoda;
+use app\models\Lich;
+use app\models\Pokazn;
 use app\models\SearchUtKart;
 use app\models\UtAbonent;
 use app\models\SearchUtAbonent;
@@ -257,7 +260,6 @@ class UtAbonentController extends Controller
             $dppokazn = null;
             $dplich = null;
 
-               if ($abon->id==2071222) {
 
                    $hv = UtObor::find()
                        ->leftJoin('ut_posl', '(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
@@ -269,7 +271,9 @@ class UtAbonentController extends Controller
 
                    if ($hv != null) {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
-                       $voda = UtVoda::find()->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC]);
+                       $voda = HVoda::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])->orderBy(['kl' => SORT_DESC]);
+
+                                           $voda2 = $voda->asArray()->all();
 
                        $dataProvider = new ActiveDataProvider([
                            'query' => $voda,
@@ -278,7 +282,8 @@ class UtAbonentController extends Controller
 
 //                    $yearmon = UtVoda::find()->limit(1)->select('yearmon')->orderBy(['id' => SORT_DESC])->asArray()->all();
 
-                       $pokazn = UtPokazn::find()->where(['schet' => $abon->schet])
+                       $pokazn = Pokazn::find()->joinWith('sprzn')->
+                       where(['pokazn.schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])
 //                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
                            ->orderBy(['id' => SORT_DESC]);
 
@@ -290,13 +295,16 @@ class UtAbonentController extends Controller
                        $dppokazn = $dataProvider;
 
 
-                       $lich = UtLich::find()->where(['schet' => $abon->schet, 'vid_zn' => null]);
+                       $lich = Lich::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet), 'vid_zn' => null]);
+
+
+//                    $lich2 = $lich->asArray()->all();
                        $dataProvider = new ActiveDataProvider([
                            'query' => $lich,
                        ]);
                        $dplich = $dataProvider;
                    }
-               }
+
 
 
                 $summa = 0;
@@ -538,30 +546,63 @@ class UtAbonentController extends Controller
 
     public function actionAddpokazn()
     {
-        $modelabonpokazn= new UtAbonpokazn();
-        $modelabonpokazn->schet = $_SESSION['abon']->schet;
-        $modelabonpokazn->name = $_SESSION['model']->fio;
-        $modelabonpokazn->id_abonent = $_SESSION['model']->id;
-        $modelabonpokazn->date_pok = date("Y-m-d");
-        $modelabonpokazn->vid = 'site';
+
+        $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
+
+        $nowdate = intval(date('Y').date('m'));
+
+        if ($lasdatehvd[0]['yearmon']<$nowdate) {
+
+            $modelabonpokazn = new UtAbonpokazn();
+            $modelabonpokazn->schet = $_SESSION['abon']->schet;
+            $modelabonpokazn->name = $_SESSION['model']->fio;
+            $modelabonpokazn->id_abonent = $_SESSION['model']->id;
+            $modelabonpokazn->date_pok = date("Y-m-d");
+            $modelabonpokazn->vid = 'site';
 
 
-        if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post()))
+            if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
 
-        {
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return \yii\widgets\ActiveForm::validate($modelabonpokazn);
 
-            return \yii\widgets\ActiveForm::validate($modelabonpokazn);
+            }
+
+            if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
+                $modelabonpokazn->save();
+                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+                return $this->redirect('kabinet');
+            }
+            return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
+
+        } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
+
+            $modelabonpokazn = new Pokazn();
+            $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+            $modelabonpokazn->yearmon =$nowdate;
+            $modelabonpokazn->date_pok = date("Y-m-d");
+            $modelabonpokazn->vid_pok = 36;
+
+
+            if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
+
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+                return \yii\widgets\ActiveForm::validate($modelabonpokazn);
+
+            }
+
+            if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
+                $modelabonpokazn->save();
+                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+                return $this->redirect('kabinet');
+            }
+            return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
 
         }
 
-        if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
-            $modelabonpokazn->save();
-            $_SESSION['modalmess']['addpokazn']=$modelabonpokazn->pokazn;
-            return $this->redirect('kabinet');
-        }
-        return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
+        return '<div class="pok" style="text-align:center"><h3>Вибачте, здати показник не можливо! Технічні проблеми!!! </h3></div>';
 
     }
 
