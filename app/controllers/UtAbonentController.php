@@ -270,7 +270,7 @@ class UtAbonentController extends Controller
             $dpvoda = null;
             $dppokazn = null;
             $dplich = null;
-            $e = null;
+            $err = null;
 
 
                    $hv = UtObor::find()
@@ -321,7 +321,7 @@ class UtAbonentController extends Controller
                            } catch (\Exception $e) {
                                // an other exception could be thrown while displaying the exception
                                Yii::warning("Division by zero.");
-                               $dpvoda = $e->getCode();
+                               $err = $e->getCode();
                            }
 
                        }
@@ -496,6 +496,7 @@ class UtAbonentController extends Controller
     //		]);
 
             return $this->render('kabinet', [
+                'err' => $err,
                 'modelkart' => $modelkart,
                 'modelemail' => $modelemail,
                 'emailchange' => $emailchange,

@@ -550,10 +550,10 @@ ActiveForm::end();
 
             <?php
 
-                if (($dpvoda==null) or ($dpvoda==335544344)) {
+                if (($dpvoda==null) or ($err==335544344)) {
                 ?>
 
-                    <h3 style="color:#b92c28; text-align: center">Технічні роботи! - <?= Html::encode($dpvoda) ?></h3>
+                    <h3 style="color:#b92c28; text-align: center">Технічні роботи! - <?= Html::encode($err) ?></h3>
                 <?php
 
                 } else {
