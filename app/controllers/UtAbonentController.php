@@ -24,6 +24,7 @@ use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifinfo;
 use app\poslug\models\UtUtrim;
 use Yii;
+use yii\base\ExitException;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -51,6 +52,16 @@ class UtAbonentController extends Controller
                 ],
             ]
         );
+    }
+
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
     }
 
 
@@ -259,6 +270,7 @@ class UtAbonentController extends Controller
             $dpvoda = null;
             $dppokazn = null;
             $dplich = null;
+            $e = null;
 
 
                    $hv = UtObor::find()
@@ -268,44 +280,53 @@ class UtAbonentController extends Controller
                        ->asArray()->all();
                    //-----------------------------------------------------------------------------
 
-
-                   if ($hv != null) {
+                   if ($model->id==2071) {
+                       if ($hv != null) {
+                           try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
-                       $voda = HVoda::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])->orderBy(['kl' => SORT_DESC]);
+                               $voda = HVoda::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])->orderBy(['kl' => SORT_DESC]);
 
-                                           $voda2 = $voda->asArray()->all();
+                               $voda2 = $voda->asArray()->all();
 
-                       $dataProvider = new ActiveDataProvider([
-                           'query' => $voda,
-                       ]);
-                       $dpvoda = $dataProvider;
+                               $dataProvider = new ActiveDataProvider([
+                                   'query' => $voda,
+                               ]);
+                               $dpvoda = $dataProvider;
 
 //                    $yearmon = UtVoda::find()->limit(1)->select('yearmon')->orderBy(['id' => SORT_DESC])->asArray()->all();
 
-                       $pokazn = Pokazn::find()->joinWith('sprzn')->
-                       where(['pokazn.schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])
+                               $pokazn = Pokazn::find()->joinWith('sprzn')->
+                               where(['pokazn.schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])
 //                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
-                           ->orderBy(['id' => SORT_DESC]);
+                                   ->orderBy(['id' => SORT_DESC]);
 
 //                    $pokazn2 = $pokazn->asArray()->all();
 
-                       $dataProvider = new ActiveDataProvider([
-                           'query' => $pokazn,
-                       ]);
-                       $dppokazn = $dataProvider;
+                               $dataProvider = new ActiveDataProvider([
+                                   'query' => $pokazn,
+                               ]);
+                               $dppokazn = $dataProvider;
 
 
-                       $lich = Lich::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet), 'vid_zn' => null]);
+                               $lich = Lich::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet), 'vid_zn' => null]);
 
 
 //                    $lich2 = $lich->asArray()->all();
-                       $dataProvider = new ActiveDataProvider([
-                           'query' => $lich,
-                       ]);
-                       $dplich = $dataProvider;
+                               $dataProvider = new ActiveDataProvider([
+                                   'query' => $lich,
+                               ]);
+                               $dplich = $dataProvider;
+                               Yii::warning("Division by zero.");
+
+                           } catch (\Exception $e) {
+                               // an other exception could be thrown while displaying the exception
+                               Yii::warning("Division by zero.");
+                               $dpvoda = $e->getCode();
+                           }
+
+                       }
+
                    }
-
-
 
                 $summa = 0;
 
@@ -490,6 +511,7 @@ class UtAbonentController extends Controller
                 'dplich' => $dplich,
                 'dppokazn' => $dppokazn,
                 'dpvoda' => $dpvoda,
+                'hv' => $hv,
                 'summa' => $summa,
                 'lastperiod' => $session['period'],
                 'periodkab' => $session['periodkab'],
@@ -571,7 +593,7 @@ class UtAbonentController extends Controller
 
             if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
                 $modelabonpokazn->save();
-                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+                $_SESSION['modalmess']['addpokazn2'] = $modelabonpokazn->pokazn;
                 return $this->redirect('kabinet');
             }
             return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
@@ -582,7 +604,7 @@ class UtAbonentController extends Controller
             $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
             $modelabonpokazn->yearmon =$nowdate;
             $modelabonpokazn->date_pok = date("Y-m-d");
-            $modelabonpokazn->vid_pok = 36;
+            $modelabonpokazn->vid_pok = 37;
 
 
             if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
@@ -595,14 +617,17 @@ class UtAbonentController extends Controller
 
             if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
                 $modelabonpokazn->save();
+                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
+                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
                 $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
             }
             return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
 
         }
 
-        return '<div class="pok" style="text-align:center"><h3>Вибачте, здати показник не можливо! Технічні проблеми!!! </h3></div>';
+        return '<div class="pok" style="text-align:center"><h3>Вибачте, здати показник не можливо! Технічні роботи!!! </h3></div>';
 
     }
 

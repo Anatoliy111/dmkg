@@ -532,30 +532,9 @@ ActiveForm::end();
 
     <?php
 
-    if ($dpvoda<>null) {
-
-    $itemshv = [
-        //		[
-        //			'label'=>'<i class="glyphicon glyphicon-info-sign"></i> Загальна інформація',
-        ////			'content'=>'dgfdgggggggggggggggggggg',
-        //			'content'=>$this->render('infoview', ['model' => $model,'dataProvider' => $dpinfo[$org->id_org]]),
-        //			'active'=>true
-        //		],
-        //		[
-        //			'label'=>'Загальна інформація',
-        //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
-        //		],
-        [
-            'label'=>'Показники',
-            'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'abon'=>$abon]),
-        ],
-        [
-            'label'=>'Лічильники',
-            'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich,'abon'=>$abon]),
-        ],
-    ];
 
 
+    if ($hv<>null) {
 
     ?>
 
@@ -570,6 +549,24 @@ ActiveForm::end();
         <div class="col-xs-12 .col-sm-6 .col-lg-8">
 
             <?php
+
+                if (($dpvoda==null) or ($dpvoda==335544344)) {
+                ?>
+
+                    <h3 style="color:#b92c28; text-align: center">Технічні роботи! - <?= Html::encode($dpvoda) ?></h3>
+                <?php
+
+                } else {
+                $itemshv = [
+                    [
+                        'label'=>'Показники',
+                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'abon'=>$abon]),
+                    ],
+                    [
+                        'label'=>'Лічильники',
+                        'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich,'abon'=>$abon]),
+                    ],
+                ];
             echo TabsX::widget([
                 'items'=>$itemshv,
                 'position'=>TabsX::POS_ABOVE,
@@ -582,6 +579,9 @@ ActiveForm::end();
                 //                'backToTop' => false,
                 //            ],
             ]);
+
+              }
+            }
             ?>
 
         </div>
@@ -590,7 +590,7 @@ ActiveForm::end();
 
     </div>
 
-    <?php } ?>
+
 
 
 

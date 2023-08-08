@@ -47,7 +47,7 @@ class Pokazn extends \yii\db\ActiveRecord
             [['date_pok', 'date_zn'], 'string'],
             [['schet'], 'string', 'max' => 10],
             [['pokazn'], function ($attribute) {
-                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['date_pok' => SORT_DESC])->one();
+                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
                 if ($this->pokazn<=$pok->pokazn) {
                     $this->addError($attribute, "Ваш показник меньший або рівний за останній зареєстрований показник!!!");
                 }
