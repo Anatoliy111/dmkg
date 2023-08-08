@@ -42,8 +42,8 @@ class Pokazn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
-            [['pokazn'], 'number'],
+            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich','pokazn'], 'integer'],
+//            [['pokazn'], 'number'],
             [['date_pok', 'date_zn'], 'string'],
             [['schet'], 'string', 'max' => 10],
             [['pokazn'], function ($attribute) {
@@ -76,7 +76,7 @@ class Pokazn extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'yearmon' => 'Yearmon',
-            'pokazn' => 'Pokazn',
+            'pokazn' => 'Введіть показник',
             'date_pok' => 'Date Pok',
             'vid_pok' => 'Vid Pok',
             'n_doc' => 'N Doc',
