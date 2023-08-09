@@ -599,8 +599,8 @@ class UtAbonentController extends Controller
         } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
 
             $modelabonpokazn = new Pokazn();
-            $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
-            $modelabonpokazn->yearmon =$nowdate;
+//            $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+//            $modelabonpokazn->yearmon =$nowdate;
 //            $modelabonpokazn->date_pok = getdate();
             $modelabonpokazn->vid_pok = 37;
 
@@ -615,10 +615,10 @@ class UtAbonentController extends Controller
 
             if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
                 $modelabonpokazn->save();
-                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
-                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
-                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
-                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
+//                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
+//                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+//                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+//                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
             }
             return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
