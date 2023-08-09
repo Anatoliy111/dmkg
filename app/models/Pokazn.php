@@ -11,7 +11,7 @@ use yii\easyii\helpers\Data;
  * @property int $id
  * @property int|null $yearmon
  * @property int|null $pokazn
- * @property Data|null $date_pok
+ * @property string|null $date_pok
  * @property string|null $vid_pok
  * @property int|null $n_doc
  * @property string|null $date_zn
@@ -45,7 +45,7 @@ class Pokazn extends \yii\db\ActiveRecord
         return [
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich','pokazn'], 'integer'],
 //            [['pokazn'], 'number'],
-            [['date_pok', 'date_zn'], 'date','format' => 'php:Y-m-d'],
+            [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
 //            [['pokazn'], function ($attribute) {
 //                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
