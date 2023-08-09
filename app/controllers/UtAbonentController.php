@@ -566,11 +566,17 @@ class UtAbonentController extends Controller
 
     public function actionAddpokazn()
     {
-        $modelpokazn = new Pokazn();
+
 
         $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
 
         $nowdate = intval(date('Y').date('m'));
+
+        $modelpokazn = new Pokazn();
+        $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+        $modelpokazn->yearmon =$nowdate;
+        $modelpokazn->date_pok = date("Y-m-d");
+        $modelpokazn->vid_pok = 37;
 
         if ($lasdatehvd[0]['yearmon']<$nowdate) {
 
@@ -608,12 +614,7 @@ class UtAbonentController extends Controller
             }
 
             if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
-
-                $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
-                $modelpokazn->yearmon =$nowdate;
-//            $modelpokazn->date_pok = getdate();
-                $modelpokazn->vid_pok = 37;
-
+                $modelpokazn->date_pok = null;
                 $modelpokazn->save();
 //                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
 //                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();

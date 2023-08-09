@@ -102,10 +102,6 @@ HTML;
                         'label'=>'Показник'
                     ],
                     [
-                        'attribute' => 'pok',
-                        'label'=>'Показник'
-                    ],
-                    [
                         'attribute' => 'sprzn.vid_zn',
                         'label'=>'Вид',
                         'value'=>function ($model) {
