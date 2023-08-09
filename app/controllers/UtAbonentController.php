@@ -616,10 +616,10 @@ class UtAbonentController extends Controller
             if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
 //                $modelabonpokazn->pokazn = intval($modelabonpokazn->pokazn);
                 $modelabonpokazn->save();
-                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
-                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
-                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
-                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
+//                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
+//                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+//                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+//                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
             }
             return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);

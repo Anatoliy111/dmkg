@@ -46,25 +46,25 @@ class Pokazn extends \yii\db\ActiveRecord
 //            [['pokazn'], 'number'],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
-            [['pokazn'], function ($attribute) {
-                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
-                if ($this->pokazn<=$pok->pokazn) {
-                    $this->addError($attribute, "Ваш показник меньший або рівний за останній зареєстрований показник!!!");
-                }
-                else {
-                    $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
-                    if ($poksite<>null)
-                        if ($poksite->date_pok == $this->date_pok) {
-                            if ($poksite->vid == 'site') $this->addError($attribute,  "Ви вже сьогодні подали показник " . $poksite->pokazn . " через кабінет споживача!!! За один день здаємо тільки один показник!");
-                            if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже сьогодні подали показник " . $poksite->pokazn . " через ViberBot!!! За один день здаємо тільки один показник!");
-                        } elseif ($this->pokazn <= $poksite->pokazn) {
-                            if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через кабінет споживача!!!");
-                            if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через ViberBot!!!");
-                        }
-                }
-
-
-            }],
+//            [['pokazn'], function ($attribute) {
+//                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
+//                if ($this->pokazn<=$pok->pokazn) {
+//                    $this->addError($attribute, "Ваш показник меньший або рівний за останній зареєстрований показник!!!");
+//                }
+//                else {
+//                    $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
+//                    if ($poksite<>null)
+//                        if ($poksite->date_pok == $this->date_pok) {
+//                            if ($poksite->vid == 'site') $this->addError($attribute,  "Ви вже сьогодні подали показник " . $poksite->pokazn . " через кабінет споживача!!! За один день здаємо тільки один показник!");
+//                            if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже сьогодні подали показник " . $poksite->pokazn . " через ViberBot!!! За один день здаємо тільки один показник!");
+//                        } elseif ($this->pokazn <= $poksite->pokazn) {
+//                            if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через кабінет споживача!!!");
+//                            if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через ViberBot!!!");
+//                        }
+//                }
+//
+//
+//            }],
         ];
     }
 
