@@ -603,7 +603,7 @@ class UtAbonentController extends Controller
             $modelabonpokazn->yearmon =$nowdate;
             $modelabonpokazn->date_pok = date("Y-m-d");
             $modelabonpokazn->vid_pok = 37;
-
+            $modelabonpokazn->save();
 
             if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
 
