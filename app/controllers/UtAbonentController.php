@@ -616,6 +616,7 @@ class UtAbonentController extends Controller
             if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
                 $modelabonpokazn1 = new Pokazn();
                 $modelabonpokazn1->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+                $modelabonpokazn1->yearmon =$nowdate;
                 $modelabonpokazn1->vid_pok = 37;
                 $modelabonpokazn1->save();
 //                $modelabonpokazn->save();
