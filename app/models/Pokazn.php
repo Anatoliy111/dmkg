@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\easyii\helpers\Data;
 
 /**
  * This is the model class for table "pokazn".
@@ -10,8 +11,8 @@ use Yii;
  * @property int $id
  * @property int|null $yearmon
  * @property int|null $pokazn
- * @property string|null $date_pok
- * @property int|null $vid_pok
+ * @property Data|null $date_pok
+ * @property string|null $vid_pok
  * @property int|null $n_doc
  * @property string|null $date_zn
  * @property int|null $vid_zn
