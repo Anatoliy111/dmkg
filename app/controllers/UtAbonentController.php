@@ -599,10 +599,10 @@ class UtAbonentController extends Controller
         } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
 
             $modelabonpokazn = new Pokazn();
-//            $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+            $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
 //            $modelabonpokazn->yearmon =$nowdate;
           //  $modelabonpokazn->date_pok = date("Y-m-d");
-//            $modelabonpokazn->vid_pok = 37;
+            $modelabonpokazn->vid_pok = 37;
 
 
             if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
@@ -613,7 +613,7 @@ class UtAbonentController extends Controller
 
             }
 
-            if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
+//            if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
 //                $modelabonpokazn->pokazn = intval($modelabonpokazn->pokazn);
                 $modelabonpokazn->save();
 //                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
@@ -621,7 +621,7 @@ class UtAbonentController extends Controller
 //                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
 //                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
-            }
+//            }
             return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
 
         }
