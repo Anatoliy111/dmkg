@@ -316,11 +316,8 @@ class UtAbonentController extends Controller
                                    'query' => $lich,
                                ]);
                                $dplich = $dataProvider;
-                               Yii::warning("Division by zero.");
-
                            } catch (\Exception $e) {
                                // an other exception could be thrown while displaying the exception
-                               Yii::warning("Division by zero.");
                                $err = $e->getCode();
                            }
 
@@ -617,7 +614,7 @@ class UtAbonentController extends Controller
             }
 
             if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
-                $modelabonpokazn->pokazn = intval($modelabonpokazn->pokazn);
+//                $modelabonpokazn->pokazn = intval($modelabonpokazn->pokazn);
                 $modelabonpokazn->save();
                 Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
                 $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
