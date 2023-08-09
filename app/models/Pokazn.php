@@ -11,6 +11,7 @@ use yii\easyii\helpers\Data;
  * @property int $id
  * @property int|null $yearmon
  * @property float|null $pokazn
+ * @property int|null $pok
  * @property string|null $date_pok
  * @property string|null $vid_pok
  * @property int|null $n_doc
@@ -43,7 +44,7 @@ class Pokazn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
+            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich','pok'], 'integer'],
             [['pokazn'], 'number'],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
@@ -78,6 +79,7 @@ class Pokazn extends \yii\db\ActiveRecord
             'id' => 'ID',
             'yearmon' => 'Yearmon',
             'pokazn' => 'Введіть показник',
+            'pok' => 'Введіть показник',
             'date_pok' => 'Date Pok',
             'vid_pok' => 'Vid Pok',
             'n_doc' => 'N Doc',
