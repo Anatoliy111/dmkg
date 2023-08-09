@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int|null $yearmon
- * @property float|null $pokazn
+ * @property int|null $pokazn
  * @property string|null $date_pok
  * @property int|null $vid_pok
  * @property int|null $n_doc
