@@ -47,7 +47,7 @@ class Pokazn extends \yii\db\ActiveRecord
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
 //            [['pokazn'], 'float'],
             [['pokazn', 'ppp'], 'number'],
-            [['date_pok', 'date_zn','pokazn'], 'safe'],
+            [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
 //            [['pokazn'], function ($attribute) {
 //                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
