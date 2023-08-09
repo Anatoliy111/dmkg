@@ -614,7 +614,7 @@ class UtAbonentController extends Controller
             }
 
             if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
-                $modelpokazn->date_pok = null;
+//                $modelpokazn->date_pok = null;
 
 //                $modelpokazn->save();
                 $modelpokazn2 = new Pokazn();
