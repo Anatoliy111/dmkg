@@ -615,7 +615,7 @@ class UtAbonentController extends Controller
 
             if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
                 $modelpokazn->date_pok = null;
-                $modelpokazn->pokazn = 111;
+                $modelpokazn->pokazn = 800;
                 $modelpokazn->save();
 //                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
 //                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
