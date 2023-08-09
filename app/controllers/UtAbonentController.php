@@ -619,7 +619,7 @@ class UtAbonentController extends Controller
                 $modelabonpokazn1->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
 //                $modelabonpokazn1->yearmon =$nowdate;
 //                $modelabonpokazn1->date_pok = date("Y-m-d");
-//                $modelabonpokazn1->vid_pok = 37;
+                $modelabonpokazn1->vid_pok = 37;
 
 
                 $modelabonpokazn1->save();
