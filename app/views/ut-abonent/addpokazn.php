@@ -24,7 +24,7 @@ use yii\helpers\Html;
     'options' => ['data-pjax' => true]
 ]); ?>
 
-<?=    $form->field($modelabonpokazn, 'pokazn')->input('integer',['maxlength' => true])  ?>
+<?=    $form->field($modelabonpokazn, 'pok')->input('integer',['maxlength' => true])  ?>
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
 </div>
