@@ -622,7 +622,7 @@ class UtAbonentController extends Controller
 //                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
 //            }
-            return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
+//            return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
 
         }
 
