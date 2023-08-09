@@ -18,6 +18,7 @@ use yii\easyii\helpers\Data;
  * @property int|null $vid_zn
  * @property string|null $schet
  * @property int|null $id_lich
+ * @property float|null $ppp
  */
 class Pokazn extends \yii\db\ActiveRecord
 {
@@ -45,6 +46,7 @@ class Pokazn extends \yii\db\ActiveRecord
         return [
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
 //            [['pokazn'], 'float'],
+            [['pokazn', 'ppp'], 'number'],
             [['date_pok', 'date_zn','pokazn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
 //            [['pokazn'], function ($attribute) {
@@ -86,6 +88,7 @@ class Pokazn extends \yii\db\ActiveRecord
             'vid_zn' => 'Vid Zn',
             'schet' => 'Schet',
             'id_lich' => 'Id Lich',
+            'ppp' => 'Ppp',
         ];
     }
 
