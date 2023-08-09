@@ -566,6 +566,7 @@ class UtAbonentController extends Controller
 
     public function actionAddpokazn()
     {
+        $modelpokazn = new Pokazn();
 
         $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
 
@@ -573,23 +574,22 @@ class UtAbonentController extends Controller
 
         if ($lasdatehvd[0]['yearmon']<$nowdate) {
 
-            $modelabonpokazn = new UtAbonpokazn();
-            $modelabonpokazn->schet = $_SESSION['abon']->schet;
-            $modelabonpokazn->name = $_SESSION['model']->fio;
-            $modelabonpokazn->id_abonent = $_SESSION['model']->id;
-            $modelabonpokazn->date_pok = date("Y-m-d");
-            $modelabonpokazn->vid = 'site';
-
-
-            if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->isAjax && $modelpokazn->load(Yii::$app->request->post())) {
 
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-                return \yii\widgets\ActiveForm::validate($modelabonpokazn);
+                return \yii\widgets\ActiveForm::validate($modelpokazn);
 
             }
 
-            if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
+            if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
+                $modelabonpokazn = new UtAbonpokazn();
+                $modelabonpokazn->schet = $_SESSION['abon']->schet;
+                $modelabonpokazn->name = $_SESSION['model']->fio;
+                $modelabonpokazn->id_abonent = $_SESSION['model']->id;
+                $modelabonpokazn->date_pok = date("Y-m-d");
+                $modelabonpokazn->pokazn = $modelpokazn->pokazn;
+                $modelabonpokazn->vid = 'site';
                 $modelabonpokazn->save();
                 $_SESSION['modalmess']['addpokazn2'] = $modelabonpokazn->pokazn;
                 return $this->redirect('kabinet');
@@ -598,36 +598,30 @@ class UtAbonentController extends Controller
 
         } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
 
-            $modelabonpokazn = new Pokazn();
-            $modelabonpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
-            $modelabonpokazn->yearmon =$nowdate;
-//            $modelabonpokazn->date_pok = getdate();
-            $modelabonpokazn->vid_pok = 37;
 
-
-            if (Yii::$app->request->isAjax && $modelabonpokazn->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->isAjax && $modelpokazn->load(Yii::$app->request->post())) {
 
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-                return \yii\widgets\ActiveForm::validate($modelabonpokazn);
+                return \yii\widgets\ActiveForm::validate($modelpokazn);
 
             }
 
-            if ($modelabonpokazn->load(Yii::$app->request->post()) && $modelabonpokazn->validate()) {
-//                $modelabonpokazn1 = new Pokazn();
-//                $modelabonpokazn1->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
-//                $modelabonpokazn1->yearmon =$nowdate;
-//                $modelabonpokazn1->vid_pok = 37;
-//                $modelabonpokazn1->pok = 777;
-//                $modelabonpokazn1->save();
-                $modelabonpokazn->save();
+            if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
+
+                $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+                $modelpokazn->yearmon =$nowdate;
+//            $modelpokazn->date_pok = getdate();
+                $modelpokazn->vid_pok = 37;
+
+                $modelpokazn->save();
 //                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
 //                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
 //                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
 //                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
             }
-            return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
+            return $this->renderAjax('addpokazn', ['modelpokazn' => $modelpokazn]);
 
         }
 

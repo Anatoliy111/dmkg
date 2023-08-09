@@ -6,7 +6,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\UtAbonpokazn $modelabonpokazn */
+/** @var app\models\Pokazn $modelpokazn */
 
   $asset = \app\assets\AppAsset::register($this);
 
@@ -24,7 +24,7 @@ use yii\helpers\Html;
     'options' => ['data-pjax' => true]
 ]); ?>
 
-<?=    $form->field($modelabonpokazn, 'pok')->input('integer',['maxlength' => true])  ?>
+<?=    $form->field($modelpokazn, 'pok')->input('integer',['maxlength' => true])  ?>
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
 </div>
