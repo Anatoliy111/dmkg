@@ -619,7 +619,7 @@ class UtAbonentController extends Controller
 //                $modelpokazn->save();
                 $modelpokazn2 = new Pokazn();
 //                $modelpokazn2->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
-                $modelpokazn2->ppp = 760.00;
+                $modelpokazn2->pokazn = 760.00;
                 $modelpokazn2->save();
 
 //                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
