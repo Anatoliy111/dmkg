@@ -24,7 +24,7 @@ use yii\widgets\Pjax;
 
     $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
     $model = $_SESSION['model'];
-    $abon = $_SESSION['abon'];
+
 
 
 if ($emailchange=='error') {
@@ -321,6 +321,8 @@ ActiveForm::end();
 
         if ($abonents<>null) {
 
+
+
         ?>
 
         <div class="col-sm-3 col-md-2 col-lg-2">
@@ -340,6 +342,8 @@ ActiveForm::end();
         <?php
 
         if ($abonents<>null) {
+
+        $abon = $_SESSION['abon'];
 
         ?>
 
