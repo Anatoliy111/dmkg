@@ -619,9 +619,9 @@ class UtAbonentController extends Controller
                 $modelpokazn->save();
 
 
-                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelabonpokazn->schet)->execute();
-                $voda = HVoda::find()->where(['schet' => $modelabonpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
-                $_SESSION['modalmess']['addpokazn'] = $modelabonpokazn->pokazn;
+                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+                $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+                $_SESSION['modalmess']['addpokazn'] = $modelpokazn->pokazn;
                 $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
             }
