@@ -25,6 +25,12 @@ if (isset($_SESSION['modalmess']))  {
         $modalformimage='nothyperlink.png';
     }
 
+    if (array_key_exists('sessionclose', $session['modalmess'])) {
+        $modalformheader='Помилка';
+        $modalformtext='Вибачте, але ваша сессія скінчилась. Виконайте вхід заново!!!';
+        $modalformimage='nothyperlink.png';
+    }
+
     if (array_key_exists('errtokenauth', $session['modalmess'])) {
         $modalformheader='Помилка';
         $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру реєстрації заново.';
@@ -84,7 +90,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addpokazn', $session['modalmess'])) {
         $modalformheader='Холодна вода';
-        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn'].'</h2>'.'<h4 style="line-height: 1.5;">'.' по рахунку '.$session['abon']->schet.' прийнято і оброблено!'.'</h4>';
+        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води по рахунку '.$session['abon']->schet.' становить '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn'].'</h2>';
         $modalformimage='registration.png';
     }
 

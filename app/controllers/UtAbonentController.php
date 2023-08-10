@@ -57,12 +57,30 @@ class UtAbonentController extends Controller
 
     public function actions()
     {
+        $session = Yii::$app->session;
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
     }
+
+    public function returnIndex() {
+        $session = Yii::$app->session;
+        $exitkab=false;
+        if (!isset($_SESSION)) $exitkab=true;
+        elseif (!array_key_exists('model', $_SESSION)) $exitkab=true;
+        elseif (!isset($session['model'])) $exitkab=true;
+
+        if ($exitkab) {
+            $_SESSION['modalmess']['sessionclose']='';
+            return $this->redirect(['ut-abonent/index']);
+        }
+
+        return '';
+    }
+
+
 
 
     /**
@@ -159,6 +177,8 @@ class UtAbonentController extends Controller
 
         $id=null;
         $idkart=null;
+
+        $this->returnIndex();
 
         if (isset($_SESSION['model'])) {
             $model = $_SESSION['model'];
@@ -280,7 +300,7 @@ class UtAbonentController extends Controller
                        ->asArray()->all();
                    //-----------------------------------------------------------------------------
 
-                   if ($model->id==2071) {
+
                        if ($hv != null) {
                            try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
@@ -323,7 +343,7 @@ class UtAbonentController extends Controller
 
                        }
 
-                   }
+
 
                 $summa = 0;
 
@@ -529,6 +549,8 @@ class UtAbonentController extends Controller
 
     public function actionAddrahunok()
     {
+        $this->returnIndex();
+
         $modelkart= new SearchUtKart();
         $modelkart->scenario = 'rahunok';
         if (Yii::$app->request->isAjax && $modelkart->load(Yii::$app->request->post()))
@@ -558,6 +580,7 @@ class UtAbonentController extends Controller
 
     public function actionDelrahunok()
     {
+        $this->returnIndex();
 //        $schet = Yii::$app->request->post()['schet'];
         UtAbonkart::deleteAll(['id_abon'=>$_SESSION['model']->id,'id_kart'=>$_SESSION['abon']->id]);
         $_SESSION['abon']=null;
@@ -566,7 +589,7 @@ class UtAbonentController extends Controller
 
     public function actionAddpokazn()
     {
-
+        $this->returnIndex();
 
         $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
 
