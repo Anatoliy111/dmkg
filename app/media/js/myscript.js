@@ -67,6 +67,13 @@ jQuery(document).on('ready', function() {
     });
 })(jQuery);
 
+// (function ($) {
+//     $('#addpokazn').on('click', function() {
+//
+//         alert('lkjhzlkjhslf');
+//     });
+// })(jQuery);
+
 (function ($) {
     $('#btn-imp').on('click', function() {
 

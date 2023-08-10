@@ -44,8 +44,8 @@ class Pokazn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['pokazn'], 'required'],
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
-//            [['pokazn'], 'float'],
             [['pokazn', 'ppp'], 'number'],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
@@ -55,6 +55,9 @@ class Pokazn extends \yii\db\ActiveRecord
                     $this->addError($attribute, "Ваш показник меньший або рівний за останній зареєстрований показник!!!");
                 }
                 else {
+//                    if ($this->pokazn>150) {
+//
+//                    }
                     $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
                     if ($poksite<>null)
                         if ($poksite->date_pok == $this->date_pok) {

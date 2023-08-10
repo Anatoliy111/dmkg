@@ -26,11 +26,14 @@ use yii\helpers\Html;
 
 <?=    $form->field($modelpokazn, 'pokazn')->textInput()  ?>
 <div class="buttons" style="padding-bottom: 20px">
-    <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton(Yii::t('easyii', 'Save'), ['id' => 'btn-addpokazn','class' => 'btn btn-success']) ?>
 </div>
 <?php
 ActiveForm::end();
 ?>
+
+
+
 
 
 
