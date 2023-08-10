@@ -30,10 +30,6 @@ $this->title = 'Відновлення паролю';
                 <?= Html::submitButton('Далі', ['class' => 'btn btn-success']) ?>
             </div>
 
-
-<!--            --><?//= Html::a("Змінити пароль", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#regmodal','class'=>'btn btn-danger'])?>
-
-
             <?php ActiveForm::end(); ?>
 
         </div>

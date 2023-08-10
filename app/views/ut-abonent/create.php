@@ -34,9 +34,6 @@ $this->title = 'Реєстрація в кабінет споживача';
             </div>
 
 
-<!--            --><?//= Html::a("Змінити пароль", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#regmodal','class'=>'btn btn-danger'])?>
-
-
             <?php ActiveForm::end(); ?>
 
         </div>
