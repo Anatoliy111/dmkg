@@ -538,7 +538,6 @@ class UtAbonentController extends Controller
         }
 
         return $this->render('kabinet', [
-            'modelrah' => $modelrah,
             'modelemail' => $modelemail,
             'emailchange' => $emailchange,
             'abonents' => $abonents,
