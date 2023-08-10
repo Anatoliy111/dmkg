@@ -218,7 +218,9 @@ ActiveForm::end();
 
 <?php Pjax::begin(['enablePushState' => false, 'timeout' => false]); ?>
 
-<?php 	Modal::begin([
+<?php
+if ($abonents<>null) {
+Modal::begin([
     'header' => '<h2>Видалити рахунок</h2>',
     'id' => 'modaldelrah',
     'size' => 'modal-md',
@@ -241,7 +243,9 @@ ActiveForm::end();
 
 
 
-<?php Modal::end(); ?>
+<?php Modal::end();
+}
+?>
 
 <div class="ut-kart" id="kart1">
 
