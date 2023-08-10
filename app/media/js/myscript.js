@@ -50,7 +50,7 @@ jQuery(document).on('ready', function() {
 
         var keys = $('#gridfile').yiiGridView('getSelectedRows');
         if (keys.length != 0){
-            var hi= confirm("Ви впевненні що хочете видалити ці файли?");
+            var hi= confirm("Ви впевненні що хочете видалити ці 111 файли?");
             if (hi== true){
                 $.ajax({
                     url: "/poslug/default/delfile",
@@ -66,13 +66,6 @@ jQuery(document).on('ready', function() {
         }
     });
 })(jQuery);
-
-// (function ($) {
-//     $('#addpokazn').on('click', function() {
-//
-//         alert('lkjhzlkjhslf');
-//     });
-// })(jQuery);
 
 (function ($) {
     $('#btn-imp').on('click', function() {

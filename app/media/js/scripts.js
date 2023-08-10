@@ -42,6 +42,12 @@ $(function(){
     });
 })(jQuery);
 
+(function ($) {
+    $("#btn-addpokazn1").on("click", function() {
+        alert("lkjhzlktyutyutryutyujhslf");
+    });
+})(jQuery);
+
 // (function ($) {
 // $('#btn-addpokaz').on('click', function() {
 //     $('#modaladdpokaz').modal('show')
@@ -59,7 +65,7 @@ $(function(){
  ========================================================*/
 
 (function ($) {
-    $('#btn-imp').on('click', function() {
+    $('#btn-imp').on("click", function() {
         $('#passmodal').modal('show')
             .find('#modal-content')
             .load($(this).attr('data-target'));

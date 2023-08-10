@@ -57,6 +57,7 @@ class Pokazn extends \yii\db\ActiveRecord
                 else {
 //                    if ($this->pokazn>150) {
 //
+//
 //                    }
                     $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
                     if ($poksite<>null)

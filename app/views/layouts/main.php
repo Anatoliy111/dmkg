@@ -14,6 +14,8 @@ use yii\widgets\Breadcrumbs;
 //Html::input('text', null, $search, ['id'=>'search', 'type'=>'text', 'placeholder'=>'Пошук...']);
 //Html::button('<span class="icon icon-Search"></span> ', ['type' => 'submit', 'id' => 'button']);
 
+
+
 ?>
 
 
@@ -21,6 +23,7 @@ use yii\widgets\Breadcrumbs;
 <?php $this->beginContent('@app/views/layouts/base.php');
 
 $search = '';
+
 
 $my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
 $year = $my_date->format('php:Y');
@@ -80,13 +83,20 @@ $year = $my_date->format('php:Y');
 							</div>
 							<div itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" class="content-box">
 								<p itemprop="name">Пн - Пт 8.00 - 17.00 <br/>Сб. Нд. вихідний</p>
+
 							</div>
 						</div>
 
+
 				</div>
+
 		</section> <!-- end bottom_header -->
 
-		<!-- ======= mainmenu-area section ======= -->
+
+
+
+
+        <!-- ======= mainmenu-area section ======= -->
 		<section class="mainmenu-area">
 			<div class="container">
 				<nav class="clearfix">
