@@ -139,6 +139,65 @@ function getDmkgMenu(){
 
 }
 
+function getMyMenu(){
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //->setBgColor('#8074d6')
+                // ->setTextSize('small')
+                ->setTextSize('small')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('Infomenu-button')
+                ->setBgColor("#F2F3A7")
+                ->setText('📊  Інформація по рахунках111'),
+
+//            (new \Viber\Api\Keyboard\Button())
+//                ->setColumns(2)
+//                //  ->setBgColor('#2fa4e7')
+//                ->setTextHAlign('center')
+//                ->setTextSize('small')
+//                ->setActionType('reply')
+//                ->setActionBody('Pokazmenu-button')
+//                ->setBgColor("#75C5F3")
+//                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+//                ->setText('📟  Подати показники'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('small')
+                ->setActionType('reply')
+                ->setActionBody('Rahmenu-button')
+                ->setBgColor("#F2F3A7")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('⚙ Додати/видалити рахунок'),
+
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('Kontakt-button')
+                // ->setBgColor("#F3DD27")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('📬 Контактна інформація'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setActionType('open-url')
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
+                ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
+        ]);
+
+}
+
 function infoDmkgSchet($schet){
 
     $mess='';
