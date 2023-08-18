@@ -70,7 +70,7 @@ class UtKart extends \yii\db\ActiveRecord
             [['idcod'], 'string', 'max' => 25],
             [['dom'], 'string', 'max' => 4],
             [['kv'], 'string', 'max' => 5],
-            [['schet'], 'string', 'max' => 7],
+            [['schet'], 'string', 'max' => 10],
 			[['MonthYear'], 'safe'],
 			[['email'], 'email'],
             [['korp'], 'string', 'max' => 1],

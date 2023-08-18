@@ -205,28 +205,24 @@ try {
             else {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
                 if ($match[0][0] == 'add-rah'){
-                    $ModelAbon = UtAbonent::findOne(['schet' => $event->getMessage()->getText()]);
+                    $ModelKart = UtKart::findOne(['schet' => $event->getMessage()->getText()]);
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
-                    if ($ModelAbon != null && $ModelAbonReceiver == null)  {
+                    if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
                         message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
-                    elseif ($ModelAbon == null && $ModelAbonReceiver == null) {
+                    elseif ($ModelKart == null && $ModelAbonReceiver == null) {
                         message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
-                    elseif ($ModelAbon != null && $ModelAbonReceiver != null) {
+                    elseif ($ModelKart != null && $ModelAbonReceiver != null) {
                         message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до бота!', getRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                 }
                 elseif ($match[0][0] == 'verify-rah'){
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1]]);
 
-
-                    $ModelAbon = UtAbonent::findOne(['schet' => $match[0][1]]);
-                    if ($ModelAbon != null){
-                        $ModelKart = UtKart::findOne(['id' => $ModelAbon->id_kart]);
+                    $ModelKart = UtKart::findOne(['schet' => $match[0][1]]);
                         if ($ModelKart != null){
                             if (mb_strtolower($ModelKart->name_f) == mb_strtolower($event->getMessage()->getText())){
                                 $addabon = addAbonReceiver($Receiv->id,$match[0][1],$ModelKart->id,$org);
@@ -235,7 +231,7 @@ try {
                             }
                             else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
                         }
-                    }
+
                 }
                 elseif ($match[0][0] == 'add-pok'){
                     //  message($bot, $botSender, $event, 'add-pok', getDmkgMenu());
