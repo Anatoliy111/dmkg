@@ -179,7 +179,7 @@ function getMyMenu(){
 
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
@@ -190,13 +190,13 @@ function getMyMenu(){
                 ->setText('📬 Контактна інформація'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
                 ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(2)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
@@ -204,7 +204,7 @@ function getMyMenu(){
                 ->setActionBody('Kontakt-button')
                 // ->setBgColor("#F3DD27")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('📬 Вихід'),            
+                ->setText('📬 Вихід'),
         ]);
 
 }
