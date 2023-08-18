@@ -209,6 +209,38 @@ function getMyMenu(){
 
 }
 
+function getStartMenu(){
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //->setBgColor('#8074d6')
+                // ->setTextSize('small')
+                ->setTextSize('small')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('Infomenu-button')
+                ->setBgColor("#F2F3A7")
+                ->setText('📊  Вхід'),
+
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('small')
+                ->setActionType('reply')
+                ->setActionBody('Rahmenu-button')
+                ->setBgColor("#F2F3A7")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('⚙ Реєстрація'),
+
+        ]);
+
+}
+
 function infoDmkgSchet($schet){
 
     $mess='';
@@ -218,20 +250,20 @@ function infoDmkgSchet($schet){
     $mess = $mess.$modelKart->getUlica()->asArray()->one()['ul'].' буд.'.$modelKart->dom.' '.(isset($modelKart->kv)?'кв.'.$modelKart->kv:'')."\r\n";
     $mess = $mess.'----------------------------'."\n";
 
-    $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
+//    $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
     $oplab=UtOpl::find()
-        ->select('ut_opl.id_abonent, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-        ->where(['ut_opl.id_abonent'=> $abonen->id])
+        ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+        ->where(['ut_opl.id_kart'=> $modelKart->id])
         ->andwhere(['>', 'ut_opl.period', $modelKart->lastperiod()])
-        ->groupBy('ut_opl.id_abonent, ut_opl.id_posl')
+        ->groupBy('ut_opl.id_kart, ut_opl.id_posl')
         ->asArray();
 
     $dolg= UtObor::find();
 //					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-    $dolg->select(["ut_obor.id_abonent as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
+    $dolg->select(["ut_obor.id_kart as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
 //  				    $dolg->select('ut_obor.*,b.summ,');
-    $dolg->where(['ut_obor.id_abonent'=> $abonen->id,'ut_obor.period'=> $modelKart->lastperiod()]);
-    $dolg->leftJoin(['b' => $oplab], '`b`.`id_abonent` = ut_obor.`id_abonent` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+    $dolg->where(['ut_obor.id_kart'=> $modelKart->id,'ut_obor.period'=> $modelKart->lastperiod()]);
+    $dolg->leftJoin(['b' => $oplab], '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
     $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
     $summa =0;
     foreach($dolg->asArray()->all() as $obb)
