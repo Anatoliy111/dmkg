@@ -341,13 +341,13 @@ function getEditRahMenu(){
 
 function getRahMenu($schet){
 
-//    $modelKart = UtKart::findOne(['schet' => $schet]);
+    $modelKart = UtKart::findOne(['schet' => $schet]);
     $lastperiod = UtObor::find()->max('period');
     $buttons = [];
     $hv = UtObor::find()
         ->leftJoin('ut_posl', '(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
         ->leftJoin('ut_tipposl', '(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
-        ->where(['ut_obor.schet' => $schet, 'ut_obor.period' =>$lastperiod , 'ut_tipposl.old_tipusl' => 'hv'])
+        ->where(['ut_obor.id_kart' => $modelKart->id, 'ut_obor.period' =>$lastperiod , 'ut_tipposl.old_tipusl' => 'hv'])
         ->asArray()->all();
 
 
@@ -392,6 +392,7 @@ function getRahMenu($schet){
                     ->setActionBody('inf-rah#' . $schet . '#addpokhv')
                     ->setText('Подати показник (хол.вода)');
             }
+
             $buttons[] =
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
