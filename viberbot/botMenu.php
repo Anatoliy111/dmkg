@@ -172,7 +172,7 @@ function getMyMenu(){
                 ->setTextHAlign('center')
                 ->setTextSize('small')
                 ->setActionType('reply')
-                ->setActionBody('Rahmenu-button')
+                ->setActionBody('EditRah-button')
                 ->setBgColor("#F2F3A7")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('⚙ Додати/видалити рахунок'),

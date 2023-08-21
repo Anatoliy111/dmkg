@@ -92,7 +92,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getEditRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
         })
         ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -100,28 +100,28 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getEditRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок по якому подати показник:', getRahList($FindRah,'pok-rah'));
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'add-rah');
-            message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
+            message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getEditRahMenu());
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             $FindRah = $Receiv->getViberAbons()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getEditRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah'));
         })
-        ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+        ->onText('|EditRah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, 'Редагування рахунків:', getRahMenu());
+            message($bot, $botSender, $event, 'Редагування рахунків:', getEditRahMenu());
         })
         ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -147,10 +147,10 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
-            if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
+            if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getEditRahMenu());
             else {
                 $DelRah->delete();
-                message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з бота!', getRahMenu());
+                message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з бота!', getEditRahMenu());
             }
         })
         ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -162,7 +162,17 @@ try {
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
+                if ($match[0][2]==null)
+                message($bot, $botSender, $event, 'Інформація по рахунку '.$Rah->schet.' Виберіть потрібну функцію з меню:', getRahMenu($Rah->schet));
+                else{
+                  if ($match[0][2]=='borg') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='opl') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='pokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='addpokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+
+
+                }
+//                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -196,7 +206,7 @@ try {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
             $Receiv = verifyReceiver($event,$apiKey, $org);
-            // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
+            // message($bot, $botSender, $event, $event->getMessage()->getText(), getEditRahMenu());
             if ($Receiv == null || $Receiv->status == ''){
                 message($bot, $botSender, $event, 'Не визначений запит:' . $event->getMessage()->getText(), null);
                 message($bot, $botSender, $event, 'Головне меню:', getMyMenu());
@@ -208,14 +218,14 @@ try {
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
+                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getEditRahMenu());
                     }
                     elseif ($ModelKart == null && $ModelAbonReceiver == null) {
-                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
+                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getEditRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                     elseif ($ModelKart != null && $ModelAbonReceiver != null) {
-                        message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до бота!', getRahMenu());
+                        message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до бота!', getEditRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                 }
@@ -225,10 +235,10 @@ try {
                     if ($ModelKart != null){
                         if (mb_strtolower($ModelKart->name_f) == mb_strtolower($event->getMessage()->getText())){
                             $addabon = addAbonReceiver($Receiv->id,$match[0][1],$ModelKart->id,$org);
-                            if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
+                            if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getEditRahMenu());
                             UpdateStatus($Receiv,'');
                         }
-                        else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
+                        else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getEditRahMenu());
                     }
 
                 }
@@ -261,7 +271,7 @@ try {
 
                 }
                 else{
-                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu());
+                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getEditRahMenu());
                     UpdateStatus($Receiv,'');
                 }
 
@@ -284,7 +294,7 @@ try {
     }
 }
 
-function getRahMenu(){
+function getEditRahMenu(){
 
     return (new \Viber\Api\Keyboard())
         ->setButtons([
@@ -306,6 +316,69 @@ function getRahMenu(){
                 ->setActionType('reply')
                 ->setActionBody('Delrah-button')
                 ->setText('Видалити рахунок з бота'),
+
+            (new \Viber\Api\Keyboard\Button())
+//                ->setColumns(4)
+//                ->setRows(2)
+                ->setBgColor('#F2F3A7')
+                ->setTextSize('large')
+                // ->setTextSize('regular')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('DmkgMenu-button')
+                //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
+                ->setText('🏠   Головне меню')
+
+//                ->setText("<font color=\"#494E67\">Головне меню</font>")
+//                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
+            //->setText('Головне меню')
+            // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
+
+        ]);
+
+}
+
+function getRahMenu($schet){
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setBgColor('#75F3AE')
+                // ->setTextSize('small')
+                // ->setTextSize('large')
+                ->setTextHAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('inf-rah#'.$schet.'#borg')
+                ->setText('Заборгованість'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setBgColor('#F39175')
+                ->setTextHAlign('center')
+                //  ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('inf-rah#'.$schet.'#opl')
+                ->setText('Оплата'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setBgColor('#F39175')
+                ->setTextHAlign('center')
+                //  ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('inf-rah#'.$schet.'#pokhv')
+                ->setText('Показники (хол.вода)'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setBgColor('#F39175')
+                ->setTextHAlign('center')
+                //  ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('inf-rah#'.$schet.'#addpokhv')
+                ->setText('Подати показник (хол.вода)'),
 
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
