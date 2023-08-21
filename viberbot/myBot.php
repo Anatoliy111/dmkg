@@ -341,8 +341,17 @@ function getEditRahMenu(){
 
 function getRahMenu($schet){
 
-    return (new \Viber\Api\Keyboard())
-        ->setButtons([
+//    $modelKart = UtKart::findOne(['schet' => $schet]);
+    $lastperiod = UtObor::find()->max('period');
+    $buttons = [];
+    $hv = UtObor::find()
+        ->leftJoin('ut_posl', '(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
+        ->leftJoin('ut_tipposl', '(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
+        ->where(['ut_obor.schet' => $schet, 'ut_obor.period' =>$lastperiod , 'ut_tipposl.old_tipusl' => 'hv'])
+        ->asArray()->all();
+
+
+    $buttons[] =
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 ->setBgColor('#75F3AE')
@@ -351,8 +360,9 @@ function getRahMenu($schet){
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('inf-rah#'.$schet.'#borg')
-                ->setText('Заборгованість'),
+                ->setText('Заборгованість');
 
+    $buttons[] =
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 ->setBgColor('#F39175')
@@ -360,26 +370,29 @@ function getRahMenu($schet){
                 //  ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('inf-rah#'.$schet.'#opl')
-                ->setText('Оплата'),
+                ->setText('Оплата');
 
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                ->setBgColor('#F39175')
-                ->setTextHAlign('center')
-                //  ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('inf-rah#'.$schet.'#pokhv')
-                ->setText('Показники (хол.вода)'),
-
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
-                ->setBgColor('#F39175')
-                ->setTextHAlign('center')
-                //  ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('inf-rah#'.$schet.'#addpokhv')
-                ->setText('Подати показник (хол.вода)'),
-
+            if ($hv != null) {
+                 $buttons[] =
+                (new \Viber\Api\Keyboard\Button())
+                    ->setColumns(3)
+                    ->setBgColor('#F39175')
+                    ->setTextHAlign('center')
+                    //  ->setTextSize('large')
+                    ->setActionType('reply')
+                    ->setActionBody('inf-rah#' . $schet . '#pokhv')
+                    ->setText('Показники (хол.вода)');
+                $buttons[] =
+                (new \Viber\Api\Keyboard\Button())
+                    ->setColumns(3)
+                    ->setBgColor('#F39175')
+                    ->setTextHAlign('center')
+                    //  ->setTextSize('large')
+                    ->setActionType('reply')
+                    ->setActionBody('inf-rah#' . $schet . '#addpokhv')
+                    ->setText('Подати показник (хол.вода)');
+            }
+            $buttons[] =
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
 //                ->setRows(2)
@@ -391,14 +404,15 @@ function getRahMenu($schet){
                 ->setActionType('reply')
                 ->setActionBody('DmkgMenu-button')
                 //     ->setText("<br><font color=\"#494E67\">Головне меню</font>")
-                ->setText('🏠   Головне меню')
+                ->setText('🏠   Головне меню');
 
 //                ->setText("<font color=\"#494E67\">Головне меню</font>")
 //                ->setText("<img src=\"https://dmkg.com.ua/uploads/home_small.png\" width=\"20\" height=\"20' alt='Головне меню'>")
             //->setText('Головне меню')
             // ->setImage("https://dmkg.com.ua/uploads/home_small2.png"),
 
-        ]);
+    return (new \Viber\Api\Keyboard())
+        ->setButtons($buttons);
 
 }
 
