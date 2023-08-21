@@ -13,7 +13,7 @@ use Viber\Client;
 //$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';
 
-$webhookUrl = 'https://dmkg.com.ua/viberbot/myBot.php'; // <- PLACE-YOU-HTTPS-URL
+$webhookUrl = 'https://08b7-176-105-196-247.ngrok-free.app/viberbot/myBot.php'; // <- PLACE-YOU-HTTPS-URL
 try {
     $client = new Client([ 'token' => $apiKey ]);
     $result = $client->setWebhook($webhookUrl);
