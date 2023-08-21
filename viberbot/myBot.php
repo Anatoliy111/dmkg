@@ -161,21 +161,19 @@ try {
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
-            if (!isset($match[0][2])) message($bot, $botSender, $event, $match[0][0].$match[0][1].' Інформація по рахунку '.$Rah->schet.' Виберіть потрібну функцію з меню:', getRahMenu($Rah->schet));
-            else message($bot, $botSender, $event, $match[0][0].$match[0][1].$match[0][2].' Інформація по рахунку '.$Rah->schet.' Виберіть потрібну функцію з меню:', getRahMenu($Rah->schet));
-//            else {
-//                if ($match[0][2]==null)
-//                message($bot, $botSender, $event, 'Інформація по рахунку '.$Rah->schet.' Виберіть потрібну функцію з меню:', getRahMenu($Rah->schet));
-//                else{
-//                  if ($match[0][2]=='borg') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-//                  if ($match[0][2]=='opl') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-//                  if ($match[0][2]=='pokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-//                  if ($match[0][2]=='addpokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-//
-//
-//                }
-////                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
-//            }
+            else {
+                if (!isset($match[0][2]))
+                message($bot, $botSender, $event, 'Інформація по рахунку '.$Rah->schet.' Виберіть потрібну функцію з меню:', getRahMenu($Rah->schet));
+                else{
+                  if ($match[0][2]=='borg') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='opl') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='pokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='addpokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
+
+
+                }
+//                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
+            }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
