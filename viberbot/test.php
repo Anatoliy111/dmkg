@@ -7,41 +7,119 @@
  */
 
 
-//require_once("../vendor/autoload.php");
-use app\models\KpcentrPokazn;
-use app\poslug\models\UtAbonent;
-use app\models\UtKart;
-use app\poslug\models\UtObor;
-use app\poslug\models\UtOpl;
-use app\poslug\models\Viber;
+use app\models\HVoda;
+use app\models\Pokazn;
+use app\models\UtAbonpokazn;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
-//require_once(__DIR__ . '/../yii');
-
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../app/config/console.php';
+$yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
 
-require_once('mySendBot.php');
 
+echo addPokazn(802,'0092124','asfsadfasdf');
+
+function addPokazn($pokazn, $schet, $viber_name){
+
+    $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
+    $nowdate = intval(date('Y').date('m'));
+
+    if ($lasdatehvd[0]['yearmon']<$nowdate) {
+        $modelabonpokazn = new UtAbonpokazn();
+        $modelabonpokazn->schet = $schet;
+        $modelabonpokazn->name = $viber_name;
+        $modelabonpokazn->id_abonent = 2071;
+        $modelabonpokazn->date_pok = date("Y-m-d");
+        $modelabonpokazn->pokazn = $pokazn;
+        $modelabonpokazn->vid = 'viber';
+        if ($modelabonpokazn->validate())
+        {
+            /** @var TYPE_NAME $modelabonpokazn */
+
+            $modelabonpokazn->save();
+            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+
+
+            return $text;
+        }
+        else
+        {
+            $meserr='';
+            $errors = $modelabonpokazn->getErrors();
+            foreach ($errors as $error) {
+                $meserr=$meserr.implode(",", $error);
+            }
+
+            $messageLog = [
+                'status' => 'Помилка додавання показника',
+                'post' => $modelabonpokazn->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            return $meserr;
+
+        }
+    } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
+        $modelpokazn = new Pokazn();
+        $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+        $modelpokazn->yearmon =$nowdate;
+        $modelpokazn->date_pok = null;
+        $modelpokazn->vid_pok = 37;
+        $modelpokazn->pokazn = $pokazn;
+        if ($modelpokazn->validate())
+        {
+            /** @var TYPE_NAME $modelpokazn */
+
+            $modelpokazn->save();
+
+            Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+            $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+
+            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+
+
+            return $text;
+        }
+        else
+        {
+            $meserr='';
+            $errors = $modelpokazn->getErrors();
+            foreach ($errors as $error) {
+                $meserr=$meserr.implode(",", $error);
+            }
+
+            $messageLog = [
+                'status' => 'Помилка додавання показника',
+                'post' => $modelpokazn->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            return $meserr;
+
+        }
+
+    }
+
+
+}
 
 
 //echo substr("abcdefsgdergrgreg", 10);
-$text='add-pok#0092124д#6000#yes';
-
-//preg_match( '/(?<=(#))(.+)/ui', $text, $match );
-preg_match_all('/([^#]+)/ui', $text, $match );
-//    foreach ($match as $mm){
-//        echo $mm."\r";
-//    }
-
-if (count($match[0])==4 && $match[0][3]=='yes'){
-    echo 'ok';
-}
-
-if ('Ірина'=='Ірина'){
-    echo 'ok111';
-}
+//$text='add-pok#0092124д#6000#yes';
+//
+////preg_match( '/(?<=(#))(.+)/ui', $text, $match );
+//preg_match_all('/([^#]+)/ui', $text, $match );
+////    foreach ($match as $mm){
+////        echo $mm."\r";
+////    }
+//
+//if (count($match[0])==4 && $match[0][3]=='yes'){
+//    echo 'ok';
+//}
+//
+//if ('Ірина'=='Ірина'){
+//    echo 'ok111';
+//}
 
 //var_dump($match);
 //$i = 1;

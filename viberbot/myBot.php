@@ -7,11 +7,14 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 //require_once(__DIR__ . '/../yii');
 
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../app/config/console.php';
+$yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
 
 
 
+use app\models\HVoda;
+use app\models\Pokazn;
+use app\models\UtAbonpokazn;
 use app\models\UtKart;
 use app\poslug\models\UtAbonent;
 use app\poslug\models\UtAbonkart;
@@ -166,25 +169,14 @@ try {
                 message($bot, $botSender, $event, 'Інформація по рахунку '.$Rah->schet.' Виберіть потрібну функцію з меню:', getRahMenu($Rah->schet));
                 else{
                   if ($match[0][2]=='borg') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-                  if ($match[0][2]=='opl') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-                  if ($match[0][2]=='pokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-                  if ($match[0][2]=='addpokhv') message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahMenu($Rah->schet));
-
-
+                  if ($match[0][2]=='opl') message($bot, $botSender, $event, infoOpl($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='pokhv') message($bot, $botSender, $event, infoPokhv($Rah->schet), getRahMenu($Rah->schet));
+                  if ($match[0][2]=='addpokhv') {
+                      message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahMenu($Rah->schet));
+                      UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
+                  }
                 }
 //                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
-            }
-        })
-        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            $FindRah = $Receiv->getViberAbons()->all();
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
-            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
-            else {
-                message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah'));
-                UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
             }
         })
         ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -665,40 +657,87 @@ function infoKontakt(){
 /**
  * @param $pokazn
  * @param $schet
- * @return KpcentrViberpokazn|null
+ * @return UtAbonpokazn|null
+ * @return Pokazn|null
  */
 function addPokazn($pokazn, $schet, $viber_name){
 
-    $model = new KpcentrViberpokazn();
-    $model->data = date('Y-m-d');
-    $model->schet = $schet;
-    $model->pokazn = $pokazn;
-    $model->viber_name = $viber_name;
-    if ($model->validate())
-    {
-        /** @var TYPE_NAME $model */
+    $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
+    $nowdate = intval(date('Y').date('m'));
 
-        $model->save();
+    if ($lasdatehvd[0]['yearmon']<$nowdate) {
+        $modelabonpokazn = new UtAbonpokazn();
+        $modelabonpokazn->schet = $schet;
+        $modelabonpokazn->name = $viber_name;
+        $modelabonpokazn->id_abonent = 2071;
+        $modelabonpokazn->date_pok = date("Y-m-d");
+        $modelabonpokazn->pokazn = $pokazn;
+        $modelabonpokazn->vid = 'viber';
+        if ($modelabonpokazn->validate())
+        {
+            /** @var TYPE_NAME $modelabonpokazn */
 
-        return $model;
-    }
-    else
-    {
-        $messageLog = [
-            'status' => 'Помилка додавання показника',
-            'post' => $model->errors
-        ];
+            $modelabonpokazn->save();
+            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
 
-        Yii::error($messageLog, 'viber_err');
-        $meserr='';
 
-        foreach ($messageLog as $err){
-            $meserr=$meserr.implode(",", $err);
+            return $text;
         }
-        getSend($meserr);
+        else
+        {
+            $meserr='';
+            $errors = $modelabonpokazn->getErrors();
+            foreach ($errors as $error) {
+                $meserr=$meserr.implode(",", $error);
+            }
+
+            $messageLog = [
+                'status' => 'Помилка додавання показника',
+                'post' => $modelabonpokazn->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            return $meserr;
+
+        }
+    } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
+        $modelpokazn = new Pokazn();
+        $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+        $modelpokazn->yearmon =$nowdate;
+        $modelpokazn->date_pok = null;
+        $modelpokazn->vid_pok = 37;
+        $modelpokazn->pokazn = $pokazn;
+        if ($modelpokazn->validate())
+        {
+            /** @var TYPE_NAME $modelpokazn */
+
+            $modelpokazn->save();
+
+            Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+            $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+
+            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
 
 
-        return null;
+            return $text;
+        }
+        else
+        {
+            $meserr='';
+            $errors = $modelpokazn->getErrors();
+            foreach ($errors as $error) {
+                $meserr=$meserr.implode(",", $error);
+            }
+
+            $messageLog = [
+                'status' => 'Помилка додавання показника',
+                'post' => $modelpokazn->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            return $meserr;
+
+        }
 
     }
 
