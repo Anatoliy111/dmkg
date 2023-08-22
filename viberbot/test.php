@@ -37,10 +37,12 @@ function addPokazn($pokazn, $schet, $viber_name){
             /** @var TYPE_NAME $modelabonpokazn */
 
             $modelabonpokazn->save();
-            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+            $mess =[];
+            $mess[0]='ok';
+            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
 
 
-            return $text;
+            return $mess;
         }
         else
         {
@@ -56,7 +58,10 @@ function addPokazn($pokazn, $schet, $viber_name){
             ];
 
             Yii::error($messageLog, 'viber_err');
-            return $meserr;
+            $mess =[];
+            $mess[0]='err';
+            $mess[1]=$meserr;
+            return $mess;
 
         }
     } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
@@ -75,10 +80,12 @@ function addPokazn($pokazn, $schet, $viber_name){
             Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
             $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
 
-            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+            $mess =[];
+            $mess[0]='ok';
+            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
 
 
-            return $text;
+            return $mess;
         }
         else
         {
@@ -94,7 +101,10 @@ function addPokazn($pokazn, $schet, $viber_name){
             ];
 
             Yii::error($messageLog, 'viber_err');
-            return $meserr;
+            $mess =[];
+            $mess[0]='err';
+            $mess[1]=$meserr;
+            return $mess;
 
         }
 

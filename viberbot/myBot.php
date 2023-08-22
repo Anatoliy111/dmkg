@@ -186,8 +186,11 @@ try {
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
                 $addpok = addPokazn(intval($match[0][2]),$match[0][1],$event->getSender()->getName());
-                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getMyMenu());
-                UpdateStatus($Receiv,'');
+                if ($addpok[0] == 'ok') {
+                    message($bot, $botSender, $event, $addpok[1], getRahMenu($match[0][1]));
+                    UpdateStatus($Receiv, '');
+                }
+                if ($addpok[0] == 'err') message($bot, $botSender, $event, $addpok[1], getRahMenu($match[0][1]));
             }
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -236,34 +239,24 @@ try {
                 }
                 elseif ($match[0][0] == 'add-pok'){
                     //  message($bot, $botSender, $event, 'add-pok', getMyMenu());
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
                     $FindRah = $Receiv->getViberAbons()->all();
-                    if ($ModelAbon != null) {
                         $val = $event->getMessage()->getText();
                         if (is_numeric($val) && floor($val) == $val && $val > 0) {
-                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
-                            if ($modelPokazn != null) {
-                                if ($modelPokazn->pokazn < intval($val)) {
-                                    if ((intval($val) - $modelPokazn->pokazn) > 100) {
+                            $voda = HVoda::find()->where(['schet' => $match[0][1]])->orderBy(['kl' => SORT_DESC])->one();
+                                    if ((intval($val) - $voda['sch_razn']) > 100) {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
                                         $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
-                                        if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMyMenu());
-                                        UpdateStatus($Receiv, '');
+                                        if ($addpok[0] == 'ok') {
+                                            message($bot, $botSender, $event, $addpok[1], getRahMenu($match[0][1]));
+                                            UpdateStatus($Receiv, '');
+                                        }
+                                        if ($addpok[0] == 'err') message($bot, $botSender, $event, $addpok[1], getRahMenu($match[0][1]));
                                     }
-                                } else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
-                            } else {
-                                $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
-                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getMyMenu());
-                                UpdateStatus($Receiv, '');
-                            }
-                        } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
-
-                    }
-
+                        } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahMenu($match[0][1]));
                 }
                 else{
-                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getEditRahMenu());
+                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu($match[0][1]));
                     UpdateStatus($Receiv,'');
                 }
 
@@ -678,10 +671,12 @@ function addPokazn($pokazn, $schet, $viber_name){
             /** @var TYPE_NAME $modelabonpokazn */
 
             $modelabonpokazn->save();
-            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+            $mess =[];
+            $mess[0]='ok';
+            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
 
 
-            return $text;
+            return $mess;
         }
         else
         {
@@ -697,7 +692,10 @@ function addPokazn($pokazn, $schet, $viber_name){
             ];
 
             Yii::error($messageLog, 'viber_err');
-            return $meserr;
+            $mess =[];
+            $mess[0]='err';
+            $mess[1]=$meserr;
+            return $mess;
 
         }
     } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
@@ -716,10 +714,12 @@ function addPokazn($pokazn, $schet, $viber_name){
             Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
             $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
 
-            $text='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+            $mess =[];
+            $mess[0]='ok';
+            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
 
 
-            return $text;
+            return $mess;
         }
         else
         {
@@ -735,7 +735,10 @@ function addPokazn($pokazn, $schet, $viber_name){
             ];
 
             Yii::error($messageLog, 'viber_err');
-            return $meserr;
+            $mess =[];
+            $mess[0]='err';
+            $mess[1]=$meserr;
+            return $mess;
 
         }
 
