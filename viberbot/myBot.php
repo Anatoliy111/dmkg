@@ -608,19 +608,34 @@ function addAbonReceiver($id_viber,$schet,$id_kart,$org){
  * @param $schet
  */
 
+function infoPokhv($schet){
+    $mess='';
+    $modelPokazn = HVoda::find()->where(['schet' => $schet])->limit(6)->asarray()->All();
+
+    if ($modelPokazn!=null){
+        $mess = $mess.'Ваші зареєстровані показники за останні 6 місяців :'."\n";
+//        $mess = $mess."Період обліку: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
+//        $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
+
+    }
+    else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
+    $mess = $mess.'----------------------------'."\n";
+    $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\n";
+
+    return $mess;
+
+}
 
 function infoPokazn($schet){
 
     $mess='';
-    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
+    $modelPokazn = HVoda::find()->where(['schet' => $schet])->orderBy('kl')->one();
     if ($modelPokazn!=null){
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
         $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
-    $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
     $mess = $mess.'----------------------------'."\n";
     $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\n";
 

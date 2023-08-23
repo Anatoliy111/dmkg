@@ -36,7 +36,6 @@ class KpcentrViberpokazn extends \yii\db\ActiveRecord
             [['pokazn', 'status'], 'integer'],
             [['schet'], 'string', 'max' => 10],
             [['viber_name'], 'string', 'max' => 64],
-            [['vid'], 'string', 'max' => 32],
         ];
     }
 
@@ -51,8 +50,7 @@ class KpcentrViberpokazn extends \yii\db\ActiveRecord
             'data' => 'Data',
             'pokazn' => 'Pokazn',
             'status' => 'Status',
-            'viber_name' => 'viber_name',
-            'vid' => 'vid'
+            'viber_name' => 'viber_name'
         ];
     }
 }
