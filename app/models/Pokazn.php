@@ -35,7 +35,7 @@ class Pokazn extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('fdb');
+        return Yii::$app->get('hvddb');
     }
 
     /**

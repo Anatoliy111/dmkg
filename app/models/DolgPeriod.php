@@ -5,22 +5,20 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "h_voda".
+ * This is the model class for table "{{%period}}".
  *
  * @property int $kl
- * @property int $yearmon
- * @property int $sch_cur
- * @property int $sch_razn
- *
+ * @property string|null $period
+ * @property int|null $aktiv
  */
-class HVoda extends \yii\db\ActiveRecord
+class DolgPeriod extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'h_voda';
+        return '{{%period}}';
     }
 
     /**
@@ -28,7 +26,7 @@ class HVoda extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('hvddb');
+        return Yii::$app->get('dolgdb');
     }
 
     /**
@@ -37,9 +35,8 @@ class HVoda extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['yearmon'], 'integer'],
-            [['sch_cur','sch_razn'], 'number'],
-
+            [['period'], 'string'],
+            [['aktiv'], 'integer'],
         ];
     }
 
@@ -50,9 +47,8 @@ class HVoda extends \yii\db\ActiveRecord
     {
         return [
             'kl' => 'Kl',
-            'yearmon' => 'Yearmon',
-            'sch_cur' => 'Показник',
-            'sch_razn' => 'Куби',
+            'period' => 'Period',
+            'aktiv' => 'Aktiv',
         ];
     }
 }

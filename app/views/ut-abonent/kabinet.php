@@ -17,7 +17,7 @@ use yii\widgets\Pjax;
 
 /** @var app\models\UtKart $abon */
 /** @var app\models\SearchUtAbonent $modelemail */
-/** @var app\models\SearchUtKart $modelkart */
+/** @var app\models\SearchDolgKart $modelkart */
 
 
 
@@ -355,11 +355,11 @@ Modal::begin([
 
         <?php
              foreach ($abonents as $abonkart) {
-                 if ($abonkart->id_kart==$abon->id) {
-                     $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'idkart' => $abonkart->id_kart]];
+                 if ($abonkart->id==$abon->id) {
+                     $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'idabkart' => $abonkart->id]];
                  }
                  else
-                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'idkart' => $abonkart->id_kart],'options' => ['data-pjax' => true]];
+                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'idabkart' => $abonkart->id],'options' => ['data-pjax' => true]];
              }
 
 
@@ -513,7 +513,7 @@ Modal::begin([
                                 'label'=>'Борг'
                             ],
                             [
-                                'attribute' => 'summ',
+                                'attribute' => 'opl',
                                 'label'=>'Оплата'
                             ],
                             [

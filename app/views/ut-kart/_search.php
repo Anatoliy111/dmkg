@@ -8,7 +8,7 @@
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SearchUtKart */
+/* @var $model app\models\SearchDolgKart */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

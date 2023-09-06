@@ -11,9 +11,9 @@ use yii\web\IdentityInterface;
 
 
 /**
- * SearchUtKart represents the model behind the search form of `app\models\UtKart`.
+ * SearchDolgKart represents the model behind the search form of `app\models\UtKart`.
  */
-class SearchUtKart extends UtKart
+class SearchDolgKart extends DolgKart
 {
 	/**
      * @inheritdoc
@@ -39,14 +39,13 @@ class SearchUtKart extends UtKart
     public function rules()
     {
         return [
-			[['dom', 'id_ulica','enterpass','schet','name_f'], 'required'],
-            [['id', 'id_ulica', 'ur_fiz', 'id_oldkart'], 'integer'],
-            [['name_i', 'name_o', 'fio', 'idcod', 'dom', 'korp', 'pass', 'telef', 'kv'], 'safe'],
-			[['enterpass'], 'string', 'min' => 5],
+            [['nomdom', 'kl_ul','enterpass','schet','fio'], 'required'],
             [['schet'], 'string', 'min' => 7],
-            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
-            [['name_f'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['name_f' => 'name_f'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
-            [['name_f'], 'exist', 'targetAttribute' => ['name_f','schet'] ,'message' => 'Прізвище не відповідає власнику рахунку!!!','on' => self::SCENARIO_RAH],
+            [['enterpass'], 'string', 'min' => 5],
+            [['nomkv'], 'safe'],
+            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => DolgKart::class, 'targetAttribute' => ['schet' => 'schet'],'message' => 'Рахунок не зареєстрований!!!','on' => self::SCENARIO_RAH],
+            [['fio'], 'exist', 'skipOnError' => true, 'targetClass' => DolgKart::class, 'targetAttribute' => ['fio' => 'fio'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
+            [['fio'], 'exist', 'targetAttribute' => ['fio','schet'] ,'message' => 'Прізвище не відповідає власнику рахунку!!!','on' => self::SCENARIO_RAH],
             [['schet'], function ($attribute, $params) {
                 $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => $this->schet])->all();
                 if (count($abonents)>0) {
@@ -71,9 +70,9 @@ class SearchUtKart extends UtKart
 //		];
 
 		$scenarios = parent::scenarios();
-		$scenarios[self::SCENARIO_ADDR] = ['dom', 'id_ulica', 'kv', 'korp'];
-		$scenarios[self::SCENARIO_PASS] = ['dom', 'id_ulica', 'kv', 'korp', 'enterpass'];
-        $scenarios[self::SCENARIO_RAH] = ['schet', 'name_f'];
+		$scenarios[self::SCENARIO_ADDR] = ['nomdom', 'kl_ul', 'nomkv'];
+		$scenarios[self::SCENARIO_PASS] = ['nomdom', 'kl_ul', 'nomkv', 'enterpass'];
+        $scenarios[self::SCENARIO_RAH] = ['schet', 'fio'];
         return $scenarios;
     }
 
@@ -86,7 +85,7 @@ class SearchUtKart extends UtKart
      */
     public function search($params)
     {
-        $query = UtKart::find();
+        $query = DolgKart::find();
 
         // add conditions that should always apply here
 
@@ -102,15 +101,15 @@ class SearchUtKart extends UtKart
             return $dataProvider;
         }
 
-		$Get = Yii::$app->request->get('SearchUtKart');
+		$Get = Yii::$app->request->get('SearchDolgKart');
 
-		if (($Get['kv']==null) or ($Get['kv']=="") or ($Get['kv']==0))
+		if (($Get['nomkv']==null) or ($Get['nomkv']=="") or ($Get['nomkv']==0))
 		{
-			$this->kv='';
+			$this->nomkv='';
 		}
 		$query->andWhere([
-			'id_ulica' => $this->id_ulica,
-			'kv' => $this->kv,
+			'kl_ul' => $this->kl_ul,
+			'nomkv' => $this->nomkv,
 		]);
 
 //		if ($Get['korp']<>null)
@@ -121,7 +120,7 @@ class SearchUtKart extends UtKart
 //		}
 //		else {
 //			$this->korp=null;
-			$query->andWhere(['=', 'dom', $this->dom]);
+			$query->andWhere(['=', 'nomdom', $this->nomdom]);
 //		}
 
 //		if ($this->enterpass<>null){
@@ -195,7 +194,7 @@ class SearchUtKart extends UtKart
 
         // grid filtering conditions
 
-        $query->andFilterWhere(['like', 'name_f', $this->name_f])
+        $query->andFilterWhere(['like', 'fio', $this->name_f])
             ->andFilterWhere(['like', 'schet', $this->schet]);
 
         return $dataProvider;
@@ -216,7 +215,8 @@ class SearchUtKart extends UtKart
 
             foreach($abons as $abon){
 
-                if ($abon->pass == md5($model->id.$this->enterpass)){
+//                if ($abon->pass == md5($model->id.$this->enterpass)){
+                if ($abon->passopen == $this->enterpass){
 //				Yii::$app->users->login($model->fio);
                     return $abon;
                 }
@@ -242,11 +242,11 @@ class SearchUtKart extends UtKart
 	 * Null should be returned if such an identity cannot be found
 	 * or the identity is not in an active state (disabled, deleted, etc.)
 	 */
-	public static function findIdentity($id)
-	{
-		// TODO: Implement findIdentity() method.
-		return static::findOne(['id' => $id]);
-	}
+//	public static function findIdentity($id)
+//	{
+//		// TODO: Implement findIdentity() method.
+//		return static::findOne(['id' => $id]);
+//	}
 
 	/**
 	 * Finds an identity by the given token.
@@ -257,20 +257,26 @@ class SearchUtKart extends UtKart
 	 * Null should be returned if such an identity cannot be found
 	 * or the identity is not in an active state (disabled, deleted, etc.)
 	 */
-	public static function findIdentityByAccessToken($token, $type = null)
-	{
-		// TODO: Implement findIdentityByAccessToken() method.
-		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-	}
+//	public static function findIdentityByAccessToken($token, $type = null)
+//	{
+//		// TODO: Implement findIdentityByAccessToken() method.
+//		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+//	}
 
 	/**
 	 * Returns an ID that can uniquely identify a user identity.
 	 * @return string|int an ID that uniquely identifies a user identity.
 	 */
-	public function getId()
+//	public function getId()
+//	{
+//		// TODO: Implement getId() method.
+//		return $this->id;
+//	}
+
+	public function getSchet()
 	{
 		// TODO: Implement getId() method.
-		return $this->id;
+		return $this->schet;
 	}
 
 	/**
@@ -285,11 +291,11 @@ class SearchUtKart extends UtKart
 	 * @return string a key that is used to check the validity of a given identity ID.
 	 * @see validateAuthKey()
 	 */
-	public function getAuthKey()
-	{
-		// TODO: Implement getAuthKey() method.
-		return $this->auth_key;
-	}
+//	public function getAuthKey()
+//	{
+//		// TODO: Implement getAuthKey() method.
+//		return $this->auth_key;
+//	}
 
 	/**
 	 * Validates the given auth key.
@@ -299,24 +305,24 @@ class SearchUtKart extends UtKart
 	 * @return bool whether the given auth key is valid.
 	 * @see getAuthKey()
 	 */
-	public function validateAuthKey($authKey)
-	{
-		// TODO: Implement validateAuthKey() method.
-		return $this->getAuthKey() === $authKey;
-	}
+//	public function validateAuthKey($authKey)
+//	{
+//		// TODO: Implement validateAuthKey() method.
+//		return $this->getAuthKey() === $authKey;
+//	}
 
-	public function validatePassword($password)
-	{
-		return $this->password === $this->hashPassword($password);
-	}
-
-	private function hashPassword($password)
-	{
-		return sha1($password . $this->getAuthKey() . Setting::get('password_salt'));
-	}
-
-	private function generateAuthKey()
-	{
-		return Yii::$app->security->generateRandomString();
-	}
+//	public function validatePassword($password)
+//	{
+//		return $this->password === $this->hashPassword($password);
+//	}
+//
+//	private function hashPassword($password)
+//	{
+//		return sha1($password . $this->getAuthKey() . Setting::get('password_salt'));
+//	}
+//
+//	private function generateAuthKey()
+//	{
+//		return Yii::$app->security->generateRandomString();
+//	}
 }

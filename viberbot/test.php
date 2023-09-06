@@ -21,7 +21,7 @@ echo addPokazn(802,'0092124','asfsadfasdf');
 
 function addPokazn($pokazn, $schet, $viber_name){
 
-    $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
+    $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
     $nowdate = intval(date('Y').date('m'));
 
     if ($lasdatehvd[0]['yearmon']<$nowdate) {
@@ -77,7 +77,7 @@ function addPokazn($pokazn, $schet, $viber_name){
 
             $modelpokazn->save();
 
-            Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+            Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
             $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
 
             $mess =[];

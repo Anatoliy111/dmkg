@@ -1,5 +1,6 @@
 <?php
 
+use app\models\DolgUl;
 use app\poslug\models\UtUlica;
 use yii\bootstrap\Alert;
 use yii\helpers\ArrayHelper;
@@ -9,7 +10,7 @@ use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SearchUtKart */
+/* @var $model app\models\SearchDolgKart */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php Pjax::begin(); ?>
@@ -24,8 +25,8 @@ use yii\widgets\Pjax;
     <div class="row">
 
         <div class="col-sm-8">
-            <?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),
+            <?= $form->field($model, 'kl_ul')->widget(Select2::classname(), [
+                'data' => ArrayHelper::map(DolgUl::getUL(), 'kl', 'ul'),
                 'language' => 'uk',
                 'options' => ['placeholder' => Yii::t('easyii', 'Select the street...')],
                 'pluginOptions' => [
@@ -35,11 +36,11 @@ use yii\widgets\Pjax;
             ?>
         </div>
         <div class="col-sm-2">
-            <?= $form->field($model, 'dom')?>
+            <?= $form->field($model, 'nomdom')?>
         </div>
 
         <div class="col-sm-2">
-            <?= $form->field($model, 'kv') ?>
+            <?= $form->field($model, 'nomkv') ?>
 
         </div>
 

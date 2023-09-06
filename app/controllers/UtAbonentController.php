@@ -2,10 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\DolgKart;
+use app\models\DolgObor;
+use app\models\DolgPeriod;
+use app\models\DolgUl;
 use app\models\HVoda;
 use app\models\Lich;
 use app\models\Pokazn;
-use app\models\SearchUtKart;
+use app\models\SearchDolgKart;
 use app\models\UtAbonent;
 use app\models\SearchUtAbonent;
 use app\models\UtAbonkart;
@@ -95,10 +99,12 @@ class UtAbonentController extends Controller
         {
             return $this->redirect(['kabinet']);
         }
-        $modeladres = new SearchUtKart();
+        $modeladres = new SearchDolgKart();
 
         $modelemail = new SearchUtAbonent();
         $findmodel = null;
+
+
 
 
         Yii::$app->session['periodkab']=null;
@@ -125,7 +131,7 @@ class UtAbonentController extends Controller
             if (array_key_exists('emailfog',$_SESSION['modalmess'])) $tab='email';
         }
 
-        if (array_key_exists('SearchUtKart', Yii::$app->request->queryParams))  {
+        if (array_key_exists('SearchDolgKart', Yii::$app->request->queryParams))  {
 
             $tab='adres';
 
@@ -187,14 +193,14 @@ class UtAbonentController extends Controller
 
         $get = Yii::$app->request->get();
 
-        if (array_key_exists('idkart', $get)) {
-            $_SESSION['abon'] = UtKart::find()->where(['id' => $get["idkart"]])->all()[0];
+        if (array_key_exists('klkart', $get)) {
+            $_SESSION['abon'] = DolgKart::find()->where(['kl' => $get["klkart"]])->all()[0];
         }
 
         if (Yii::$app->session['periodkab']==null)
-            Yii::$app->session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
+            Yii::$app->session['periodkab']=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 //		if (Yii::$app->session['period']==null)
-        Yii::$app->session['period']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
+        Yii::$app->session['period']=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 //		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 ////		if (Yii::$app->session['period']==null)
@@ -221,7 +227,7 @@ class UtAbonentController extends Controller
             return $this->redirect(['kabinet']);
         }
 
-        $modelkart= new SearchUtKart();
+        $modelkart= new SearchDolgKart();
         $modelkart->scenario = 'rahunok';
 
         $modelemail = new SearchUtAbonent();
@@ -282,7 +288,7 @@ class UtAbonentController extends Controller
                 $abon = $_SESSION['abon'];
             }
             else {
-                $abon = UtKart::find()->where(['id' => $abonents[0]->id_kart])->all()[0];
+                $abon = DolgKart::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abonents[0]->schet)])->all()[0];
                 $_SESSION['abon']=$abon;
             }
                 //-------Холодна вода-------------------------------------
@@ -293,10 +299,8 @@ class UtAbonentController extends Controller
             $err = null;
 
 
-                   $hv = UtObor::find()
-                       ->leftJoin('ut_posl', '(`ut_posl`.`id`=`ut_obor`.`id_posl`)')
-                       ->leftJoin('ut_tipposl', '(`ut_tipposl`.`id`=`ut_posl`.`id_tipposl`)')
-                       ->where(['ut_obor.id_kart' => $abon->id, 'ut_obor.period' => $session['periodkab'], 'ut_tipposl.old_tipusl' => 'hv'])
+                   $hv = DolgObor::find()
+                       ->where(['obor.schet' => $abon->schet, 'obor.period' => $session['periodkab'], 'obor.wid' => 'hv'])
                        ->asArray()->all();
                    //-----------------------------------------------------------------------------
 
@@ -304,7 +308,7 @@ class UtAbonentController extends Controller
                        if ($hv != null) {
                            try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
-                               $voda = HVoda::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])->orderBy(['kl' => SORT_DESC]);
+                               $voda = HVoda::find()->where(['schet' => $abon->schet])->orderBy(['kl' => SORT_DESC]);
 
                                $voda2 = $voda->asArray()->all();
 
@@ -316,7 +320,7 @@ class UtAbonentController extends Controller
 //                    $yearmon = UtVoda::find()->limit(1)->select('yearmon')->orderBy(['id' => SORT_DESC])->asArray()->all();
 
                                $pokazn = Pokazn::find()->joinWith('sprzn')->
-                               where(['pokazn.schet' => iconv('UTF-8', 'windows-1251', $abon->schet)])
+                               where(['pokazn.schet' => $abon->schet])
 //                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
                                    ->orderBy(['id' => SORT_DESC]);
 
@@ -328,7 +332,7 @@ class UtAbonentController extends Controller
                                $dppokazn = $dataProvider;
 
 
-                               $lich = Lich::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $abon->schet), 'vid_zn' => null]);
+                               $lich = Lich::find()->where(['schet' => $abon->schet, 'vid_zn' => null]);
 
 
 //                    $lich2 = $lich->asArray()->all();
@@ -352,9 +356,9 @@ class UtAbonentController extends Controller
 
 
                 //-----------------------------------------------------------------------------
-                $obor = UtObor::find()
+                $obor = DolgObor::find()
     //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                    ->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_obor.period' => $session['periodkab']]);
+                    ->joinWith('kart')->where(['kart.schet' => $abon->schet, 'ut_obor.period' => $session['periodkab']]);
 
 
 
@@ -365,27 +369,26 @@ class UtAbonentController extends Controller
                 $dpobor = $dataProvider1;
                 //-----------------------------------------------------------------------------
 
-                $oplab = UtOpl::find()
-                    ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-                    ->where(['ut_opl.id_kart' => $abon->id])
-                    ->andwhere(['>', 'ut_opl.period', $session['period']])
-                    ->groupBy('ut_opl.id_kart, ut_opl.id_posl')
-                    ->asArray();
+//                $oplab = UtOpl::find()
+//                    ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+//                    ->where(['ut_opl.id_kart' => $abon->id])
+//                    ->andwhere(['>', 'ut_opl.period', $session['period']])
+//                    ->groupBy('ut_opl.id_kart, ut_opl.id_posl')
+//                    ->asArray();
+//
+//                $subQuery = (new \yii\db\Query())
+//                    ->from('ut_opl')
+//                    ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
+//                    ->where(['ut_opl.id_kart' => $abon->id])
+//                    ->andwhere(['>', 'ut_opl.period', $session['period']])
+//                    ->groupBy('ut_opl.id_kart, ut_opl.id_posl');
 
-                $subQuery = (new \yii\db\Query())
-                    ->from('ut_opl')
-                    ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-                    ->where(['ut_opl.id_kart' => $abon->id])
-                    ->andwhere(['>', 'ut_opl.period', $session['period']])
-                    ->groupBy('ut_opl.id_kart, ut_opl.id_posl');
 
-
-                $dolg = UtObor::find();
+                $dolg = DolgObor::find();
     //					->select(["ut_obor.id_kart as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-                $dolg->select(["ut_obor.id_kart as id", "ut_obor.*", "round(COALESCE(b.summ,0),2) summ", "round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
+                $dolg->select(["obor.dolg", "obor.fullopl", "round((obor.dolg-obor.fullopl),2) as dolgopl"]);
     //  				    $dolg->select('ut_obor.*,b.summ,');
-                $dolg->where(['ut_obor.id_kart' => $abon->id, 'ut_obor.period' => $session['period']]);
-                $dolg->leftJoin(['b' => $oplab], '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
+                $dolg->where(['obor.schet' => $abon->schet, 'ut_obor.period' => $session['period']])->all();
     //				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`');
     //				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_kart` = ut_obor.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
 
@@ -428,13 +431,13 @@ class UtAbonentController extends Controller
 
 
                 //-----------------------------------------------------------------------------
-                $opl = UtOpl::find();
-                $opl->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_opl.period' => $session['periodkab']]);
-                $dataProvider2 = new ActiveDataProvider([
-                    'query' => $opl,
-                ]);
-
-                $dpopl = $dataProvider2;
+//                $opl = UtOpl::find();
+//                $opl->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_opl.period' => $session['periodkab']]);
+//                $dataProvider2 = new ActiveDataProvider([
+//                    'query' => $opl,
+//                ]);
+//
+//                $dpopl = $dataProvider2;
                 //-----------------------------------------------------------------------------
                 $nar = UtNarah::find();
                 $nar->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_narah.period' => $session['periodkab']]);
@@ -444,45 +447,45 @@ class UtAbonentController extends Controller
 
                 $dpnar = $dataProvider3;
                 //-----------------------------------------------------------------------------
-                $pos = UtPosl::find();
-                $pos->joinWith('kart')->where(['ut_kart.id' => $abon->id]);
-                $dataProvider4 = new ActiveDataProvider([
-                    'query' => $pos,
-                ]);
-
-                $dppos = $dataProvider4;
+//                $pos = UtPosl::find();
+//                $pos->joinWith('kart')->where(['ut_kart.id' => $abon->id]);
+//                $dataProvider4 = new ActiveDataProvider([
+//                    'query' => $pos,
+//                ]);
+//
+//                $dppos = $dataProvider4;
 
                 //-----------------------------------------------------------------------------
-                $tar = UtTarif::find();
-                $tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
-                $tar->joinWith('utTarifabs')->where(['ut_tarifab.id_kart' => $abon->id, 'ut_tarifab.period' => $session['periodkab']]);
-                $tar->leftJoin('ut_tarifplan', '(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
+//                $tar = UtTarif::find();
+//                $tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
+//                $tar->joinWith('utTarifabs')->where(['ut_tarifab.id_kart' => $abon->id, 'ut_tarifab.period' => $session['periodkab']]);
+//                $tar->leftJoin('ut_tarifplan', '(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
+//
+//
+//    //				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_kart' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
+//    //				$tar->joinWith('tarif0');
+//
+//
+//    //				$tar= UtTarif::find();
+//    //				$tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
+//    //				$tar->joinWith('utTarifabs');
+//    //				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
+//    //				$tar->where(['ut_tarif.period' => Yii::$app->session['perioddom']]);
+//    //				$tar->andWhere(['ut_tarifab.id_kart' => $abon->id]);
+//    //				$tar->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
+//    //
+//    //                $rrr = $tar->asArray()->all();
+//    //				$rrr1 = $tar1->asArray()->all();
+//
+//                $dataProvider6 = new ActiveDataProvider([
+//                    'query' => $tar,
+//                ]);
+//                $dptar = $dataProvider6;
 
-
-    //				$tar->select('ut_tarifab.*')->where(['ut_tarifab.id_kart' => $abon->id,'ut_tarifab.period'=> $session['periodkab']]);
-    //				$tar->joinWith('tarif0');
-
-
-    //				$tar= UtTarif::find();
-    //				$tar->select('ut_tarif.*,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
-    //				$tar->joinWith('utTarifabs');
-    //				$tar->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
-    //				$tar->where(['ut_tarif.period' => Yii::$app->session['perioddom']]);
-    //				$tar->andWhere(['ut_tarifab.id_kart' => $abon->id]);
-    //				$tar->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
-    //
-    //                $rrr = $tar->asArray()->all();
-    //				$rrr1 = $tar1->asArray()->all();
-
-                $dataProvider6 = new ActiveDataProvider([
-                    'query' => $tar,
-                ]);
-                $dptar = $dataProvider6;
-
-                $sub = UtObor::find();
+                $sub = DolgObor::find()
     //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                $sub->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_obor.period' => $session['periodkab']]);
-                $sub->andWhere(['<>', 'ut_obor.subs', 0]);
+                ->where(['obor.schet' => $abon->schet, 'obor.period' => $session['periodkab']]);
+                $sub->andWhere(['<>', 'obor.subs', 0]);
 
 
     //				$sub = UtSubs::find();
@@ -550,7 +553,7 @@ class UtAbonentController extends Controller
     {
         $this->returnIndex();
 
-        $modelkart= new SearchUtKart();
+        $modelkart= new SearchDolgKart();
         $modelkart->scenario = 'rahunok';
         if (Yii::$app->request->isAjax && $modelkart->load(Yii::$app->request->post()))
 
@@ -590,7 +593,7 @@ class UtAbonentController extends Controller
     {
         $this->returnIndex();
 
-        $lasdatehvd = Yii::$app->fdb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
+        $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
 
         $nowdate = intval(date('Y').date('m'));
 
@@ -641,7 +644,7 @@ class UtAbonentController extends Controller
                 $modelpokazn->save();
 
 
-                Yii::$app->fdb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+                Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
                 $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
                 $_SESSION['modalmess']['addpokazn'] = $modelpokazn->pokazn;
                 $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
