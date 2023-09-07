@@ -22,7 +22,8 @@ use yii\widgets\Pjax;
 
 
 
-    $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
+//    $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
+    $period =date('Y-m-d', strtotime($lastperiod));
     $model = $_SESSION['model'];
 
 
@@ -355,7 +356,7 @@ Modal::begin([
 
         <?php
              foreach ($abonents as $abonkart) {
-                 if ($abonkart->id==$abon->id) {
+                 if (iconv('UTF-8', 'windows-1251', $abonkart->schet)==$abon->schet) {
                      $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'idabkart' => $abonkart->id]];
                  }
                  else
@@ -408,24 +409,24 @@ Modal::begin([
     //		],
                 [
                     'label'=>'Послуги/Тарифи',
-                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos,'dataProvider2' => $dptar,'abon'=>$abon]),
+                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
                 ],
-                [
-                    'label'=>'Нарахування',
-                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
-                ],
-                [
-                    'label'=>'Оплата/Утримання',
-                    'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$abon]),
-                ],
-                [
-                    'label'=>'Субсидія',
-                    'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$abon]),
-                ],
-                [
-                    'label'=>'Зведена відомість',
-                    'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-                ],
+//                [
+//                    'label'=>'Нарахування',
+//                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
+//                ],
+//                [
+//                    'label'=>'Оплата/Утримання',
+//                    'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$abon]),
+//                ],
+//                [
+//                    'label'=>'Субсидія',
+//                    'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$abon]),
+//                ],
+//                [
+//                    'label'=>'Зведена відомість',
+//                    'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+//                ],
             ];
 
 
@@ -446,12 +447,19 @@ Modal::begin([
                 'striped'=>true,
                 'mode'=>DetailView::MODE_VIEW,
                 'attributes' => [
-                    'schet',
-                    'fio',
+                    [
+                        'attribute' => 'schet',
+                        'value' => iconv('windows-1251', 'UTF-8', $abon->schet),
+                    ],
+                    [
+                        'attribute' => 'fio',
+                        'label' => 'ПІП',
+                        'value' => iconv('windows-1251', 'UTF-8', $abon->fio.' '.$abon->im.' '.$abon->ot),
+                    ],
                     [
                         'label' => Yii::t('easyii', 'Adress'),
 
-                        'value' => $abon->getUlica()->asArray()->one()['ul'].' '.Yii::t('easyii', 'house №').$abon->dom.' '.Yii::t('easyii', 'ap.').$abon->kv,
+                        'value' => iconv('windows-1251', 'UTF-8',$abon->getUlica()->asArray()->one()['ul']).' '.Yii::t('easyii', 'house №').iconv('windows-1251', 'UTF-8',$abon->nomdom).' '.Yii::t('easyii', 'ap.').iconv('windows-1251', 'UTF-8',$abon->nomkv),
                     ],
                 ],
                 'hAlign'=>DetailView::ALIGN_RIGHT ,
@@ -507,9 +515,14 @@ Modal::begin([
                     echo GridView::widget([
                         'dataProvider' =>  $dpdolg,
                         'columns' => [
-                            'tipposl',
                             [
-                                'attribute' => 'sal',
+                                'attribute' => 'poslug',
+                                'value'=>function ($model) {
+                                    return iconv('windows-1251', 'UTF-8', $model["poslug"]);
+                                }
+                            ],
+                            [
+                                'attribute' => 'dolg',
                                 'label'=>'Борг'
                             ],
                             [

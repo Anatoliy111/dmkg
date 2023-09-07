@@ -20,6 +20,7 @@ use Yii;
  * @property string|null $vnesk
  * @property float|null $group
  * @property float|null $npp
+ * @property string|null $vid
  * @property string|null $fl_nonach
  * @property string|null $fl_noopl
  * @property string|null $fl_vtch
@@ -62,6 +63,7 @@ class DolgWid extends \yii\db\ActiveRecord
             [['par'], 'string', 'max' => 10],
             [['fl0', 'fl', 'fl_nonach', 'fl_noopl', 'fl_vtch', 'fl_noobor'], 'string', 'max' => 1],
             [['cod'], 'string', 'max' => 5],
+            [['vid'], 'string', 'max' => 30],
         ];
     }
 
@@ -84,6 +86,7 @@ class DolgWid extends \yii\db\ActiveRecord
             'vnesk' => 'Vnesk',
             'group' => 'Group',
             'npp' => 'Npp',
+            'vid' => 'Vid',
             'fl_nonach' => 'Fl Nonach',
             'fl_noopl' => 'Fl Noopl',
             'fl_vtch' => 'Fl Vtch',

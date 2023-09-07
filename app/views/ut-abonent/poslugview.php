@@ -66,12 +66,9 @@ HTML;
 				'dataProvider' =>  $dataProvider,
 				'columns' => [
 				['class' => '\kartik\grid\SerialColumn'],
-		     	[
-		     		'attribute' => 'id_tipposl',
-		     		'value' => 'tipposl.poslug',
-		     	],
+                'poslug',
 				'n_dog',
-				'date_dog',
+				'd_dog',
 				],
 				'layout' => $layout,
 				'resizableColumns'=>true,
@@ -91,7 +88,7 @@ HTML;
 	<div class="col-xs-12">
 
 			<div class="center" style="padding-bottom: 20px; margin-left: auto; margin-right: auto;">
-			<?= Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.$abon->getUlica()->one()->ul.' '.$abon->dom  , ['/ut-dom/view', 'id' => $abon->id_dom], ['class' => 'btn btn-primary btn-block' ]) ?>
+<!--			--><?//= Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.$abon->getUlica()->one()->ul.' '.$abon->dom  , ['/ut-dom/view', 'id' => $abon->id_dom], ['class' => 'btn btn-primary btn-block' ]) ?>
 			</div>
 
 	</div>
@@ -100,7 +97,7 @@ HTML;
 
 	$prev = 0;
 	echo GridView::widget([
-		'dataProvider' =>  $dataProvider2,
+		'dataProvider' =>  $dataProvider,
 
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
@@ -109,28 +106,21 @@ HTML;
 				'label' => 'Період',
 				'format' => ['date', 'php:MY'],
 			],
+			'poslug',
 			[
-				'attribute' => 'id_tipposl',
-				'value' => 'tipposl.poslug',
-				'group'=>true,
-			],
-
-			[
-				'attribute' => 'id_tipposl',
+				'attribute' => 'vid',
 				'label' => 'Показник',
 				'format' => 'raw',
-				'value' => 'poslvid.vid_pokaz',
-				'group'=>true,
 			],
 			[
-				'attribute' => 'name',
+				'attribute' => 'tarname',
 				'label'=>'Назва тарифу'
 			],
 			[
-				'attribute' => 'tariffakt',
+				'attribute' => 'tartarif',
 			],
 			[
-				'attribute' => 'norma',
+				'attribute' => 'tarnorma',
 			],
 		],
 		'layout' => $layout2,

@@ -58,7 +58,7 @@ class DolgUl extends \yii\db\ActiveRecord
     public static function getUL()
     {
 
-        $allul = DolgUl::find()->all();
+        $allul = DolgUl::find()->where(['is not', 'ul', null])->orderBy('ul')->all();
         foreach ($allul as $k=>$ul) {
             $allul[$k]['ul']=iconv('windows-1251', 'UTF-8', $ul->ul);
         }

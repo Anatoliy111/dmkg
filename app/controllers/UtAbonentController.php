@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\DolgKart;
+use app\models\DolgNtarif;
 use app\models\DolgObor;
 use app\models\DolgPeriod;
 use app\models\DolgUl;
@@ -197,10 +198,13 @@ class UtAbonentController extends Controller
             $_SESSION['abon'] = DolgKart::find()->where(['kl' => $get["klkart"]])->all()[0];
         }
 
-        if (Yii::$app->session['periodkab']==null)
-            Yii::$app->session['periodkab']=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-//		if (Yii::$app->session['period']==null)
+
         Yii::$app->session['period']=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
+
+        if (Yii::$app->session['periodkab']==null)
+            Yii::$app->session['periodkab']=DolgPeriod::find()->select('period')->where(['<>','period',Yii::$app->session['period']])->orderBy(['period' => SORT_DESC])->one()->period;
+//		if (Yii::$app->session['period']==null)
+
 
 //		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 ////		if (Yii::$app->session['period']==null)
@@ -300,7 +304,7 @@ class UtAbonentController extends Controller
 
 
                    $hv = DolgObor::find()
-                       ->where(['obor.schet' => $abon->schet, 'obor.period' => $session['periodkab'], 'obor.wid' => 'hv'])
+                       ->where(['schet' => $abon->schet, 'period' => $session['period'], 'wid' => 'hv'])
                        ->asArray()->all();
                    //-----------------------------------------------------------------------------
 
@@ -357,9 +361,8 @@ class UtAbonentController extends Controller
 
                 //-----------------------------------------------------------------------------
                 $obor = DolgObor::find()
-    //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                    ->joinWith('kart')->where(['kart.schet' => $abon->schet, 'ut_obor.period' => $session['periodkab']]);
-
+                ->where(['schet' => $abon->schet, 'period' => $session['periodkab']])
+                ->orderBy('npp');
 
 
     //				$ff = ArrayHelper::toArray($obor);
@@ -385,10 +388,9 @@ class UtAbonentController extends Controller
 
 
                 $dolg = DolgObor::find();
-    //					->select(["ut_obor.id_kart as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-                $dolg->select(["obor.dolg", "obor.fullopl", "round((obor.dolg-obor.fullopl),2) as dolgopl"]);
-    //  				    $dolg->select('ut_obor.*,b.summ,');
-                $dolg->where(['obor.schet' => $abon->schet, 'ut_obor.period' => $session['period']])->all();
+                $dolg->select(["vw_obkr.*", "round((dolg-fullopl),2) as dolgopl"]);
+                $dolg->where(['schet' => $abon->schet, 'period' => $session['period']]);
+                $dolg->orderBy('npp')->all();
     //				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`');
     //				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_kart` = ut_obor.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
 
@@ -439,13 +441,13 @@ class UtAbonentController extends Controller
 //
 //                $dpopl = $dataProvider2;
                 //-----------------------------------------------------------------------------
-                $nar = UtNarah::find();
-                $nar->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_narah.period' => $session['periodkab']]);
-                $dataProvider3 = new ActiveDataProvider([
-                    'query' => $nar,
-                ]);
-
-                $dpnar = $dataProvider3;
+//                $nar = UtNarah::find();
+//                $nar->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_narah.period' => $session['periodkab']]);
+//                $dataProvider3 = new ActiveDataProvider([
+//                    'query' => $nar,
+//                ]);
+//
+//                $dpnar = $dataProvider3;
                 //-----------------------------------------------------------------------------
 //                $pos = UtPosl::find();
 //                $pos->joinWith('kart')->where(['ut_kart.id' => $abon->id]);
@@ -482,10 +484,18 @@ class UtAbonentController extends Controller
 //                ]);
 //                $dptar = $dataProvider6;
 
+
+            //--------------------------------------------------------------------------------------------------
+
+
+
+
                 $sub = DolgObor::find()
     //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                ->where(['obor.schet' => $abon->schet, 'obor.period' => $session['periodkab']]);
-                $sub->andWhere(['<>', 'obor.subs', 0]);
+                ->where(['schet' => $abon->schet, 'period' => $session['periodkab']]);
+                $sub->andWhere(['<>', 'subs', 0]);
+                $sub->orderBy('npp')->all();
+
 
 
     //				$sub = UtSubs::find();
@@ -498,13 +508,13 @@ class UtAbonentController extends Controller
 
                 $dpsub = $dataProvider8;
 
-                $uder = UtUtrim::find();
-                $uder->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_utrim.period' => $session['periodkab']]);
-                $dataProvider9 = new ActiveDataProvider([
-                    'query' => $uder,
-                ]);
-
-                $dpuder = $dataProvider9;
+//                $uder = UtUtrim::find();
+//                $uder->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_utrim.period' => $session['periodkab']]);
+//                $dataProvider9 = new ActiveDataProvider([
+//                    'query' => $uder,
+//                ]);
+//
+//                $dpuder = $dataProvider9;
 
 
     //
@@ -522,12 +532,12 @@ class UtAbonentController extends Controller
                 'emailchange' => $emailchange,
                 'abonents' => $abonents,
                 'dpobor' => $dpobor,
-                'dpopl' => $dpopl,
-                'dpnar' => $dpnar,
-                'dppos' => $dppos,
-                'dptar' => $dptar,
+//                'dpopl' => $dpopl,
+//                'dpnar' => $dpnar,
+//                'dppos' => $dppos,
+//                'dptar' => $dptar,
                 'dpsub' => $dpsub,
-                'dpuder' => $dpuder,
+//                'dpuder' => $dpuder,
                 'dpdolg' => $dpdolg,
                 'dplich' => $dplich,
                 'dppokazn' => $dppokazn,

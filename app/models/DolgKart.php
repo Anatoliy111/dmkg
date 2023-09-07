@@ -118,7 +118,7 @@ class DolgKart extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'schet' => 'Schet',
+            'schet' => 'Ос.рахунок',
             'numb' => 'Numb',
             'fio' => 'Fio',
             'im' => 'Im',
