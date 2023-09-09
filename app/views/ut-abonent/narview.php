@@ -47,18 +47,32 @@ HTML;
 					'pageSummary' => 'Всього',
 					'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 				],
-				'tipposl',
-				'lgot',
+                    [
+                        'attribute' => 'wid.naim',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["wid"]["naim"]);
+                        }
+                    ],
 				'tarif',
-					[
-						'attribute' => 'id_tipposl',
-						'label' => 'Показник',
-						'format' => 'raw',
-						'value' => 'poslvid.vid_pokaz',
-						'group'=>true,
-					],
-				'pokaznik',
-				'ed_izm',
+                    [
+                        'attribute' => 'wid.vid',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["wid"]["vid"]);
+                        }
+                    ],
+//					[
+//						'attribute' => 'id_tipposl',
+//						'label' => 'Показник',
+//						'format' => 'raw',
+//						'value' => 'poslvid.vid_pokaz',
+//					],
+				'razn',
+                    [
+                        'attribute' => 'wid.par',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["wid"]["par"]);
+                        }
+                    ],
 					[
 						'attribute' => 'sum',
 						'format'=>['decimal', 2],

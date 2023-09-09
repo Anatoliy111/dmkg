@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\DolgKart;
+use app\models\DolgNach;
 use app\models\DolgNtarif;
 use app\models\DolgObor;
 use app\models\DolgPeriod;
@@ -31,6 +32,8 @@ use app\poslug\models\UtUtrim;
 use Yii;
 use yii\base\ExitException;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+use yii\data\SqlDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -440,14 +443,46 @@ class UtAbonentController extends Controller
 //                ]);
 //
 //                $dpopl = $dataProvider2;
-                //-----------------------------------------------------------------------------
-//                $nar = UtNarah::find();
-//                $nar->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_narah.period' => $session['periodkab']]);
-//                $dataProvider3 = new ActiveDataProvider([
-//                    'query' => $nar,
-//                ]);
+
+//                  $opl =Yii::$app->dolgdb->createCommand("select * from opl_rows(:per,:sch)")
+//                     ->bindValue(':per', $session['periodkab'])
+//                     ->bindValue(':sch', $abon->schet)
+//                     ->query();
 //
-//                $dpnar = $dataProvider3;
+//                $dpopl = new ActiveDataProvider([
+//                    'query' => $opl,
+//                ]);
+
+            $dpopl = new ArrayDataProvider([
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from opl_rows(:per,:sch)', [':per' => $session['periodkab'], ':sch' => $abon->schet])->QueryAll(), // запрос на выборку новостей
+            ]);
+
+
+//            $totalCount = Yii::$app->dolgdb->createCommand('select * from opl_rows(:per,:sch)', [':per' => $session['periodkab'], ':sch' => $abon->schet])->queryScalar();
+//
+//
+//
+//            $dpopl = new SqlDataProvider([
+//                'sql' => 'select * from opl_rows(:per,:sch)',
+//                'params' => [':per' => $session['periodkab'], ':sch' => $abon->schet],
+//                'totalCount' => $totalCount,
+//            ]);
+
+
+                //-----------------------------------------------------------------------------
+                $nar = DolgNach::find();
+                $nar->joinWith('wid');
+//                $nar->leftJoin('wid','(`nach`.`wid`=`wid`.`wid`)');
+                $nar->where(['nach.schet' => $abon->schet, 'nach.period' => $session['periodkab']]);
+                $nar->orderBy('npp');
+
+                $nar2 = $nar->asArray()->all();
+
+                $dataProvider3 = new ActiveDataProvider([
+                    'query' => $nar,
+                ]);
+
+                $dpnar = $dataProvider3;
                 //-----------------------------------------------------------------------------
 //                $pos = UtPosl::find();
 //                $pos->joinWith('kart')->where(['ut_kart.id' => $abon->id]);
@@ -508,13 +543,16 @@ class UtAbonentController extends Controller
 
                 $dpsub = $dataProvider8;
 
-//                $uder = UtUtrim::find();
-//                $uder->joinWith('kart')->where(['ut_kart.id' => $abon->id, 'ut_utrim.period' => $session['periodkab']]);
-//                $dataProvider9 = new ActiveDataProvider([
-//                    'query' => $uder,
-//                ]);
-//
-//                $dpuder = $dataProvider9;
+            $uder = DolgObor::find()
+                //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+                ->where(['schet' => $abon->schet, 'period' => $session['periodkab']]);
+            $uder->andWhere(['<>', 'uder', 0]);
+            $uder->orderBy('npp')->all();
+                $dataProvider9 = new ActiveDataProvider([
+                    'query' => $uder,
+                ]);
+
+                $dpuder = $dataProvider9;
 
 
     //
@@ -532,12 +570,12 @@ class UtAbonentController extends Controller
                 'emailchange' => $emailchange,
                 'abonents' => $abonents,
                 'dpobor' => $dpobor,
-//                'dpopl' => $dpopl,
-//                'dpnar' => $dpnar,
+                'dpopl' => $dpopl,
+                'dpnar' => $dpnar,
 //                'dppos' => $dppos,
 //                'dptar' => $dptar,
                 'dpsub' => $dpsub,
-//                'dpuder' => $dpuder,
+                'dpuder' => $dpuder,
                 'dpdolg' => $dpdolg,
                 'dplich' => $dplich,
                 'dppokazn' => $dppokazn,
@@ -570,20 +608,28 @@ class UtAbonentController extends Controller
         {
 
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $modelkart->schet = iconv('UTF-8','windows-1251', $modelkart->schet);
+            $modelkart->fio = iconv('UTF-8','windows-1251', $modelkart->fio);
 
             return \yii\widgets\ActiveForm::validate($modelkart);
 
         }
 
-        if ($modelkart->load(Yii::$app->request->post()) && $modelkart->validate()) {
-            $modelabonkart= new UtAbonkart();
-            $modelabonkart->id_abon = $_SESSION['model']->id;
-            $kart = UtKart::findOne(['schet'=>$modelkart->schet]);
-            $modelabonkart->id_kart = $kart->id;
-            $modelabonkart->schet = $modelkart->schet;
-            $modelabonkart->save();
-            $_SESSION['abon'] = $kart;
+        if ($modelkart->load(Yii::$app->request->post())) {
+            $schet=$modelkart->schet;
+            $modelkart->schet = iconv('UTF-8','windows-1251', $modelkart->schet);
+            $modelkart->fio = iconv('UTF-8','windows-1251', $modelkart->fio);
+            if ($modelkart->validate()) {
+                $modelabonkart = new UtAbonkart();
+                $modelabonkart->id_abon = $_SESSION['model']->id;
+                $kart = DolgKart::findOne(['schet' => $modelkart->schet]);
+//            $modelabonkart->id_kart = $kart->id;
+                $modelabonkart->schet = $schet;
+                $modelabonkart->save();
+                $_SESSION['abon'] = $kart;
 //            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
+
+            }
             return $this->redirect('kabinet');
         }
         return $this->renderAjax('addrah', ['modelkart' => $modelkart]);
@@ -594,7 +640,7 @@ class UtAbonentController extends Controller
     {
         $this->returnIndex();
 //        $schet = Yii::$app->request->post()['schet'];
-        UtAbonkart::deleteAll(['id_abon'=>$_SESSION['model']->id,'id_kart'=>$_SESSION['abon']->id]);
+        UtAbonkart::deleteAll(['id_abon'=>$_SESSION['model']->id,'schet'=>$_SESSION['abon']->schet]);
         $_SESSION['abon']=null;
         return $this->redirect('kabinet');
     }

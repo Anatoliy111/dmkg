@@ -61,10 +61,15 @@ HTML;
 									'pageSummary' => 'Всього',
 									'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 								],
-				'tipposl',
+                                [
+                                    'attribute' => 'poslug',
+                                    'value'=>function ($model) {
+                                        return iconv('windows-1251', 'UTF-8', $model["poslug"]);
+                                    }
+                                ],
 				'dt',
 								[
-									'attribute' => 'sum',
+									'attribute' => 'summ',
 									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
@@ -87,9 +92,14 @@ HTML;
 						'pageSummary' => 'Всього',
 						'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 					],
-					'tipposl',
+                    [
+                        'attribute' => 'poslug',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["poslug"]);
+                        }
+                    ],
 					[
-						'attribute' => 'summa',
+						'attribute' => 'uder',
 						'format'=>['decimal', 2],
 						'pageSummary'=>true,
 					],

@@ -31,11 +31,11 @@ class UtAbonkart extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_abon', 'id_kart'], 'required'],
+            [['id_abon','schet'], 'required'],
             [['id_abon', 'id_kart'], 'integer'],
             [['schet'], 'string', 'max' => 11],
             [['id_abon'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['id_abon' => 'id']],
-            [['id_kart'], 'exist', 'skipOnError' => true, 'targetClass' => UtKart::class, 'targetAttribute' => ['id_kart' => 'id']],
+            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => DolgKart::class, 'targetAttribute' => ['schet' => 'schet']],
         ];
     }
 
@@ -67,9 +67,9 @@ class UtAbonkart extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getKart()
-    {
-        return $this->hasOne(UtKart::class, ['id' => 'id_kart']);
-    }
+//    public function getKart()
+//    {
+//        return $this->hasOne(UtKart::class, ['id' => 'id_kart']);
+//    }
 
 }

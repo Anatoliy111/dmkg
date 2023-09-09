@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "{{%wid}}".
  *
- * @property string|null $wid
+ * @property string $wid
  * @property float|null $id_org
  * @property string|null $naim
  * @property string|null $snaim
@@ -54,6 +54,7 @@ class DolgWid extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['wid'], 'required'],
             [['id_org', 'group', 'npp', 'fl_gropl', 'fl_subs', 'val'], 'number'],
             [['upd'], 'integer'],
             [['wid', 'abonpl', 'vnesk'], 'string', 'max' => 2],
@@ -64,6 +65,7 @@ class DolgWid extends \yii\db\ActiveRecord
             [['fl0', 'fl', 'fl_nonach', 'fl_noopl', 'fl_vtch', 'fl_noobor'], 'string', 'max' => 1],
             [['cod'], 'string', 'max' => 5],
             [['vid'], 'string', 'max' => 30],
+            [['wid'], 'unique'],
         ];
     }
 
@@ -75,10 +77,10 @@ class DolgWid extends \yii\db\ActiveRecord
         return [
             'wid' => 'Wid',
             'id_org' => 'Id Org',
-            'naim' => 'Naim',
+            'naim' => 'Послуга',
             'snaim' => 'Snaim',
             'wnaim' => 'Wnaim',
-            'par' => 'Par',
+            'par' => 'Од.виміру',
             'fl0' => 'Fl0',
             'fl' => 'Fl',
             'cod' => 'Cod',
@@ -86,7 +88,7 @@ class DolgWid extends \yii\db\ActiveRecord
             'vnesk' => 'Vnesk',
             'group' => 'Group',
             'npp' => 'Npp',
-            'vid' => 'Vid',
+            'vid' => 'Вид показника',
             'fl_nonach' => 'Fl Nonach',
             'fl_noopl' => 'Fl Noopl',
             'fl_vtch' => 'Fl Vtch',

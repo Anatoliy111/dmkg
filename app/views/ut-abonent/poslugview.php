@@ -66,7 +66,12 @@ HTML;
 				'dataProvider' =>  $dataProvider,
 				'columns' => [
 				['class' => '\kartik\grid\SerialColumn'],
-                'poslug',
+                    [
+                        'attribute' => 'poslug',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["poslug"]);
+                        }
+                    ],
 				'n_dog',
 				'd_dog',
 				],
@@ -103,18 +108,26 @@ HTML;
 			['class' => '\kartik\grid\SerialColumn'],
 			[
 				'attribute' => 'period',
-				'label' => 'Період',
 				'format' => ['date', 'php:MY'],
 			],
-			'poslug',
+            [
+                'attribute' => 'poslug',
+                'value'=>function ($model) {
+                    return iconv('windows-1251', 'UTF-8', $model["poslug"]);
+                }
+            ],
 			[
 				'attribute' => 'vid',
-				'label' => 'Показник',
+                'value'=>function ($model) {
+                    return iconv('windows-1251', 'UTF-8', $model["vid"]);
+                },
 				'format' => 'raw',
 			],
 			[
 				'attribute' => 'tarname',
-				'label'=>'Назва тарифу'
+                'value'=>function ($model) {
+                    return iconv('windows-1251', 'UTF-8', $model["tarname"]);
+                }
 			],
 			[
 				'attribute' => 'tartarif',

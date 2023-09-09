@@ -8,6 +8,7 @@
 
 namespace app\poslug\components;
 
+use app\models\DolgPeriod;
 use app\poslug\models\Period;
 use app\poslug\models\UtPeriod;
 use app\poslug\models\UtTarif;
@@ -35,7 +36,7 @@ class PeriodKabWidget extends Widget
 	{
 		parent::init();
 		$ModelPeriod = new Period();
-		$lastperiod = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
+		$lastperiod = DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
 		$ModelPeriod->lastperiod = $lastperiod->period;
 //		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 //		if ($ModelPeriod->load(Yii::$app->request->post()))
@@ -68,7 +69,7 @@ class PeriodKabWidget extends Widget
 		if (!$value)
 		{
 			$per = [];
-			$ar  = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->all();
+			$ar  = DolgPeriod::find()->select('period')->where(['<>','period',$lastperiod->period])->orderBy(['period' => SORT_DESC])->limit(24)->all();
 			$dat = ArrayHelper::map($ar, 'period', 'period');
 			foreach ($dat as $dt)
 			{

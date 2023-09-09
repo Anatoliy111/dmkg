@@ -120,7 +120,7 @@ class DolgKart extends \yii\db\ActiveRecord
         return [
             'schet' => 'Ос.рахунок',
             'numb' => 'Numb',
-            'fio' => 'Fio',
+            'fio' => 'Прізвище',
             'im' => 'Im',
             'ot' => 'Ot',
             'fio_v' => 'Fio V',

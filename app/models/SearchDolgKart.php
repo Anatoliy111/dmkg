@@ -35,6 +35,12 @@ class SearchDolgKart extends DolgKart
 
     }
 
+//    public function beforeValidate() {
+////        $this->schet = iconv('UTF-8','windows-1251', $this->schet);
+////        $this->fio = iconv('UTF-8','windows-1251', $this->fio);
+//
+//    }
+
 
     public function rules()
     {
@@ -47,7 +53,7 @@ class SearchDolgKart extends DolgKart
             [['fio'], 'exist', 'skipOnError' => true, 'targetClass' => DolgKart::class, 'targetAttribute' => ['fio' => 'fio'],'message' => 'Абонент з таким прізвищем не зареєстрований!!!','on' => self::SCENARIO_RAH],
             [['fio'], 'exist', 'targetAttribute' => ['fio','schet'] ,'message' => 'Прізвище не відповідає власнику рахунку!!!','on' => self::SCENARIO_RAH],
             [['schet'], function ($attribute, $params) {
-                $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => $this->schet])->all();
+                $abonents = UtAbonkart::find()->where(['id_abon' => $_SESSION['model']->id])->andwhere(['schet' => iconv('windows-1251','UTF-8', $this->schet)])->all();
                 if (count($abonents)>0) {
                     $this->addError($attribute, $this->schet." Цей рахунок вже додано до вашого кабінету!!!");
                 }

@@ -105,7 +105,12 @@ HTML;
 										];
 									}
 								],
-				'tipposl',
+                                [
+                                    'attribute' => 'poslug',
+                                    'value'=>function ($model) {
+                                        return iconv('windows-1251', 'UTF-8', $model["poslug"]);
+                                    }
+                                ],
 								[
 									'attribute' => 'dolg',
 								],

@@ -407,10 +407,10 @@ Modal::begin([
     //			'label'=>'Загальна інформація',
     //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
     //		],
-                [
-                    'label'=>'Послуги/Тарифи',
-                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-                ],
+//                [
+//                    'label'=>'Послуги/Тарифи',
+//                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+//                ],
 //                [
 //                    'label'=>'Нарахування',
 //                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
@@ -454,7 +454,7 @@ Modal::begin([
                     [
                         'attribute' => 'fio',
                         'label' => 'ПІП',
-                        'value' => iconv('windows-1251', 'UTF-8', $abon->fio.' '.$abon->im.' '.$abon->ot),
+//                        'value' => iconv('windows-1251', 'UTF-8', $abon->fio.' '.$abon->im.' '.$abon->ot),
                     ],
                     [
                         'label' => Yii::t('easyii', 'Adress'),

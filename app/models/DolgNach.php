@@ -29,6 +29,8 @@ use Yii;
  * @property int $id
  * @property string|null $period
  * @property int|null $upd
+ *
+ * @property Wid $w
  */
 class DolgNach extends \yii\db\ActiveRecord
 {
@@ -63,6 +65,7 @@ class DolgNach extends \yii\db\ActiveRecord
             [['lg_posv'], 'string', 'max' => 9],
             [['lg_ser'], 'string', 'max' => 3],
             [['info'], 'string', 'max' => 4],
+            [['wid'], 'exist', 'skipOnError' => true, 'targetClass' => DolgWid::class, 'targetAttribute' => ['wid' => 'wid']],
         ];
     }
 
@@ -81,10 +84,10 @@ class DolgNach extends \yii\db\ActiveRecord
             'lg_dt' => 'Lg Dt',
             'lg_koli' => 'Lg Koli',
             'lg_kat' => 'Lg Kat',
-            'tarif' => 'Tarif',
-            'sum' => 'Sum',
+            'tarif' => 'Тариф',
+            'sum' => 'Сума',
             'sum_full' => 'Sum Full',
-            'razn' => 'Razn',
+            'razn' => 'Показник',
             'razn1' => 'Razn1',
             'tarif1' => 'Tarif1',
             'fl_sch' => 'Fl Sch',
@@ -92,8 +95,18 @@ class DolgNach extends \yii\db\ActiveRecord
             'calc_days' => 'Calc Days',
             'info' => 'Info',
             'id' => 'ID',
-            'period' => 'Period',
+            'period' => 'Період',
             'upd' => 'Upd',
         ];
+    }
+
+    /**
+     * Gets query for [[W]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWid()
+    {
+        return $this->hasOne(DolgWid::class, ['wid' => 'wid']);
     }
 }
