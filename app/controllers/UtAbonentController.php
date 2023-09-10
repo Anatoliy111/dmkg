@@ -309,7 +309,7 @@ class UtAbonentController extends Controller
 //$hv2 = [];
 
                    $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
-                   $hv2 = $hv->one();
+                   $hv2 = $hv->scalar();
                    //-----------------------------------------------------------------------------
 
 
