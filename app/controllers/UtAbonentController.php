@@ -306,10 +306,10 @@ class UtAbonentController extends Controller
             $dplich = null;
             $err = null;
             $hv = null;
-
+$hv2 = [];
 
                    $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv'])->asArray();
-//                   $hv2 = $hv->all();
+                   $hv2 = $hv->all();
                    //-----------------------------------------------------------------------------
 
 
