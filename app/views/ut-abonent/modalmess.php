@@ -100,7 +100,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addpokazn2', $session['modalmess'])) {
         $modalformheader='Холодна вода';
-        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn'].'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$session['abon']->schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn2'].'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$session['abon']->schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
         $modalformimage='registration.png';
     }
 

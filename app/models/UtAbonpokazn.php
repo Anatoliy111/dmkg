@@ -34,25 +34,25 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
     {
         return [
             [['pokazn', 'status'], 'integer'],
-            [['id_abonent','schet', 'date_pok', 'pokazn', 'vid'], 'required'],
-            [['date_ins', 'date_pok'], 'safe'],
+            [['id_abonent','schet', 'pokazn', 'vid'], 'required'],
+            [['date_ins'], 'safe'],
             [['schet'], 'string', 'max' => 10],
             [['name'], 'string', 'max' => 64],
             [['vid'], 'string', 'max' => 32],
             [['pokazn'], function ($attribute) {
-                $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['date_pok' => SORT_DESC])->one();
+                $pok = Pokazn::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $this->schet)])->orderBy(['date_pok' => SORT_DESC])->one();
                 if ($this->pokazn<=$pok->pokazn) {
                     $this->addError($attribute, "Ваш показник меньший або рівний за останній зареєстрований показник!!! Спробуйте ще");
                 }
                 else {
                     $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
                     if ($poksite<>null)
-                        if ($poksite->date_pok == $this->date_pok) {
+                        if ($poksite->data == $this->data) {
                             if ($poksite->vid == 'site') $this->addError($attribute,  "Ви вже сьогодні подали показник " . $poksite->pokazn . " через кабінет споживача!!! За один день здаємо тільки один показник!");
                             if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже сьогодні подали показник " . $poksite->pokazn . " через ViberBot!!! За один день здаємо тільки один показник!");
                         } elseif ($this->pokazn <= $poksite->pokazn) {
-                            if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через кабінет споживача!!!");
-                            if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->date_pok . " через ViberBot!!!");
+                            if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->data . " через кабінет споживача!!!");
+                            if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->data . " через ViberBot!!!");
                         }
                     }
 

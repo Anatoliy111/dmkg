@@ -35,7 +35,7 @@ class UtAbonkart extends \yii\db\ActiveRecord
             [['id_abon', 'id_kart'], 'integer'],
             [['schet'], 'string', 'max' => 11],
             [['id_abon'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['id_abon' => 'id']],
-            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => DolgKart::class, 'targetAttribute' => ['schet' => 'schet']],
+//            [['schet'], 'exist', 'skipOnError' => true, 'targetClass' => DolgKart::class, 'targetAttribute' => ['schet' => 'schet']],
         ];
     }
 

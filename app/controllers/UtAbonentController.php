@@ -197,8 +197,8 @@ class UtAbonentController extends Controller
 
         $get = Yii::$app->request->get();
 
-        if (array_key_exists('klkart', $get)) {
-            $_SESSION['abon'] = DolgKart::find()->where(['kl' => $get["klkart"]])->all()[0];
+        if (array_key_exists('schetkart', $get)) {
+            $_SESSION['abon'] = DolgKart::find()->where(['schet' => iconv('UTF-8','windows-1251', $get["schetkart"])])->all()[0];
         }
 
 
@@ -625,8 +625,10 @@ class UtAbonentController extends Controller
                 $kart = DolgKart::findOne(['schet' => $modelkart->schet]);
 //            $modelabonkart->id_kart = $kart->id;
                 $modelabonkart->schet = $schet;
-                $modelabonkart->save();
-                $_SESSION['abon'] = $kart;
+                if ($modelabonkart->validate()) {
+                    $modelabonkart->save();
+                    $_SESSION['abon'] = $kart;
+                }
 //            $dataProviderRah = $modelrah->searchrah(Yii::$app->request->post());
 
             }
@@ -674,14 +676,21 @@ class UtAbonentController extends Controller
                 $modelabonpokazn->schet = $_SESSION['abon']->schet;
                 $modelabonpokazn->name = $_SESSION['model']->fio;
                 $modelabonpokazn->id_abonent = $_SESSION['model']->id;
-                $modelabonpokazn->date_pok = date("Y-m-d");
+                $modelabonpokazn->data = date("Y-m-d");
                 $modelabonpokazn->pokazn = $modelpokazn->pokazn;
                 $modelabonpokazn->vid = 'site';
-                $modelabonpokazn->save();
-                $_SESSION['modalmess']['addpokazn2'] = $modelabonpokazn->pokazn;
-                return $this->redirect('kabinet');
+                if ($modelabonpokazn->validate()) {
+                    $modelabonpokazn->save();
+                    $_SESSION['modalmess']['addpokazn2'] = $modelabonpokazn->pokazn;
+                    return $this->redirect('kabinet');
+                }
+                else {
+                    $modelpokazn->errors = $modelabonpokazn->errors;
+                }
+
+
             }
-            return $this->renderAjax('addpokazn', ['modelabonpokazn' => $modelabonpokazn]);
+            return $this->renderAjax('addpokazn', ['modelpokazn' => $modelpokazn]);
 
         } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
 

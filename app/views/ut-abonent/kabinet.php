@@ -26,6 +26,9 @@ use yii\widgets\Pjax;
     $period =date('Y-m-d', strtotime($lastperiod));
     $model = $_SESSION['model'];
 
+$abon = $_SESSION['abon'];
+$abon->schet = trim(iconv('windows-1251','UTF-8', $abon->schet));
+
 
 
 if ($emailchange=='error') {
@@ -235,7 +238,7 @@ Modal::begin([
 
 <div class="modal-body">
     <div class="col" style="text-align:center">
-        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?= Html::encode($_SESSION['abon']->schet)?>?</h4>
+        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?= Html::encode($abon->schet)?>?</h4>
         <?= Html::a('Так', ['delrahunok'], ['class'=>'btn-lg btn-danger']);?>
         <?= Html::a('Ні', [''],['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']);?>
     </div>
@@ -348,7 +351,7 @@ Modal::begin([
 
         if ($abonents<>null) {
 
-        $abon = $_SESSION['abon'];
+
 
         ?>
 
@@ -356,11 +359,11 @@ Modal::begin([
 
         <?php
              foreach ($abonents as $abonkart) {
-                 if (iconv('UTF-8', 'windows-1251', $abonkart->schet)==$abon->schet) {
-                     $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'idabkart' => $abonkart->id]];
+                 if ($abonkart->schet==$abon->schet) {
+                     $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'schetkart' => $abonkart->schet]];
                  }
                  else
-                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'idabkart' => $abonkart->id],'options' => ['data-pjax' => true]];
+                     $itemsnav[] = ['label' => $abonkart->schet, 'url' => ['kabinet', 'schetkart' => $abonkart->schet],'options' => ['data-pjax' => true]];
              }
 
 
@@ -407,26 +410,26 @@ Modal::begin([
     //			'label'=>'Загальна інформація',
     //			'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dppos[$org->id_org],'abonents'=>$abonents[$org->id_org]]),
     //		],
-//                [
-//                    'label'=>'Послуги/Тарифи',
-//                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-//                ],
-//                [
-//                    'label'=>'Нарахування',
-//                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
-//                ],
-//                [
-//                    'label'=>'Оплата/Утримання',
-//                    'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$abon]),
-//                ],
-//                [
-//                    'label'=>'Субсидія',
-//                    'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$abon]),
-//                ],
-//                [
-//                    'label'=>'Зведена відомість',
-//                    'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
-//                ],
+                [
+                    'label'=>'Послуги/Тарифи',
+                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+                ],
+                [
+                    'label'=>'Нарахування',
+                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
+                ],
+                [
+                    'label'=>'Оплата/Утримання',
+                    'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$abon]),
+                ],
+                [
+                    'label'=>'Субсидія',
+                    'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$abon]),
+                ],
+                [
+                    'label'=>'Зведена відомість',
+                    'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+                ],
             ];
 
 
@@ -449,12 +452,12 @@ Modal::begin([
                 'attributes' => [
                     [
                         'attribute' => 'schet',
-                        'value' => iconv('windows-1251', 'UTF-8', $abon->schet),
+                        'value' => $abon->schet,
                     ],
                     [
                         'attribute' => 'fio',
                         'label' => 'ПІП',
-//                        'value' => iconv('windows-1251', 'UTF-8', $abon->fio.' '.$abon->im.' '.$abon->ot),
+                        'value' => iconv('windows-1251', 'UTF-8', $abon->fio.' '.$abon->im.' '.$abon->ot),
                     ],
                     [
                         'label' => Yii::t('easyii', 'Adress'),

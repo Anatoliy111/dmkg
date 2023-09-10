@@ -42,7 +42,6 @@ use yii\helpers\Url;
 			?>
 			<div class="rah">
 			     <h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
-
 			</div>
 			<?php
 
