@@ -308,11 +308,12 @@ class UtAbonentController extends Controller
             $hv = null;
 
 
-                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv'])->asArray()->all();
+                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
+                   $hv2 = $hv->asArray()->all();
                    //-----------------------------------------------------------------------------
 
 
-                       if ($hv != null) {
+                       if ($hv2 != null) {
                            try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
                                $voda = HVoda::find()->where(['schet' => $abon->schet])->orderBy(['kl' => SORT_DESC]);
