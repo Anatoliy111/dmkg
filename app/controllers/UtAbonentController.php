@@ -203,10 +203,12 @@ class UtAbonentController extends Controller
         }
 
 
-        $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-        $period2=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-        Yii::$app->session['period']=$period;
-        Yii::$app->session['periodkab']=$period;
+        $period1=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC]);
+        $period3=$period1->asArray()->all();
+        $period2=DolgPeriod::find()->select('period')->where(['<>','period',$period3[0]])->orderBy(['period' => SORT_DESC])->one()->period;
+
+        Yii::$app->session['period']=$period3[0];
+        Yii::$app->session['periodkab']=$period2;
 //        if (Yii::$app->session['periodkab']==null)
 //            Yii::$app->session['periodkab']=DolgPeriod::find()->select('period')->where(['<>','period',$period])->orderBy(['period' => SORT_DESC])->one()->period;
 //		if (Yii::$app->session['period']==null)
@@ -310,7 +312,7 @@ class UtAbonentController extends Controller
             $hv = null;
 //$hv2 = [];
 
-                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
+                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period1, 'wid' => 'hv']);
 //                    $hv2 = ArrayHelper::toArray($hv);
 
 //                    $provider = new ActiveDataProvider([
