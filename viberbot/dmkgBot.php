@@ -11,6 +11,7 @@ $yiiConfig = require __DIR__ . '/../app/config/console.php';
 new yii\web\Application($yiiConfig);
 
 
+use app\models\DolgKart;
 use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
@@ -205,7 +206,7 @@ try {
             else {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
                 if ($match[0][0] == 'add-rah'){
-                    $ModelKart = UtKart::findOne(['schet' => $event->getMessage()->getText()]);
+                    $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText()))]);
                     $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
@@ -222,10 +223,10 @@ try {
                 }
                 elseif ($match[0][0] == 'verify-rah'){
 
-                    $ModelKart = UtKart::findOne(['schet' => $match[0][1]]);
+                    $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null){
-                            if (mb_strtolower($ModelKart->name_f) == mb_strtolower($event->getMessage()->getText())){
-                                $addabon = addAbonReceiver($Receiv->id,$match[0][1],$ModelKart->id,$org);
+                            if (mb_strtolower($ModelKart->fio) == mb_strtolower(trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText())))){
+                                $addabon = addAbonReceiver($Receiv->id,$match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv,'');
                             }
@@ -501,16 +502,15 @@ function UpdateStatus($Model,$Status){
 
 }
 
-function addAbonReceiver($id_viber,$schet,$id_kart,$org){
+function addAbonReceiver($id_viber,$schet){
 
-    $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'id_utkart' => $id_kart]);
+    $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'schet' => $schet]);
     if ($FindModel == null)
     {
         $model = new ViberAbon();
         $model->id_viber = $id_viber;
-        $model->id_utkart = $id_kart;
         $model->schet = $schet;
-        $model->org = $org;
+        $model->org = 'dmkg';
         if ($model->validate() && $model->save())
         {
             return $model;
