@@ -94,7 +94,7 @@ $config = [
 //            ],
         ],
         'urlManager' => [
-//			'enablePrettyUrl' => true,
+			'enablePrettyUrl' => true,
 //			'showScriptName' => false,
             'rules' => [
 //				'ut-kart/<uri>' => 'ut-kart/kabinet',
