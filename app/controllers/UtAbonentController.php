@@ -317,7 +317,7 @@ class UtAbonentController extends Controller
                    $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$abon->schet.'\' and wid=\'hv\'')->QueryAll();
 
 
-                       if ($hv[0] != null) {
+                       if ($hv != null) {
                            try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
                                $voda = HVoda::find()->where(['schet' => $abon->schet])->orderBy(['kl' => SORT_DESC]);
