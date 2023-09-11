@@ -202,29 +202,12 @@ class UtAbonentController extends Controller
             $_SESSION['abon'] = DolgKart::find()->where(['schet' => iconv('UTF-8','windows-1251', $get["schetkart"])])->all()[0];
         }
 
-        $period1=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-        $arr2 =  Yii::$app->dolgdb->createCommand('select * from period order by period desc')->QueryAll();
-        $arr3 =  Yii::$app->dolgdb->createCommand('select * from period where period<>\'2023-09-01\'  order by period desc')->QueryAll();
-        $dpopl = new ArrayDataProvider([
-            'allModels' => Yii::$app->dolgdb->createCommand('select * from period where period<>:per order by period desc', [':per' => $period1])->QueryAll(),
-        ]);
 
+        $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
-
-                $subQuery = (new \yii\db\Query())
-                    ->from('dolg.period')
-                    ->select('period')
-                    ->orderBy(['period' => SORT_DESC]);
-
-        $period3 = $subQuery->all();
-        $period1=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-//        $period3=$period1->asArray()->one();
-        $period2=DolgPeriod::find()->select('period')->where(['<>','period',$period1])->orderBy(['period' => SORT_DESC])->one()->period;
-
-        Yii::$app->session['period']=$period1;
-        Yii::$app->session['periodkab']=$period2;
-//        if (Yii::$app->session['periodkab']==null)
-//            Yii::$app->session['periodkab']=DolgPeriod::find()->select('period')->where(['<>','period',$period])->orderBy(['period' => SORT_DESC])->one()->period;
+        Yii::$app->session['period']=$period;
+        if (Yii::$app->session['periodkab']==null)
+            Yii::$app->session['periodkab']=Yii::$app->dolgdb->createCommand('select * from period where period<>\'2023-09-01\'  order by period desc')->QueryAll()[0]['period'];
 //		if (Yii::$app->session['period']==null)
 
 
@@ -326,7 +309,7 @@ class UtAbonentController extends Controller
             $hv = null;
 //$hv2 = [];
 
-                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period1, 'wid' => 'hv']);
+                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
 //                    $hv2 = ArrayHelper::toArray($hv);
 
 //                    $provider = new ActiveDataProvider([
