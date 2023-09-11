@@ -249,7 +249,7 @@ function infoDmkgSchet($schet){
     $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
     $mess = 'Особовий рахунок - '.$schet."\r\n";
     $mess = $mess.$modelKart->fio . "\n";
-    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->kv)?'кв.'.$modelKart->kv:'')."\r\n";
+    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->nomkv)?'кв.'.$modelKart->nomkv:'')."\r\n";
     $mess = $mess.'----------------------------'."\n";
 
 //    $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
