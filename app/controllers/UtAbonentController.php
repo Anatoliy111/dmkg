@@ -204,6 +204,7 @@ class UtAbonentController extends Controller
 
 
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
+        $period2=DolgPeriod::find()->select('period')->where(['<>','period',$period])->orderBy(['period' => SORT_DESC])->one()->period;
         Yii::$app->session['period']=$period;
         Yii::$app->session['periodkab']=$period;
 //        if (Yii::$app->session['periodkab']==null)
