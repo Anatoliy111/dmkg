@@ -92,7 +92,7 @@ HTML;
 	<div class="col-xs-12">
 
 			<div class="center" style="padding-bottom: 20px; margin-left: auto; margin-right: auto;">
-			<?= //Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.$abon->getUlica()->one()->ul.' '.$abon->dom  , ['/ut-dom/view', 'id' => $abon->id_dom], ['class' => 'btn btn-primary btn-block' ]) ?>
+			<?= Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.$abon->getUlica()->one()->ul.' '.$abon->dom  , ['/ut-dom/view', 'id' => $abon->id_dom], ['class' => 'btn btn-primary btn-block' ]) ?>
 			</div>
 
 	</div>
