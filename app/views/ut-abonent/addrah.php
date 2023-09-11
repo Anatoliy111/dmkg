@@ -24,14 +24,10 @@ use yii\helpers\Html;
     'options' => ['data-pjax' => true]
 ]); ?>
 
-<?//=  $form->field($modelkart, iconv('UTF-8','windows-1251', 'schet'))->textInput(['maxlength' => true]) ?>
+
 <?=  $form->field($modelkart, 'schet')->textInput(['maxlength' => true]) ?>
 <?=    $form->field($modelkart, 'fio')->textInput(['maxlength' => true])  ?>
 
-<?//=    $form->field($modelkart, 'fio')->textInput(['maxlength' => true,'value' => function ($model) {
-//    // Convert the character encoding from one_encoding to another_encoding
-//    return iconv('UTF-8', 'windows-1251', $model->fio);
-//},])  ?>
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
 </div>
