@@ -479,7 +479,7 @@ class UtAbonentController extends Controller
                 $nar->where(['nach.schet' => $abon->schet, 'nach.period' => $session['periodkab']]);
                 $nar->orderBy('npp');
 
-                $nar2 = $nar->asArray()->all();
+//                $nar2 = $nar->asArray()->all();
 
                 $dataProvider3 = new ActiveDataProvider([
                     'query' => $nar,
