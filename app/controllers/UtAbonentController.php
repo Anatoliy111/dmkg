@@ -122,7 +122,7 @@ class UtAbonentController extends Controller
 
         $tab='';
         $message='';
-        $modalformheader='';
+        $modalformheader=' ';
         $modalformtext='';
         $modalformimage='';
 
