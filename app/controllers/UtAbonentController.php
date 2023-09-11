@@ -204,7 +204,7 @@ class UtAbonentController extends Controller
 
         $period1=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
         $arr2 =  Yii::$app->dolgdb->createCommand('select * from period order by period desc')->QueryAll();
-        $arr3 =  Yii::$app->dolgdb->createCommand('select * from period where period<>"2023-09-01" order by period desc')->QueryAll();
+        $arr3 =  Yii::$app->dolgdb->createCommand('select * from period where period<>2023-09-01 order by period desc')->QueryAll();
         $dpopl = new ArrayDataProvider([
             'allModels' => Yii::$app->dolgdb->createCommand('select * from period where period<>:per order by period desc', [':per' => $period1])->QueryAll(),
         ]);
