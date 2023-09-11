@@ -94,7 +94,7 @@ class DolgKart extends \yii\db\ActiveRecord
         return [
             [['koli_p', 'koli_pf', 'koli_k', 'plos_bb', 'plos_ob', 'etag', 'max_ud', 'nom', 'org', 'wozw_ot_', 'kl_ul', 'lift', 'val'], 'number'],
             [['upd'], 'integer'],
-            [['schet'], 'string', 'max' => 10],
+            [['SCHET'], 'string', 'max' => 10],
             [['numb', 'koli_lg', 'd_dog'], 'string', 'max' => 8],
             [['fio', 'lg_fio'], 'string', 'max' => 45],
             [['im', 'ot'], 'string', 'max' => 15],
