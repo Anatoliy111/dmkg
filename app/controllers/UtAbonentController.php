@@ -425,10 +425,14 @@ class UtAbonentController extends Controller
     //				$dolg->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period']]);
     //				$ff = ArrayHelper::toArray($obor);
 
-                $dataProvider11 = new ActiveDataProvider([
-                    'query' => $dolg,
-                ]);
-                $dpdolg = $dataProvider11;
+//                $dataProvider11 = new ActiveDataProvider([
+//                    'query' => $dolg,
+//                ]);
+//                $dpdolg = $dataProvider11;
+
+            $dpdolg = new ArrayDataProvider([
+                'allModels' => $dolg2,
+            ]);
 
 
                 //-----------------------------------------------------------------------------
