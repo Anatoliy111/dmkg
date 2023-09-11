@@ -402,7 +402,9 @@ class UtAbonentController extends Controller
     //				$oboropl->leftJoin('ut_opl','(`ut_opl`.`id_kart`=`ut_obor`.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl` and `ut_opl`.`period`= `ut_obor`.`period`)');
     //				$oboropl->asArray();
 
-                foreach ($dolg->asArray()->all() as $obb) {
+                $dolg2=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$abon->schet.'\'')->QueryAll();
+
+                foreach ($dolg2 as $obb) {
                     if ($obb['dolgopl'] > 0) {
                         $summa = $summa + $obb['dolgopl'];
                     }
