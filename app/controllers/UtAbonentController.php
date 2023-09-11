@@ -545,23 +545,27 @@ class UtAbonentController extends Controller
 
 
 
-                $sub = DolgObor::find()
-    //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                ->where(['schet' => $abon->schet, 'period' => $periodkab]);
-                $sub->andWhere(['<>', 'subs', 0]);
-                $sub->orderBy('npp');
+//                $sub = DolgObor::find()
+//    //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
+//                ->where(['schet' => $abon->schet, 'period' => $periodkab]);
+//                $sub->andWhere(['<>', 'subs', 0]);
+//                $sub->orderBy('npp');
+//
+//
+//
+//    //				$sub = UtSubs::find();
+//    //				$sub->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_subs.period'=> $session['periodkab']]);
+//
+//
+//                $dataProvider8 = new ActiveDataProvider([
+//                    'query' => $sub,
+//                ]);
+//
+//                $dpsub = $dataProvider8;
 
-
-
-    //				$sub = UtSubs::find();
-    //				$sub->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_subs.period'=> $session['periodkab']]);
-
-
-                $dataProvider8 = new ActiveDataProvider([
-                    'query' => $sub,
-                ]);
-
-                $dpsub = $dataProvider8;
+            $dpsub = new ArrayDataProvider([
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$periodkab.'\' and schet=\''.$abon->schet.'\' and subs<>0')->QueryAll(),
+            ]);
 
 //            $uder = DolgObor::find()
 //                //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
