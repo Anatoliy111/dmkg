@@ -49,8 +49,16 @@ use yii\widgets\Pjax;
 
 
     <?php
-//    if ($dataProvider->getTotalCount() <> 0) {
-    if (true) {
+
+    if (array_key_exists('SearchDolgKart', Yii::$app->request->queryParams))  {
+
+    $tab='adres';
+    $Get = Yii::$app->request->get('SearchDolgKart');
+    $adres = Yii::$app->dolgdb->createCommand('select * from kart where kl_ul=\''.$Get["kl_ul"].'\' and nomdom=\''.$Get["nomdom"].'\' and nomkv=\''.$Get["nomkv"].'\'')->QueryAll();
+
+
+    if ($adres <>null ) {
+//    if (true) {
         ?>
 
         <div class="row">
@@ -61,6 +69,7 @@ use yii\widgets\Pjax;
             </div>
         </div>
         <?php
+    }
     }
     ?>
 

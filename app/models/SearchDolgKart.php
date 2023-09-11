@@ -91,7 +91,7 @@ class SearchDolgKart extends DolgKart
      */
     public function search($params)
     {
-        $query = DolgKart::find()->select('SCHET');
+        $query = DolgKart::find()->select('schet');
 
         // add conditions that should always apply here
 
@@ -100,6 +100,9 @@ class SearchDolgKart extends DolgKart
         ]);
 
         $this->load($params);
+
+        $this->nomdom=iconv('UTF-8','windows-1251', $this->nomdom);
+        $this->nomkv=iconv('UTF-8','windows-1251', $this->nomkv);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -210,14 +213,23 @@ class SearchDolgKart extends DolgKart
 	public function searchPass($params, $dataProvider)
 	{
 		$this->load($params);
+        $this->nomdom=iconv('UTF-8','windows-1251', $this->nomdom);
+        $this->nomkv=iconv('UTF-8','windows-1251', $this->nomkv);
 		if (!$this->validate()) {
 			return null;
 		}
-        $models = $dataProvider->getModels();
+        $models = Yii::$app->dolgdb->createCommand('select * from kart where kl_ul=\''.$this->kl_ul.'\' and nomdom=\''.$this->nomdom.'\' and nomkv=\''.$this->nomkv.'\'')->QueryAll();
+
+
+//        $models = $dataProvider->getModels();
 //		$models = $this->findByUsers($this->id_ulica,$this->dom,$this->kv);
         foreach($models as $model){
 
-           $abons =  $model->getAbonents();
+//           $abons =  $model->getAbonents();
+
+            $modekKart = DolgKart::find()->where(['schet' => iconv('UTF-8','windows-1251', $model["schet"])])->all()[0];
+
+            $abons =  $modekKart->getAbonents();
 
             foreach($abons as $abon){
 
