@@ -140,7 +140,7 @@ class UtAbonentController extends Controller
 
             $tab='adres';
 
-            if ($dataProviderAdres->keys <> 0){
+            if ($dataProviderAdres->query->all() <> 0){
                 $modeladres->scenario = 'password';
                 $findmodel = $modeladres->searchPass(Yii::$app->request->queryParams,$dataProviderAdres);
                 if ($findmodel == 'bad') $message='notadrespass';
