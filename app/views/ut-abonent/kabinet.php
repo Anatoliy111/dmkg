@@ -586,11 +586,11 @@ Modal::begin([
                 $itemshv = [
                     [
                         'label'=>'Показники',
-                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'abon'=>$_SESSION['abon']]),
+                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn]),
                     ],
                     [
                         'label'=>'Лічильники',
-                        'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich,'abon'=>$_SESSION['abon']]),
+                        'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich]),
                     ],
                 ];
             echo TabsX::widget([
