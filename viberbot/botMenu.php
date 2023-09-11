@@ -248,43 +248,28 @@ function infoDmkgSchet($schet){
     $mess='';
     $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
     $mess = 'Особовий рахунок - '.$schet."\r\n";
-    $mess = $mess.$modelKart->fio . "\n";
-    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->nomkv)?'кв.'.$modelKart->nomkv:'')."\r\n";
-    $mess = $mess.'----------------------------'."\n";
-
-//    $abonen = UtAbonent::find()->where(['schet' => $schet])->orderBy('id_org')->one();
-//    $oplab=UtOpl::find()
-//        ->select('ut_opl.id_kart, ut_opl.id_posl, sum(ut_opl.sum) as summ')
-//        ->where(['ut_opl.id_kart'=> $modelKart->id])
-//        ->andwhere(['>', 'ut_opl.period', $modelKart->lastperiod()])
-//        ->groupBy('ut_opl.id_kart, ut_opl.id_posl')
-//        ->asArray();
-    $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.trim(iconv('UTF-8', 'windows-1251', $schet)).'\' order by npp')->QueryAll();
-
-
-//    $dolg= UtObor::find();
-////					->select(["ut_obor.id_abonent as id", "ut_obor.period", "ut_obor.id_posl","ut_obor.sal","b.summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"])
-//    $dolg->select(["ut_obor.id_kart as id", "ut_obor.*","round(COALESCE(b.summ,0),2) summ","round((ut_obor.sal-COALESCE(b.summ,0)),2) as dolgopl"]);
-////  				    $dolg->select('ut_obor.*,b.summ,');
-//    $dolg->where(['ut_obor.id_kart'=> $modelKart->id,'ut_obor.period'=> $modelKart->lastperiod()]);
-//    $dolg->leftJoin(['b' => $oplab], '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`')->all();
-
-    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
-    $summa =0;
-    foreach($dolg as $obb)
-    {
-        $mess = $mess.$obb['poslug'].' '.$obb['dolgopl']."\n";
-
-        if ($obb['dolgopl']>0)
-        {
-            $summa = $summa + $obb['dolgopl'];
-        }
-    }
-    $mess = $mess.'----------------------------'."\n";
-
-    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
-
+//    $mess = $mess.$modelKart->fio . "\n";
+//    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->nomkv)?'кв.'.$modelKart->nomkv:'')."\r\n";
+//    $mess = $mess.'----------------------------'."\n";
+//    $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
+//    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.trim(iconv('UTF-8', 'windows-1251', $schet)).'\' order by npp')->QueryAll();
+//
+//
+//    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
+//    $summa =0;
+//    foreach($dolg as $obb)
+//    {
+//        $mess = $mess.$obb['poslug'].' '.$obb['dolgopl']."\n";
+//
+//        if ($obb['dolgopl']>0)
+//        {
+//            $summa = $summa + $obb['dolgopl'];
+//        }
+//    }
+//    $mess = $mess.'----------------------------'."\n";
+//
+//    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
+//
 
     return $mess;
 
