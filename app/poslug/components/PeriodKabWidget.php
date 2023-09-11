@@ -36,8 +36,9 @@ class PeriodKabWidget extends Widget
 	{
 		parent::init();
 		$ModelPeriod = new Period();
-		$lastperiod = DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
-		$ModelPeriod->lastperiod = $lastperiod->period;
+//		$lastperiod = DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
+        $lastperiod = Yii::$app->dolgdb->createCommand('select period from period order by period desc')->QueryAll()[0];
+		$ModelPeriod->lastperiod = $lastperiod["period"];
 //		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 //		if ($ModelPeriod->load(Yii::$app->request->post()))
 //		{
@@ -48,8 +49,8 @@ class PeriodKabWidget extends Widget
 			if (Yii::$app->session['periodkab']==null)
 			{
 
-				Yii::$app->session['periodkab']=$lastperiod->period;
-				$ModelPeriod->periodkab=$lastperiod->period;
+				Yii::$app->session['periodkab']=$lastperiod["period"];
+				$ModelPeriod->periodkab=$lastperiod["period"];
 			}
 			else
 			{
@@ -60,7 +61,7 @@ class PeriodKabWidget extends Widget
 		$value=false;
 
 		if (isset(Yii::$app->session['periodspisoksite']))
-			$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
+			$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod["period"], Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod["period"], 'php:Y')], false) : false ;
 
 
 
@@ -69,7 +70,8 @@ class PeriodKabWidget extends Widget
 		if (!$value)
 		{
 			$per = [];
-			$ar  = DolgPeriod::find()->select('period')->where(['<>','period',$lastperiod->period])->orderBy(['period' => SORT_DESC])->limit(24)->all();
+//			$ar  = DolgPeriod::find()->select('period')->where(['<>','period',$lastperiod->period])->orderBy(['period' => SORT_DESC])->limit(24)->all();
+            $ar  = Yii::$app->dolgdb->createCommand('select first 24 period from period where period<>\''.$lastperiod["period"].'\'  order by period desc')->QueryAll();
 			$dat = ArrayHelper::map($ar, 'period', 'period');
 			foreach ($dat as $dt)
 			{
