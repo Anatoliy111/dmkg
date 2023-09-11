@@ -49,7 +49,8 @@ use yii\widgets\Pjax;
 
 
     <?php
-    if ($dataProvider->getTotalCount() <> 0) {
+//    if ($dataProvider->getTotalCount() <> 0) {
+    if (true) {
         ?>
 
         <div class="row">
