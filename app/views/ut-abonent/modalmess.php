@@ -90,7 +90,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addpokazn', $session['modalmess'])) {
         $modalformheader='Холодна вода';
-        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води по рахунку '.$session['abon']->schet.' становить '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn'].'</h2>';
+        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води по рахунку '.trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet)).' становить '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn'].'</h2>';
         $modalformimage='registration.png';
     }
 
@@ -100,7 +100,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addpokazn2', $session['modalmess'])) {
         $modalformheader='Холодна вода';
-        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn2'].'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$session['abon']->schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+        $modalformtext='Вітаємо '.$session['model']->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$session['modalmess']['addpokazn2'].'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet)).' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
         $modalformimage='registration.png';
     }
 
