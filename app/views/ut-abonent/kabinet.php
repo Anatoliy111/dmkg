@@ -26,9 +26,10 @@ use yii\widgets\Pjax;
     $period =date('Y-m-d', strtotime($lastperiod));
     $model = $_SESSION['model'];
 
-$abon = $_SESSION['abon'];
-$abon->schet = trim(iconv('windows-1251','UTF-8', $abon->schet));
-
+if ($abonents<>null) {
+    $abon = $_SESSION['abon'];
+    $abon->schet = trim(iconv('windows-1251', 'UTF-8', $abon->schet));
+}
 
 
 if ($emailchange=='error') {
