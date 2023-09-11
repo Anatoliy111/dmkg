@@ -91,7 +91,7 @@ class SearchDolgKart extends DolgKart
      */
     public function search($params)
     {
-        $query = DolgKart::find();
+        $query = DolgKart::find()->select('schet');
 
         // add conditions that should always apply here
 
