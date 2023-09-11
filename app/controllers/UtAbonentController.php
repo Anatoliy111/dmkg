@@ -34,6 +34,7 @@ use yii\base\ExitException;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\data\SqlDataProvider;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -311,9 +312,13 @@ class UtAbonentController extends Controller
                    $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
 //                    $hv2 = ArrayHelper::toArray($hv);
 
-                    $provider = new ActiveDataProvider([
-                        'query' => $hv,
-                    ]);
+//                    $provider = new ActiveDataProvider([
+//                        'query' => $hv,
+//                    ]);
+//            $query = new Query;
+            $provider = new ArrayDataProvider([
+                'allModels' => $hv->all(),
+            ]);
 
 
                     $mod = $provider->getModels();
