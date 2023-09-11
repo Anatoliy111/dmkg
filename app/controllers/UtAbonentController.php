@@ -693,7 +693,7 @@ class UtAbonentController extends Controller
         $nowdate = intval(date('Y').date('m'));
 
         $modelpokazn = new Pokazn();
-        $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+        $modelpokazn->schet = $_SESSION['abon']->schet;
         $modelpokazn->yearmon =$nowdate;
         $modelpokazn->date_pok = date("Y-m-d");
         $modelpokazn->vid_pok = 37;
