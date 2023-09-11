@@ -485,19 +485,24 @@ class UtAbonentController extends Controller
 
 
                 //-----------------------------------------------------------------------------
-                $nar = DolgNach::find();
-                $nar->joinWith('widd');
-//                $nar->leftJoin('wid','(`nach`.`wid`=`wid`.`wid`)');
-                $nar->where(['nach.schet' => $abon->schet, 'nach.period' => $periodkab]);
-                $nar->orderBy('npp');
+//                $nar = DolgNach::find();
+//                $nar->joinWith('widd');
+////                $nar->leftJoin('wid','(`nach`.`wid`=`wid`.`wid`)');
+//                $nar->where(['nach.schet' => $abon->schet, 'nach.period' => $periodkab]);
+//                $nar->orderBy('npp');
+//
+////                $nar2 = $nar->asArray()->all();
+//
+//                $dataProvider3 = new ActiveDataProvider([
+//                    'query' => $nar,
+//                ]);
+//
+//                $dpnar = $dataProvider3;
 
-//                $nar2 = $nar->asArray()->all();
+            $dpnar = new ArrayDataProvider([
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from nach left join wid as widd on (nach.wid=widd.wid) where nach.period=\''.$periodkab.'\' and nach.schet=\''.$abon->schet.'\' order by widd.npp')->QueryAll(),
+            ]);
 
-                $dataProvider3 = new ActiveDataProvider([
-                    'query' => $nar,
-                ]);
-
-                $dpnar = $dataProvider3;
                 //-----------------------------------------------------------------------------
 //                $pos = UtPosl::find();
 //                $pos->joinWith('kart')->where(['ut_kart.id' => $abon->id]);

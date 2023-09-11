@@ -48,16 +48,16 @@ HTML;
 					'pageSummaryOptions' => ['class' =>'text-left text-warning'],
 				],
                     [
-                        'attribute' => 'widd.naim',
+                        'attribute' => 'naim',
                         'value'=>function ($model) {
-                            return iconv('windows-1251', 'UTF-8', $model["widd"]["naim"]);
+                            return iconv('windows-1251', 'UTF-8', $model["naim"]);
                         }
                     ],
 				'tarif',
                     [
-                        'attribute' => 'widd.vid',
+                        'attribute' => 'vid',
                         'value'=>function ($model) {
-                            return iconv('windows-1251', 'UTF-8', $model["widd"]["naim"]);
+                            return iconv('windows-1251', 'UTF-8', $model["vid"]);
                         }
                     ],
 //					[
@@ -68,9 +68,9 @@ HTML;
 //					],
 				'razn',
                     [
-                        'attribute' => 'widd.par',
+                        'attribute' => 'par',
                         'value'=>function ($model) {
-                            return iconv('windows-1251', 'UTF-8', $model["widd"]["par"]);
+                            return iconv('windows-1251', 'UTF-8', $model["par"]);
                         }
                     ],
 					[
