@@ -24,7 +24,7 @@
 
 			?>
 	<div class="rah">
-	<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
+	<h4>Особовий рахунок <?= Html::encode(trim(iconv('windows-1251', 'UTF-8', $abon->schet)))?></h4>
 
 </div>
 

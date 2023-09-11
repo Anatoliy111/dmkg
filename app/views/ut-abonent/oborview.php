@@ -27,7 +27,7 @@
 				'content' => 'КП "Долинський міськкомунгосп"',
 			],
 			'C' => [
-				'content' => 'Зведена відомість '.$abon->schet,
+				'content' => 'Зведена відомість '.trim(iconv('windows-1251', 'UTF-8', $abon->schet)),
 				'font-size' => 10,
 				'font-style' => 'B',
 				'font-family' => 'arial',
@@ -45,7 +45,7 @@
 
 			?>
 			<div class="rah">
-				<h4>Особовий рахунок <?= Html::encode($abon->schet)?></h4>
+				<h4>Особовий рахунок <?= Html::encode(trim(iconv('windows-1251', 'UTF-8', $abon->schet)))?></h4>
 
 			</div>
 
@@ -135,7 +135,7 @@ HTML;
 				'exportConfig'=> [
 					GridView::PDF=>[
 						'label' => 'PDF',
-						'filename' => 'Зведена відомість '.$abon->schet,
+						'filename' => 'Зведена відомість '.trim(iconv('windows-1251', 'UTF-8', $abon->schet)),
 						'options' => ['title' => 'Portable Document Format'],
 						'mime' => 'application/pdf',
 						'config' => [

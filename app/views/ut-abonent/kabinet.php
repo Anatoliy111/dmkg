@@ -26,10 +26,10 @@ use yii\widgets\Pjax;
     $period =date('Y-m-d', strtotime($lastperiod));
     $model = $_SESSION['model'];
 
-if ($abonents<>null) {
-    $abon = $_SESSION['abon'];
-    $abon->schet = trim(iconv('windows-1251', 'UTF-8', $abon->schet));
-}
+//if ($abonents<>null) {
+//    $abon = $_SESSION['abon'];
+//    $abon->schet = trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet));
+//}
 
 
 if ($emailchange=='error') {
@@ -239,7 +239,7 @@ Modal::begin([
 
 <div class="modal-body">
     <div class="col" style="text-align:center">
-        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?= Html::encode($abon->schet)?>?</h4>
+        <h4 style="line-height: 1.5;">Ви дійсно бажаєта видалити рахунок <?= Html::encode(trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet)))?>?</h4>
         <?= Html::a('Так', ['delrahunok'], ['class'=>'btn-lg btn-danger']);?>
         <?= Html::a('Ні', [''],['class'=>'btn-lg btn-primary','data-dismiss'=>'modal','aria-label'=>'close']);?>
     </div>
@@ -360,7 +360,7 @@ Modal::begin([
 
         <?php
              foreach ($abonents as $abonkart) {
-                 if ($abonkart->schet==$abon->schet) {
+                 if ($abonkart->schet==trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet))) {
                      $itemsnav[] = ['label' => $abonkart->schet, 'active'=>true, 'url' => ['kabinet', 'schetkart' => $abonkart->schet]];
                  }
                  else
@@ -413,23 +413,23 @@ Modal::begin([
     //		],
                 [
                     'label'=>'Послуги/Тарифи',
-                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+                    'content'=>$this->render('poslugview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$_SESSION['abon']]),
                 ],
                 [
                     'label'=>'Нарахування',
-                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$abon]),
+                    'content'=>$this->render('narview', ['model' => $model,'dataProvider' => $dpnar,'abon'=>$_SESSION['abon']]),
                 ],
                 [
                     'label'=>'Оплата/Утримання',
-                    'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$abon]),
+                    'content'=>$this->render('oplview', ['model' => $model,'dataProvider' => $dpopl,'dataProvider2' => $dpuder,'abon'=>$_SESSION['abon']]),
                 ],
                 [
                     'label'=>'Субсидія',
-                    'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$abon]),
+                    'content'=>$this->render('subview', ['model' => $model,'dataProvider' => $dpsub,'abon'=>$_SESSION['abon']]),
                 ],
                 [
                     'label'=>'Зведена відомість',
-                    'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$abon]),
+                    'content'=>$this->render('oborview', ['model' => $model,'dataProvider' => $dpobor,'abon'=>$_SESSION['abon']]),
                 ],
             ];
 
@@ -438,7 +438,7 @@ Modal::begin([
             ?>
 
         <div class="col-xs-12">
-            <h1>Особовий рахунок <?= Html::encode($abon->schet)?></h1>
+            <h1>Особовий рахунок <?= Html::encode(trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet)))?></h1>
 
         </div>
 
@@ -446,24 +446,24 @@ Modal::begin([
 
             <?=
             DetailView::widget([
-                'model' => $abon,
+                'model' => $_SESSION['abon'],
                 'hover'=>true,
                 'striped'=>true,
                 'mode'=>DetailView::MODE_VIEW,
                 'attributes' => [
                     [
                         'attribute' => 'schet',
-                        'value' => $abon->schet,
+                        'value' => trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet)),
                     ],
                     [
                         'attribute' => 'fio',
                         'label' => 'ПІП',
-                        'value' => iconv('windows-1251', 'UTF-8', $abon->fio.' '.$abon->im.' '.$abon->ot),
+                        'value' => iconv('windows-1251', 'UTF-8', $_SESSION['abon']->fio.' '.$_SESSION['abon']->im.' '.$_SESSION['abon']->ot),
                     ],
                     [
                         'label' => Yii::t('easyii', 'Adress'),
 
-                        'value' => iconv('windows-1251', 'UTF-8',$abon->ulnaim).' '.Yii::t('easyii', 'house №').iconv('windows-1251', 'UTF-8',$abon->nomdom).' '.Yii::t('easyii', 'ap.').iconv('windows-1251', 'UTF-8',$abon->nomkv),
+                        'value' => iconv('windows-1251', 'UTF-8',$_SESSION['abon']->ulnaim).' '.Yii::t('easyii', 'house №').iconv('windows-1251', 'UTF-8',$_SESSION['abon']->nomdom).' '.Yii::t('easyii', 'ap.').iconv('windows-1251', 'UTF-8',$_SESSION['abon']->nomkv),
                     ],
                 ],
                 'hAlign'=>DetailView::ALIGN_RIGHT ,
@@ -586,11 +586,11 @@ Modal::begin([
                 $itemshv = [
                     [
                         'label'=>'Показники',
-                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'abon'=>$abon]),
+                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'abon'=>$_SESSION['abon']]),
                     ],
                     [
                         'label'=>'Лічильники',
-                        'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich,'abon'=>$abon]),
+                        'content'=>$this->render('lichview', ['model' => $model,'dplich' => $dplich,'abon'=>$_SESSION['abon']]),
                     ],
                 ];
             echo TabsX::widget([
