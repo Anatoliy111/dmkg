@@ -92,7 +92,7 @@ HTML;
 	<div class="col-xs-12">
 
 			<div class="center" style="padding-bottom: 20px; margin-left: auto; margin-right: auto;">
-			<?= Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.iconv('windows-1251', 'UTF-8',$abon->ulnaim.' '.$abon->nomdom)  , ['/ut-dom/view', 'id' => $abon->kl_ul.'#'.$abon->nomdom], ['class' => 'btn btn-primary btn-block' ]) ?>
+			<?= Html::a('<i class="glyphicon glyphicon-home"></i> Тарифи по будинку '.iconv('windows-1251', 'UTF-8',$abon->ulnaim.' '.$abon->nomdom)  , ['/ut-dom/view', 'id' => $abon->kl_ul.'#'.trim($abon->nomdom)], ['class' => 'btn btn-primary btn-block' ]) ?>
             </div>
 
 	</div>
