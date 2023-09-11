@@ -368,16 +368,22 @@ class UtAbonentController extends Controller
 
 
                 //-----------------------------------------------------------------------------
-                $obor = DolgObor::find()
-                ->where(['schet' => $abon->schet, 'period' => $periodkab])
-                ->orderBy('npp');
+//                $obor = DolgObor::find()
+//                ->where(['schet' => $abon->schet, 'period' => $periodkab])
+//                ->orderBy('npp');
+//
+//
+//    //				$ff = ArrayHelper::toArray($obor);
+//                $dataProvider1 = new ActiveDataProvider([
+//                    'query' => $obor,
+//                ]);
+//                $dpobor = $dataProvider1;
+
+            $dpobor = new ArrayDataProvider([
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$periodkab.'\' and schet=\''.$abon->schet.'\'')->QueryAll(),
+            ]);
 
 
-    //				$ff = ArrayHelper::toArray($obor);
-                $dataProvider1 = new ActiveDataProvider([
-                    'query' => $obor,
-                ]);
-                $dpobor = $dataProvider1;
                 //-----------------------------------------------------------------------------
 
 //                $oplab = UtOpl::find()
