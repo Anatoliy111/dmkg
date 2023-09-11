@@ -710,7 +710,7 @@ class UtAbonentController extends Controller
 
             if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
                 $modelabonpokazn = new UtAbonpokazn();
-                $modelabonpokazn->schet = $_SESSION['abon']->schet;
+                $modelabonpokazn->schet = trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet));
                 $modelabonpokazn->name = $_SESSION['model']->fio;
                 $modelabonpokazn->id_abonent = $_SESSION['model']->id;
                 $modelabonpokazn->data = date("Y-m-d");
@@ -742,14 +742,14 @@ class UtAbonentController extends Controller
 
             if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
                 $modelpokazn->date_pok = null;
+                    $modelpokazn->save();
 
-                $modelpokazn->save();
 
+                    Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+                    $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+                    $_SESSION['modalmess']['addpokazn'] = $modelpokazn->pokazn;
+                    $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
 
-                Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
-                $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
-                $_SESSION['modalmess']['addpokazn'] = $modelpokazn->pokazn;
-                $_SESSION['modalmess']['kub'] = $voda['sch_razn'];
                 return $this->redirect('kabinet');
             }
             return $this->renderAjax('addpokazn', ['modelpokazn' => $modelpokazn]);
