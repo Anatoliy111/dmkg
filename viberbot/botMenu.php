@@ -247,8 +247,8 @@ function infoDmkgSchet($schet){
 
     $mess='';
 //    $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
-    $modelKart = DolgKart::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $schet)]);
-    $mess = 'Особовий рахунок - '.$modelKart->schet."\r\n";
+    $modelKart = DolgKart::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $schet)])->one();
+    $mess = 'Особовий рахунок - '.$schet."\r\n";
 //    $mess = $mess.$modelKart->fio . "\n";
 //    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->nomkv)?'кв.'.$modelKart->nomkv:'')."\r\n";
 //    $mess = $mess.'----------------------------'."\n";
