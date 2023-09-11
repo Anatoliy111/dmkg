@@ -206,8 +206,12 @@ class UtAbonentController extends Controller
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
         Yii::$app->session['period']=$period;
+
         if (Yii::$app->session['periodkab']==null)
             Yii::$app->session['periodkab']=Yii::$app->dolgdb->createCommand('select * from period where period<>\''.$period.'\'  order by period desc')->QueryAll()[0]['period'];
+
+        $periodkab=Yii::$app->session['periodkab'];
+
 //		if (Yii::$app->session['period']==null)
 
 
@@ -365,7 +369,7 @@ class UtAbonentController extends Controller
 
                 //-----------------------------------------------------------------------------
                 $obor = DolgObor::find()
-                ->where(['schet' => $abon->schet, 'period' => $session['periodkab']])
+                ->where(['schet' => $abon->schet, 'period' => $periodkab])
                 ->orderBy('npp');
 
 
@@ -456,8 +460,10 @@ class UtAbonentController extends Controller
 //                    'query' => $opl,
 //                ]);
 
+//            $opl1=Yii::$app->dolgdb->createCommand('select * from opl_rows(\''.$periodkab.'\',\''.$abon->schet.'\')')->QueryAll();
+
             $dpopl = new ArrayDataProvider([
-                'allModels' => Yii::$app->dolgdb->createCommand('select * from opl_rows(\''.$period.'\',\''.$abon->schet.'\')')->QueryAll(), // запрос на выборку новостей
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from opl_rows(\''.$periodkab.'\',\''.$abon->schet.'\')')->QueryAll(), // запрос на выборку новостей
             ]);
 
 
@@ -474,9 +480,9 @@ class UtAbonentController extends Controller
 
                 //-----------------------------------------------------------------------------
                 $nar = DolgNach::find();
-                $nar->joinWith('wid');
+                $nar->joinWith('widd');
 //                $nar->leftJoin('wid','(`nach`.`wid`=`wid`.`wid`)');
-                $nar->where(['nach.schet' => $abon->schet, 'nach.period' => $session['periodkab']]);
+                $nar->where(['nach.schet' => $abon->schet, 'nach.period' => $periodkab]);
                 $nar->orderBy('npp');
 
 //                $nar2 = $nar->asArray()->all();
@@ -530,9 +536,9 @@ class UtAbonentController extends Controller
 
                 $sub = DolgObor::find()
     //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                ->where(['schet' => $abon->schet, 'period' => $session['periodkab']]);
+                ->where(['schet' => $abon->schet, 'period' => $periodkab]);
                 $sub->andWhere(['<>', 'subs', 0]);
-                $sub->orderBy('npp')->all();
+                $sub->orderBy('npp');
 
 
 
@@ -548,9 +554,11 @@ class UtAbonentController extends Controller
 
             $uder = DolgObor::find()
                 //			$obor->joinWith('kart')->where(['ut_kart.id' => $abon->id,'ut_obor.period'=> $session['period'][$org->id_org]]);
-                ->where(['schet' => $abon->schet, 'period' => $session['periodkab']]);
+                ->where(['schet' => $abon->schet, 'period' => $periodkab]);
             $uder->andWhere(['<>', 'uder', 0]);
-            $uder->orderBy('npp')->all();
+            $uder->orderBy('npp');
+
+//            $uder2=$uder->asArray()->all();
                 $dataProvider9 = new ActiveDataProvider([
                     'query' => $uder,
                 ]);

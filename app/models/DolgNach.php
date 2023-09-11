@@ -105,7 +105,7 @@ class DolgNach extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getWid()
+    public function getWidd()
     {
         return $this->hasOne(DolgWid::class, ['wid' => 'wid']);
     }
