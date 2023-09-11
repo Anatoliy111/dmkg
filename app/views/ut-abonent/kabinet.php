@@ -462,7 +462,7 @@ Modal::begin([
                     [
                         'label' => Yii::t('easyii', 'Adress'),
 
-                        'value' => iconv('windows-1251', 'UTF-8',$abon->getUlica()->asArray()->one()['ul']).' '.Yii::t('easyii', 'house №').iconv('windows-1251', 'UTF-8',$abon->nomdom).' '.Yii::t('easyii', 'ap.').iconv('windows-1251', 'UTF-8',$abon->nomkv),
+                        'value' => iconv('windows-1251', 'UTF-8',$abon->ulnaim).' '.Yii::t('easyii', 'house №').iconv('windows-1251', 'UTF-8',$abon->nomdom).' '.Yii::t('easyii', 'ap.').iconv('windows-1251', 'UTF-8',$abon->nomkv),
                     ],
                 ],
                 'hAlign'=>DetailView::ALIGN_RIGHT ,
