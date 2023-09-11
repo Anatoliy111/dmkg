@@ -207,7 +207,7 @@ class UtAbonentController extends Controller
 
         Yii::$app->session['period']=$period;
         if (Yii::$app->session['periodkab']==null)
-            Yii::$app->session['periodkab']=Yii::$app->dolgdb->createCommand('select * from period where period<>\'2023-09-01\'  order by period desc')->QueryAll()[0]['period'];
+            Yii::$app->session['periodkab']=Yii::$app->dolgdb->createCommand('select * from period where period<>\''.$period.'\'  order by period desc')->QueryAll()[0]['period'];
 //		if (Yii::$app->session['period']==null)
 
 
@@ -309,24 +309,11 @@ class UtAbonentController extends Controller
             $hv = null;
 //$hv2 = [];
 
-                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
-//                    $hv2 = ArrayHelper::toArray($hv);
-
-//                    $provider = new ActiveDataProvider([
-//                        'query' => $hv,
-//                    ]);
-//            $query = new Query;
-            $provider = new ArrayDataProvider([
-                'allModels' => $hv->all(),
-            ]);
+//                   $hv = DolgObor::find()->where(['schet' => $abon->schet, 'period' => $period, 'wid' => 'hv']);
+                   $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$abon->schet.'\' and wid=\'hv\'')->QueryAll();
 
 
-                    $mod = $provider->getModels();
-                  // $hv2 = $hv->scalar();
-                   //-----------------------------------------------------------------------------
-
-
-                       if ($mod != null) {
+                       if ($hv[0] != null) {
                            try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
                                $voda = HVoda::find()->where(['schet' => $abon->schet])->orderBy(['kl' => SORT_DESC]);
