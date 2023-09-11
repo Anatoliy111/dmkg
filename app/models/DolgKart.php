@@ -207,7 +207,7 @@ class DolgKart extends \yii\db\ActiveRecord
     {
         $abons = UtAbonent::find();
 //        $abons->joinWith('abonkarts')->where(['ut_abonkart.id_kart' => 'id','ut_abonent.id'=> 'ut_abonkart.id_abon'])->all();
-        $abons->joinWith('abonkarts')->where(['ut_abonkart.schet' => $this->schet]);
+        $abons->joinWith('abonkarts')->where(['ut_abonkart.schet' => trim(iconv('windows-1251','UTF-8', $this->schet))]);
 
         $dpabons = new ActiveDataProvider([
             'query' => $abons,

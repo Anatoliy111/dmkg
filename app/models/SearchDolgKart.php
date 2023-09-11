@@ -227,7 +227,7 @@ class SearchDolgKart extends DolgKart
 
 //           $abons =  $model->getAbonents();
 
-            $modekKart = DolgKart::find()->where(['schet' => iconv('UTF-8','windows-1251', $model["schet"])])->all()[0];
+            $modekKart = DolgKart::find()->where(['schet' => trim($model["schet"])])->all()[0];
 
             $abons =  $modekKart->getAbonents();
 
