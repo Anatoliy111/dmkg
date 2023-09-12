@@ -228,7 +228,7 @@ try {
                          message($bot, $botSender, $event, 'not found '.$match[0][1], getRahMenu());
                     else {
                         message($bot, $botSender, $event, 'ok ', getRahMenu());
-                        message($bot, $botSender, $event, 'ok ' . $ModelKart->kl_ul, getRahMenu());
+                        message($bot, $botSender, $event, 'ok '.iconv('windows-1251', 'UTF-8', $ModelKart->fio), getRahMenu());
                     }
 
 //                        if ($ModelKart != null){
