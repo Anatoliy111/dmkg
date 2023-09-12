@@ -228,7 +228,7 @@ try {
                          message($bot, $botSender, $event, 'not found '.$match[0][1], getRahMenu());
                     else {
                         message($bot, $botSender, $event, 'ok ', getRahMenu());
-                        message($bot, $botSender, $event, 'ok ' . $ModelKart["fio"], getRahMenu());
+                        message($bot, $botSender, $event, 'ok ' . $ModelKart->getErrors(), getRahMenu());
                     }
 
 //                        if ($ModelKart != null){
