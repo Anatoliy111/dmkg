@@ -225,7 +225,9 @@ try {
 
                     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null){
-                            message($bot, $botSender, $event, mb_strtolower(trim($event->getMessage()->getText())), getRahMenu());
+                            $fio = $event->getMessage()->getText();
+
+                            message($bot, $botSender, $event, $fio, getRahMenu());
                             if (mb_strtolower(ukrencodestr(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio)))) == mb_strtolower(trim($event->getMessage()->getText()))){
                                 $addabon = addAbonReceiver($Receiv->id,$match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
