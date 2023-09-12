@@ -246,31 +246,33 @@ function getStartMenu(){
 function infoDmkgSchet($schet){
 
     $mess='';
+    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
 //    $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
-    $modelKart = DolgKart::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $schet)])->all()[0];
+//    $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
     $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.trim(iconv('UTF-8', 'windows-1251', $schet)).'\' order by npp')->QueryAll();
+    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 
-    $mess = 'Особовий рахунок - '.$schet."\r\n";
-    $mess = $mess.$dolg[0]->fio . "\n";
-//    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->nomkv)?'кв.'.$modelKart->nomkv:'')."\r\n";
-//    $mess = $mess.'----------------------------'."\n";
-//
-//
-//    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
-//    $summa =0;
-//    foreach($dolg as $obb)
-//    {
-//        $mess = $mess.$obb['poslug'].' '.$obb['dolgopl']."\n";
-//
-//        if ($obb['dolgopl']>0)
-//        {
-//            $summa = $summa + $obb['dolgopl'];
-//        }
-//    }
-//    $mess = $mess.'----------------------------'."\n";
-//
-//    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
+    $mess = 'Особовий рахунок - '.$schet1251."\r\n";
+    $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
+    $mess = $mess.$fio . "\n";
+    $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.$dolg[0]["nomkv"]:'')."\r\n";
+    $mess = $mess.'----------------------------'."\n";
+
+
+    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
+    $summa =0;
+    foreach($dolg as $obb)
+    {
+        $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $obb['poslug'])).' '.$obb['dolgopl']."\n";
+
+        if ($obb['dolgopl']>0)
+        {
+            $summa = $summa + $obb['dolgopl'];
+        }
+    }
+    $mess = $mess.'----------------------------'."\n";
+
+    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
 //
 
     return $mess;

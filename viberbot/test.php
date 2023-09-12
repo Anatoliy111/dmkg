@@ -15,9 +15,11 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 $yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
+require_once(__DIR__ . '\botMenu.php');
 
+echo infoDmkgSchet('0014001');
 
-echo addPokazn(802,'0092124','asfsadfasdf');
+//echo addPokazn(802,'0092124','asfsadfasdf');
 
 function addPokazn($pokazn, $schet, $viber_name){
 
