@@ -113,22 +113,23 @@ HTML;
                                 ],
 								[
 									'attribute' => 'dolg',
+                                    'label' => 'Борг на початок',
 								],
 								[
 									'attribute' => 'nach',
+                                    'label' => 'Нарахування/Перерахунок',
 								],
 								[
 									'attribute' => 'subs',
+                                    'label' => 'Субсидія',
 								],
 									[
-									'attribute' => 'opl',
+									'attribute' => 'oplnotsubs',
 									'label' => 'Оплата / Утримання',
 								],
 								[
-									'attribute' => 'pere',
-								],
-								[
 									'attribute' => 'sal',
+                                    'label' => 'Борг на кінець',
 								],
 
 				],
