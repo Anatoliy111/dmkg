@@ -246,6 +246,7 @@ function getStartMenu(){
 function infoDmkgSchet($schet){
 
     $mess='';
+    try {
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
 //    $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
 //    $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
@@ -274,7 +275,10 @@ function infoDmkgSchet($schet){
 //    $mess = $mess.'----------------------------'."\n";
 //
 //    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
-
+    }
+    catch(\Exception $e){
+        $mess = $e;
+    }
 
     return $mess;
 
