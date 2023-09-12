@@ -82,6 +82,13 @@ class SearchDolgKart extends DolgKart
         return $scenarios;
     }
 
+//    public function attributeLabels()
+//    {
+//        return [
+//            'enterpass' => 'Введіть пароль',
+//        ];
+//    }
+
     /**
      * Creates data provider instance with search query applied
      *

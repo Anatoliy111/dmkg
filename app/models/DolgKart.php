@@ -177,6 +177,7 @@ class DolgKart extends \yii\db\ActiveRecord
             'val' => 'Val',
             'kl' => 'Kl',
             'upd' => 'Upd',
+            'enterpass' => 'Пароль',
         ];
     }
 
