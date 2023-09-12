@@ -43,7 +43,11 @@ return [
 		'authManager' => [
 			'class' => 'yii\rbac\PhpManager',
 		],
-        'db' => $db,
+//        'db' => $db,
+        'db' => require(__DIR__ . '/db.php'),
+//        'fdb' => require(__DIR__ . '/fdb.php'),
+        'hvddb' => require(__DIR__ . '/hvddb.php'),
+        'dolgdb' => require(__DIR__ . '/dolgdb.php'),
     ],
     'params' => $params,
 ];

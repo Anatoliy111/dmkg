@@ -167,7 +167,7 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        'fdb' => require(__DIR__ . '/fdb.php'),
+//        'fdb' => require(__DIR__ . '/fdb.php'),
         'hvddb' => require(__DIR__ . '/hvddb.php'),
         'dolgdb' => require(__DIR__ . '/dolgdb.php'),
 
