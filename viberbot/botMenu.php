@@ -248,12 +248,13 @@ function infoDmkgSchet($schet){
     $mess='';
 //    $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
     $modelKart = DolgKart::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $schet)])->all()[0];
+    $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
+    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.trim(iconv('UTF-8', 'windows-1251', $schet)).'\' order by npp')->QueryAll();
+
     $mess = 'Особовий рахунок - '.$schet."\r\n";
-//    $mess = $mess.$modelKart->fio . "\n";
+    $mess = $mess.$dolg[0]->fio . "\n";
 //    $mess = $mess.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->ulnaim)).' буд.'.trim(iconv('windows-1251UTF-8', 'UTF-8', $modelKart->nomdom)).' '.(isset($modelKart->nomkv)?'кв.'.$modelKart->nomkv:'')."\r\n";
 //    $mess = $mess.'----------------------------'."\n";
-//    $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-//    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.trim(iconv('UTF-8', 'windows-1251', $schet)).'\' order by npp')->QueryAll();
 //
 //
 //    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
