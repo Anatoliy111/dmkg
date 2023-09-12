@@ -15,6 +15,7 @@ return [
     'aliases' => [
         '@webroot' => $webroot,
     ],
+    'language' => 'uk-UA',
     'modules' => [
         'gii' => 'yii\gii\Module',
     ],
