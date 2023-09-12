@@ -7,6 +7,7 @@
  */
 
 
+use app\models\DolgKart;
 use app\models\HVoda;
 use app\models\Pokazn;
 use app\models\UtAbonpokazn;
@@ -20,6 +21,15 @@ require_once(__DIR__ . '\botMenu.php');
 //echo infoDmkgSchet('0014001');
 
 //echo addPokazn(802,'0092124','asfsadfasdf');
+try {
+    $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', '0084057'))]);
+}
+catch(\Exception $e){
+        $mess = $e->getMessage();
+    }
+
+    echo $ModelKart->fio;
+
 
 function addPokazn($pokazn, $schet, $viber_name){
 
