@@ -277,7 +277,7 @@ function infoDmkgSchet($schet){
 //    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
     }
     catch(\Exception $e){
-        $mess = $e;
+        $mess = $e->getMessage();
     }
 
     return $mess;
