@@ -24,8 +24,8 @@ require_once(__DIR__ . '\botMenu.php');
 try {
     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', '0084057'))]);
     if ($ModelKart != null){
-        $str1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
-        $str2 = ukrencodestr(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio)));
+        $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
+        $fio2 = ukrencodestr(trim($fio1));
         $str3 = mb_strtolower(ukrencodestr(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))));
         if (mb_strtolower(ukrencodestr(trim('Щічко'))) == mb_strtolower(trim('Щічко'))){
             $mess= 'ОК';
