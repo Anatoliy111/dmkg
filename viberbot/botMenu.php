@@ -250,7 +250,7 @@ function infoDmkgSchet($schet){
 //    $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
 //    $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
     $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
+//    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 
     $mess = 'Особовий рахунок - '.$schet1251."\r\n";
 //    $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
