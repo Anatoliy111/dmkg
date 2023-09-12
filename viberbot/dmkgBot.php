@@ -225,8 +225,8 @@ try {
 
                     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                     if ($ModelKart == null)
-                    message($bot, $botSender, $event, 'not found '.$match[0][1], getRahMenu());
-                    else message($bot, $botSender, $event, 'ok '.$ModelKart->fio, getRahMenu());
+                         message($bot, $botSender, $event, 'not found '.$match[0][1], getRahMenu());
+                    else message($bot, $botSender, $event, 'ok '.$ModelKart["fio"], getRahMenu());
 
 //                        if ($ModelKart != null){
 //                            if (mb_strtolower($ModelKart->fio) == mb_strtolower(trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText())))){
