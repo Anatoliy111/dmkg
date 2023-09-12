@@ -17,7 +17,7 @@ $yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
 require_once(__DIR__ . '\botMenu.php');
 
-echo infoDmkgSchet('0014001');
+//echo infoDmkgSchet('0014001');
 
 //echo addPokazn(802,'0092124','asfsadfasdf');
 

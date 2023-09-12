@@ -224,14 +224,15 @@ try {
                 elseif ($match[0][0] == 'verify-rah'){
 
                     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
-                        if ($ModelKart != null){
-                            if (mb_strtolower($ModelKart->fio) == mb_strtolower(trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText())))){
-                                $addabon = addAbonReceiver($Receiv->id,$match[0][1]);
-                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
-                                UpdateStatus($Receiv,'');
-                            }
-                            else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
-                        }
+                    message($bot, $botSender, $event, $ModelKart->fio, getRahMenu());
+//                        if ($ModelKart != null){
+//                            if (mb_strtolower($ModelKart->fio) == mb_strtolower(trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText())))){
+//                                $addabon = addAbonReceiver($Receiv->id,$match[0][1]);
+//                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
+//                                UpdateStatus($Receiv,'');
+//                            }
+//                            else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
+//                        }
 
                 }
                 elseif ($match[0][0] == 'add-pok'){
