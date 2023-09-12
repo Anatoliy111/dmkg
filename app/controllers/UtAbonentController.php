@@ -679,7 +679,7 @@ class UtAbonentController extends Controller
     {
         $this->returnIndex();
 //        $schet = Yii::$app->request->post()['schet'];
-        UtAbonkart::deleteAll(['id_abon'=>$_SESSION['model']->id,'schet'=>$_SESSION['abon']->schet]);
+        UtAbonkart::deleteAll(['id_abon'=>$_SESSION['model']->id,'schet'=>iconv('windows-1251','UTF-8', $_SESSION['abon']->schet)]);
         $_SESSION['abon']=null;
         return $this->redirect('kabinet');
     }
