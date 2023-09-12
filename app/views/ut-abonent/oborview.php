@@ -116,7 +116,7 @@ HTML;
                                     'label' => 'Борг на початок',
 								],
 								[
-									'attribute' => 'nach',
+									'attribute' => 'fullnach',
                                     'label' => 'Нарахування/Перерахунок',
 								],
 								[

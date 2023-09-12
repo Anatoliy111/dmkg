@@ -63,13 +63,18 @@ HTML;
 								],
                                 [
                                     'attribute' => 'poslug',
+                                    'label' => 'Послуга',
                                     'value'=>function ($model) {
                                         return iconv('windows-1251', 'UTF-8', $model["poslug"]);
                                     }
                                 ],
-				'dt',
+                                [
+                                    'attribute' => 'dt',
+                                    'label' => 'Дата',
+                                ],
 								[
 									'attribute' => 'summ',
+                                    'label' => 'Сума оплати',
 									'format'=>['decimal', 2],
 									'pageSummary'=>true,
 								],
@@ -94,12 +99,14 @@ HTML;
 					],
                     [
                         'attribute' => 'poslug',
+                        'label' => 'Послуга',
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["poslug"]);
                         }
                     ],
 					[
 						'attribute' => 'uder',
+                        'label' => 'Сума утримань',
 						'format'=>['decimal', 2],
 						'pageSummary'=>true,
 					],

@@ -49,13 +49,18 @@ HTML;
 				],
                     [
                         'attribute' => 'naim',
+                        'label' => 'Плслуга',
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["naim"]);
                         }
                     ],
-				'tarif',
+                    [
+                        'attribute' => 'tarif',
+                        'label' => 'Тариф',
+                    ],
                     [
                         'attribute' => 'vid',
+                        'label' => 'Вид показника',
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["vid"]);
                         }
@@ -66,15 +71,20 @@ HTML;
 //						'format' => 'raw',
 //						'value' => 'poslvid.vid_pokaz',
 //					],
-				'razn',
+                    [
+                        'attribute' => 'razn',
+                        'label' => 'Показник',
+                    ],
                     [
                         'attribute' => 'par',
+                        'label' => 'Од.виміру',
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["par"]);
                         }
                     ],
 					[
 						'attribute' => 'sum',
+                        'label' => 'Сума',
 						'format'=>['decimal', 2],
 						'pageSummary'=>true,
 					],
