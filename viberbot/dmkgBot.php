@@ -221,22 +221,25 @@ try {
                         //UpdateStatus($Receiv,'');
                     }
                 }
-                elseif ($match[0][0] == 'verify-rah'){
-
-                    $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
-                        if ($ModelKart != null){
+                elseif ($match[0][0] == 'verify-rah') {
+                    try {
+                        $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
+                        if ($ModelKart != null) {
                             $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
 //                            message($bot, $botSender,$event,'fio1', getRahMenu());
                             $fio2 = ukrencodestr(trim($fio1));
-                            message($bot, $botSender,$event,'fio2', getRahMenu());
-                            if (mb_strtolower($fio2) == mb_strtolower(trim($event->getMessage()->getText()))){
-                                $addabon = addAbonReceiver($Receiv->id,$match[0][1]);
-                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок '.$match[0][1].' під"єднано до бота', getRahMenu());
-                                UpdateStatus($Receiv,'');
-                            }
-                            else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
+                            message($bot, $botSender, $event, 'fio2', getRahMenu());
+                            if (mb_strtolower($fio2) == mb_strtolower(trim($event->getMessage()->getText()))) {
+                                $addabon = addAbonReceiver($Receiv->id, $match[0][1]);
+                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до бота', getRahMenu());
+                                UpdateStatus($Receiv, '');
+                            } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
                         }
 
+                    } catch (\Exception $e) {
+                        $mess = $e->getMessage();
+                        message($bot, $botSender, $event, $mess, getRahMenu());
+                    }
                 }
                 elseif ($match[0][0] == 'add-pok'){
                     //  message($bot, $botSender, $event, 'add-pok', getDmkgMenu());
