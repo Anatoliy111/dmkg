@@ -226,7 +226,7 @@ try {
                         $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null) {
                             $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
-//                            message($bot, $botSender,$event,'fio1', getRahMenu());
+                            message($bot, $botSender,$event,'fio1', getRahMenu());
                             $fio2 = ukrencodestr(trim($fio1));
                             message($bot, $botSender, $event, 'fio2', getRahMenu());
                             if (mb_strtolower($fio2) == mb_strtolower(trim($event->getMessage()->getText()))) {
