@@ -247,6 +247,7 @@ function infoDmkgSchet($schet){
 
     $mess='';
     try {
+    if ($schet=='0030009м') return $schet;
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
 //    $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
 //    $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
