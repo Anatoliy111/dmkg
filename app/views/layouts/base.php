@@ -15,7 +15,7 @@ $asset = \app\assets\AppAsset::register($this);
 		<META NAME="Revisit-After" CONTENT="10 Days">
 		<?= Html::csrfMetaTags() ?>
         <title>ДМКГ</title>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
         <link rel="shortcut icon" href="<?= $asset->baseUrl ?>/icon_16.png" type="image/x-icon">
         <link rel="icon" href="<?= $asset->baseUrl ?>/icon_16.png" type="image/x-icon">
         <?php $this->head() ?>
