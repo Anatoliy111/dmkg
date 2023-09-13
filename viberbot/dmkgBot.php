@@ -227,9 +227,9 @@ try {
                         if ($ModelKart != null) {
                             $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
                             message($bot, $botSender,$event,'fio1', getRahMenu());
-                            $fio2 = ukrencodestr(trim($fio1));
+                           // $fio2 = ukrencodestr(trim($fio1));
                             message($bot, $botSender, $event, 'fio2', getRahMenu());
-                            if (mb_strtolower($fio2) == mb_strtolower(trim($event->getMessage()->getText()))) {
+                            if (mb_strtolower($fio1) == mb_strtolower(trim($event->getMessage()->getText()))) {
                                 $addabon = addAbonReceiver($Receiv->id, $match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv, '');
