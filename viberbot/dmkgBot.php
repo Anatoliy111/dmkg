@@ -625,7 +625,7 @@ function addPokazn($pokazn, $schet, $viber_name){
     {
 
         message($bot, $botSender,$event,'fio1', getRahMenu());
-        
+
         $patterns[0] = "/H/";
         $patterns[1] = "/h/";
         $patterns[2] = "/C/";
