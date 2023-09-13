@@ -226,10 +226,9 @@ try {
                         $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null) {
                             $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
-                            message($bot, $botSender,$event,'fio1', getRahMenu());
+                           
 //                            $fio2 = ukrencodestr($fio1);
-                            message($bot, $botSender, $event, 'fio2', getRahMenu());
-                            if (mb_strtolower($fio1) == ukrencodestr(mb_strtolower(trim($event->getMessage()->getText())))) {
+                            if (mb_strtolower($fio1) == ukrencodestr(mb_strtolower(trim($event->getMessage()->getText())),$bot, $botSender, $event)) {
                                 $addabon = addAbonReceiver($Receiv->id, $match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv, '');
@@ -622,8 +621,10 @@ function addPokazn($pokazn, $schet, $viber_name){
 
         }
 
-    function ukrencodestr($str)
+    function ukrencodestr($str,$bot, $botSender,$event)
     {
+
+        message($bot, $botSender,$event,'fio1', getRahMenu());
         $patterns[0] = "/H/";
         $patterns[1] = "/h/";
         $patterns[2] = "/C/";
