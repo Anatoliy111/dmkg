@@ -225,10 +225,7 @@ try {
                     try {
                         $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null) {
-                            $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
-
-//                            $fio2 = ukrencodestr($fio1);
-                            if (mb_strtolower($fio1) == ukrencodestr1(mb_strtolower(trim($event->getMessage()->getText())),$bot, $botSender, $event)) {
+                            if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
                                 $addabon = addAbonReceiver($Receiv->id, $match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до бота', getRahMenu());
                                 UpdateStatus($Receiv, '');
