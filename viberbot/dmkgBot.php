@@ -649,7 +649,7 @@ function addPokazn($pokazn, $schet, $viber_name)
         $mess='';
 
         try {
-            return $schet;
+            
 
 //    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
 //            if ($schet=='0030009м') {
