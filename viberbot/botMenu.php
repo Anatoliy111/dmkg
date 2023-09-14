@@ -249,8 +249,11 @@ function infoDmkgSchet($schet){
     try {
 
 //    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-    if ($schet=='0030009м')
-       return iconv('UTF-8', 'windows-1251', $schet);
+    if ($schet=='0030009м') {
+        $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
+        return $schet;
+
+    }
 //  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
 //  $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
 //  $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
