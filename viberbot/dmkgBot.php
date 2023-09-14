@@ -649,14 +649,14 @@ function addPokazn($pokazn, $schet, $viber_name)
         $mess='';
 
         try {
-            
+
 
 //    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-//            if ($schet=='0030009м') {
-//                $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
-//                return $tt;
-//
-//            }
+            if ($schet=='0030009м') {
+                $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
+                return $tt;
+
+            }
 //  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
 //  $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
 //  $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
