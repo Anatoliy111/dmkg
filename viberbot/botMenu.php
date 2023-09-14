@@ -251,7 +251,7 @@ function infoDmkgSchet($schet){
 //    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
     if ($schet=='0030009м') {
         $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
-        return $schet;
+        return $tt;
 
     }
 //  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
