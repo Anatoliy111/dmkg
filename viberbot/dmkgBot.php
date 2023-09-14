@@ -660,7 +660,7 @@ function addPokazn($pokazn, $schet, $viber_name)
                     $mess2 =  "iconv is not available.";
                 }
                 $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
-                return $mess2;
+                return $tt;
 
             }
 //  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
