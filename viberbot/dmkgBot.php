@@ -659,7 +659,7 @@ function addPokazn($pokazn, $schet, $viber_name)
                 } else {
                     $mess2 =  "iconv is not available.";
                 }
-               // $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
+                $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
                 return $mess2;
 
             }
