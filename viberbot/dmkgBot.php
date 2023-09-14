@@ -7,7 +7,7 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 //require_once(__DIR__ . '/../yii');
 
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../app/config/web.php';
+$yiiConfig = require __DIR__ . '/../app/config/console.php';
 new yii\web\Application($yiiConfig);
 
 
@@ -36,7 +36,7 @@ use yii\bootstrap\Html;
 $apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742';
 $org = 'dmkg';
 
-// ��� ����� ��������� ��� ��� (��� � ������ - ����� ������)
+
 $botSender = new Sender([
     'name' => 'dmkgBot',
     'avatar' => '',
