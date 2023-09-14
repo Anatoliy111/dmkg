@@ -164,7 +164,7 @@ try {
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
+                message($bot, $botSender, $event, infoSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -641,6 +641,53 @@ function addPokazn($pokazn, $schet, $viber_name){
         ksort($replacements);
 
         return preg_replace($patterns, $replacements, $str);
+
+    }
+
+    function infoSchet($schet){
+
+        $mess='';
+        try {
+
+//    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
+            if ($schet=='0030009м') {
+                $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
+                return $tt;
+
+            }
+//  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
+//  $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
+//  $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
+            $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll();
+            $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period[0]["period"].'\' and schet=\''.$schet.'\' order by npp')->QueryAll();
+//
+            $mess = 'Особовий рахунок - '.$schet."\r\n";
+            $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
+            $mess = $mess.$fio . "\n";
+            $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.$dolg[0]["nomkv"]:'')."\r\n";
+            $mess = $mess.'----------------------------'."\n";
+            $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n\r";
+            $mess = $mess.'----------------------------'."\n";
+            $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
+            $summa =0;
+            foreach($dolg as $obb)
+            {
+                $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $obb['poslug'])).' '.$obb['dolgopl']."\n";
+
+                if ($obb['dolgopl']>0)
+                {
+                    $summa = $summa + $obb['dolgopl'];
+                }
+            }
+            $mess = $mess.'----------------------------'."\n";
+
+            $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
+        }
+        catch(\Exception $e){
+            $mess = $e->getMessage();
+        }
+
+        return $mess;
 
     }
 
