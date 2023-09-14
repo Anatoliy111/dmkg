@@ -164,8 +164,8 @@ try {
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-//                message($bot, $botSender, $event, infoSchetOS($Rah->schet), getRahList($FindRah,'inf-rah'));
-                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
+                message($bot, $botSender, $event, infoSchetOS($Rah->schet), getRahList($FindRah,'inf-rah'));
+//                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -584,40 +584,39 @@ function infoKontakt(){
  * @param $schet
  * @return KpcentrViberpokazn|null
  */
-function addPokazn($pokazn, $schet, $viber_name){
+function addPokazn($pokazn, $schet, $viber_name)
+{
 
-        $model = new KpcentrViberpokazn();
-        $model->data = date('Y-m-d');
-        $model->schet = $schet;
-        $model->pokazn = $pokazn;
-        $model->viber_name = $viber_name;
-        if ($model->validate())
-        {
-            /** @var TYPE_NAME $model */
+    $model = new KpcentrViberpokazn();
+    $model->data = date('Y-m-d');
+    $model->schet = $schet;
+    $model->pokazn = $pokazn;
+    $model->viber_name = $viber_name;
+    if ($model->validate()) {
+        /** @var TYPE_NAME $model */
 
-            $model->save();
+        $model->save();
 
-            return $model;
+        return $model;
+    } else {
+        $messageLog = [
+            'status' => 'Помилка додавання показника',
+            'post' => $model->errors
+        ];
+
+        Yii::error($messageLog, 'viber_err');
+        $meserr = '';
+
+        foreach ($messageLog as $err) {
+            $meserr = $meserr . implode(",", $err);
         }
-        else
-        {
-            $messageLog = [
-                'status' => 'Помилка додавання показника',
-                'post' => $model->errors
-            ];
-
-            Yii::error($messageLog, 'viber_err');
-            $meserr='';
-
-            foreach ($messageLog as $err){
-                $meserr=$meserr.implode(",", $err);
-            }
-            getSend($meserr);
+        getSend($meserr);
 
 
-            return null;
+        return null;
 
-        }
+    }
+}
 
     function ukrencodestr1($str,$bot, $botSender,$event)
     {
@@ -645,7 +644,7 @@ function addPokazn($pokazn, $schet, $viber_name){
 
     }
 
-    function infoSchetOS($schet){
+    function infoSchetOS($schet) {
 
         $mess='';
 
@@ -695,4 +694,3 @@ function addPokazn($pokazn, $schet, $viber_name){
     }
 
 
-}
