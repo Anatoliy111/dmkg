@@ -647,14 +647,20 @@ function addPokazn($pokazn, $schet, $viber_name)
     function infoSchetOS($schet) {
 
         $mess='';
+        $mess2='';
 
         try {
 
 
 //    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
             if ($schet=='0030009м') {
-                $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
-                return $tt;
+                if (function_exists('iconv')) {
+                    $mess2 = "iconv is installed and available.";
+                } else {
+                    $mess2 =  "iconv is not available.";
+                }
+               // $tt = 'OS '.iconv('UTF-8', 'windows-1251', $schet);
+                return $mess2;
 
             }
 //  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
