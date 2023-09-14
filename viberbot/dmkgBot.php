@@ -164,7 +164,7 @@ try {
             $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-                message($bot, $botSender, $event, infoDmkgSchet($Rah->schet), getRahList($FindRah,'inf-rah'));
+                message($bot, $botSender, $event, infoDmkgSchet(iconv('UTF-8', 'windows-1251', $Rah->schet)), getRahList($FindRah,'inf-rah'));
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
