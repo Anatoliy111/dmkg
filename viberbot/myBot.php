@@ -315,6 +315,7 @@ function getDmkgMenuOS($Receiv){
                     ->setTextSize('large')
                     ->setActionType('reply')
                     ->setActionBody('Kontakt-button')
+                    ->setBgColor("#aafdc8")
                     // ->setBgColor("#F3DD27")
                     // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                     ->setText('📬 Контактна інформація'),
@@ -389,6 +390,7 @@ function getDmkgMenuOS($Receiv){
                         ->setTextSize('large')
                         ->setActionType('reply')
                         ->setActionBody('Kontakt-button')
+                        ->setBgColor("#aafdc8")
                         // ->setBgColor("#F3DD27")
                         // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                         ->setText('📬 Контактна інформація'),
@@ -462,6 +464,7 @@ function getDmkgMenuOS($Receiv){
                         ->setTextSize('large')
                         ->setActionType('reply')
                         ->setActionBody('Kontakt-button')
+                        ->setBgColor("#aafdc8")
                         // ->setBgColor("#F3DD27")
                         // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                         ->setText('📬 Контактна інформація'),
