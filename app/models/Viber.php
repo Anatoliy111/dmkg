@@ -34,7 +34,7 @@ class Viber extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['api_key', 'org', 'id_receiver', 'name', 'status', 'id_abonent', 'note'], 'required'],
+            [['api_key', 'org', 'id_receiver'], 'required'],
             [['date_ins'], 'safe'],
             [['admin', 'id_abonent'], 'integer'],
             [['api_key'], 'string', 'max' => 50],
