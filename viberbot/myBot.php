@@ -307,16 +307,16 @@ function getDmkgMenuOS(){
                 ->setBgColor("#F2F3A7")
                 ->setText('📊  Інформація по рахунках'),
 
-//            (new \Viber\Api\Keyboard\Button())
-//                ->setColumns(2)
-//                //  ->setBgColor('#2fa4e7')
-//                ->setTextHAlign('center')
-//                ->setTextSize('small')
-//                ->setActionType('reply')
-//                ->setActionBody('Pokazmenu-button')
-//                ->setBgColor("#75C5F3")
-//                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-//                ->setText('📟  Подати показники'),
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(2)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('small')
+                ->setActionType('reply')
+                ->setActionBody('Pokazmenu-button')
+                ->setBgColor("#75C5F3")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('📟  Подати показники'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
