@@ -676,7 +676,7 @@ function addPokazn($pokazn, $schet, $viber_name)
             $mess = $mess.$fio . "\n";
             $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomkv"])):'')."\r\n";
             $mess = $mess.'----------------------------'."\n";
-            $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n\r";
+            $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n";
             $mess = $mess.'----------------------------'."\n";
             $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
             $summa =0;
