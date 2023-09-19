@@ -119,7 +119,7 @@ try {
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            message($bot, $botSender, $event, 'reseiv=past:', getRahMenu());
+//            message($bot, $botSender, $event, 'reseiv=past:', getRahMenu());
             $Receiv = verifyReceiver($event, $apiKey, $org);
             if ($Receiv==null) message($bot, $botSender, $event, 'reseiv=null:', getRahMenu());
             else {
