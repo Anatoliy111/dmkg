@@ -103,7 +103,7 @@ try {
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
             else $FindRah = $Receiv->getUtAbonkart()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:'.$Receiv->id_abonent, getRahMenu());
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
         })
         ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -120,8 +120,11 @@ try {
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'add-rah');
-            message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
+            if ($Receiv==null) message($bot, $botSender, $event, 'reseiv=null:', getRahMenu());
+            else {
+                UpdateStatus($Receiv, 'add-rah');
+                message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
+            }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
