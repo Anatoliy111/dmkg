@@ -654,7 +654,7 @@ function infoSchetOS($schet) {
 
 
         $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-        return $schet;
+
 //            if ($schet=='0030009м') {
 //                if (function_exists('iconv')) {
 //                    $mess2 = "iconv is installed and available.";
@@ -672,6 +672,7 @@ function infoSchetOS($schet) {
         $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period[0]["period"].'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 //
         $mess = 'Особовий рахунок - '.$schet."\r\n";
+        return $mess;
         $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
         $mess = $mess.$fio . "\n";
         $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.$dolg[0]["nomkv"]:'')."\r\n";
