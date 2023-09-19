@@ -121,7 +121,7 @@ try {
             $log->info('click on button');
 //            message($bot, $botSender, $event, 'reseiv=past:', getRahMenu());
             $Receiv = verifyReceiver($event, $apiKey, $org);
-//            UpdateStatus($Receiv, 'add-rah');
+            UpdateStatus($Receiv, 'add-rah');
             message($bot, $botSender, $event, $Receiv->id, getRahMenu());
 //            UpdateStatus($Receiv, 'add-rah');
 //            if ($Receiv==null) message($bot, $botSender, $event, 'reseiv=null:', getRahMenu());
