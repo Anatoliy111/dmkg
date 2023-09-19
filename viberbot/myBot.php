@@ -333,7 +333,7 @@ function getDmkgMenuOS(){
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 //  ->setBgColor('#2fa4e7')
-                ->setTextHAlign('left')
+                ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('Kontakt-button')
@@ -348,7 +348,6 @@ function getDmkgMenuOS(){
                 ->setImage("https://dmkg.com.ua/uploads/privat800x200.png")
                 ->setTextSize('regular')
                 ->setTextHAlign('left')
-//                ->setTextVAlign('bottom')
                 ->setText('Оплата'),
         ]);
 
