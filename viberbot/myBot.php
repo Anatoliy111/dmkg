@@ -103,7 +103,7 @@ try {
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
             else $FindRah = $Receiv->getUtAbonkart()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:'.$Receiv->id_abonent, getRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
         })
         ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
