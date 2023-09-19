@@ -121,11 +121,14 @@ try {
             $log->info('click on button');
 //            message($bot, $botSender, $event, 'reseiv=past:', getRahMenu());
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            if ($Receiv==null) message($bot, $botSender, $event, 'reseiv=null:', getRahMenu());
-            else {
-                UpdateStatus($Receiv, 'add-rah');
-                message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
-            }
+//            UpdateStatus($Receiv, 'add-rah');
+            message($bot, $botSender, $event, $Receiv->id, getRahMenu());
+//            UpdateStatus($Receiv, 'add-rah');
+//            if ($Receiv==null) message($bot, $botSender, $event, 'reseiv=null:', getRahMenu());
+//            else {
+//                UpdateStatus($Receiv, 'add-rah');
+//                message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
+//            }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
