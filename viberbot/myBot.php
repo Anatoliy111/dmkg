@@ -147,7 +147,7 @@ try {
         })
         ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            verifyReceiver($event, $apiKey, $org);
+            $Receiv = verifyReceiver($event, $apiKey, $org);
             message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
