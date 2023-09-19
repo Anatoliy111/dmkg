@@ -308,7 +308,7 @@ function getDmkgMenuOS(){
                 ->setText('📊  Інформація по рахунках'),
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(2)
+                ->setColumns(3)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('small')
@@ -345,7 +345,8 @@ function getDmkgMenuOS(){
                 ->setColumns(3)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
+                ->setImage("https://dmkg.com.ua/uploads/privat800x200.png")
+                ->setText('Оплата'),
         ]);
 
 }
