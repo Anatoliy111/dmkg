@@ -674,7 +674,7 @@ function addPokazn($pokazn, $schet, $viber_name)
             $mess = 'Особовий рахунок - '.$schet."\r\n";
             $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
             $mess = $mess.$fio . "\n";
-            $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.$dolg[0]["nomkv"]:'')."\r\n";
+            $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomkv"])):'')."\r\n";
             $mess = $mess.'----------------------------'."\n";
             $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n\r";
             $mess = $mess.'----------------------------'."\n";

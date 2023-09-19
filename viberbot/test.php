@@ -19,25 +19,44 @@ new yii\web\Application($yiiConfig);
 require_once(__DIR__ . '\botMenu.php');
 
 //echo infoDmkgSchet('0014001');
+$schet='7020006а';
 
 //echo addPokazn(802,'0092124','asfsadfasdf');
 try {
-    $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', '0084057'))]);
-    if ($ModelKart != null){
-        $fio1 = iconv('windows-1251', 'UTF-8', $ModelKart->fio);
-        $fio2 = ukrencodestr(trim($fio1));
-        $str3 = mb_strtolower(ukrencodestr(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))));
-        if (mb_strtolower(ukrencodestr(trim('Щічко'))) == mb_strtolower(trim('Щічко'))){
-            $mess= 'ОК';
+    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
+    $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll();
+    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period[0]["period"].'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
+
+    $mess = 'Особовий рахунок - '.$schet."\r\n";
+
+    $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
+    $mess = $mess.$fio . "\n";
+
+    $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomkv"])):'')."\r\n";
+    $mess = $mess.'----------------------------'."\n";
+
+    $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n\r";
+    $mess = $mess.'----------------------------'."\n";
+    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
+    $summa =0;
+    foreach($dolg as $obb)
+    {
+        $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $obb['poslug'])).' '.$obb['dolgopl']."\n";
+
+        if ($obb['dolgopl']>0)
+        {
+            $summa = $summa + $obb['dolgopl'];
         }
-        else $mess='Вибачте, але це прізвище не правильне!!! Спробуйте ще';
     }
+    $mess = $mess.'----------------------------'."\n";
+
+    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
 }
 catch(\Exception $e){
-        $mess = $e->getMessage();
-    }
+    $mess = $e->getMessage();
+}
 
-    echo $mess;
+echo $mess;
 
 
 function addPokazn($pokazn, $schet, $viber_name){
