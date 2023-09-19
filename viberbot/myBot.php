@@ -143,7 +143,8 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
+//            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
+            message($bot, $botSender, $event, 'Головне меню:'.$Receiv->id,null);
         })
         ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
