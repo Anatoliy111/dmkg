@@ -211,7 +211,7 @@ try {
             $Receiv = verifyReceiver($event,$apiKey, $org);
             // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
             if ($Receiv == null || $Receiv->status == ''){
-                message($bot, $botSender, $event, 'Не визначений запит:'.$Receiv->id. $event->getMessage()->getText(), null);
+                message($bot, $botSender, $event, 'Не визначений запит:'.$event->getMessage()->getText(), null);
                 message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
             }
             else {
@@ -326,7 +326,7 @@ function getDmkgMenuOS($Receiv){
                     ->setTextSize('large')
                     ->setActionType('reply')
                     ->setActionBody('auth-button')
-                     ->setBgColor("#F39175")
+                     ->setBgColor("#fdbdaa")
                     // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                     ->setText('Авторизація/Реєстрація'),
 
@@ -410,7 +410,7 @@ function getDmkgMenuOS($Receiv){
                         ->setTextSize('large')
                         ->setActionType('reply')
                         ->setActionBody('auth-button')
-                        ->setBgColor("#F39175")
+                        ->setBgColor("#fdbdaa")
                         // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                         ->setText('Авторизація/Реєстрація'),
                 ]);
@@ -499,7 +499,7 @@ function getRahMenu(){
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
-                ->setBgColor('#F39175')
+                ->setBgColor('#fdbdaa')
                 ->setTextHAlign('center')
                 //  ->setTextSize('large')
                 ->setActionType('reply')
@@ -544,7 +544,7 @@ function getYesNoMenu($action){
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
-                ->setBgColor('#F39175')
+                ->setBgColor('#fdbdaa')
                 ->setTextHAlign('center')
                 //  ->setTextSize('large')
                 ->setActionType('reply')
