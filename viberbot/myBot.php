@@ -143,8 +143,8 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-//            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
-            message($bot, $botSender, $event, 'Головне меню:'.$Receiv->id,null);
+            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
+//            message($bot, $botSender, $event, 'Головне меню:'.$Receiv->id,null);
         })
         ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -211,7 +211,7 @@ try {
             $Receiv = verifyReceiver($event,$apiKey, $org);
             // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
             if ($Receiv == null || $Receiv->status == ''){
-                message($bot, $botSender, $event, 'Не визначений запит:' . $event->getMessage()->getText(), null);
+                message($bot, $botSender, $event, 'Не визначений запит:'.$Receiv->id. $event->getMessage()->getText(), null);
                 message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
             }
             else {
@@ -397,7 +397,7 @@ function getDmkgMenuOS($Receiv){
                         ->setColumns(3)
                         ->setActionType('open-url')
                         ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                        ->setImage("https://dmkg.com.ua/uploads/privat800x200.png")
+                        ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
 //                ->setTextSize('regular')
 //                ->setTextHAlign('left')
 //                ->setText('Оплата'),
