@@ -67,4 +67,9 @@ class Viber extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ViberAbon::className(), ['id_viber' => 'id']);
     }
+
+    public function getUtAbonkart()
+    {
+        return $this->hasMany(UtAbonkart::className(), ['id_abon' => 'id_abonent']);
+    }
 }
