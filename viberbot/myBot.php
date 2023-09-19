@@ -672,9 +672,10 @@ function infoSchetOS($schet) {
         $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period[0]["period"].'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 //
         $mess = 'Особовий рахунок - '.$schet."\r\n";
-        return $mess;
+
         $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
         $mess = $mess.$fio . "\n";
+        return $mess;
         $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.$dolg[0]["nomkv"]:'')."\r\n";
         $mess = $mess.'----------------------------'."\n";
         $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n\r";
