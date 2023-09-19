@@ -301,7 +301,7 @@ function getDmkgMenuOS(){
                 // ->setTextSize('small')
                 ->setTextSize('regular')
                 ->setTextHAlign('center')
-                ->setTextVAlign('center')
+//                ->setTextVAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('Infomenu-button')
                 ->setBgColor("#F2F3A7")
@@ -345,10 +345,10 @@ function getDmkgMenuOS(){
                 ->setColumns(6)
                 ->setActionType('open-url')
                 ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
-                ->setImage("https://dmkg.com.ua/uploads/privat800x200.png")
-                ->setTextSize('regular')
-                ->setTextHAlign('left')
-                ->setText('Оплата'),
+                ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
+//                ->setTextSize('regular')
+//                ->setTextHAlign('left')
+//                ->setText('Оплата'),
         ]);
 
 }
