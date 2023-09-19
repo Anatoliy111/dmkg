@@ -57,9 +57,9 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText(' Вітаємо вас в вайбер боті КП "ДМКГ"!!!')
-                ->setKeyboard(getDmkgMenu());
+                ->setKeyboard(getDmkgMenuOS());
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-//            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenu());
+//            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS());
 //            $receiverId = $event->getSender()->getId();
 //            $receiverName = $event->getSender()->getName();
 //            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
@@ -67,7 +67,7 @@ try {
 //                $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            }
 //            else $mes = 'Помилка реєстрації';
-//            message($bot, $botSender, $event, $mes, getDmkgMenu());
+//            message($bot, $botSender, $event, $mes, getDmkgMenuOS());
         })
         // when user subscribe to PA
         ->onSubscribe(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -76,11 +76,11 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
-                ->setKeyboard(getDmkgMenu());
+                ->setKeyboard(getDmkgMenuOS());
 
             //  $receiverId = $event->getSender()->getId();
             //  $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
-            //    message($bot, $botSender, $event, $mes, getDmkgMenu());
+            //    message($bot, $botSender, $event, $mes, getDmkgMenuOS());
 //            $receiverId = $event->getSender()->getId();
 //            $receiverName = $event->getSender()->getName();
 //            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
@@ -88,7 +88,7 @@ try {
 //                $mes = $receiverName . ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
 //            }
 //            else $mes = 'Помилка реєстрації';
-//            message($bot, $botSender, $event, $mes, getDmkgMenu());
+//            message($bot, $botSender, $event, $mes, getDmkgMenuOS());
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -130,18 +130,18 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoKontakt(), getDmkgMenu());
+            message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS());
         })
         ->onText('|DmkgMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenu());
+            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS());
         })
         ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             verifyReceiver($event, $apiKey, $org);
-            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenu());
+            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS());
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -188,13 +188,13 @@ try {
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
                 $addpok = addPokazn(intval($match[0][2]),$match[0][1],$event->getSender()->getName());
-                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getDmkgMenu());
+                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getDmkgMenuOS());
                 UpdateStatus($Receiv,'');
             }
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button privat24 ');
-            message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenu());
+            message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenuOS());
         })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
@@ -203,7 +203,7 @@ try {
             // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
             if ($Receiv == null || $Receiv->status == ''){
                 message($bot, $botSender, $event, 'Не визначений запит:' . $event->getMessage()->getText(), null);
-                message($bot, $botSender, $event, 'Головне меню:', getDmkgMenu());
+                message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS());
             }
             else {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
@@ -240,7 +240,7 @@ try {
                     }
                 }
                 elseif ($match[0][0] == 'add-pok'){
-                    //  message($bot, $botSender, $event, 'add-pok', getDmkgMenu());
+                    //  message($bot, $botSender, $event, 'add-pok', getDmkgMenuOS());
                     $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
                     $FindRah = $Receiv->getViberAbons()->all();
                     if ($ModelAbon != null) {
@@ -253,13 +253,13 @@ try {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
                                         $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
-                                        if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenu());
+                                        if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenuOS());
                                         UpdateStatus($Receiv, '');
                                     }
                                 } else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
                             } else {
                                 $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
-                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenu());
+                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenuOS());
                                 UpdateStatus($Receiv, '');
                             }
                         } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
@@ -289,6 +289,65 @@ try {
         echo $e->getMessage();
 
     }
+}
+
+function getDmkgMenuOSOS(){
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //->setBgColor('#8074d6')
+                // ->setTextSize('small')
+                ->setTextSize('small')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionType('reply')
+                ->setActionBody('Infomenu-button')
+                ->setBgColor("#F2F3A7")
+                ->setText('📊  Інформація по рахунках'),
+
+//            (new \Viber\Api\Keyboard\Button())
+//                ->setColumns(2)
+//                //  ->setBgColor('#2fa4e7')
+//                ->setTextHAlign('center')
+//                ->setTextSize('small')
+//                ->setActionType('reply')
+//                ->setActionBody('Pokazmenu-button')
+//                ->setBgColor("#75C5F3")
+//                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+//                ->setText('📟  Подати показники'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('small')
+                ->setActionType('reply')
+                ->setActionBody('Rahmenu-button')
+                ->setBgColor("#F2F3A7")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('⚙ Додати/видалити рахунок'),
+
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('Kontakt-button')
+                // ->setBgColor("#F3DD27")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('📬 Контактна інформація'),
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                ->setActionType('open-url')
+                ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
+                ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
+        ]);
+
 }
 
 function getRahMenu(){
