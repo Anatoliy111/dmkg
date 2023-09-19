@@ -101,7 +101,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==null) $FindRah = $Receiv->getViberAbons()->all();
+            if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
             else $FindRah = $Receiv->getUtAbonkart()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
@@ -110,7 +110,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==null) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть пропроцедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
             else {
                 $FindRah = $Receiv->getUtAbonkart()->all();
                 if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
@@ -127,7 +127,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==null) $FindRah = $Receiv->getViberAbons()->all();
+            if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
             else $FindRah = $Receiv->getUtAbonkart()->all();
             if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
             else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah'));
@@ -175,7 +175,7 @@ try {
             UpdateStatus($Receiv,'');
 
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if ($Receiv->id_abonent==null) {
+            if ($Receiv->id_abonent==0) {
                 $FindRah = $Receiv->getViberAbons()->all();
                 $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
             }
@@ -193,7 +193,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if ($Receiv->id_abonent==null) {
+            if ($Receiv->id_abonent==0) {
                 $FindRah = $Receiv->getViberAbons()->all();
                 $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
             }
