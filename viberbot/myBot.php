@@ -291,7 +291,7 @@ try {
     }
 }
 
-function getDmkgMenuOSOS(){
+function getDmkgMenuOS(){
 
     return (new \Viber\Api\Keyboard())
         ->setButtons([
