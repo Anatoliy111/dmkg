@@ -316,7 +316,7 @@ function getDmkgMenuOS(){
                 ->setActionBody('Pokazmenu-button')
                 ->setBgColor("#75C5F3")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('📟  Подати показники'),
+                ->setText('📟  Подати показники (вода)'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -333,7 +333,7 @@ function getDmkgMenuOS(){
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
                 //  ->setBgColor('#2fa4e7')
-                ->setTextHAlign('center')
+                ->setTextHAlign('left')
                 ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('Kontakt-button')
