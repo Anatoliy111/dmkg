@@ -357,7 +357,7 @@ function getDmkgMenuOS($Receiv){
 //                ->setTextVAlign('center')
                         ->setActionType('reply')
                         ->setActionBody('Infomenu-button')
-                        ->setBgColor("#F2F3A7")
+                        ->setBgColor("#fdaafc")
                         ->setText('📊  Інформація по рахунках'),
 
                     (new \Viber\Api\Keyboard\Button())
@@ -431,7 +431,7 @@ function getDmkgMenuOS($Receiv){
 //                ->setTextVAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('Infomenu-button')
-                ->setBgColor("#F2F3A7")
+                ->setBgColor("#fdaafc")
                 ->setText('📊  Інформація по рахунках'),
 
                     (new \Viber\Api\Keyboard\Button())
