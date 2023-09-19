@@ -348,7 +348,7 @@ function getDmkgMenuOS(){
                 ->setImage("https://dmkg.com.ua/uploads/privat800x200.png")
                 ->setTextSize('small')
                 ->setTextHAlign('left')
-//                ->setTextVAlign('right')
+                ->setTextVAlign('left')
                 ->setText('Оплата'),
         ]);
 
