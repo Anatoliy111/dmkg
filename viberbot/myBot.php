@@ -456,7 +456,7 @@ function getRahList($FindRah,$action){
                 ->setBgColor('#F2AD50')
                 ->setActionType('reply')
                 ->setTextHAlign('center')
-                ->setTextVAlign('center')
+//                ->setTextVAlign('center')
                 ->setActionBody($action.'#'.$Rah->schet)
                 ->setText($Rah->schet);
     }
@@ -466,7 +466,7 @@ function getRahList($FindRah,$action){
             ->setBgColor('#F2F3A7')
             ->setTextSize('large')
             ->setTextHAlign('center')
-            ->setTextVAlign('center')
+//            ->setTextVAlign('center')
             ->setActionType('reply')
             ->setActionBody('DmkgMenu-button')
             ->setText('🏠   Головне меню');
