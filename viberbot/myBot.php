@@ -120,7 +120,7 @@ try {
         ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv, 'add-email');
+            UpdateStatus($Receiv, 'auth-email');
             message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту реєстрації в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
         })
