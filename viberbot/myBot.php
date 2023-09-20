@@ -336,7 +336,7 @@ try {
 
                 }
                 else{
-                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu());
+                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getDmkgMenuOS($Receiv));
                     UpdateStatus($Receiv,'');
                 }
 
