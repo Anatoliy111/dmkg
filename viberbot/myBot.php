@@ -119,15 +119,9 @@ try {
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-//            message($bot, $botSender, $event, 'reseiv=past:', getRahMenu());
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'add-rah');
-            message($bot, $botSender, $event, $Receiv->id, getRahMenu());
-//            UpdateStatus($Receiv, 'add-rah');
-//            if ($Receiv==null) message($bot, $botSender, $event, 'reseiv=null:', getRahMenu());
-//            else {
-//                UpdateStatus($Receiv, 'add-rah');
-//                message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
+            message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
 //            }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -243,7 +237,10 @@ try {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
                 if ($match[0][0] == 'add-rah'){
                     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText()))]);
-                    $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
+                    if ($Receiv->id_abonent==0) $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
+                    else $ModelAbonReceiver = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => $event->getMessage()->getText()]);
+                    
+
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
                         message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
