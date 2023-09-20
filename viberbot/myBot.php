@@ -299,7 +299,7 @@ try {
                         }
                         else {
 //                            UpdateStatus($Receiv, 'auth-passw#' . $event->getMessage()->getText());
-                            message($bot, $botSender, $event, 'Введений вами пароль не вірний! Спробуйте ще!'."\n\n".'(Якщо ви забули пароль, скористайтесь посиланням (Забули пароль) на сторінці входу в кабінет споживача на сайті dmkg.com.ua)', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Введений вами пароль не вірний! Спробуйте ще!'."\n\n".'Якщо ви забули пароль, скористайтесь посиланням (https://dmkg.com.ua/ut-abonent/fogotpass - Забули пароль) на сторінці входу в кабінет споживача на сайті dmkg.com.ua', getDmkgMenuOS($Receiv));
                         }
                     }
                     else {
