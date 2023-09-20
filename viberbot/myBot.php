@@ -355,7 +355,7 @@ function getDmkgMenuOS($Receiv){
                     ->setTextHAlign('center')
                     ->setTextSize('large')
                     ->setActionType('reply')
-                    ->setActionBody('auth-button')
+                    ->setActionBody('Auth-button')
                      ->setBgColor("#fdbdaa")
                     // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                     ->setText('Авторизація/Реєстрація'),
@@ -440,7 +440,7 @@ function getDmkgMenuOS($Receiv){
                         ->setTextHAlign('center')
                         ->setTextSize('large')
                         ->setActionType('reply')
-                        ->setActionBody('auth-button')
+                        ->setActionBody('Auth-button')
                         ->setBgColor("#fdbdaa")
                         // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                         ->setText('Авторизація/Реєстрація'),
