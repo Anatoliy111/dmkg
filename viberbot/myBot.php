@@ -127,9 +127,11 @@ try {
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
+            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+            else {
             UpdateStatus($Receiv, 'add-rah');
             message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
-//            }
+            }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -170,11 +172,12 @@ try {
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
+            if ($Receiv->id_abonent==0) $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
+            else $DelRah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => trim($match[0][1])]);
             if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
             else {
                 $DelRah->delete();
-                message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з бота!', getRahMenu());
+                message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з кабінета!', getRahMenu());
             }
         })
         ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -218,7 +221,7 @@ try {
         ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            $FindRah = $Receiv->getViberAbons()->all();
+//            $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
                 $addpok = addPokazn(intval($match[0][2]),$match[0][1],$event->getSender()->getName());
@@ -244,20 +247,19 @@ try {
                 preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
                 if ($match[0][0] == 'add-rah'){
                     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText()))]);
-                    if ($Receiv->id_abonent==0) $ModelAbonReceiver = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $event->getMessage()->getText()]);
-                    else $ModelAbonReceiver = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => $event->getMessage()->getText()]);
+                    $ModelAbonReceiver = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => $event->getMessage()->getText()]);
                     
 
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
                         message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
-                    elseif ($ModelKart == null && $ModelAbonReceiver == null) {
+                    elseif ($ModelKart == null) {
                         message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                     elseif ($ModelKart != null && $ModelAbonReceiver != null) {
-                        message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до бота!', getRahMenu());
+                        message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до кабінета!', getRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                 }
@@ -266,11 +268,12 @@ try {
                         $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null) {
                             if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
-                                $addabon = addAbonReceiver($Receiv->id, $match[0][1]);
-                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до бота', getRahMenu());
+                                $addabon = addAbonReceiver($Receiv, $match[0][1]);
+                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета', getRahMenu());
                                 UpdateStatus($Receiv, '');
                             } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
                         }
+                        else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, виконайте додавання рахунка заново!!!', getRahMenu());
 
                     } catch (\Exception $e) {
                         $mess = $e->getMessage();
@@ -557,7 +560,7 @@ function getRahMenu(){
                 ->setTextHAlign('center')
                 ->setActionType('reply')
                 ->setActionBody('Addrah-button')
-                ->setText('Додати рахунок до бота'),
+                ->setText('Додати рахунок до кабінета'),
 
             (new \Viber\Api\Keyboard\Button())
                 ->setColumns(3)
@@ -566,7 +569,7 @@ function getRahMenu(){
                 //  ->setTextSize('large')
                 ->setActionType('reply')
                 ->setActionBody('Delrah-button')
-                ->setText('Видалити рахунок з бота'),
+                ->setText('Видалити рахунок з кабінета'),
 
             (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(4)
@@ -728,13 +731,14 @@ function verifyReceiver($event, $apiKey, $org){
 
 }
 
-function addAbonReceiver($id_viber,$schet){
+function addAbonReceiver($Receiv,$schet){
 
-    $FindModel = ViberAbon::findOne(['id_viber' => $id_viber,'schet' => $schet]);
+    $FindModel = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => $schet]);
+
     if ($FindModel == null)
     {
-        $model = new ViberAbon();
-        $model->id_viber = $id_viber;
+        $model = new UtAbonkart();
+        $model->id_abon = $Receiv->id_abonent;
         $model->schet = $schet;
         $model->org = 'dmkg';
         if ($model->validate() && $model->save())
