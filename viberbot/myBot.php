@@ -281,14 +281,35 @@ try {
                     }
                 }
                 elseif ($match[0][0] == 'auth-email'){
-                    $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
-                    if ($modelabon != null)  {
+                    $modelemail = new UtAbonent();
+                    $modelemail->scenario = 'email';
+                    $modelemail->email=$event->getMessage()->getText();
+                    if ($modelemail->validate()) {
+                        $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
+                        if ($modelabon != null)  {
+                            UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
+                            message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
+                        }
+                        else {
+                            message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
+                            UpdateStatus($Receiv,'add-abon#'.$event->getMessage()->getText());
+                        }
+                    }
+                    else {
+                        message($bot, $botSender, $event, $modelemail->getErrors(), getDmkgMenuOS($Receiv));
+                    }
+
+                }
+                elseif ($match[0][0] == 'add-abon'){
+
+                    $modelabon = UtAbonent::findOne(['email' => $match[0][1]]);
+                    if ($modelabon == null)  {
                         UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
                         message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
                     }
                     else {
-                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
-                        //UpdateStatus($Receiv,'');
+                        message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
+                        UpdateStatus($Receiv,'');
                     }
                 }
                 elseif ($match[0][0] == 'auth-passw'){
@@ -640,6 +661,36 @@ function getYesNoMenu($action){
 
 
 //92519753
+
+function Addabon($FindRah,$action){
+
+    $buttons = [];
+    foreach ($FindRah as $Rah)
+    {
+        $buttons[] =
+            (new \Viber\Api\Keyboard\Button())
+                ->setBgColor('#F2AD50')
+                ->setActionType('reply')
+                ->setTextHAlign('center')
+                ->setTextVAlign('center')
+                ->setActionBody($action.'#'.$Rah->schet)
+                ->setText($Rah->schet);
+    }
+
+    $buttons[] =
+        (new \Viber\Api\Keyboard\Button())
+            ->setBgColor('#F2F3A7')
+            ->setTextSize('large')
+            ->setTextHAlign('center')
+            ->setTextVAlign('center')
+            ->setActionType('reply')
+            ->setActionBody('DmkgMenu-button')
+            ->setText('🏠   Головне меню');
+
+    return (new \Viber\Api\Keyboard())
+        ->setButtons($buttons);
+}
+
 function getRahList($FindRah,$action){
 
     $buttons = [];
