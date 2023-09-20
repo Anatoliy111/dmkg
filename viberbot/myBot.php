@@ -296,7 +296,7 @@ try {
                         }
                     }
                     else {
-                        message($bot, $botSender, $event, $modelemail->getErrors(), getDmkgMenuOS($Receiv));
+                        message($bot, $botSender, $event, $modelemail->getErrors()['email'][0], getDmkgMenuOS($Receiv));
                     }
 
                 }

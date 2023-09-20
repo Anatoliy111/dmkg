@@ -10,6 +10,7 @@
 use app\models\DolgKart;
 use app\models\HVoda;
 use app\models\Pokazn;
+use app\models\UtAbonent;
 use app\models\UtAbonpokazn;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
@@ -22,41 +23,14 @@ require_once(__DIR__ . '\botMenu.php');
 $schet='7020006а';
 
 //echo addPokazn(802,'0092124','asfsadfasdf');
-try {
-    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-    $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll();
-    $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period[0]["period"].'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
-
-    $mess = 'Особовий рахунок - '.$schet."\r\n";
-
-    $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
-    $mess = $mess.$fio . "\n";
-
-    $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomkv"])):'')."\r\n";
-    $mess = $mess.'----------------------------'."\n";
-
-    $mess = $mess.Yii::$app->formatter->asDate($period[0]["period"], 'LLLL Y')."\n\r";
-    $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
-    $summa =0;
-    foreach($dolg as $obb)
-    {
-        $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $obb['poslug'])).' '.$obb['dolgopl']."\n";
-
-        if ($obb['dolgopl']>0)
-        {
-            $summa = $summa + $obb['dolgopl'];
-        }
-    }
-    $mess = $mess.'----------------------------'."\n";
-
-    $mess = $mess."\r".'Всього до сплати: '.$summa."\n";
+$modelemail = new UtAbonent();
+$modelemail->scenario = 'email';
+$modelemail->email='sdsgd';
+if ($modelemail->validate()) {
+    echo 'ok';
 }
-catch(\Exception $e){
-    $mess = $e->getMessage();
-}
-
-echo $mess;
+else
+echo $modelemail->getErrors();
 
 
 function addPokazn($pokazn, $schet, $viber_name){
