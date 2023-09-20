@@ -16,8 +16,8 @@ use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
 use app\models\UtKart;
-use app\poslug\models\UtAbonent;
-use app\poslug\models\UtAbonkart;
+use app\models\UtAbonent;
+use app\models\UtAbonkart;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
 use app\models\Viber;
@@ -121,14 +121,14 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'add-email');
-            message($bot, $botSender, $event, 'Вкажіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту реєстрації в кабінеті споживача):', getDmkgMenuOS($Receiv));
+            message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту реєстрації в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'add-rah');
-            message($bot, $botSender, $event, 'Вкажіть номер вашого особового рахунку:', getRahMenu());
+            message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
 //            }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -275,6 +275,36 @@ try {
                     } catch (\Exception $e) {
                         $mess = $e->getMessage();
                         message($bot, $botSender, $event, $mess, getRahMenu());
+                    }
+                }
+                elseif ($match[0][0] == 'auth-email'){
+                    $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
+                    if ($modelabon != null)  {
+                        UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
+                        message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
+                    }
+                    else {
+                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
+                        //UpdateStatus($Receiv,'');
+                    }
+                }
+                elseif ($match[0][0] == 'auth-passw'){
+                    $modelabon = UtAbonent::findOne(['email' => $match[0][1]]);
+                    if ($modelabon != null)  {
+                        if ($modelabon->passopen == $event->getMessage()->getText()) {
+                            $Receiv->id_abonent = $modelabon->id;
+                            $Receiv->save();
+                            UpdateStatus($Receiv,'');
+                            message($bot, $botSender, $event, 'Вітаємо '.$modelabon->fio.'--'.$Receiv->id_abonent.'! Ви здійснили вхід в систему, тепер для вас доступні всі функції!!!', getDmkgMenuOS($Receiv));
+                        }
+                        else {
+//                            UpdateStatus($Receiv, 'auth-passw#' . $event->getMessage()->getText());
+                            message($bot, $botSender, $event, 'Введений вами пароль не вірний! Спробуйте ще!'."\n".'Якщо ви забули пароль, скористайтесь посиланням (Забули пароль) на сторінці входу в кабінет споживача на сайті dmkg.com.ua', getDmkgMenuOS($Receiv));
+                        }
+                    }
+                    else {
+                        UpdateStatus($Receiv,'');
+                        message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
                     }
                 }
                 elseif ($match[0][0] == 'add-pok'){
