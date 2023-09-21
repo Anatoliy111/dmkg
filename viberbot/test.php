@@ -27,7 +27,7 @@ $event='12345';
 
 //echo addPokazn(802,'0092124','asfsadfasdf');
 
-if (isset($_SESSION['addabon'])) {
+if (array_key_exists('addabon',$_SESSION)) {
     $modelemail=$session['addabon'];
 }
 else $modelemail = new UtAbonent();
