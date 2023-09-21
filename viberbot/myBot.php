@@ -334,9 +334,6 @@ try {
                     else {
                         $err = $modelemail->getErrors();
                         $session['addabon']=$modelemail;
-                        message($bot, $botSender, $event, $err[array_key_first($err)][0], getDmkgMenuOS($Receiv));
-                        $err = $modelemail->getErrors();
-                        $session['addabon']=$modelemail;
                         if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0], getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0], getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0], getDmkgMenuOS($Receiv));
