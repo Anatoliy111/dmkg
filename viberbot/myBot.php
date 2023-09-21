@@ -312,9 +312,10 @@ try {
 
                     if (isset($_SESSION['addabon'])) {
                         $modelemail=$session['addabon'];
+                        message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
                     }
                     else $modelemail = new UtAbonent();
-                    message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
+
 
                     $modelemail->scenario = 'reg';
                     $modelemail->email=$match[0][1];
