@@ -292,12 +292,8 @@ try {
                             message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
                         }
                         else {
-                            $session = Yii::$app->session;
-                            if (isset($_SESSION['addabon'])) {
-                                $session->destroy();
-                            }
                             message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
-                            UpdateStatus($Receiv,'add-abon#'.$event->getMessage()->getText());
+                            UpdateStatus($Receiv,'add-abon#'.'email='.$event->getMessage()->getText());
                         }
                     }
                     else {
@@ -307,18 +303,28 @@ try {
                 }
                 elseif ($match[0][0] == 'add-abon'){
 
-                    $session = Yii::$app->session;
-
-
-                    if (isset($_SESSION['addabon'])) {
-                        $modelemail=$session['addabon'];
-                        message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
-                    }
-                    else $modelemail = new UtAbonent();
-
-
+                    $modelemail = new UtAbonent();
                     $modelemail->scenario = 'reg';
-                    $modelemail->email=$match[0][1];
+
+                    foreach ($match[0] as $col) {
+                        preg_match_all('/([^=]+)/ui',$col,$match2);
+                        switch ($match2[0]) {
+                            case 'email':
+                                $modelemail->email=$match2[1];
+                                break;
+                            case 'fio':
+                                $modelemail->fio=$match2[1];
+                                break;
+                            case 'pass1':
+                                $modelemail->pass1=$match2[1];
+                                break;
+                            case 'pass2':
+                                $modelemail->pass2=$match2[1];
+                                break;
+                        }
+
+                    }
+
                     if (!$modelemail->validate()) {
                         $err=$modelemail->getErrors();
                         if (array_key_exists('fio',$err)) $modelemail->fio = $event->getMessage()->getText();
@@ -338,7 +344,7 @@ try {
                     }
                     else {
                         $err = $modelemail->getErrors();
-                        $session['addabon']=$modelemail;
+                        UpdateStatus($Receiv,'add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2);
                         if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0].' '.$modelemail->fio, getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0].' '.$modelemail->pass2, getDmkgMenuOS($Receiv));
