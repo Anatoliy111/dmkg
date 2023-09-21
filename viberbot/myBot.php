@@ -309,10 +309,12 @@ try {
 
                     $session = Yii::$app->session;
                     if (array_key_exists('addabon',$_SESSION)) {
+                        message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
                         $modelemail=$session['addabon'];
+                        message($bot, $botSender, $event, 'ОККК2 !!!', getDmkgMenuOS($Receiv));
                     }
                     else $modelemail = new UtAbonent();
-                    message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
+
 
                     $modelemail->scenario = 'reg';
                     $modelemail->email=$match[0][1];
