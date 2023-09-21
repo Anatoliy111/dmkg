@@ -306,12 +306,13 @@ try {
 
                 }
                 elseif ($match[0][0] == 'add-abon'){
-                    message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
+
                     $session = Yii::$app->session;
                     if (array_key_exists('addabon',$_SESSION)) {
                         $modelemail=$session['addabon'];
                     }
                     else $modelemail = new UtAbonent();
+                    message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
 
                     $modelemail->scenario = 'reg';
                     $modelemail->email=$match[0][1];
