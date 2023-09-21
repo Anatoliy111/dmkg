@@ -334,9 +334,9 @@ try {
                     else {
                         $err = $modelemail->getErrors();
                         $session['addabon']=$modelemail;
-                        if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0], getDmkgMenuOS($Receiv));
-                        elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0], getDmkgMenuOS($Receiv));
-                        elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0], getDmkgMenuOS($Receiv));
+                        if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0].' '.$modelemail->fio, getDmkgMenuOS($Receiv));
+                        elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
+                        elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0].' '.$modelemail->pass2, getDmkgMenuOS($Receiv));
                     }
                 }
                 elseif ($match[0][0] == 'auth-passw'){
