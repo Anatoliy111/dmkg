@@ -21,16 +21,41 @@ require_once(__DIR__ . '\botMenu.php');
 
 //echo infoDmkgSchet('0014001');
 $schet='7020006а';
+$session = Yii::$app->session;
+//$session->destroy();
+$event='12345';
 
 //echo addPokazn(802,'0092124','asfsadfasdf');
-$modelemail = new UtAbonent();
-$modelemail->scenario = 'email';
-$modelemail->email='sdsgd';
-if ($modelemail->validate()) {
-    echo 'ok';
+
+if (isset($_SESSION['addabon'])) {
+    $modelemail=$session['addabon'];
 }
-else
-echo $modelemail->getErrors();
+else $modelemail = new UtAbonent();
+
+$modelemail->scenario = 'reg';
+$modelemail->email='sdfs@sdf.com';
+$key='';
+if (!$modelemail->validate()) {
+   $err=$modelemail->getErrors();
+   if (array_key_exists('fio',$err)) $modelemail->fio = $event;
+   elseif (array_key_exists('pass1',$err)) $modelemail->pass1 = $event;
+   elseif (array_key_exists('pass2',$err)) $modelemail->pass2 = $event;
+
+}
+if ($modelemail->validate()) {
+
+        echo 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!!';
+
+}
+else {
+    $err = $modelemail->getErrors();
+    $session['addabon']=$modelemail;
+    if (array_key_exists('fio',$err)) echo $err['fio'][0];
+    elseif (array_key_exists('pass1',$err)) echo $err['pass1'][0];
+    elseif (array_key_exists('pass2',$err)) echo $err['pass2'][0];
+
+}
+
 
 
 function addPokazn($pokazn, $schet, $viber_name){

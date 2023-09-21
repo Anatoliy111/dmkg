@@ -15,6 +15,7 @@ use app\models\DolgKart;
 use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
+use app\models\UtAuth;
 use app\models\UtKart;
 use app\models\UtAbonent;
 use app\models\UtAbonkart;
@@ -291,6 +292,10 @@ try {
                             message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
                         }
                         else {
+                            $session = Yii::$app->session;
+                            if (isset($_SESSION['addabon'])) {
+                                $session->destroy();
+                            }
                             message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
                             UpdateStatus($Receiv,'add-abon#'.$event->getMessage()->getText());
                         }
@@ -301,15 +306,40 @@ try {
 
                 }
                 elseif ($match[0][0] == 'add-abon'){
+                    $session = Yii::$app->session;
+                    if (isset($_SESSION['addabon'])) {
+                        $modelemail=$session['addabon'];
+                    }
+                    else $modelemail = new UtAbonent();
 
-                    $modelabon = UtAbonent::findOne(['email' => $match[0][1]]);
-                    if ($modelabon == null)  {
-                        UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
+                    $modelemail->scenario = 'reg';
+                    $modelemail->email=$match[0][1];
+                    if (!$modelemail->validate()) {
+                        $err=$modelemail->getErrors();
+                        if (array_key_exists('fio',$err)) $modelemail->fio = $event->getMessage()->getText();
+                        elseif (array_key_exists('pass1',$err)) $modelemail->pass1 = $event->getMessage()->getText();
+                        elseif (array_key_exists('pass2',$err)) $modelemail->pass2 = $event->getMessage()->getText();
+
+                    }
+                    if ($modelemail->validate()) {
+                        if (Addabon($modelemail)=='OK') {
+                            UpdateStatus($Receiv,'');
+                            message($bot, $botSender, $event, 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!!', getDmkgMenuOS($Receiv));
+                        }
+                        else {
+                            UpdateStatus($Receiv,'');
+                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+                        }
                     }
                     else {
-                        message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
-                        UpdateStatus($Receiv,'');
+                        $err = $modelemail->getErrors();
+                        $session['addabon']=$modelemail;
+                        message($bot, $botSender, $event, $err[array_key_first($err)][0], getDmkgMenuOS($Receiv));
+                        $err = $modelemail->getErrors();
+                        $session['addabon']=$modelemail;
+                        if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0], getDmkgMenuOS($Receiv));
+                        elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0], getDmkgMenuOS($Receiv));
+                        elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0], getDmkgMenuOS($Receiv));
                     }
                 }
                 elseif ($match[0][0] == 'auth-passw'){
@@ -319,7 +349,7 @@ try {
                             $Receiv->id_abonent = $modelabon->id;
                             $Receiv->save();
                             UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Вітаємо '.$modelabon->fio.'--'.$Receiv->id_abonent.'! Ви здійснили вхід в систему, тепер для вас доступні всі функції!!!', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Вітаємо '.$modelabon->fio.'! Ви здійснили вхід в систему, тепер для вас доступні всі функції!!!', getDmkgMenuOS($Receiv));
                         }
                         else {
 //                            UpdateStatus($Receiv, 'auth-passw#' . $event->getMessage()->getText());
@@ -381,6 +411,41 @@ try {
         echo $e->getMessage();
 
     }
+}
+
+function Addabon($modelemail)
+{
+
+    $message = '';
+//        $dataProviderEmail = $modelemail->searchemail(Yii::$app->request->bodyParams);
+        $model = new UtAuth();
+        $model->scenario = 'reg';
+        $model->fio = $modelemail->fio;
+        $model->email = $modelemail->email;
+        $model->authtoken = md5($modelemail->email . time());
+        $model->vid = 'authviber';
+        $model->pass = $modelemail->pass1;
+
+        if ($model->validate()) {
+            $model->save();
+
+            $sent = Yii::$app->mailer
+                ->compose(
+                    ['html' => 'user-signup-comfirm-html'],
+                    ['model' => $model])
+                ->setTo($model->email)
+                ->setFrom('supportdmkg@ukr.net')
+                ->setSubject('Реєстрація на вайберботі ДМКГ!')
+                ->send();
+
+            if (!$sent) {
+                throw new \RuntimeException('Sending error.');
+            }
+        }
+
+
+
+    return 'OK';
 }
 
 function getDmkgMenuOS($Receiv){
@@ -661,35 +726,6 @@ function getYesNoMenu($action){
 
 
 //92519753
-
-function Addabon($FindRah,$action){
-
-    $buttons = [];
-    foreach ($FindRah as $Rah)
-    {
-        $buttons[] =
-            (new \Viber\Api\Keyboard\Button())
-                ->setBgColor('#F2AD50')
-                ->setActionType('reply')
-                ->setTextHAlign('center')
-                ->setTextVAlign('center')
-                ->setActionBody($action.'#'.$Rah->schet)
-                ->setText($Rah->schet);
-    }
-
-    $buttons[] =
-        (new \Viber\Api\Keyboard\Button())
-            ->setBgColor('#F2F3A7')
-            ->setTextSize('large')
-            ->setTextHAlign('center')
-            ->setTextVAlign('center')
-            ->setActionType('reply')
-            ->setActionBody('DmkgMenu-button')
-            ->setText('🏠   Головне меню');
-
-    return (new \Viber\Api\Keyboard())
-        ->setButtons($buttons);
-}
 
 function getRahList($FindRah,$action){
 

@@ -50,12 +50,13 @@ UtAbonent extends \yii\db\ActiveRecord
             [['date_pass'], 'safe'],
             [['del', 'status'], 'integer'],
             [['fio', 'passopen'], 'string', 'max' => 64],
+            [['fio'], 'string', 'min' => 5],
             [['telef'], 'string', 'max' => 15],
             [['email'], 'email'],
             [['pass'], 'string', 'min' => 5],
             [['pass1'], 'string', 'min' => 5],
             [['pass2'], 'string', 'min' => 5],
-            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають !!!'],
+            ['pass2', 'compare',  'compareAttribute' => 'pass1', 'message' => 'Паролі не співпадають, повторіть пароль ще раз!!!'],
         ];
     }
 
@@ -89,7 +90,7 @@ UtAbonent extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_PASS] = ['pass1', 'pass2'];
-        $scenarios[self::SCENARIO_REG] = ['fio','pass1','pass2','email'];
+        $scenarios[self::SCENARIO_REG] = ['email','fio','pass1','pass2'];
         $scenarios[self::SCENARIO_CONFREG] = ['fio','pass','email'];
         $scenarios[self::SCENARIO_EMAIL] = ['email'];
         return $scenarios;
