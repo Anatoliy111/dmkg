@@ -308,10 +308,9 @@ try {
                 elseif ($match[0][0] == 'add-abon'){
 
                     $session = Yii::$app->session;
+                    message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
                     if (array_key_exists('addabon',$_SESSION)) {
-                        message($bot, $botSender, $event, 'ОККК !!!', getDmkgMenuOS($Receiv));
                         $modelemail=$session['addabon'];
-                        message($bot, $botSender, $event, 'ОККК2 !!!', getDmkgMenuOS($Receiv));
                     }
                     else $modelemail = new UtAbonent();
 
