@@ -307,7 +307,7 @@ try {
                 }
                 elseif ($match[0][0] == 'add-abon'){
                     $session = Yii::$app->session;
-                    if (isset($_SESSION['addabon'])) {
+                    if (array_key_exists('addabon',$_SESSION)) {
                         $modelemail=$session['addabon'];
                     }
                     else $modelemail = new UtAbonent();
