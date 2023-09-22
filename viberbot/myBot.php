@@ -308,18 +308,18 @@ try {
 
                     foreach ($match[0] as $col) {
                         preg_match_all('/([^=]+)/ui',$col,$match2);
-                        switch ($match2[0]) {
+                        switch ($match2[0][0]) {
                             case 'email':
-                                $modelemail->email=$match2[1];
+                                $modelemail->email=isset($match2[0][1])?$match2[0][1]:'';
                                 break;
                             case 'fio':
-                                $modelemail->fio=$match2[1];
+                                $modelemail->fio=isset($match2[0][1])?$match2[0][1]:'';
                                 break;
                             case 'pass1':
-                                $modelemail->pass1=$match2[1];
+                                $modelemail->pass1=isset($match2[0][1])?$match2[0][1]:'';
                                 break;
                             case 'pass2':
-                                $modelemail->pass2=$match2[1];
+                                $modelemail->pass2=isset($match2[0][1])?$match2[0][1]:'';
                                 break;
                         }
 

@@ -21,25 +21,41 @@ require_once(__DIR__ . '\botMenu.php');
 
 //echo infoDmkgSchet('0014001');
 $schet='7020006а';
-$session = Yii::$app->session;
+
 //$session->destroy();
 $event='12345';
-
+//$stat='add-abon#'.'email=qwe@qwe.com';
+$stat='add-abon#email=qwe@qwe.com#fio=qwerty#pass1=12345#pass2';
+//$stat='add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2;
+preg_match_all('/([^#]+)/ui',$stat,$match);
 //echo addPokazn(802,'0092124','asfsadfasdf');
 
-if (array_key_exists('addabon',$_SESSION)) {
-    $modelemail=$session['addabon'];
-}
-else $modelemail = new UtAbonent();
-
+$modelemail = new UtAbonent();
 $modelemail->scenario = 'reg';
-$modelemail->email='sdfs@sdf.com';
-$key='';
+
+foreach ($match[0] as $col) {
+    preg_match_all('/([^=]+)/ui',$col,$match2);
+    switch ($match2[0][0]) {
+        case 'email':
+            $modelemail->email=isset($match2[0][1])?$match2[0][1]:'';
+            break;
+        case 'fio':
+            $modelemail->fio=isset($match2[0][1])?$match2[0][1]:'';
+            break;
+        case 'pass1':
+            $modelemail->pass1=isset($match2[0][1])?$match2[0][1]:'';
+            break;
+        case 'pass2':
+            $modelemail->pass2=isset($match2[0][1])?$match2[0][1]:'';
+            break;
+    }
+
+}
 if (!$modelemail->validate()) {
-   $err=$modelemail->getErrors();
-   if (array_key_exists('fio',$err)) $modelemail->fio = $event;
-   elseif (array_key_exists('pass1',$err)) $modelemail->pass1 = $event;
-   elseif (array_key_exists('pass2',$err)) $modelemail->pass2 = $event;
+    $err=$modelemail->getErrors();
+    if (array_key_exists('fio',$err)) $modelemail->fio = $event;
+    elseif (array_key_exists('pass1',$err)) $modelemail->pass1 = $event;
+    elseif (array_key_exists('pass2',$err)) $modelemail->pass2 = $event;
 
 }
 if ($modelemail->validate()) {
@@ -49,11 +65,10 @@ if ($modelemail->validate()) {
 }
 else {
     $err = $modelemail->getErrors();
-    $session['addabon']=$modelemail;
-    if (array_key_exists('fio',$err)) echo $err['fio'][0];
-    elseif (array_key_exists('pass1',$err)) echo $err['pass1'][0];
-    elseif (array_key_exists('pass2',$err)) echo $err['pass2'][0];
-
+    $stat='add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2;
+    if (array_key_exists('fio',$err)) echo $err['fio'][0].' '.$modelemail->fio;
+    elseif (array_key_exists('pass1',$err)) echo $err['pass1'][0].' '.$modelemail->pass1;
+    elseif (array_key_exists('pass2',$err)) echo $err['pass2'][0].' '.$modelemail->pass2;
 }
 
 
