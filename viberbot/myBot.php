@@ -7,7 +7,7 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 //require_once(__DIR__ . '/../yii');
 
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../app/config/console.php';
+$yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
 
 
@@ -333,13 +333,15 @@ try {
 
                     }
                     if ($modelemail->validate()) {
-                        if (Addabon($modelemail)=='OK') {
+                        $res = Addabon($modelemail);
+                        if ($res=='OK') {
                             UpdateStatus($Receiv,'');
                             message($bot, $botSender, $event, 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!!', getDmkgMenuOS($Receiv));
                         }
                         else {
                             UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+//                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, $res, getDmkgMenuOS($Receiv));
                         }
                     }
                     else {
@@ -874,7 +876,7 @@ function UpdateStatus($Model,$Status){
             else {
                 $messageLog = [
                     'status' => 'Помилка додавання в підписника',
-                    'post' => $Model->errors
+                    'post' => $Model->getErrors(),
                 ];
 
                 Yii::error($messageLog, 'viber_err');
