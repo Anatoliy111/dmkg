@@ -23,7 +23,7 @@ require_once(__DIR__ . '\botMenu.php');
 $schet='7020006а';
 
 //$session->destroy();
-$event='12345';
+$event='qwer3';
 //$stat='add-abon#'.'email=qwe@qwe.com';
 $stat='add-abon#email=qwe@qwe.com#fio=qwerty#pass1=12345#pass2';
 //$stat='add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2;
