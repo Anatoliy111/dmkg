@@ -333,7 +333,7 @@ try {
 
                     }
                     if ($modelemail->validate()) {
-                        $res = Addabon($modelemail);
+                        $res = Addabon($modelemail,$Receiv);
                         if ($res=='OK') {
                             UpdateStatus($Receiv,'');
                             message($bot, $botSender, $event, 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!! Підтвердження реєстрації - обов"язково', getDmkgMenuOS($Receiv));
@@ -424,7 +424,7 @@ try {
     }
 }
 
-function Addabon($modelemail)
+function Addabon($modelemail,$Receiv)
 {
 
     $message = '';
@@ -436,13 +436,14 @@ function Addabon($modelemail)
         $model->authtoken = md5($modelemail->email . time());
         $model->vid = 'authviber';
         $model->pass = $modelemail->pass1;
+        $model->id_receiver = $Receiv->id_receiver;
 
         if ($model->validate()) {
             $model->save();
 
             $sent = Yii::$app->mailer
                 ->compose(
-                    ['html' => 'user-signup-comfirm-html'],
+                    ['html' => 'user-signupviber-comfirm-html'],
                     ['model' => $model])
                 ->setTo($model->email)
                 ->setFrom('supportdmkg@ukr.net')

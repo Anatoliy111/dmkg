@@ -14,6 +14,7 @@ use Yii;
  * @property string $email
  * @property string $authtoken
  * @property string $vid
+ * @property string $id_receiver
  *
  * @property UtAbonent $abonent
  */
@@ -42,6 +43,7 @@ class UtAuth extends \yii\db\ActiveRecord
             [['id_abonent'], 'integer'],
             ['email', 'email'],
             [['fio', 'pass', 'email', 'authtoken','vid'], 'string', 'max' => 64],
+            [['id_receiver'], 'string', 'max' => 30],
             [['id_abonent'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['id_abonent' => 'id']],
 //            [['authtoken'], 'compare',  'compareValue' => $this->authtoken, 'operator' => '==', 'message' => 'token not found'],
 //            [['authtoken'], 'exist', 'skipOnError' => true, 'targetClass' => UtAuth::class, 'targetAttribute' => ['authtoken' => 'authtoken'],'message' => 'token not found','on' => self::SCENARIO_TOKEN],
@@ -65,6 +67,7 @@ class UtAuth extends \yii\db\ActiveRecord
             'authtoken' => 'Authtoken',
             'pass1' => 'Введіть пароль',
             'pass2' => 'Повторіть пароль',
+            'id_receiver' => 'id receiver',
         ];
     }
 

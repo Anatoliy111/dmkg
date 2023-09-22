@@ -783,6 +783,36 @@ class UtAbonentController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionConfirmSignupviber($authtoken)
+    {
+        if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
+            if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) == null) {
+                $modelabon = new UtAbonent();
+                $modelabon->scenario = 'confreg';
+                $modelabon->fio = trim($modelauth->fio);
+                $modelabon->email = trim($modelauth->email);
+
+                $modelabon->pass = md5($modelabon->id . trim($modelauth->pass));
+                $modelabon->passopen = trim($modelauth->pass);
+                $modelabon->date_pass = date('Y-m-d');
+                if ($modelabon->validate() && $modelabon->save()) {
+                    UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
+
+
+                }
+            }
+            else {
+                $_SESSION['modalmess']['erremail'] = $modelauth;
+                return $this->redirect(['index']);
+            }
+        } else {
+            $_SESSION['modalmess']['errtokenauth'] = '';
+            return $this->redirect(['index']);
+        }
+
+
+    }
+
     public function actionConfirmPass($authtoken)
     {
          $modelauth = new UtAuth();
