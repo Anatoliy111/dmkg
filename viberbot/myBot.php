@@ -345,7 +345,7 @@ try {
                     else {
                         $err = $modelemail->getErrors();
                         UpdateStatus($Receiv,'add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2);
-                        message($bot, $botSender, $event, 'OKKK', getDmkgMenuOS($Receiv));
+                    //    message($bot, $botSender, $event, 'OKKK', getDmkgMenuOS($Receiv));
                         if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0].' '.$modelemail->fio, getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0].' '.$modelemail->pass2, getDmkgMenuOS($Receiv));
