@@ -336,7 +336,7 @@ try {
                         $res = Addabon($modelemail);
                         if ($res=='OK') {
                             UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!!', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!! Підтвердження реєстрації - обов"язково', getDmkgMenuOS($Receiv));
                         }
                         else {
                             UpdateStatus($Receiv,'');
