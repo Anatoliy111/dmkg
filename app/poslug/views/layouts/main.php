@@ -73,7 +73,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 			echo Nav::widget([
 				'options' => ['class' => 'nav navbar-nav navbar-left'],
 				'items' => [
-//                    ['label' => 'Картка абонента', 'url' => '/poslug/default/KartAbon'],
+                    ['label' => 'Картка абонента', 'url' => '/poslug/default/KartAbon'],
 //                    ['label' => 'Оборотна відомість по послугам ', 'url' => '/poslug/default/Obor'],
                     ['label' => 'Вивіз сміття ПС', 'url' => ['default/smitpc']],
 //

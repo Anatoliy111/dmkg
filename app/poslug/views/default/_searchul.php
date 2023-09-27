@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
 		]);
 		?>
 		<div class="form-group">
-			<?= Html::submitButton('', ['class' => 'btn btn-primary','id'=>'buttul']) ?>
+			<?= Html::submitButton('fsdfasdf', ['class' => 'btn btn-primary','id'=>'buttul','style'=>"display:none"]) ?>
 		</div>
 	</div>
 

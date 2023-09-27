@@ -7,6 +7,7 @@ use yii\base\BaseObject;
 use yii\base\Model;
 use yii\bootstrap\Alert;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\web\IdentityInterface;
 
 
@@ -81,101 +82,25 @@ class SearchDolgOborNow extends DolgOborNow
 
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
-        $query = DolgOborNow::find();
-        $query->where(['period' => $period, 'wid' => 'sm']);
-//        $query->orderBy('npp');
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => false,
-            'sort' => [
-                'defaultOrder' => [
-                    'ndom' => SORT_ASC,
-                    'nomdom' => SORT_ASC,
-                    'nomkv' => SORT_ASC,
-                ]
-            ],
-        ]);
-
         $this->load($params);
-
-//        $this->kl_ul=iconv('UTF-8','windows-1251', $this->nomdom);
-//        $this->nomkv=iconv('UTF-8','windows-1251', $this->nomkv);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-             $query->andWhere('0=1');
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_obkrnow where 0=1')->QueryAll(),
+                'pagination' => [
+                    'pagesize' => false,
+                ],
+            ]);
             return $dataProvider;
         }
 
-//		$Get = Yii::$app->request->get('SearchDolgObor');
-//
-//		if (($Get['nomkv']==null) or ($Get['nomkv']=="") or ($Get['nomkv']==0))
-//		{
-//			$this->nomkv='';
-//		}
-		$query->andWhere([
-			'kl_ul' => $this->kl_ul,
-		]);
-
-//		if ($Get['korp']<>null)
-//		{
-//			$this->korp=$Get['korp'];
-//			$domkorp = $Get['dom'].$Get['korp'];
-//			$query->andWhere(['=', 'dom', $domkorp]);
-//		}
-//		else {
-//			$this->korp=null;
-//			$query->andWhere(['=', 'nomdom', $this->nomdom]);
-//		}
-
-//		if ($this->enterpass<>null){
-//			$query->andWhere(['=', 'pass', $this->enterpass]);
-//			if ($dataProvider->getTotalCount() <> 0) {
-//				return $dataProvider->getModels()[0];
-//			}
-//		}
-
-
-//		if ($dataProvider->getTotalCount() == 0) {
-////			Yii::$app->getSession()->setFlash('alert', [
-////				'body'=>'Thank you for contacting us. We will respond to you as soon as possible.',
-////				'options'=>['class'=>'alert-warning']
-////			]);
-//			Alert::begin([
-//				'options' => [
-//					'class' => 'alert-danger', 'style' => 'float:bottom; margin-top:50px',
-//				],
-//			]);
-//
-//			echo 'По вашій адресі абонентів не знайдено ';
-//
-//			Alert::end();
-//		}
-
-
-
-
-
-
-//        // grid filtering conditions
-//        $query->andFilterWhere([
-//            'id' => $this->id,
-//            'id_ulica' => $this->id_ulica,
-//            'kv' => $this->kv,
-//            'ur_fiz' => $this->ur_fiz,
-//            'id_oldkart' => $this->id_oldkart,
-//        ]);
-//
-//        $query->andFilterWhere(['like', 'name_f', $this->name_f])
-//            ->andFilterWhere(['like', 'name_i', $this->name_i])
-//            ->andFilterWhere(['like', 'name_o', $this->name_o])
-//            ->andFilterWhere(['like', 'fio', $this->fio])
-//            ->andFilterWhere(['like', 'idcod', $this->idcod])
-//            ->andFilterWhere(['like', 'dom', $this->dom])
-//            ->andFilterWhere(['like', 'korp', $this->korp])
-//            ->andFilterWhere(['like', 'pass', $this->pass])
-//            ->andFilterWhere(['like', 'telef', $this->telef]);
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_obkrnow where period=\''.$period.'\' and kl_ul='.$this->kl_ul.' and wid=\'sm\' order by ndom,nomdom,nomkv')->QueryAll(),
+            'pagination' => [
+                'pagesize' => false,
+            ],
+        ]);
 
         return $dataProvider;
     }
