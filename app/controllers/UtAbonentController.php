@@ -39,6 +39,11 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Viber\Bot;
+use Viber\Api\Sender;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Exception;
 
 /**
  * UtAbonentController implements the CRUD actions for UtAbonent model.
@@ -797,7 +802,7 @@ class UtAbonentController extends Controller
                 $modelabon->date_pass = date('Y-m-d');
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-
+                    SendViber('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$modelauth->id_receiver);
 
                 }
             }
@@ -810,7 +815,44 @@ class UtAbonentController extends Controller
             return $this->redirect(['index']);
         }
 
+        return '';
+    }
 
+    public function SendViber($message,$receivid)
+    {
+
+
+
+        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
+
+        $botSender = new Sender([
+            'name' => 'dmkgBot',
+            'avatar' => '',
+        ]);
+
+// log bot interaction
+        $log = new Logger('bot');
+        $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
+
+        try {
+            // create bot instance
+            $bot = new Bot(['token' => $apiKey]);
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($receivid)
+                    ->setText($message)
+            );
+
+        } catch (Exception $e) {
+            $log->warning('Exception: ' . $e->getMessage());
+            if ($bot) {
+                $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+                $log->warning('Actual body: ' . $bot->getInputBody());
+            }
+        }
+
+        return '';
     }
 
     public function actionConfirmPass($authtoken)

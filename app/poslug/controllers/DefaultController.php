@@ -3,6 +3,8 @@
 namespace app\poslug\controllers;
 
 //use app\models\UploadForm;
+use app\poslug\models\DolgPeriod;
+use app\poslug\models\SearchDolgOborNow;
 use app\poslug\models\UploadForm;
 
 use Yii;
@@ -49,17 +51,36 @@ class DefaultController extends Controller
 //		return $this->render('index');
     }
 
-
-	public function actionDownload()
-	{
-		return $this->render('download');
-	}
-
-
 	public function actionError()
 	{
 		return $this->render('error');
 	}
+
+    public function actionSmitpc()
+    {
+
+
+        $searchModel = new SearchDolgOborNow();
+        $searchModel->scenario = 'ul';
+        $dataProvider = $searchModel->searchul(Yii::$app->request->queryParams);
+
+
+
+        return $this->render('smitpc', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
+
+    public function actionDownload()
+    {
+        return $this->render('download');
+    }
+
+
+
 
 	public function download()
 	{

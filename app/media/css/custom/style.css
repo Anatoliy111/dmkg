@@ -873,6 +873,23 @@ button#buttperiod{
     display: none;
 }
 
+.smitpc-index
+
+.menu-poslug li a{
+	font-family: 'Raleway', sans-serif;
+	font-weight: bold;
+	font-size: 1.20em;
+	/*text-transform: uppercase;*/
+}
+
+.menu-poslug li.active a{
+	background-color:#0070bf;
+	color:#eee;
+}
+
+.menu-poslug li.active a:focus{
+	color:#eee;
+}
 
 
 .main .ut-kart .container {
