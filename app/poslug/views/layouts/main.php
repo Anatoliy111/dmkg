@@ -26,7 +26,18 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
+
+
 <body>
+
+<div class="preloader">
+    <div class="preloader__row">
+        <div class="preloader__item"></div>
+        <div class="preloader__item"></div>
+    </div>
+</div>
+
+
 
 
     <div class="container-fluid page-container">
@@ -215,6 +226,8 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 
 		<div class="container">
 
+
+
             <div class="menu-poslug">
 
             <?php
@@ -256,14 +269,20 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
        </div>
 
         <div class="footer-fix"></div>
-    </div>
+
     <footer class="footer">
         <div class="container">
             <p class="pull-left">A Product of <a href="http://www.yiisoft.com/">Yii Software LLC</a></p>
             <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
+
+
+
+
 <?php $this->endBody() ?>
+
+
 </body>
 </html>
 <?php $this->endPage() ?>

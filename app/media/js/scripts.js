@@ -3,7 +3,7 @@ $(function(){
 });
 /* Stick up menus
  ========================================================*/
-;
+
 (function ($) {
     var o = $('html');
     if (o.hasClass('desktop')) {
@@ -17,7 +17,7 @@ $(function(){
 
 /* ToTop
  ========================================================*/
-;
+
 (function ($) {
     var o = $('html');
     if (o.hasClass('desktop')) {

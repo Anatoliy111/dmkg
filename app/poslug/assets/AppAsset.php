@@ -26,8 +26,7 @@ class AppAsset extends \yii\web\AssetBundle
 
     ];
     public $js = [
-
-		'js/myscript.js',
+		'js/script.js',
 //        'js/import-dbf.js',
 //		'js/custom.js',
 //		'js/month/jquery.maskedinput.min.js',
@@ -35,9 +34,8 @@ class AppAsset extends \yii\web\AssetBundle
 //		'js/month/examples.js',
 //        'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 //		'moment/min/moment.min.js',
-//		'jquery/dist/jquery.min.js',
+//		'js/jquery.min.js',
 //		'bootstrap/dist/js/bootstrap.min.js',
-
     ];
     public $depends = [
         'yii\web\JqueryAsset',
