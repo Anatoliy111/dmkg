@@ -46,7 +46,7 @@ $year = $my_date->format('php:Y');
 		<section class="search">
 
 			<div class="container-fluid top_head">
-                <a href='/poslug'>Службовий вхід</a>
+                <?= Html::a('Службовий вхід','/poslug', ['data-pjax'=>0, 'class'=>'btn btn-success', 'title'=>'Службовий вхід']) ?>
 				<div class="container">
 
 				</div> <!-- end container -->
