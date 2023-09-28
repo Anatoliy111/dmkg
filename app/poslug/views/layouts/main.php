@@ -1,9 +1,11 @@
 <?php
 use app\poslug\models\UtPeriod;
-	use yii\bootstrap\NavBar;
+use kartik\nav\NavX;
+use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 	use yii\widgets\Breadcrumbs;
+use yii\helpers\Url;
 
 
 /* @var $this \yii\web\View */
@@ -25,28 +27,60 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
     <?php $this->head() ?>
 </head>
 <body>
+
+
     <div class="container-fluid page-container">
         <?php $this->beginBody() ?>
 
 
-        <?php
-        NavBar::begin([
-            'brandLabel' => Html::label('<h4>Компослуги</h4>'),
-            'brandUrl' => ['default/index'],
-            'options' => ['class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',],
-        ]);
-        echo Nav::widget([
-            'options' => ['class' => 'nav navbar-nav navbar-right'],
-            'items' => [
-                ['label' => 'Головна', 'url' => ['default/index']],
-				['label' => 'Gii', 'url' => '/gii'],
-                ['label' => 'Перейти до сайту', 'url' => Yii::$app->homeUrl],
-				['label' => Yii::t('easyii', 'Logout'),['class'=>['glyphicon glyphicon-log-out']],'url' => ['/admin/sign/out']],
+        <div class="menu-main">
 
-		],
-        ]);
-        NavBar::end();
-        ?>
+            <?php
+            echo NavX::widget([
+                'options'=>['class'=>'nav nav-pills'],
+                'items' => [
+                    ['label' => 'Головна', 'url' => ['default/index']],
+                    ['label' => 'Gii', 'url' => '/gii'],
+                    ['label' => 'Перейти до сайту', 'url' => Yii::$app->homeUrl],
+                    ['label' => Yii::t('easyii', 'Logout'),['class'=>['glyphicon glyphicon-log-out']],'url' => ['/admin/sign/out']],
+                ],
+            ]);
+
+
+
+            NavBar::begin();
+            echo NavX::widget([
+                'options' => ['class' => 'navbar-nav','data-pjax' => 1],
+                'activateParents' => true,
+                'encodeLabels' => false,
+            ]);
+            NavBar::end();
+            ?>
+
+        </div>
+
+
+
+<!--        --><?php
+//        NavBar::begin([
+//            'brandLabel' => Html::label('<h4>Компослуги</h4>'),
+//            'brandUrl' => ['default/index'],
+//            'options' => ['class' => 'navbar navbar-expand-md navbar-dark bg-dark fixed-top',],
+//        ]);
+//        echo Nav::widget([
+//            'options' => ['class' => 'nav navbar-nav navbar-right'],
+//            'items' => [
+//                ['label' => 'Головна', 'url' => ['default/index']],
+//				['label' => 'Gii', 'url' => '/gii'],
+//                ['label' => 'Перейти до сайту', 'url' => Yii::$app->homeUrl],
+//				['label' => Yii::t('easyii', 'Logout'),['class'=>['glyphicon glyphicon-log-out']],'url' => ['/admin/sign/out']],
+//
+//		],
+//        ]);
+//        NavBar::end();
+//        ?>
+
+
 
 
 		<?php
@@ -66,16 +100,20 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 		</div>
 
 
-        <div class="menu-poslug">
 
-			<?php
 
-			echo Nav::widget([
-				'options' => ['class' => 'nav navbar-nav navbar-left'],
-				'items' => [
-                    ['label' => 'Картка абонента', 'url' => '/poslug/default/KartAbon'],
-//                    ['label' => 'Оборотна відомість по послугам ', 'url' => '/poslug/default/Obor'],
-                    ['label' => 'Вивіз сміття ПС', 'url' => ['default/smitpc']],
+<!--			--><?php
+//
+//
+//
+//
+//
+//			echo Nav::widget([
+//				'options' => ['class' => 'nav navbar-nav navbar-left'],
+//				'items' => [
+//                    ['label' => 'Картка абонента', 'url' => '/poslug/default/KartAbon'],
+////                    ['label' => 'Оборотна відомість по послугам ', 'url' => '/poslug/default/Obor'],
+//                    ['label' => 'Вивіз сміття ПС', 'url' => ['default/smitpc']],
 //
 //
 //
@@ -166,16 +204,43 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
 //							['label' => 'Завантаження', 'url' => '/poslug/default/upload'],
 //							],
 //					],
-				],
-			]);
-			NavBar::end();
-		?>
+//				],
+//			]);
+//			NavBar::end();
+//		?>
 
         </div>
 
 
 
 		<div class="container">
+
+            <div class="menu-poslug">
+
+            <?php
+            echo NavX::widget([
+                'options'=>['class'=>'nav nav-pills'],
+                'items' => [
+                    ['label' => 'Картка абонента', 'url' => 'index'],
+//                    ['label' => 'Оборотна відомість по послугам ', 'url' => '/poslug/default/Obor'],
+                    ['label' => 'Вивіз сміття ПС', 'url' => ['default/smitpc']],
+                ],
+            ]);
+
+
+
+            NavBar::begin();
+            echo NavX::widget([
+                'options' => ['class' => 'navbar-nav','data-pjax' => 1],
+                'activateParents' => true,
+                'encodeLabels' => false,
+            ]);
+            NavBar::end();
+            ?>
+
+            </div>
+
+
 
 			<?php echo Breadcrumbs::widget([
 				'homeLink' => ['label' => 'Головна', 'url' => '/poslug'],

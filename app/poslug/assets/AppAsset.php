@@ -9,10 +9,12 @@ class AppAsset extends \yii\web\AssetBundle
 //	C:\OpenServer\domains\DMKGtest\vendor\bower\eonasdan-bootstrap-datetimepicker\build\js\bootstrap-datetimepicker.min.js
 //    public $sourcePath = '@bower';
 	public $sourcePath = '@app/poslug/media';
+//    public $sourcePath = '@app/media';
 
 
     public $css = [
         'css/style.css',
+//        'css/custom/style.css',
 //        'css/month/jquery-ui.css',
 ////		'css/month/stylesheet.css',
 //		'css/month/MonthPicker.css',
