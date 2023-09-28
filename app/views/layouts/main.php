@@ -44,7 +44,9 @@ $year = $my_date->format('php:Y');
 		?>
 		<!-- ======= /mainmenu-area section ======= -->
 		<section class="search">
+
 			<div class="container-fluid top_head">
+                <a href='/poslug'>Службовий вхід</a>
 				<div class="container">
 
 				</div> <!-- end container -->
