@@ -96,7 +96,7 @@ class SearchDolgOborNow extends DolgOborNow
         }
 
         $dataProvider = new ArrayDataProvider([
-            'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_obkrnow where period=\''.$period.'\' and kl_ul='.$this->kl_ul.' and wid=\'sm\' order by ndom,nomdom,nomkv')->QueryAll(),
+            'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_obkrnow where period=\''.$period.'\' and kl_ul='.$this->kl_ul.' and (wid=\'sm\' or wid=\'sn\') order by ndom,nomdom,nkv,nomkv')->QueryAll(),
             'pagination' => [
                 'pagesize' => false,
             ],

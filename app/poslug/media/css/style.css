@@ -35,9 +35,18 @@
 	right: 0;
 	bottom: 0;
 	/* фоновый цвет элемента */
-	background: #e0e0e0;
+	background: #e0e0e0c4;
 	/* размещаем блок над всеми элементами на странице (это значение должно быть больше, чем у любого другого позиционированного элемента на странице) */
 	z-index: 1001;
+}
+
+.preloader:before {
+	content: "Завантаження!";
+	color: #337ab7;
+	position: relative;
+	top: 40%;
+	left: 46%;
+	font-size: 20px;
 }
 
 .preloader__row {
@@ -52,6 +61,8 @@
 	animation: preloader-rotate 2s infinite linear;
 }
 
+
+
 .preloader__item {
 	position: absolute;
 	display: inline-block;
@@ -64,6 +75,35 @@
 }
 
 .preloader__item:last-child {
+	top: auto;
+	bottom: 0;
+	animation-delay: -1s;
+}
+
+.preloader__row2 {
+	position: relative;
+	top: 50%;
+	left: 50%;
+	width: 70px;
+	height: 70px;
+	margin-top: -35px;
+	margin-left: -35px;
+	text-align: center;
+	animation: preloader-rotate 3s infinite linear;
+}
+
+.preloader__item2 {
+	position: absolute;
+	display: inline-block;
+	top: 0;
+	background-color: #337ab7;
+	border-radius: 80%;
+	width: 35px;
+	height: 35px;
+	animation: preloader-bounce 4s infinite ease-in-out;
+}
+
+.preloader__item2:last-child {
 	top: auto;
 	bottom: 0;
 	animation-delay: -1s;

@@ -35,6 +35,10 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
         <div class="preloader__item"></div>
         <div class="preloader__item"></div>
     </div>
+    <div class="preloader__row2">
+        <div class="preloader__item2"></div>
+        <div class="preloader__item2"></div>
+    </div>
 </div>
 
 
@@ -236,7 +240,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
                 'items' => [
                     ['label' => 'Картка абонента', 'url' => 'index'],
 //                    ['label' => 'Оборотна відомість по послугам ', 'url' => '/poslug/default/Obor'],
-                    ['label' => 'Вивіз сміття ПС', 'url' => ['default/smitpc']],
+                    ['label' => 'Вивіз сміття', 'url' => ['default/smitpc']],
                 ],
             ]);
 

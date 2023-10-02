@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\poslug\models\SearchUtObor */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Вивіз сміття ПС';
+$this->title = 'Вивіз сміття';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -36,6 +36,10 @@ $this->title = 'Вивіз сміття ПС';
                 }
             ],
             [
+                'attribute' => 'wid',
+                'label' => 'Посл.',
+            ],
+            [
                 'attribute' => 'fio',
                 'label' => 'ПІБ',
                 'value'=>function ($model) {
@@ -62,6 +66,10 @@ $this->title = 'Вивіз сміття ПС';
                 'value'=>function ($model) {
                     return iconv('windows-1251', 'UTF-8', $model["nomkv"]);
                 }
+            ],
+            [
+                'attribute' => 'koli_pf',
+                'label' => 'Проживає',
             ],
             [
                 'attribute' => 'dolgopl',
