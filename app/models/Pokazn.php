@@ -22,6 +22,8 @@ use yii\easyii\helpers\Data;
  */
 class Pokazn extends \yii\db\ActiveRecord
 {
+
+    public $lastpokazn;
     /**
      * {@inheritdoc}
      */
@@ -51,9 +53,14 @@ class Pokazn extends \yii\db\ActiveRecord
             [['schet'], 'string', 'max' => 10],
             [['pokazn'], function ($attribute) {
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
-                if ($this->pokazn<=$pok->pokazn) {
-                    $this->addError($attribute, "Ваш показник меньший або рівний за останній зареєстрований показник!!! Спробуйте ще");
+                $this->lastpokazn = $pok->pokazn;
+                if ($this->pokazn<$this->lastpokazn) {
+                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник!!! Спробуйте ще");
                 }
+//                if ($this->pokazn=$pok->pokazn) {
+////                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник!!! Спробуйте ще");
+//
+//                }
                 else {
 //                    if ($this->pokazn>150) {
 //
@@ -95,6 +102,7 @@ class Pokazn extends \yii\db\ActiveRecord
             'ppp' => 'Ppp',
         ];
     }
+
 
     public function getSprzn()
     {

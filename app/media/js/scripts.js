@@ -3,6 +3,24 @@ $(function(){
 });
 /* Stick up menus
  ========================================================*/
+(function () {
+
+    //при открытии модального окна
+    $("#modaladdpokaz111").on('shown.bs.modal', function () {
+        alert('модал форма відкрита111111111111111!!!');
+        $(document)
+            .on('beforeSubmit','#rah-form1', function(){
+                var form = $(this);
+                var data = form.serialize();
+                //загружает модели формы и передает пост
+                alert('після субміт11111111111111!!!');
+                return false;
+            });
+    });
+
+    //при клик или кнопка в форме модального окна
+
+})(jQuery);
 
 (function ($) {
     var o = $('html');

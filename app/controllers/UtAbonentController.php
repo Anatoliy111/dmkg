@@ -727,7 +727,8 @@ class UtAbonentController extends Controller
                     return $this->redirect('kabinet');
                 }
                 else {
-                    $modelpokazn->errors = $modelabonpokazn->errors;
+                    $firsterr = $modelabonpokazn->getFirstErrors();
+                    $modelpokazn->addError(key($firsterr), $firsterr[key($firsterr)]);
                 }
 
 

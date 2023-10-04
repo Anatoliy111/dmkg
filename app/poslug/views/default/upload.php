@@ -238,7 +238,7 @@ echo Html::button('Імпорт', [
 
 		var keys = $('#gridfile').yiiGridView('getSelectedRows');
 		if (keys.length != 0){
-			var hi= confirm("Ви впевненні що хочете видалити ці11 файли?");
+			var hi= confirm("Ви впевненні що хочете видалити ці файли?");
 			if (hi== true){
 			$.ajax({
 				url: "/poslug/default/delfile",
