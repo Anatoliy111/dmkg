@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+require_once(__DIR__ . '/../viberbot/myBot.php');
+
 use app\models\DolgKart;
 use app\models\DolgNach;
 use app\models\DolgNtarif;
@@ -21,6 +23,7 @@ use app\models\UtKart;
 use app\models\UtLich;
 use app\models\UtPokazn;
 use app\models\UtVoda;
+use app\models\Viber;
 use app\poslug\models\UtNarah;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtOpl;
@@ -792,6 +795,7 @@ class UtAbonentController extends Controller
     public function actionConfirmSignupviber($authtoken)
     {
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
+            $Receiv = Viber::findOne(['id_receiver' => $modelauth->id_receiver]);
             if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) == null) {
                 $modelabon = new UtAbonent();
                 $modelabon->scenario = 'confreg';
@@ -803,58 +807,63 @@ class UtAbonentController extends Controller
                 $modelabon->date_pass = date('Y-m-d');
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    SendViber('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$modelauth->id_receiver);
+                    getSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$modelauth->id_receiver);
 
                 }
             }
             else {
-                $_SESSION['modalmess']['erremail'] = $modelauth;
-                return $this->redirect(['index']);
+                if ($Receiv != null) getSend('Вибачте але ваша пошта вже зареєстрована. Виконайте вхід використовуючи вашу пошту '.$modelauth->email.' і пароль!!!',$Receiv);
+                else {
+                    $_SESSION['modalmess']['erremail']=$modelauth;
+                    return $this->redirect(['index']);
+                }
+
+
             }
         } else {
-            $_SESSION['modalmess']['errtokenauth'] = '';
+            $_SESSION['modalmess']['errtokenauth']='';
             return $this->redirect(['index']);
         }
 
         return '';
     }
 
-    public function SendViber($message,$receivid)
-    {
-
-
-
-        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
-
-        $botSender = new Sender([
-            'name' => 'dmkgBot',
-            'avatar' => '',
-        ]);
-
-// log bot interaction
-        $log = new Logger('bot');
-        $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
-
-        try {
-            // create bot instance
-            $bot = new Bot(['token' => $apiKey]);
-            $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setReceiver($receivid)
-                    ->setText($message)
-            );
-
-        } catch (Exception $e) {
-            $log->warning('Exception: ' . $e->getMessage());
-            if ($bot) {
-                $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-                $log->warning('Actual body: ' . $bot->getInputBody());
-            }
-        }
-
-        return '';
-    }
+//    public function SendViber($message,$receivid)
+//    {
+//
+//
+//
+//        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
+//
+//        $botSender = new Sender([
+//            'name' => 'dmkgBot',
+//            'avatar' => '',
+//        ]);
+//
+//// log bot interaction
+//        $log = new Logger('bot');
+//        $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
+//
+//        try {
+//            // create bot instance
+//            $bot = new Bot(['token' => $apiKey]);
+//            $bot->getClient()->sendMessage(
+//                (new \Viber\Api\Message\Text())
+//                    ->setSender($botSender)
+//                    ->setReceiver($receivid)
+//                    ->setText($message)
+//            );
+//
+//        } catch (Exception $e) {
+//            $log->warning('Exception: ' . $e->getMessage());
+//            if ($bot) {
+//                $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+//                $log->warning('Actual body: ' . $bot->getInputBody());
+//            }
+//        }
+//
+//        return '';
+//    }
 
     public function actionConfirmPass($authtoken)
     {

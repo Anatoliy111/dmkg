@@ -45,7 +45,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('erremail', $session['modalmess'])) {
         $modalformheader='Помилка';
-        $modalformtext='Вибачте, але абонент з такою ел.поштою '.$session['modalmess']['erremail']->email.' вже зареєстровано!!!';
+        $modalformtext='Вибачте, але абонент з такою ел.поштою '.$session['modalmess']['erremail']->email.' вже зареєстровано. Виконайте вхід використовуючи вашу пошту і пароль!!!';
         $modalformimage='nothyperlink.png';
     }
 

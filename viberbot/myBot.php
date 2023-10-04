@@ -236,7 +236,7 @@ try {
 //            $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
-                $addpok = addPokazn(intval($match[0][2]),$match[0][1],$event->getSender()->getName());
+                $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$event->getSender()->getName());
                 if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getDmkgMenuOS($Receiv));
                 UpdateStatus($Receiv,'');
             }
@@ -407,13 +407,13 @@ try {
                                     if ((intval($val) - $modelPokazn->pokazn) > 100) {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
-                                        $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
+                                        $addpok = addPokazn($Receiv,intval($val), $match[0][1],$event->getSender()->getName());
                                         if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenuOS($Receiv));
                                         UpdateStatus($Receiv, '');
                                     }
                                 } else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
                             } else {
-                                $addpok = addPokazn(intval($val), $match[0][1],$event->getSender()->getName());
+                                $addpok = addPokazn($Receiv,intval($val), $match[0][1],$event->getSender()->getName());
                                 if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenuOS($Receiv));
                                 UpdateStatus($Receiv, '');
                             }
@@ -918,7 +918,7 @@ function UpdateStatus($Model,$Status){
                 foreach ($messageLog as $err) {
                     $meserr = $meserr . implode(",", $err);
                 }
-                getSend($meserr);
+                getSend($meserr,$Model);
 
                 return false;
 
@@ -974,7 +974,7 @@ function infoKontakt(){
  * @param $schet
  * @return KpcentrViberpokazn|null
  */
-function addPokazn($pokazn, $schet, $viber_name)
+function addPokazn($Receiv,$pokazn, $schet, $viber_name)
 {
 
     $model = new KpcentrViberpokazn();
@@ -983,10 +983,7 @@ function addPokazn($pokazn, $schet, $viber_name)
     $model->pokazn = $pokazn;
     $model->viber_name = $viber_name;
     if ($model->validate()) {
-        /** @var TYPE_NAME $model */
-
         $model->save();
-
         return $model;
     } else {
         $messageLog = [
@@ -1000,7 +997,7 @@ function addPokazn($pokazn, $schet, $viber_name)
         foreach ($messageLog as $err) {
             $meserr = $meserr . implode(",", $err);
         }
-        getSend($meserr);
+        getSend($meserr,$Receiv);
 
 
         return null;
@@ -1091,6 +1088,7 @@ function getSend($message,$Receiv)
                 ->setSender($botSender)
                 ->setReceiver($Receiv->id_receiver)
                 ->setText($message)
+                ->setKeyboard(getDmkgMenuOS($Receiv))
         );
 
     } catch (Exception $e) {
