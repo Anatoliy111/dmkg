@@ -653,6 +653,7 @@ function getDmkgMenuOS($Receiv){
 
                     (new \Viber\Api\Keyboard\Button())
 //                ->setColumns(6)
+                        ->setColumns(3)
                         ->setActionType('open-url')
                         ->setActionBody('https://next.privat24.ua/payments/form/%7B%22companyID%22:%222383219%22,%22form%22:%7B%22query%22:%2236188893%22%7D%7D')
                         ->setImage("https://dmkg.com.ua/uploads/privat800x200.png"),
