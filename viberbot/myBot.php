@@ -155,6 +155,17 @@ try {
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
         })
+        ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
+            if ($modelabon != null)  {
+                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача - ' . $modelabon->email, getYesNoMenu('exit#'.$Receiv->id));
+            }
+
+//            UpdateStatus($Receiv,'');
+
+        })
         ->onText('|DmkgMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -234,6 +245,17 @@ try {
             $log->info('click on button privat24 ');
             $Receiv = verifyReceiver($event,$apiKey, $org);
             message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenuOS($Receiv));
+        })
+        ->onText('|exit#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+//            $FindRah = $Receiv->getViberAbons()->all();
+            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
+            if ($Receiv->id_abonent=$match[0][0]){
+                $Receiv->id_abonent=0;
+                $Receiv->save();
+                message($bot, $botSender, $event, 'Ви вишли з кабінета!', getDmkgMenuOS($Receiv));
+                UpdateStatus($Receiv,'');
+            }
         })
         ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
             $log->info('onText ' . var_export($event, true));
@@ -637,6 +659,16 @@ function getDmkgMenuOS($Receiv){
 //                ->setTextSize('regular')
 //                ->setTextHAlign('left')
 //                ->setText('Оплата'),
+                    (new \Viber\Api\Keyboard\Button())
+                        ->setColumns(3)
+                        //  ->setBgColor('#2fa4e7')
+                        ->setTextHAlign('center')
+                        ->setTextSize('large')
+                        ->setActionType('reply')
+                        ->setActionBody('Exit-button')
+                        ->setBgColor("#fdbdaa")
+                        // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                        ->setText('Вихід з кабінета'),
                 ]);
 
 
