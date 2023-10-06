@@ -3,6 +3,9 @@
 
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
+use yii\helpers\Url;
+
+
 
 /** @var yii\web\View $this */
 
@@ -49,6 +52,12 @@ if (isset($_SESSION['modalmess']))  {
         $modalformimage='nothyperlink.png';
     }
 
+    if (array_key_exists('vibererremail', $session['modalmess'])) {
+        $modalformheader='Помилка';
+        $modalformtext='Вибачте, але абонент з такою ел.поштою '.$session['modalmess']['vibererremail']->email.' вже зареєстровано. Виконайте вхід використовуючи вашу пошту і пароль!!!';
+        $modalformimage='nothyperlink.png';
+    }
+
     if (array_key_exists('updpass', $session['modalmess'])) {
         $modalformheader='Відновлення паролю';
         $modalformtext='Вітаємо '.$session['modalmess']['updpass']->fio.', ваш пароль змінено!';
@@ -69,6 +78,14 @@ if (isset($_SESSION['modalmess']))  {
         $modalformimage='registration.png';
 
     }
+
+    if (array_key_exists('viberaddabon', $session['modalmess'])) {
+        $modalformheader='Успішна реєстрація';
+        $modalformtext='Вітаємо '.$session['modalmess']['viberaddabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну(email) та паролю!';
+        $modalformimage='registration.png';
+
+    }
+
 
     if (array_key_exists('emailfog', $session['modalmess'])) {
         $modalformheader='Відновлення паролю';

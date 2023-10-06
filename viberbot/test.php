@@ -12,12 +12,16 @@ use app\models\HVoda;
 use app\models\Pokazn;
 use app\models\UtAbonent;
 use app\models\UtAbonpokazn;
+use app\models\UtAuth;
+use app\models\Viber;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 $yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
 require_once(__DIR__ . '\botMenu.php');
+
+
 
 //echo infoDmkgSchet('0014001');
 $schet='7020006а';
@@ -30,45 +34,45 @@ $stat='add-abon#email=qwe@qwe.com#fio=qwerty#pass1=12345#pass2';
 preg_match_all('/([^#]+)/ui',$stat,$match);
 //echo addPokazn(802,'0092124','asfsadfasdf');
 
-$modelemail = new UtAbonent();
-$modelemail->scenario = 'reg';
+$modelemail = UtAbonent::findOne(['id' => 2071]);
+$Receiv = Viber::findOne(['id' => 2]);
+Addabon($modelemail,$Receiv);
 
-foreach ($match[0] as $col) {
-    preg_match_all('/([^=]+)/ui',$col,$match2);
-    switch ($match2[0][0]) {
-        case 'email':
-            $modelemail->email=isset($match2[0][1])?$match2[0][1]:'';
-            break;
-        case 'fio':
-            $modelemail->fio=isset($match2[0][1])?$match2[0][1]:'';
-            break;
-        case 'pass1':
-            $modelemail->pass1=isset($match2[0][1])?$match2[0][1]:'';
-            break;
-        case 'pass2':
-            $modelemail->pass2=isset($match2[0][1])?$match2[0][1]:'';
-            break;
+
+function Addabon($modelemail,$Receiv)
+{
+
+    $message = '';
+//        $dataProviderEmail = $modelemail->searchemail(Yii::$app->request->bodyParams);
+    $model = new UtAuth();
+    $model->scenario = 'reg';
+    $model->fio = $modelemail->fio;
+    $model->email = $modelemail->email;
+    $model->authtoken = md5($modelemail->email . time());
+    $model->vid = 'authviber';
+    $model->pass = $modelemail->passopen;
+    $model->id_receiver = $Receiv->id_receiver;
+
+    if ($model->validate()) {
+        $model->save();
+
+        $sent = Yii::$app->mailer
+            ->compose(
+                ['html' => 'user-signupviber-comfirm-html'],
+                ['model' => $model])
+            ->setTo($model->email)
+            ->setFrom('supportdmkg@ukr.net')
+            ->setSubject('Реєстрація на вайберботі ДМКГ!')
+            ->send();
+
+        if (!$sent) {
+            throw new \RuntimeException('Sending error.');
+        }
     }
 
-}
-if (!$modelemail->validate()) {
-    $err=$modelemail->getErrors();
-    if (array_key_exists('fio',$err)) $modelemail->fio = $event;
-    elseif (array_key_exists('pass1',$err)) $modelemail->pass1 = $event;
-    elseif (array_key_exists('pass2',$err)) $modelemail->pass2 = $event;
 
-}
-if ($modelemail->validate()) {
 
-        echo 'Вітаємо '.$modelemail->fio.'! Ви здійснили реєстрацію в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації!!!';
-
-}
-else {
-    $err = $modelemail->getErrors();
-    $stat='add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2;
-    if (array_key_exists('fio',$err)) echo $err['fio'][0].' '.$modelemail->fio;
-    elseif (array_key_exists('pass1',$err)) echo $err['pass1'][0].' '.$modelemail->pass1;
-    elseif (array_key_exists('pass2',$err)) echo $err['pass2'][0].' '.$modelemail->pass2;
+    return 'OK';
 }
 
 

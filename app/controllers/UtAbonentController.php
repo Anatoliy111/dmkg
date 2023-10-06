@@ -2,7 +2,8 @@
 
 namespace app\controllers;
 
-require_once(__DIR__ . '/../viberbot/myBot.php');
+
+
 
 use app\models\DolgKart;
 use app\models\DolgNach;
@@ -47,6 +48,8 @@ use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Exception;
+
+require (Yii::getAlias('@webroot'). '/viberbot/dmkgMenuSend.php');
 
 /**
  * UtAbonentController implements the CRUD actions for UtAbonent model.
@@ -792,10 +795,10 @@ class UtAbonentController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionConfirmSignupviber($authtoken)
+    public function actionConfirmSignupviber($authtoken,$idreceiv)
     {
+        $Receiv = Viber::findOne(['id_receiver' => $idreceiv]);
         if (($modelauth = UtAuth::findOne(['authtoken' => $authtoken])) !== null) {
-            $Receiv = Viber::findOne(['id_receiver' => $modelauth->id_receiver]);
             if (($modelabon = UtAbonent::findOne(['email' => $modelauth->email])) == null) {
                 $modelabon = new UtAbonent();
                 $modelabon->scenario = 'confreg';
@@ -807,25 +810,17 @@ class UtAbonentController extends Controller
                 $modelabon->date_pass = date('Y-m-d');
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    getSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$modelauth->id_receiver);
-
+                    if ($Receiv != null) getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
+                    $_SESSION['modalmess']['viberaddabon']=$modelabon;
                 }
             }
             else {
-                if ($Receiv != null) getSend('Вибачте але ваша пошта вже зареєстрована. Виконайте вхід використовуючи вашу пошту '.$modelauth->email.' і пароль!!!',$Receiv);
-                else {
-                    $_SESSION['modalmess']['erremail']=$modelauth;
-                    return $this->redirect(['index']);
-                }
-
-
+                if ($Receiv != null) getDmkgSend('Вибачте але ваша пошта вже зареєстрована. Виконайте вхід використовуючи вашу пошту '.$modelauth->email.' і пароль!!!',$Receiv);
+                $_SESSION['modalmess']['vibererremail']=$modelauth;
             }
-        } else {
-            $_SESSION['modalmess']['errtokenauth']='';
-            return $this->redirect(['index']);
-        }
+        } else $_SESSION['modalmess']['errtokenauth']='';
 
-        return '';
+        return $this->redirect(['index']);
     }
 
 //    public function SendViber($message,$receivid)

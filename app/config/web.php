@@ -108,7 +108,7 @@ $config = [
 //				'<controller:\w+>/kabinet/<action:\w+>' => '<controller>/kabinet',
                 '<controller:\w+>/cat/<slug:[\w-]+>' => '<controller>/cat',
 				'poslug/<controller:\w+>/<action:[\w-]+>/<id:\d+>' => 'poslug/<controller>/<action>',
-				'poslug/:\w+>/<controller:\w+>/<action:[\w-]+>/<id:\d+>' => 'poslug/<controller>/<action>'
+				'poslug/:\w+>/<controller:\w+>/<action:[\w-]+>/<id:\d+>' => 'poslug/<controller>/<action>',
             ],
         ],
         'assetManager' => [
@@ -177,32 +177,32 @@ $config = [
     'params' => $params,
 
 	'modules' => [
-	'poslug' => [
+                'poslug' => [
 
-			'class' => 'app\poslug\module',
-			'controllerNamespace' => 'app\poslug\controllers',
-			'layout' => '@poslug/views/layouts/main',
-		],
-	'gridview' =>  [
-		'class' => '\kartik\grid\Module',
-
-
-		// enter optional module parameters below - only if you need to
-		// use your own export download action or custom translation
-		// message source
-//		'downloadAction' => 'gridview/export/download',
-		// 'i18n' => []
-	],
-	'datecontrol' =>  [
-	'class' => 'kartik\datecontrol\Module',
+                        'class' => 'app\poslug\module',
+                        'controllerNamespace' => 'app\poslug\controllers',
+                        'layout' => '@poslug/views/layouts/main',
+                    ],
+                    'gridview' =>  [
+                        'class' => '\kartik\grid\Module',
 
 
-	// enter optional module parameters below - only if you need to
-	// use your own export download action or custom translation
-	// message source
-//		'downloadAction' => 'gridview/export/download',
-	// 'i18n' => []
-    ]
+                        // enter optional module parameters below - only if you need to
+                        // use your own export download action or custom translation
+                        // message source
+                //		'downloadAction' => 'gridview/export/download',
+                        // 'i18n' => []
+                    ],
+                    'datecontrol' =>  [
+                    'class' => 'kartik\datecontrol\Module',
+
+
+                    // enter optional module parameters below - only if you need to
+                    // use your own export download action or custom translation
+                    // message source
+                //		'downloadAction' => 'gridview/export/download',
+                    // 'i18n' => []
+                    ]
 	],
 ];
 
