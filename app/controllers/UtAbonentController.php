@@ -828,37 +828,8 @@ class UtAbonentController extends Controller
 
     public function actionSendViber($idreceiv)
     {
-
-
-
-        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
-
-        $botSender = new Sender([
-            'name' => 'dmkgBot',
-            'avatar' => '',
-        ]);
-
-// log bot interaction
-        $log = new Logger('bot');
-        $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
-
-        try {
-            // create bot instance
-            $bot = new Bot(['token' => $apiKey]);
-            $bot->getClient()->sendMessage(
-                (new \Viber\Api\Message\Text())
-                    ->setSender($botSender)
-                    ->setReceiver($idreceiv)
-                    ->setText('sdfsdgdfgdsfgdfsgs')
-            );
-
-        } catch (Exception $e) {
-            $log->warning('Exception: ' . $e->getMessage());
-            if ($bot) {
-                $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-                $log->warning('Actual body: ' . $bot->getInputBody());
-            }
-        }
+        $Receiv = Viber::findOne(['id_receiver' => $idreceiv]);
+        getDmkgSend('Вибачте але ваша пошта вже зареєстрована. Виконайте авторизацію використовуючи вашу пошту  і пароль!!!',$Receiv);
 
         return '';
     }
