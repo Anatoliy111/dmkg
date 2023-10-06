@@ -810,12 +810,15 @@ class UtAbonentController extends Controller
                 $modelabon->date_pass = date('Y-m-d');
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
-                    if ($Receiv != null) getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
+                    $Receiv->id_abonent = $modelabon->id;
+                    $Receiv->save();
+                    getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
                     $_SESSION['modalmess']['viberaddabon']=$modelabon;
                 }
             }
             else {
-                if ($Receiv != null) getDmkgSend('Вибачте але ваша пошта вже зареєстрована. Виконайте вхід використовуючи вашу пошту '.$modelauth->email.' і пароль!!!',$Receiv);
+                if ($Receiv != null) getDmkgSend('Вибачте але ваша пошта вже зареєстрована. Виконайте авторизацію використовуючи вашу пошту '.$modelauth->email.' і пароль!!!',$Receiv);
+                UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
                 $_SESSION['modalmess']['vibererremail']=$modelauth;
             }
         } else $_SESSION['modalmess']['errtokenauth']='';
@@ -823,42 +826,42 @@ class UtAbonentController extends Controller
         return $this->redirect(['index']);
     }
 
-//    public function SendViber($message,$receivid)
-//    {
-//
-//
-//
-//        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
-//
-//        $botSender = new Sender([
-//            'name' => 'dmkgBot',
-//            'avatar' => '',
-//        ]);
-//
-//// log bot interaction
-//        $log = new Logger('bot');
-//        $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
-//
-//        try {
-//            // create bot instance
-//            $bot = new Bot(['token' => $apiKey]);
-//            $bot->getClient()->sendMessage(
-//                (new \Viber\Api\Message\Text())
-//                    ->setSender($botSender)
-//                    ->setReceiver($receivid)
-//                    ->setText($message)
-//            );
-//
-//        } catch (Exception $e) {
-//            $log->warning('Exception: ' . $e->getMessage());
-//            if ($bot) {
-//                $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-//                $log->warning('Actual body: ' . $bot->getInputBody());
-//            }
-//        }
-//
-//        return '';
-//    }
+    public function SendViber($receivid)
+    {
+
+
+
+        $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
+
+        $botSender = new Sender([
+            'name' => 'dmkgBot',
+            'avatar' => '',
+        ]);
+
+// log bot interaction
+        $log = new Logger('bot');
+        $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
+
+        try {
+            // create bot instance
+            $bot = new Bot(['token' => $apiKey]);
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setReceiver($receivid)
+                    ->setText('sdfsdgdfgdsfgdfsgs')
+            );
+
+        } catch (Exception $e) {
+            $log->warning('Exception: ' . $e->getMessage());
+            if ($bot) {
+                $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+                $log->warning('Actual body: ' . $bot->getInputBody());
+            }
+        }
+
+        return '';
+    }
 
     public function actionConfirmPass($authtoken)
     {

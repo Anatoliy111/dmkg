@@ -54,7 +54,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('vibererremail', $session['modalmess'])) {
         $modalformheader='Помилка';
-        $modalformtext='Вибачте, але абонент з такою ел.поштою '.$session['modalmess']['vibererremail']->email.' вже зареєстровано. Виконайте вхід використовуючи вашу пошту і пароль!!!';
+        $modalformtext='Вибачте, але абонент з такою ел.поштою '.$session['modalmess']['vibererremail']->email.' вже зареєстровано. Виконайте авторизацію в Viber використовуючи вашу пошту і пароль!!!';
         $modalformimage='nothyperlink.png';
     }
 
@@ -81,7 +81,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('viberaddabon', $session['modalmess'])) {
         $modalformheader='Успішна реєстрація';
-        $modalformtext='Вітаємо '.$session['modalmess']['viberaddabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну(email) та паролю!';
+        $modalformtext='Вітаємо '.$session['modalmess']['viberaddabon']->fio.', вас зареєстровано в системі через ViberBot! Поверніться в Viber для продовження!';
         $modalformimage='registration.png';
 
     }
