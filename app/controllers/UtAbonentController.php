@@ -826,7 +826,7 @@ class UtAbonentController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function SendViber($idreceiv)
+    public function actionSendViber($idreceiv)
     {
 
 
