@@ -826,7 +826,7 @@ class UtAbonentController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function SendViber($receivid)
+    public function SendViber($idreceiv)
     {
 
 
@@ -848,7 +848,7 @@ class UtAbonentController extends Controller
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                    ->setReceiver($receivid)
+                    ->setReceiver($idreceiv)
                     ->setText('sdfsdgdfgdsfgdfsgs')
             );
 

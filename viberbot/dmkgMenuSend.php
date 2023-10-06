@@ -249,30 +249,3 @@ function getDmkgSend($message,$Receiv)
 }
 
 
-
-/**
- * @param $str
- * @return mixed
- */
-function ukrencodestr($str)
-{
-    $patterns[0] = "/H/";
-    $patterns[1] = "/h/";
-    $patterns[2] = "/C/";
-    $patterns[3] = "/c/";
-    $patterns[4] = "/I/";
-    $patterns[5] = "/i/";
-
-    $replacements[0] = "Н";
-    $replacements[1] = "н";
-    $replacements[2] = "С";
-    $replacements[3] = "с";
-    $replacements[4] = "І";
-    $replacements[5] = "і";
-
-    ksort($patterns);
-    ksort($replacements);
-
-    return preg_replace($patterns, $replacements, $str);
-
-}
