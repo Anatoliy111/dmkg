@@ -362,8 +362,8 @@ try {
                         }
                         else {
                             UpdateStatus($Receiv,'');
-//                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
-                            message($bot, $botSender, $event, $res, getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+//                            message($bot, $botSender, $event, $res, getDmkgMenuOS($Receiv));
                         }
                     }
                     else {
@@ -475,11 +475,13 @@ function Addabon($modelemail,$Receiv)
             if (!$sent) {
                 throw new \RuntimeException('Sending error.');
             }
+            return 'OK';
         }
+        else return $model->getErrors();
 
 
 
-    return 'OK';
+
 }
 
 
