@@ -812,7 +812,7 @@ class UtAbonentController extends Controller
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
                     $Receiv->id_abonent = $modelabon->id;
                     if ($Receiv->validate() && $modelabon->save()) getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
-                    else getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
+                    else getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі функції. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
                     $_SESSION['modalmess']['viberaddabon']=$modelabon;
                 }
             }
