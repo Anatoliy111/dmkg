@@ -463,18 +463,18 @@ function Addabon($modelemail,$Receiv)
         if ($model->validate()) {
             $model->save();
 
-//            $sent = Yii::$app->mailer
-//                ->compose(
-//                    ['html' => 'user-signupviber-comfirm-html'],
-//                    ['model' => $model])
-//                ->setTo($model->email)
-//                ->setFrom('supportdmkg@ukr.net')
-//                ->setSubject('Реєстрація на вайберботі ДМКГ!')
-//                ->send();
-//
-//            if (!$sent) {
-//                throw new \RuntimeException('Sending error.');
-//            }
+            $sent = Yii::$app->mailer
+                ->compose(
+                    ['html' => 'user-signupviber-comfirm-html'],
+                    ['model' => $model])
+                ->setTo($model->email)
+                ->setFrom('supportdmkg@ukr.net')
+                ->setSubject('Реєстрація на вайберботі ДМКГ!')
+                ->send();
+
+            if (!$sent) {
+                throw new \RuntimeException('Sending error.');
+            }
             return 'OK';
         }
         else return $model->getErrors();
