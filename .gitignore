@@ -9,7 +9,7 @@ Thumbs.db
 
 
 runtime/.htaccess
+app/config/db.php
+app/config/dolgdb.php
 app/config/fdb.php
-app/config/dolgdb.php
 app/config/hvddb.php
-app/config/dolgdb.php
