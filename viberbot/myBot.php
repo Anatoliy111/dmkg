@@ -230,7 +230,7 @@ try {
             }
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
-//                $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$Rah->schet.'\' and wid=\'hv\'')->QueryAll();
+                $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$Rah->schet.'\' and wid=\'hv\'')->QueryAll();
                 message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah'));
                 UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
             }
