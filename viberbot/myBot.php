@@ -52,6 +52,7 @@ $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
 
 try {
     // create bot instance
+
     $bot = new Bot(['token' => $apiKey]);
     $bot
         // first interaction with bot - return "welcome message"
@@ -194,10 +195,11 @@ try {
                 message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з кабінета!', getRahMenu());
             }
         })
-        ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+        ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$period) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
+
 
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if ($Receiv->id_abonent==0) {
