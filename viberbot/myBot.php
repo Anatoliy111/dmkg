@@ -230,13 +230,14 @@ try {
             }
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
-                $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$Rah->schet.'\' and wid=\'hv\'')->QueryAll();
+                $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
+                $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' and wid=\'hv\'')->QueryAll();
                 if ($hv != null) {
                     message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
                 }
                 else {
-                    message($bot, $botSender, $event, 'По рахунку '.$Rah->schet. 'немає послуги холодна вода', getRahList($FindRah, 'pok-rah'));
+                    message($bot, $botSender, $event, 'По рахунку '.$Rah->schet. ' немає послуги холодна вода', getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, '');
                 }
             }
