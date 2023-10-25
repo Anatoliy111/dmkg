@@ -37,11 +37,34 @@ preg_match_all('/([^#]+)/ui',$stat,$match);
 $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
 $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
 
-echo infoSchetOS($schet,$period);
+//echo infoSchetOS($schet,$period);
+echo infoPokazn($schet);
 //$modelemail = UtAbonent::findOne(['id' => 2071]);
 //$Receiv = Viber::findOne(['id' => 2]);
 //Addabon($modelemail,$Receiv);
 
+
+function infoPokazn($schet){
+
+    $mess='';
+//    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
+    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
+
+    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
+    if ($modelPokazn!=null){
+        $mess = $mess.'Останній зарахований показник по воді :'."\n";
+        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
+        $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
+    }
+    else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
+    $mess = $mess.'----------------------------'."\n";
+//    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
+//    $mess = $mess.'----------------------------'."\n";
+    $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\n";
+
+    return $mess;
+
+}
 
 
 function infoSchetOS($schet,$period) {
