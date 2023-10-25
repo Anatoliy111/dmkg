@@ -811,10 +811,13 @@ class UtAbonentController extends Controller
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
                     $Receiv->id_abonent = $modelabon->id;
-                    if ($Receiv->validate() && $modelabon->save()) getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі послуги. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
-                    else getDmkgSend('Вітаємо '.$modelabon->fio.'! Ви здійснили процедуру реєстрацію в кабінеті споживача ДМКГ. Тепер Вам доступні всі функції. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.',$Receiv);
-                    $_SESSION['modalmess']['viberaddabon']=$modelabon;
+                    if ($Receiv->validate() && $Receiv->save()) {
+                        getDmkgSend('Вітаємо ' . $modelabon->fio . '! Ви здійснили процедуру реєстрації в кабінеті споживача ДМКГ. Тепер Вам доступні всі функції. Також з цим логіном та паролем ви можете здійснювати вхід в кабінет споживача на сайті dmkg.com.ua.', $Receiv);
+                        $_SESSION['modalmess']['viberaddabon']=$modelabon;
+                    }
+                    else $_SESSION['modalmess']['errtokenauth']='';
                 }
+                else $_SESSION['modalmess']['errtokenauth']='';
             }
             else {
                 if ($Receiv != null) getDmkgSend('Вибачте але ваша пошта вже зареєстрована. Виконайте авторизацію використовуючи вашу пошту '.$modelauth->email.' і пароль!!!',$Receiv);
