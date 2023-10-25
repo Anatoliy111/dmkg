@@ -753,6 +753,7 @@ function infoPokazn($schet){
 
 //    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
     if ($modelPokazn!=null){
+        $mess = 'Особовий рахунок - '.$schet."\r\n";
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
         $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
