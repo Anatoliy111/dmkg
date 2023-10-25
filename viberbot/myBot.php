@@ -747,7 +747,9 @@ function infoPokazn($schet){
 
     $mess='';
 //    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
-    $modelPokazn = Pokazn::find()->where(['schet' => $schet])->orderBy(['id' => SORT_DESC])->one();
+    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
+
+    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
     if ($modelPokazn!=null){
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
