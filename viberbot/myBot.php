@@ -15,6 +15,7 @@ use app\models\DolgKart;
 use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
+use app\models\Pokazn;
 use app\models\UtAuth;
 use app\models\UtKart;
 use app\models\UtAbonent;
@@ -37,6 +38,7 @@ use yii\bootstrap\Html;
 //$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
 $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';  //myBot
 $org = 'dmkg';
+$period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
 
 
 $botSender = new Sender([
@@ -208,7 +210,7 @@ try {
             }
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
             else {
-                message($bot, $botSender, $event, infoSchetOS($Rah->schet), getRahList($FindRah,'inf-rah'));
+                message($bot, $botSender, $event, infoSchetOS($Rah->schet,$period), getRahList($FindRah,'inf-rah'));
 //                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
             }
         })
@@ -226,6 +228,7 @@ try {
             }
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
+                $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$Rah->schet.'\' and wid=\'hv\'')->QueryAll();
                 message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah'));
                 UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
             }
@@ -741,7 +744,8 @@ function UpdateStatus($Model,$Status){
 function infoPokazn($schet){
 
     $mess='';
-    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
+//    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
+    $modelPokazn = Pokazn::find()->where(['schet' => $schet])->orderBy(['id' => SORT_DESC])->one();
     if ($modelPokazn!=null){
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
@@ -749,8 +753,8 @@ function infoPokazn($schet){
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
-    $mess = $mess.'----------------------------'."\n";
+//    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
+//    $mess = $mess.'----------------------------'."\n";
     $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\n";
 
     return $mess;
@@ -812,7 +816,7 @@ function addPokazn($Receiv,$pokazn, $schet, $viber_name)
     }
 }
 
-function infoSchetOS($schet) {
+function infoSchetOS($schet,$period) {
 
     $mess='';
     $mess2='';
@@ -835,8 +839,8 @@ function infoSchetOS($schet) {
 //  $modelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $schet))]);
 //  $modelKart = DolgKart::find()->where(['schet' => $schet1251])->all()[0];
 //  $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-        $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll();
-        $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period[0]["period"].'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
+
+        $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 //
         $mess = 'Особовий рахунок - '.$schet."\r\n";
 
