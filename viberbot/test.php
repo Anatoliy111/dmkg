@@ -34,6 +34,9 @@ $stat='add-abon#email=qwe@qwe.com#fio=qwerty#pass1=12345#pass2';
 preg_match_all('/([^#]+)/ui',$stat,$match);
 //echo addPokazn(802,'0092124','asfsadfasdf');
 
+$lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
+$period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
+
 $modelemail = UtAbonent::findOne(['id' => 2071]);
 $Receiv = Viber::findOne(['id' => 2]);
 Addabon($modelemail,$Receiv);
