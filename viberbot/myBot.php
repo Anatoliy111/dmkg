@@ -216,7 +216,7 @@ try {
 //                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
             }
         })
-        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$period) {
+        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$period) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
