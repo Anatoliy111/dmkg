@@ -749,11 +749,13 @@ function infoPokazn($schet){
 //    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
 
-    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
+    $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
+
+//    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
     if ($modelPokazn!=null){
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
-        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn->date_pok))."\n";
-        $mess = $mess.'Показник: '.$modelPokazn->pokazn."\n";
+        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
+        $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
