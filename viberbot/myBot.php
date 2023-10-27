@@ -877,10 +877,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
             }
         } else {
-            $mess = [];
-            $mess[0] = 'err';
-            $mess[1] = $abonent->id.$abonent->fio.$pokazn.$schet.$lasdatehvd;
-            return $mess;
+
             $modelpokazn = new Pokazn();
             $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
             $modelpokazn->yearmon = $nowdate;
@@ -888,6 +885,10 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
             $modelpokazn->fio = $abonent->fio;
+            $mess = [];
+            $mess[0] = 'err';
+            $mess[1] = 'befoval';
+            return $mess;
             if ($modelpokazn->validate()) {
                 $modelpokazn->save();
                 Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
