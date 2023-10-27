@@ -432,8 +432,9 @@ try {
                             $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
 
                             if ($modelPokazn != null) {
-                                message($bot, $botSender, $event, 'ok222', getRahList($FindRah, 'pok-rah'));
-                                    if ((intval($val) - $modelPokazn->pokazn) > 100) {
+
+                                    if ((intval($val) - $modelPokazn['pokazn']) > 100) {
+                                        message($bot, $botSender, $event, 'ok222', getRahList($FindRah, 'pok-rah'));
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
                                         $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
