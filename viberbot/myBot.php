@@ -838,10 +838,6 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
 
     if ($abonent!=null) {
-        $mess = [];
-        $mess[0] = 'err';
-        $mess[1] = $abonent->id.$abonent->fio.$pokazn.$schet.$lasdatehvd;
-        return $mess;
         if ($lasdatehvd < $nowdate) {
             $modelpokazn = new UtAbonpokazn();
             $modelpokazn->schet = trim($schet);
@@ -881,6 +877,10 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
             }
         } else {
+            $mess = [];
+            $mess[0] = 'err';
+            $mess[1] = $abonent->id.$abonent->fio.$pokazn.$schet.$lasdatehvd;
+            return $mess;
             $modelpokazn = new Pokazn();
             $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
             $modelpokazn->yearmon = $nowdate;
