@@ -111,9 +111,7 @@ HTML;
                     [
                         'attribute' => 'fio',
                         'label'=>'ПІП',
-                        'value'=>function ($model) {
-                            return iconv('windows-1251', 'UTF-8', $model["fio"]);
-                        }                        
+
                     ],
                 ],
                 'layout' => $layout2,
