@@ -235,11 +235,8 @@ try {
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
-                message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
                 $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
-
                 if ($hv != null) {
-                    message($bot, $botSender, $event, 'ok2', getRahList($FindRah, 'pok-rah'));
                     message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
                 }
@@ -431,6 +428,7 @@ try {
 //                    if ($ModelAbon != null) {
                         $val = $event->getMessage()->getText();
                         if (is_numeric($val) && floor($val) == $val && $val > 0) {
+                            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
 //                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
                             $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
                             if ($modelPokazn != null) {
