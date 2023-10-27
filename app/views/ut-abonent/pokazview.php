@@ -108,10 +108,14 @@ HTML;
                             return iconv('windows-1251', 'UTF-8', $model["sprzn"]->vid_zn);
                         }
                     ],
-//                    [
-//                        'attribute' => 'fio',
-//                        'label'=>'ПІП'
-//                    ],
+                    [
+                        'attribute' => 'fio',
+                        'label'=>'ПІП',
+                        'width'=>'50px',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["fio"]);
+                        }
+                    ],
                 ],
                 'layout' => $layout2,
                 'headerContainer' => ['class' => 'kv-table-header'],
