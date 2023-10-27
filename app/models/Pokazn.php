@@ -51,7 +51,6 @@ class Pokazn extends \yii\db\ActiveRecord
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
             [['pokazn', 'ppp'], 'number'],
             [['fio'], 'string', 'max' => 64],
-            [['fio'], 'string', 'min' => 5],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
             [['pokazn'], function ($attribute) {
