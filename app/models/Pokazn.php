@@ -50,7 +50,6 @@ class Pokazn extends \yii\db\ActiveRecord
             [['pokazn'], 'required'],
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
             [['pokazn', 'ppp'], 'number'],
-            [['fio'], 'string', 'max' => 64],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
             [['pokazn'], function ($attribute) {
@@ -83,7 +82,7 @@ class Pokazn extends \yii\db\ActiveRecord
             }],
         ];
     }
-
+//            [['fio'], 'string', 'max' => 64],
     /**
      * {@inheritdoc}
      */
@@ -101,8 +100,7 @@ class Pokazn extends \yii\db\ActiveRecord
             'vid_zn' => 'Vid Zn',
             'schet' => 'Schet',
             'id_lich' => 'Id Lich',
-            'ppp' => 'Ppp',
-            'fio' => 'ПІП',
+            'ppp' => 'Ppp'
         ];
     }
 
