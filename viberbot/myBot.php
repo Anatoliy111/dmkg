@@ -432,7 +432,6 @@ try {
                                     } else {
 
                                         $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
-                                        message($bot, $botSender, $event, 'okk2', getRahList($FindRah, 'pok-rah'));
                                         if ($addpok[0] == 'ok') {
                                             message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
                                             UpdateStatus($Receiv, '');
@@ -831,13 +830,15 @@ function infoKontakt(){
  */
 function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 {
-    $mess = [];
-    $mess[0] = 'err';
-    $mess[1] = 'okkkk';
-    return $mess;
+
 
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
     $nowdate = intval(date('Y').date('m'));
+    $mess = [];
+    $mess[0] = 'err';
+    $mess[1] = 'okkkk';
+    return $mess;    
+
     if ($abonent!=null) {
         if ($lasdatehvd < $nowdate) {
             $modelpokazn = new UtAbonpokazn();
