@@ -251,6 +251,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
+            message($bot, $botSender, $event, 'ok222', getRahList($FindRah, 'pok-rah'));
             if (count($match[0])==4 && $match[0][3]=='yes'){
                 $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$lasdatehvd);
                 if ($addpok[0] == 'ok') {
@@ -420,21 +421,13 @@ try {
                     }
                 }
                 elseif ($match[0][0] == 'add-pok'){
-                    //  message($bot, $botSender, $event, 'add-pok', getDmkgMenuOS($Receiv));
-//                    $modelvoda=Yii::$app->hvddb->createCommand('select first 1 * from h_voda where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
-//                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
                     $FindRah = $Receiv->getUtAbonkart()->all();
                     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $match[0][1]));
-//                    if ($ModelAbon != null) {
                         $val = $event->getMessage()->getText();
                         if (is_numeric($val) && floor($val) == $val && $val > 0) {
-//                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
                             $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll()[0];
-
                             if ($modelPokazn != null) {
-                                message($bot, $botSender, $event, 'ok222', getRahList($FindRah, 'pok-rah'));
                                     if ((intval($val) - $modelPokazn['pokazn']) > 100) {
-
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
                                         $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
