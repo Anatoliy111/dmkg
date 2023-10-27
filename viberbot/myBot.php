@@ -252,8 +252,8 @@ try {
             $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
-                message($bot, $botSender, $event, 'ok222', getYesNoMenu('add-pok#'.$match[0][1].'#'.$match[0][2]));
                 $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$lasdatehvd);
+                message($bot, $botSender, $event, 'ok333', getYesNoMenu('add-pok#'.$match[0][1].'#'.$match[0][2]));
                 if ($addpok[0] == 'ok') {
                     message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
                     UpdateStatus($Receiv, '');
