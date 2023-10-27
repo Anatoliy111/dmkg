@@ -834,8 +834,8 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
     $nowdate = intval(date('Y').date('m'));
-    if ($abonent!=null)
-        if ($lasdatehvd<$nowdate) {
+    if ($abonent!=null) {
+        if ($lasdatehvd < $nowdate) {
             $modelpokazn = new UtAbonpokazn();
             $modelpokazn->schet = trim($schet);
             $modelpokazn->name = $abonent->fio;
@@ -849,14 +849,13 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 //            getDmkgSend($meserr,$Receiv);
 
 
-                $mess =[];
-                $mess[0]='ok';
-                $mess[1]='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+                $mess = [];
+                $mess[0] = 'ok';
+                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено' . '</h3>';
 
 
                 return $mess;
-            }
-            else {
+            } else {
                 $messageLog = [
                     'status' => 'Помилка додавання показника',
                     'post' => $modelpokazn->errors
@@ -868,17 +867,16 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 foreach ($errors as $err) {
                     $meserr = $meserr . implode(",", $err);
                 }
-                $mess =[];
-                $mess[0]='err';
-                $mess[1]=$meserr;
+                $mess = [];
+                $mess[0] = 'err';
+                $mess[1] = $meserr;
                 return $mess;
 
             }
-        }
-        else {
+        } else {
             $modelpokazn = new Pokazn();
-            $modelpokazn->schet = trim(iconv('UTF-8','windows-1251', $schet));
-            $modelpokazn->yearmon =$nowdate;
+            $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
+            $modelpokazn->yearmon = $nowdate;
             $modelpokazn->pokazn = $pokazn;
             $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
@@ -890,14 +888,13 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 //            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води по рахунку '.$schet.' становить '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>';
 //            $meserr=$meserr.'<h3 style="line-height: 1.5;">'.' Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
 //            getDmkgSend($meserr,$Receiv);
-                $mess =[];
-                $mess[0]='ok';
-                $mess[1]='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+                $mess = [];
+                $mess[0] = 'ok';
+                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!' . '</h3>';
 
 
                 return $mess;
-            }
-            else {
+            } else {
                 $messageLog = [
                     'status' => 'Помилка додавання показника',
                     'post' => $modelpokazn->errors
@@ -909,16 +906,16 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 foreach ($errors as $err) {
                     $meserr = $meserr . implode(",", $err);
                 }
-                $mess =[];
-                $mess[0]='err';
-                $mess[1]=$meserr;
+                $mess = [];
+                $mess[0] = 'err';
+                $mess[1] = $meserr;
                 return $mess;
 
             }
 
         }
 
-    return null;
+    } else return null;
 }
 
 function infoSchetOS($schet,$period) {
