@@ -884,11 +884,12 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->pokazn = $pokazn;
             $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
-            $modelpokazn->fio = $abonent->fio;
             $mess = [];
             $mess[0] = 'err';
-            $mess[1] = 'befoval';
+            $mess[1] = 'befofio';
             return $mess;
+            $modelpokazn->fio = $abonent->fio;
+
             if ($modelpokazn->validate()) {
                 $modelpokazn->save();
                 Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
