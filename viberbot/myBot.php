@@ -430,8 +430,9 @@ try {
                                     if ((intval($val) - $modelPokazn['pokazn']) > 100) {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
-                                        message($bot, $botSender, $event, 'okk', getRahList($FindRah, 'pok-rah'));
+
                                         $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
+                                        message($bot, $botSender, $event, 'okk2', getRahList($FindRah, 'pok-rah'));
                                         if ($addpok[0] == 'ok') {
                                             message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
                                             UpdateStatus($Receiv, '');
