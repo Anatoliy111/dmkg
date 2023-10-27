@@ -831,6 +831,10 @@ function infoKontakt(){
  */
 function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 {
+    $mess = [];
+    $mess[0] = 'err';
+    $mess[1] = 'okkkk';
+    return $mess;
 
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
     $nowdate = intval(date('Y').date('m'));
