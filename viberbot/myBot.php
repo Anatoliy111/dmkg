@@ -222,6 +222,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
+            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
             if ($Receiv->id_abonent==0) {
                 $FindRah = $Receiv->getViberAbons()->all();
                 $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
