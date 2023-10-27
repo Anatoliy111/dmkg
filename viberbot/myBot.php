@@ -222,7 +222,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
+
             if ($Receiv->id_abonent==0) {
                 $FindRah = $Receiv->getViberAbons()->all();
                 $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
@@ -231,6 +231,7 @@ try {
                 $FindRah = $Receiv->getUtAbonkart()->all();
                 $Rah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => trim($match[0][1])]);
             }
+            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
