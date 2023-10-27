@@ -236,7 +236,7 @@ try {
             else {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
                 message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
-                $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251)->QueryAll();
+                $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
 
                 if ($hv != null) {
                     message($bot, $botSender, $event, 'ok2', getRahList($FindRah, 'pok-rah'));
