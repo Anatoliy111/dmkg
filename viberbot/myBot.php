@@ -428,9 +428,9 @@ try {
 //                    if ($ModelAbon != null) {
                         $val = $event->getMessage()->getText();
                         if (is_numeric($val) && floor($val) == $val && $val > 0) {
-                            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
 //                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
                             $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
+                            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
                             if ($modelPokazn != null) {
                                     if ((intval($val) - $modelPokazn->pokazn) > 100) {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
