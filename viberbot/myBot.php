@@ -231,12 +231,14 @@ try {
                 $FindRah = $Receiv->getUtAbonkart()->all();
                 $Rah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => trim($match[0][1])]);
             }
-            message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
+
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
                 $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251)->QueryAll();
+                message($bot, $botSender, $event, 'ok', getRahList($FindRah, 'pok-rah'));
                 if ($hv != null) {
+                    message($bot, $botSender, $event, 'ok2', getRahList($FindRah, 'pok-rah'));
                     message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
                 }
