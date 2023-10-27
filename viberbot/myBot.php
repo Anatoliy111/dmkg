@@ -835,12 +835,13 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
     $nowdate = intval(date('Y').date('m'));
 
-    $mess = [];
-    $mess[0] = 'err';
-    $mess[1] = $abonent->id.$abonent->fio.$pokazn.$schet.$lasdatehvd;
-    return $mess;
+
 
     if ($abonent!=null) {
+        $mess = [];
+        $mess[0] = 'err';
+        $mess[1] = $abonent->id.$abonent->fio.$pokazn.$schet.$lasdatehvd;
+        return $mess;
         if ($lasdatehvd < $nowdate) {
             $modelpokazn = new UtAbonpokazn();
             $modelpokazn->schet = trim($schet);
