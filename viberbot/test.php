@@ -25,7 +25,10 @@ require_once(__DIR__ . '\botMenu.php');
 
 //echo infoDmkgSchet('0014001');
 //$schet='7020006а';
-$schet='0030009ж';
+$schet='0092124';
+$schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
+$modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
+
 
 //$session->destroy();
 $event='qwer3';
