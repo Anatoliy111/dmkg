@@ -100,7 +100,8 @@ class Pokazn extends \yii\db\ActiveRecord
             'vid_zn' => 'Vid Zn',
             'schet' => 'Schet',
             'id_lich' => 'Id Lich',
-            'ppp' => 'Ppp'
+            'ppp' => 'Ppp',
+            'fio' => 'ПІП'
         ];
     }
 
