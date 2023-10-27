@@ -52,6 +52,7 @@ class Pokazn extends \yii\db\ActiveRecord
             [['pokazn', 'ppp'], 'number'],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
+            [['fio'], 'string', 'max' => 64],
             [['pokazn'], function ($attribute) {
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
                 $this->lastpokazn = $pok->pokazn;
@@ -82,7 +83,7 @@ class Pokazn extends \yii\db\ActiveRecord
             }],
         ];
     }
-//            [['fio'], 'string', 'max' => 64],
+
     /**
      * {@inheritdoc}
      */

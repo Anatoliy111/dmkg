@@ -54,6 +54,10 @@ HTML;
                         'attribute' => 'sch_razn',
                         'label'=>'Нараховано кубів'
                     ],
+                    [
+                        'attribute' => 'fio',
+                        'label'=>'ПІП'
+                    ],
                 ],
                 'layout' => $layout1,
                 'headerContainer' => ['class' => 'kv-table-header'],
