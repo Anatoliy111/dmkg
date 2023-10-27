@@ -12,10 +12,12 @@ new yii\web\Application($yiiConfig);
 
 
 use app\models\DolgKart;
+use app\models\HVoda;
 use app\models\KpcentrObor;
 use app\models\KpcentrPokazn;
 use app\models\KpcentrViberpokazn;
 use app\models\Pokazn;
+use app\models\UtAbonpokazn;
 use app\models\UtAuth;
 use app\models\UtKart;
 use app\models\UtAbonent;
@@ -216,7 +218,7 @@ try {
 //                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
             }
         })
-        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$period) {
+        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$lasdatehvd) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
@@ -231,7 +233,7 @@ try {
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
-                $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' and wid=\'hv\'')->QueryAll();
+                $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251)->QueryAll();
                 if ($hv != null) {
                     message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
@@ -242,15 +244,24 @@ try {
                 }
             }
         })
-        ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+        ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$lasdatehvd) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-//            $FindRah = $Receiv->getViberAbons()->all();
+            $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
-                $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$event->getSender()->getName());
-                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getDmkgMenuOS($Receiv));
-                UpdateStatus($Receiv,'');
+                $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$lasdatehvd);
+                if ($addpok[0] == 'ok') {
+                    message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
+                    UpdateStatus($Receiv, '');
+                }
+                if ($addpok[0] == 'err') {
+                    message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
+                }
+                if ($addpok == null) {
+                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                    UpdateStatus($Receiv, '');
+                }
             }
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -269,7 +280,7 @@ try {
                 UpdateStatus($Receiv,'');
             }
         })
-        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org) {
+        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org,$lasdatehvd) {
             $log->info('onText ' . var_export($event, true));
             // .* - match any symbols
             $Receiv = verifyReceiver($event,$apiKey, $org);
@@ -408,30 +419,49 @@ try {
                 }
                 elseif ($match[0][0] == 'add-pok'){
                     //  message($bot, $botSender, $event, 'add-pok', getDmkgMenuOS($Receiv));
-                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
+//                    $modelvoda=Yii::$app->hvddb->createCommand('select first 1 * from h_voda where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
+//                    $ModelAbon = KpcentrObor::findOne(['schet' => $match[0][1], 'status' => 1]);
                     $FindRah = $Receiv->getUtAbonkart()->all();
-                    if ($ModelAbon != null) {
+                    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $match[0][1]));
+//                    if ($ModelAbon != null) {
                         $val = $event->getMessage()->getText();
                         if (is_numeric($val) && floor($val) == $val && $val > 0) {
-                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
+//                            $modelPokazn = KpcentrPokazn::findOne(['schet' => $match[0][1], 'status' => 1]);
+                            $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
                             if ($modelPokazn != null) {
-                                if ($modelPokazn->pokazn < intval($val)) {
                                     if ((intval($val) - $modelPokazn->pokazn) > 100) {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
-                                        $addpok = addPokazn($Receiv,intval($val), $match[0][1],$event->getSender()->getName());
-                                        if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenuOS($Receiv));
-                                        UpdateStatus($Receiv, '');
+                                        $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
+                                        if ($addpok[0] == 'ok') {
+                                            message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
+                                            UpdateStatus($Receiv, '');
+                                        }
+                                        if ($addpok[0] == 'err') {
+                                            message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
+                                        }
+                                        if ($addpok == null) {
+                                            message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                                            UpdateStatus($Receiv, '');
+                                        }
                                     }
-                                } else message($bot, $botSender, $event, 'Вибачте, але значення показника меньше ніж останній показник!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
                             } else {
-                                $addpok = addPokazn($Receiv,intval($val), $match[0][1],$event->getSender()->getName());
-                                if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник ' . $val . ' здано успішно!', getDmkgMenuOS($Receiv));
-                                UpdateStatus($Receiv, '');
+                                $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
+                                if ($addpok[0] == 'ok') {
+                                    message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
+                                    UpdateStatus($Receiv, '');
+                                }
+                                if ($addpok[0] == 'err') {
+                                    message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
+                                }
+                                if ($addpok == null) {
+                                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                                    UpdateStatus($Receiv, '');
+                                }
                             }
                         } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
 
-                    }
+//                    }
 
                 }
                 else{
@@ -799,35 +829,96 @@ function infoKontakt(){
  * @param $schet
  * @return KpcentrViberpokazn|null
  */
-function addPokazn($Receiv,$pokazn, $schet, $viber_name)
+function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 {
 
-    $model = new KpcentrViberpokazn();
-    $model->data = date('Y-m-d');
-    $model->schet = $schet;
-    $model->pokazn = $pokazn;
-    $model->viber_name = $viber_name;
-    if ($model->validate()) {
-        $model->save();
-        return $model;
-    } else {
-        $messageLog = [
-            'status' => 'Помилка додавання показника',
-            'post' => $model->errors
-        ];
+    $abonent = UtAbonent::findOne($Receiv->id_abonent);
+    $nowdate = intval(date('Y').date('m'));
+    if ($abonent!=null)
+        if ($lasdatehvd<$nowdate) {
+            $modelpokazn = new UtAbonpokazn();
+            $modelpokazn->schet = trim($schet);
+            $modelpokazn->name = $abonent->fio;
+            $modelpokazn->id_abonent = $abonent->id;
+            $modelpokazn->data = date("Y-m-d");
+            $modelpokazn->pokazn = $pokazn;
+            $modelpokazn->vid = 'viber';
+            if ($modelpokazn->validate()) {
+                $modelpokazn->save();
+//            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+//            getDmkgSend($meserr,$Receiv);
 
-        Yii::error($messageLog, 'viber_err');
-        $meserr = '';
 
-        foreach ($messageLog as $err) {
-            $meserr = $meserr . implode(",", $err);
+                $mess =[];
+                $mess[0]='ok';
+                $mess[1]='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+
+
+                return $mess;
+            }
+            else {
+                $messageLog = [
+                    'status' => 'Помилка додавання показника',
+                    'post' => $modelpokazn->errors
+                ];
+
+                Yii::error($messageLog, 'viber_err');
+                $meserr = '';
+                $errors = $modelpokazn->getErrors();
+                foreach ($errors as $err) {
+                    $meserr = $meserr . implode(",", $err);
+                }
+                $mess =[];
+                $mess[0]='err';
+                $mess[1]=$meserr;
+                return $mess;
+
+            }
         }
-        getDmkgSend($meserr,$Receiv);
+        else {
+            $modelpokazn = new Pokazn();
+            $modelpokazn->schet = trim(iconv('UTF-8','windows-1251', $schet));
+            $modelpokazn->yearmon =$nowdate;
+            $modelpokazn->pokazn = $pokazn;
+            $modelpokazn->date_pok = date("Y-m-d");
+            $modelpokazn->vid_pok = 21;
+            $modelpokazn->fio = $abonent->fio;
+            if ($modelpokazn->validate()) {
+                $modelpokazn->save();
+                Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+                $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+//            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води по рахунку '.$schet.' становить '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>';
+//            $meserr=$meserr.'<h3 style="line-height: 1.5;">'.' Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+//            getDmkgSend($meserr,$Receiv);
+                $mess =[];
+                $mess[0]='ok';
+                $mess[1]='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
 
 
-        return null;
+                return $mess;
+            }
+            else {
+                $messageLog = [
+                    'status' => 'Помилка додавання показника',
+                    'post' => $modelpokazn->errors
+                ];
 
-    }
+                Yii::error($messageLog, 'viber_err');
+                $meserr = '';
+                $errors = $modelpokazn->getErrors();
+                foreach ($errors as $err) {
+                    $meserr = $meserr . implode(",", $err);
+                }
+                $mess =[];
+                $mess[0]='err';
+                $mess[1]=$meserr;
+                return $mess;
+
+            }
+
+        }
+
+    return null;
 }
 
 function infoSchetOS($schet,$period) {

@@ -19,6 +19,7 @@ use yii\easyii\helpers\Data;
  * @property string|null $schet
  * @property int|null $id_lich
  * @property float|null $ppp
+ * @property string|null $fio
  */
 class Pokazn extends \yii\db\ActiveRecord
 {
@@ -49,13 +50,15 @@ class Pokazn extends \yii\db\ActiveRecord
             [['pokazn'], 'required'],
             [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich'], 'integer'],
             [['pokazn', 'ppp'], 'number'],
+            [['fio'], 'string', 'max' => 64],
+            [['fio'], 'string', 'min' => 5],
             [['date_pok', 'date_zn'], 'safe'],
             [['schet'], 'string', 'max' => 10],
             [['pokazn'], function ($attribute) {
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
                 $this->lastpokazn = $pok->pokazn;
                 if ($this->pokazn<$this->lastpokazn) {
-                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник!!! Спробуйте ще");
+                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$this->lastpokazn."! Спробуйте ще!!!");
                 }
 //                if ($this->pokazn=$pok->pokazn) {
 ////                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник!!! Спробуйте ще");
@@ -100,6 +103,7 @@ class Pokazn extends \yii\db\ActiveRecord
             'schet' => 'Schet',
             'id_lich' => 'Id Lich',
             'ppp' => 'Ppp',
+            'fio' => 'ПІП',
         ];
     }
 

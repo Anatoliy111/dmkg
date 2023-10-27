@@ -42,7 +42,7 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
             [['pokazn'], function ($attribute) {
                 $pok = Pokazn::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $this->schet)])->orderBy(['date_pok' => SORT_DESC])->one();
                 if ($this->pokazn<$pok->pokazn) {
-                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник!!! Спробуйте ще");
+                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$pok->pokazn."!!! Спробуйте ще");
                 }
                 else {
                     $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();

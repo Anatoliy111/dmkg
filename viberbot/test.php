@@ -25,7 +25,7 @@ require_once(__DIR__ . '\botMenu.php');
 
 //echo infoDmkgSchet('0014001');
 //$schet='7020006а';
-$schet='0030009м';
+$schet='0030009ж';
 
 //$session->destroy();
 $event='qwer3';
@@ -39,10 +39,105 @@ $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data 
 $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
 
 //echo infoSchetOS($schet,$period);
-echo infoPokazn($schet);
+//echo infoPokazn($schet);
+$Receiv = Viber::findOne(2);
+
+echo addPokazn($Receiv,799,'0092124',$lasdatehvd)[1];
 //$modelemail = UtAbonent::findOne(['id' => 2071]);
 //$Receiv = Viber::findOne(['id' => 2]);
 //Addabon($modelemail,$Receiv);
+
+function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
+{
+
+    $abonent = UtAbonent::findOne($Receiv->id_abonent);
+    $nowdate = intval(date('Y').date('m'));
+    if ($abonent!=null)
+    if ($lasdatehvd<$nowdate) {
+        $modelpokazn = new UtAbonpokazn();
+        $modelpokazn->schet = trim($schet);
+        $modelpokazn->name = $abonent->fio;
+        $modelpokazn->id_abonent = $abonent->id;
+        $modelpokazn->data = date("Y-m-d");
+        $modelpokazn->pokazn = $pokazn;
+        $modelpokazn->vid = 'viber';
+        if ($modelpokazn->validate()) {
+            $modelpokazn->save();
+//            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+//            getDmkgSend($meserr,$Receiv);
+
+
+            $mess =[];
+            $mess[0]='ok';
+            $mess[1]='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+
+
+            return $mess;
+        }
+        else {
+            $messageLog = [
+                'status' => 'Помилка додавання показника',
+                'post' => $modelpokazn->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            $meserr = '';
+            $errors = $modelpokazn->getErrors();
+            foreach ($errors as $err) {
+                $meserr = $meserr . implode(",", $err);
+            }
+            $mess =[];
+            $mess[0]='err';
+            $mess[1]=$meserr;
+            return $mess;
+
+        }
+    }
+    else {
+        $modelpokazn = new Pokazn();
+        $modelpokazn->schet = trim(iconv('UTF-8','windows-1251', $schet));
+        $modelpokazn->yearmon =$nowdate;
+        $modelpokazn->pokazn = $pokazn;
+        $modelpokazn->date_pok = date("Y-m-d");
+        $modelpokazn->vid_pok = 21;
+        $modelpokazn->fio = $abonent->fio;
+        if ($modelpokazn->validate()) {
+            $modelpokazn->save();
+            Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+            $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+//            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води по рахунку '.$schet.' становить '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>';
+//            $meserr=$meserr.'<h3 style="line-height: 1.5;">'.' Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+//            getDmkgSend($meserr,$Receiv);
+            $mess =[];
+            $mess[0]='ok';
+            $mess[1]='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+
+
+            return $mess;
+        }
+        else {
+            $messageLog = [
+                'status' => 'Помилка додавання показника',
+                'post' => $modelpokazn->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            $meserr = '';
+            $errors = $modelpokazn->getErrors();
+            foreach ($errors as $err) {
+                $meserr = $meserr . implode(",", $err);
+            }
+            $mess =[];
+            $mess[0]='err';
+            $mess[1]=$meserr;
+            return $mess;
+
+        }
+
+    }
+
+    return null;
+}
 
 
 function infoPokazn($schet){
@@ -168,99 +263,99 @@ function Addabon($modelemail,$Receiv)
 
 
 
-function addPokazn($pokazn, $schet, $viber_name){
-
-    $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
-    $nowdate = intval(date('Y').date('m'));
-
-    if ($lasdatehvd[0]['yearmon']<$nowdate) {
-        $modelabonpokazn = new UtAbonpokazn();
-        $modelabonpokazn->schet = $schet;
-        $modelabonpokazn->name = $viber_name;
-        $modelabonpokazn->id_abonent = 2071;
-        $modelabonpokazn->date_pok = date("Y-m-d");
-        $modelabonpokazn->pokazn = $pokazn;
-        $modelabonpokazn->vid = 'viber';
-        if ($modelabonpokazn->validate())
-        {
-            /** @var TYPE_NAME $modelabonpokazn */
-
-            $modelabonpokazn->save();
-            $mess =[];
-            $mess[0]='ok';
-            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
-
-
-            return $mess;
-        }
-        else
-        {
-            $meserr='';
-            $errors = $modelabonpokazn->getErrors();
-            foreach ($errors as $error) {
-                $meserr=$meserr.implode(",", $error);
-            }
-
-            $messageLog = [
-                'status' => 'Помилка додавання показника',
-                'post' => $modelabonpokazn->errors
-            ];
-
-            Yii::error($messageLog, 'viber_err');
-            $mess =[];
-            $mess[0]='err';
-            $mess[1]=$meserr;
-            return $mess;
-
-        }
-    } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
-        $modelpokazn = new Pokazn();
-        $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
-        $modelpokazn->yearmon =$nowdate;
-        $modelpokazn->date_pok = null;
-        $modelpokazn->vid_pok = 37;
-        $modelpokazn->pokazn = $pokazn;
-        if ($modelpokazn->validate())
-        {
-            /** @var TYPE_NAME $modelpokazn */
-
-            $modelpokazn->save();
-
-            Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
-            $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
-
-            $mess =[];
-            $mess[0]='ok';
-            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
-
-
-            return $mess;
-        }
-        else
-        {
-            $meserr='';
-            $errors = $modelpokazn->getErrors();
-            foreach ($errors as $error) {
-                $meserr=$meserr.implode(",", $error);
-            }
-
-            $messageLog = [
-                'status' => 'Помилка додавання показника',
-                'post' => $modelpokazn->errors
-            ];
-
-            Yii::error($messageLog, 'viber_err');
-            $mess =[];
-            $mess[0]='err';
-            $mess[1]=$meserr;
-            return $mess;
-
-        }
-
-    }
-
-
-}
+//function addPokazn($pokazn, $schet, $viber_name){
+//
+//    $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll();
+//    $nowdate = intval(date('Y').date('m'));
+//
+//    if ($lasdatehvd[0]['yearmon']<$nowdate) {
+//        $modelabonpokazn = new UtAbonpokazn();
+//        $modelabonpokazn->schet = $schet;
+//        $modelabonpokazn->name = $viber_name;
+//        $modelabonpokazn->id_abonent = 2071;
+//        $modelabonpokazn->date_pok = date("Y-m-d");
+//        $modelabonpokazn->pokazn = $pokazn;
+//        $modelabonpokazn->vid = 'viber';
+//        if ($modelabonpokazn->validate())
+//        {
+//            /** @var TYPE_NAME $modelabonpokazn */
+//
+//            $modelabonpokazn->save();
+//            $mess =[];
+//            $mess[0]='ok';
+//            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
+//
+//
+//            return $mess;
+//        }
+//        else
+//        {
+//            $meserr='';
+//            $errors = $modelabonpokazn->getErrors();
+//            foreach ($errors as $error) {
+//                $meserr=$meserr.implode(",", $error);
+//            }
+//
+//            $messageLog = [
+//                'status' => 'Помилка додавання показника',
+//                'post' => $modelabonpokazn->errors
+//            ];
+//
+//            Yii::error($messageLog, 'viber_err');
+//            $mess =[];
+//            $mess[0]='err';
+//            $mess[1]=$meserr;
+//            return $mess;
+//
+//        }
+//    } elseif ($lasdatehvd[0]['yearmon']==$nowdate)  {
+//        $modelpokazn = new Pokazn();
+//        $modelpokazn->schet = iconv('UTF-8', 'windows-1251', $_SESSION['abon']->schet);
+//        $modelpokazn->yearmon =$nowdate;
+//        $modelpokazn->date_pok = null;
+//        $modelpokazn->vid_pok = 37;
+//        $modelpokazn->pokazn = $pokazn;
+//        if ($modelpokazn->validate())
+//        {
+//            /** @var TYPE_NAME $modelpokazn */
+//
+//            $modelpokazn->save();
+//
+//            Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+//            $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+//
+//            $mess =[];
+//            $mess[0]='ok';
+//            $mess[1]='Вітаємо '.$viber_name.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' зараховано! Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
+//
+//
+//            return $mess;
+//        }
+//        else
+//        {
+//            $meserr='';
+//            $errors = $modelpokazn->getErrors();
+//            foreach ($errors as $error) {
+//                $meserr=$meserr.implode(",", $error);
+//            }
+//
+//            $messageLog = [
+//                'status' => 'Помилка додавання показника',
+//                'post' => $modelpokazn->errors
+//            ];
+//
+//            Yii::error($messageLog, 'viber_err');
+//            $mess =[];
+//            $mess[0]='err';
+//            $mess[1]=$meserr;
+//            return $mess;
+//
+//        }
+//
+//    }
+//
+//
+//}
 
 function ukrencodestr($str)
 {
