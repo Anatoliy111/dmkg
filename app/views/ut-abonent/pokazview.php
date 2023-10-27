@@ -54,10 +54,6 @@ HTML;
                         'attribute' => 'sch_razn',
                         'label'=>'Нараховано кубів'
                     ],
-                    [
-                        'attribute' => 'fio',
-                        'label'=>'ПІП'
-                    ],
                 ],
                 'layout' => $layout1,
                 'headerContainer' => ['class' => 'kv-table-header'],
@@ -111,6 +107,13 @@ HTML;
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["sprzn"]->vid_zn);
                         }
+                    ],
+                    [
+                        'attribute' => 'fio',
+                        'label'=>'ПІП',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["fio"]);
+                        }                        
                     ],
                 ],
                 'layout' => $layout2,
