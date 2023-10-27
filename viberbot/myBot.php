@@ -253,7 +253,7 @@ try {
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0])==4 && $match[0][3]=='yes'){
                 $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$lasdatehvd);
-                message($bot, $botSender, $event, 'ok333', getYesNoMenu('add-pok#'.$match[0][1].'#'.$match[0][2]));
+//                message($bot, $botSender, $event, 'ok333', getYesNoMenu('add-pok#'.$match[0][1].'#'.$match[0][2]));
                 if ($addpok[0] == 'ok') {
                     message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
                     UpdateStatus($Receiv, '');
@@ -430,6 +430,7 @@ try {
                                     if ((intval($val) - $modelPokazn['pokazn']) > 100) {
                                         message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                                     } else {
+                                        message($bot, $botSender, $event, 'okk', getRahList($FindRah, 'pok-rah'));
                                         $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
                                         if ($addpok[0] == 'ok') {
                                             message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
