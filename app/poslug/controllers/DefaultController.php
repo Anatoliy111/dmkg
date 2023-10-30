@@ -262,7 +262,7 @@ class DefaultController extends Controller
         $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', '0092124'));
         $modelpokazn->yearmon = $nowdate;
         $modelpokazn->pokazn = 785;
-        $modelpokazn->date_pok = date("Y-m-d");
+        $modelpokazn->date_pok = null;
         $modelpokazn->vid_pok = 21;
         if ($modelpokazn->validate()) {
             $modelpokazn->save();
