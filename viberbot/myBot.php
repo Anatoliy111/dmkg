@@ -889,12 +889,13 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
 
             if ($modelpokazn->validate()) {
-                $modelpokazn->save();
-
                 $mess = [];
                 $mess[0] = 'ok';
                 $mess[1] = 'aftersave';
                 return $mess;
+                $modelpokazn->save();
+
+
 
                 Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
                 $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
