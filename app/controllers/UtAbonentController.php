@@ -706,7 +706,7 @@ class UtAbonentController extends Controller
         $modelpokazn = new Pokazn();
         $modelpokazn->schet = $_SESSION['abon']->schet;
         $modelpokazn->yearmon =$nowdate;
-//        $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
+        $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
         $modelpokazn->date_pok = date("Y-m-d");
         $modelpokazn->vid_pok = 37;
 
