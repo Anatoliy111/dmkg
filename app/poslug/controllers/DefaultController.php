@@ -3,6 +3,8 @@
 namespace app\poslug\controllers;
 
 //use app\models\UploadForm;
+use app\models\HVoda;
+use app\models\Pokazn;
 use app\poslug\models\DolgPeriod;
 use app\poslug\models\SearchDolgOborNow;
 use app\poslug\models\UploadForm;
@@ -248,6 +250,31 @@ class DefaultController extends Controller
     return true;
 
 	}
+
+    public function actionPokazview()
+    {
+        $voda = HVoda::find()->where(['schet' => '0092124'])->orderBy(['kl' => SORT_DESC]);
+
+//                               $voda2 = $voda->asArray()->all();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $voda,
+        ]);
+        $dpvoda = $dataProvider;
+
+        $pokazn = Pokazn::find()->joinWith('sprzn')->
+        where(['pokazn.schet' => '0092124'])->orderBy(['id' => SORT_DESC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $pokazn,
+        ]);
+        $dppokazn = $dataProvider;
+
+        return $this->render('pokazview', [
+            'dppokazn' => $dppokazn,
+            'dpvoda' => $dpvoda,
+        ]);
+    }
 
 	public function actionDelfile()
 	{
