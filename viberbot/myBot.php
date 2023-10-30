@@ -890,6 +890,10 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
             if ($modelpokazn->validate()) {
                 $modelpokazn->save();
+                $mess = [];
+                $mess[0] = 'ok';
+                $mess[1] = 'aftesave';
+
                 Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
                 $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
 //            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води по рахунку '.$schet.' становить '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>';
@@ -897,7 +901,8 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 //            getDmkgSend($meserr,$Receiv);
                 $mess = [];
                 $mess[0] = 'ok';
-                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!' . '</h3>';
+                $mess[1] = 'ok';
+//                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!' . '</h3>';
                 return $mess;
             } else {
                 $mess = [];
