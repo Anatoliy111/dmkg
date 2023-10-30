@@ -884,8 +884,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->pokazn = $pokazn;
             $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
-
-//            $modelpokazn->fio = $abonent->fio;
+            $modelpokazn->fio = $abonent->fio;
 
 
 

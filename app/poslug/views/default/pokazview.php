@@ -22,7 +22,7 @@ use yii\helpers\Url;
 
             <?php
 //            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
-            echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
+//            echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
             ?>
 
         </div>
