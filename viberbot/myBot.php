@@ -889,10 +889,6 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
 
             if ($modelpokazn->validate()) {
-                $mess = [];
-                $mess[0] = 'err';
-                $mess[1] = 'befosave';
-                return $mess;
                 $modelpokazn->save();
                 Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
                 $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
@@ -902,8 +898,6 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 $mess = [];
                 $mess[0] = 'ok';
                 $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!' . '</h3>';
-
-
                 return $mess;
             } else {
                 $mess = [];
