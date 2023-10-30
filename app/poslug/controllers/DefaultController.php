@@ -5,6 +5,7 @@ namespace app\poslug\controllers;
 //use app\models\UploadForm;
 use app\models\HVoda;
 use app\models\Pokazn;
+use app\models\UtAbonent;
 use app\poslug\models\DolgPeriod;
 use app\poslug\models\SearchDolgOborNow;
 use app\poslug\models\UploadForm;
@@ -250,6 +251,27 @@ class DefaultController extends Controller
     return true;
 
 	}
+
+    public function actionAddpokaz()
+    {
+        $abonent = UtAbonent::findOne(2071);
+        $nowdate = intval(date('Y').date('m'));
+
+
+        $modelpokazn = new Pokazn();
+        $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', '0092124'));
+        $modelpokazn->yearmon = $nowdate;
+        $modelpokazn->pokazn = 785;
+        $modelpokazn->date_pok = date("Y-m-d");
+        $modelpokazn->vid_pok = 21;
+        if ($modelpokazn->validate()) {
+            $modelpokazn->save();
+            Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+            $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+        }
+        return $this->redirect('pokazview');
+
+    }
 
     public function actionPokazview()
     {

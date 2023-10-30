@@ -23,7 +23,11 @@ use yii\helpers\Url;
             <?php
 //            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
 //            echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
+//            echo Html::button('<i class="glyphicon glyphicon-plus font-12"></i> ', ['class' => 'btn btn-default', 'href' => Url::to(['default/addpokaz'])]);
+            echo Html::a('<i class="glyphicon glyphicon-plus font-12"></i> ', ['default/addpokaz'], ['class' => 'btn btn-primary'])
+
             ?>
+
 
         </div>
 
