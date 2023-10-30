@@ -889,11 +889,12 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
 
             if ($modelpokazn->validate()) {
+
+                $modelpokazn->save();
                 $mess = [];
                 $mess[0] = 'ok';
                 $mess[1] = 'aftersave';
                 return $mess;
-                $modelpokazn->save();
 
 
 
