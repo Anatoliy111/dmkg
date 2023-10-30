@@ -890,14 +890,10 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
             if ($modelpokazn->validate()) {
                 $modelpokazn->save();
-                $meserr = '';
-                $errors = $modelpokazn->getErrors();
-                foreach ($errors as $err) {
-                    $meserr = $meserr . implode(",", $err);
-                }
+
                 $mess = [];
-                $mess[0] = 'err';
-                $mess[1] = $meserr;
+                $mess[0] = 'ok';
+                $mess[1] = 'aftersave';
                 return $mess;
 
                 Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
