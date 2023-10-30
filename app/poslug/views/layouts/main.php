@@ -238,7 +238,7 @@ $period =date('Y-m-d', strtotime(UtPeriod::find()->select('period')->orderBy(['p
             echo NavX::widget([
                 'options'=>['class'=>'nav nav-pills'],
                 'items' => [
-                    ['label' => 'Картка абонента', 'url' => 'default/pokazview'],
+                    ['label' => 'Картка абонента', 'url' => ['default/pokazview']],
 //                    ['label' => 'Оборотна відомість по послугам ', 'url' => '/poslug/default/Obor'],
                     ['label' => 'Вивіз сміття', 'url' => ['default/smitpc']],
                 ],
