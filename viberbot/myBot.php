@@ -854,7 +854,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
                 $mess = [];
                 $mess[0] = 'ok';
-                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено' . '</h3>';
+                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . $pokazn . ' по рахунку ' . $schet . ' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено';
 
 
                 return $mess;
@@ -884,7 +884,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->pokazn = $pokazn;
             $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
-//            $modelpokazn->fio = $abonent->fio;
+            $modelpokazn->fio = $abonent->fio;
 
 
 
