@@ -882,7 +882,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
             $modelpokazn->yearmon = $nowdate;
             $modelpokazn->pokazn = $pokazn;
-            $modelpokazn->date_pok = date("Y-m-d");
+         //   $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
         //    $modelpokazn->fio = $abonent->fio;
 
