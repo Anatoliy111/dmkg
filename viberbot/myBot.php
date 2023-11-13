@@ -905,8 +905,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 //            getDmkgSend($meserr,$Receiv);
                 $mess = [];
                 $mess[0] = 'ok';
-                $mess[1] = 'ok';
-//                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . '<h2 style="color:#b92c28">' . $pokazn . '</h2>' . '<h3 style="line-height: 1.5;">' . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!' . '</h3>';
+                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . $pokazn . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!';
                 return $mess;
             } else {
 
