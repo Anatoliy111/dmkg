@@ -884,17 +884,17 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->pokazn = $pokazn;
             $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
-            $modelpokazn->fio = $abonent->fio;
+        //    $modelpokazn->fio = $abonent->fio;
 
 
 
             if ($modelpokazn->validate()) {
 
                 $modelpokazn->save();
-                $mess = [];
-                $mess[0] = 'ok';
-                $mess[1] = 'aftersave';
-                return $mess;
+//                $mess = [];
+//                $mess[0] = 'ok';
+//                $mess[1] = 'aftersave';
+//                return $mess;
 
 
 
