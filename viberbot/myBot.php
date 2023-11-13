@@ -910,12 +910,12 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 return $mess;
             } else {
 
-                $messageLog = [
-                    'status' => 'Помилка додавання показника',
-                    'post' => $modelpokazn->errors
-                ];
-
-                Yii::error($messageLog, 'viber_err');
+//                $messageLog = [
+//                    'status' => 'Помилка додавання показника',
+//                    'post' => $modelpokazn->errors
+//                ];
+//
+//                Yii::error($messageLog, 'viber_err');
                 $meserr = '';
                 $errors = $modelpokazn->getErrors();
                 foreach ($errors as $err) {
