@@ -309,7 +309,7 @@ try {
                         message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
                     }
                     elseif ($ModelKart == null) {
-                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще', getRahMenu());
+                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще.', getRahMenu());
                         //UpdateStatus($Receiv,'');
                     }
                     elseif ($ModelKart != null && $ModelAbonReceiver != null) {
@@ -323,9 +323,9 @@ try {
                         if ($ModelKart != null) {
                             if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
                                 $addabon = addAbonkart($Receiv, $match[0][1]);
-                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета', getRahMenu());
+                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета.', getRahMenu());
                                 UpdateStatus($Receiv, '');
-                            } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Спробуйте ще', getRahMenu());
+                            } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Введіть тільки прізвище! Спробуйте ще.', getRahMenu());
                         }
                         else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, виконайте додавання рахунка заново!!!', getRahMenu());
 
