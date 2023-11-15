@@ -786,24 +786,26 @@ function infoPokazn($schet,$lasdatehvd){
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
     $hv=Yii::$app->hvddb->createCommand('select first 1 * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
     $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
-
+    $mess = 'Особовий рахунок - '.$schet."\r\n";
 //    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
-    if ($modelPokazn!=null){
-        $mess = 'Особовий рахунок - '.$schet."\r\n";
-        $mess = $mess.'Останній зарахований показник по воді :'."\n";
-        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
-        $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
-    }
-    elseif ($hv!=null) {
+
+    if ($hv!=null) {
         $mess = $mess.'----------------------------'."\n";
         $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
         $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
+    }
+
+    if ($modelPokazn!=null){
+        $mess = $mess.'----------------------------'."\n";
+        $mess = $mess.'Останній зарахований показник по воді :'."\n";
+        $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
+        $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
 //    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
 //    $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Введіть новий показник по воді (має бути ціле число і не меньше останього показника):'."\n";
+    $mess = $mess.'Введіть новий показник по воді (це має бути ціле число і не меньше останього показника):'."\n";
 
     return $mess;
 
