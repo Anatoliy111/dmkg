@@ -443,7 +443,7 @@ try {
                                             message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
                                             UpdateStatus($Receiv, '');
                                         }
-//                                    }
+                                    }
                             } else {
                                 $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
                                 if ($addpok[0] == 'ok') {
