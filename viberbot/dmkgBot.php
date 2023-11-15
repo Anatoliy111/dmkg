@@ -237,7 +237,7 @@ try {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
                 $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
                 if ($hv != null) {
-                    message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah, 'pok-rah'));
+                    message($bot, $botSender, $event, infoPokazn($Rah->schet,$lasdatehvd), getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
                 }
                 else {
@@ -779,12 +779,12 @@ function UpdateStatus($Model,$Status){
 }
 
 
-function infoPokazn($schet){
+function infoPokazn($schet,$lasdatehvd){
 
     $mess='';
 //    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-
+    $hv=Yii::$app->hvddb->createCommand('select first 1 * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
     $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
 
 //    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
@@ -793,6 +793,11 @@ function infoPokazn($schet){
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
         $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
+    }
+    elseif ($hv!=null) {
+        $mess = $mess.'----------------------------'."\n";
+        $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
+        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";        
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
