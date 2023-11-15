@@ -60,10 +60,10 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler');
-            $Receiv = verifyReceiver($event, $apiKey, $org);
+//            $Receiv = verifyReceiver($event, $apiKey, $org);
 //            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
-//            $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
+            $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
 
 //            if (($FindModels == null) and ($Receiv->id_abonent == null)) {
 //                $mes=$mes.'Пройдіть процедуру реєстрації, обравши кнопку Авторизація/Реєстрація';
@@ -73,7 +73,7 @@ try {
 
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText($Receiv)
+                ->setText($mes)
                 ->setKeyboard(getDmkgMenuOS(null));
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
@@ -93,8 +93,8 @@ try {
 //            $Receiv = verifyReceiver($event, $apiKey, $org);
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.');
-//            ->setKeyboard(getDmkgMenuOS($Receiv));
+                ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
+            ->setKeyboard(getDmkgMenuOS(null));
 
             //  $receiverId = $event->getSender()->getId();
             //  $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
@@ -680,37 +680,37 @@ function message($bot, $botSender, $event, $mess, $menu){
 function verifyReceiver($event, $apiKey, $org){
 
     $receiverId = $event->getSender()->getId();
-//    $receiverName = $event->getSender()->getName();
-//    $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
-//    if ($FindModel== null)
-//    {
-//        $model = new Viber();
-//        $model->api_key = $apiKey;
-//        $model->id_receiver = $receiverId;
-//        $model->name = $receiverName;
-//        $model->org = $org;
-//        if ($model->validate() && $model->save())
-//        {
-//            $FindModel = $model;
-//        }
-//        else
-//        {
-//            $messageLog = [
-//                'status' => 'Помилка додавання в підписника',
-//                'post' => $model->errors
-//            ];
-//
-//            Yii::error($messageLog, 'viber_err');
-//            $meserr='';
-//            foreach ($messageLog as $err){
-//                $meserr=$meserr.implode(",", $err);
-//            }
-//            getSend($meserr);
-//
-//            $FindModel = null;
-//
-//        }
-//    }
+    $receiverName = $event->getSender()->getName();
+    $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
+    if ($FindModel== null)
+    {
+        $model = new Viber();
+        $model->api_key = $apiKey;
+        $model->id_receiver = $receiverId;
+        $model->name = $receiverName;
+        $model->org = $org;
+        if ($model->validate() && $model->save())
+        {
+            $FindModel = $model;
+        }
+        else
+        {
+            $messageLog = [
+                'status' => 'Помилка додавання в підписника',
+                'post' => $model->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            $meserr='';
+            foreach ($messageLog as $err){
+                $meserr=$meserr.implode(",", $err);
+            }
+            getSend($meserr);
+
+            $FindModel = null;
+
+        }
+    }
 
     return $receiverId;
 
