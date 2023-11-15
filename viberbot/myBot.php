@@ -712,7 +712,7 @@ function verifyReceiver($event, $apiKey, $org){
         }
     }
 
-    return $receiverId;
+    return $FindModel;
 
 }
 
