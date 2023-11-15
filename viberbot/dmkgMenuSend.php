@@ -190,16 +190,16 @@ function getDmkgMenuOS($Receiv){
 //                ->setTextSize('regular')
 //                ->setTextHAlign('left')
 //                ->setText('Оплата'),
-//                    (new \Viber\Api\Keyboard\Button())
-//                        ->setColumns(3)
-//                        //  ->setBgColor('#2fa4e7')
-//                        ->setTextHAlign('center')
-//                        ->setTextSize('large')
-//                        ->setActionType('reply')
-//                        ->setActionBody('Exit-button')
-//                        ->setBgColor("#fdbdaa")
-//                        // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-//                        ->setText('Вихід з кабінета'),
+                    (new \Viber\Api\Keyboard\Button())
+                        ->setColumns(3)
+                        //  ->setBgColor('#2fa4e7')
+                        ->setTextHAlign('center')
+                        ->setTextSize('large')
+                        ->setActionType('reply')
+                        ->setActionBody('Exit-button')
+                        ->setBgColor("#fdbdaa")
+                        // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                        ->setText('Вихід з кабінета'),
                 ]);
 
 
