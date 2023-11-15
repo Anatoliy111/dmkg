@@ -691,6 +691,7 @@ function verifyReceiver($event, $apiKey, $org){
             $model->name = $receiverName;
             $model->org = $org;
             $model->status = '';
+            $model->id_abonent = 0;
             if ($model->validate() && $model->save())
             {
                 $FindModel = $model;
