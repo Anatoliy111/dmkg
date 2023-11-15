@@ -797,7 +797,7 @@ function infoPokazn($schet,$lasdatehvd){
     elseif ($hv!=null) {
         $mess = $mess.'----------------------------'."\n";
         $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
-        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";        
+        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
