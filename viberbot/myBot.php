@@ -427,9 +427,9 @@ try {
                         if (is_numeric($val) && floor($val) == $val && $val > 0) {
                             $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll()[0];
                             if ($modelPokazn != null) {
-//                                    if ((intval($val) - $modelPokazn['pokazn']) > 100) {
-//                                        message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
-//                                    } else {
+                                    if ((intval($val) - $modelPokazn['pokazn']) > 100) {
+                                        message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
+                                    } else {
 
                                         $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
                                         if ($addpok[0] == 'ok') {
