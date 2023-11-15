@@ -24,7 +24,7 @@ function getDmkgMenuStart(){
                 ->setActionBody('Auth-button')
                 ->setBgColor("#fdbdaa")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('Підписатись'),
+                ->setText('Почати'),
 
         ]);
 

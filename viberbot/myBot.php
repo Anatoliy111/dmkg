@@ -64,7 +64,7 @@ try {
 //            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
-            $mes = ' Натисніть кнопку Підписатись"!!!'."\n";
+            $mes = $mes.' Натисніть кнопку Почати"!!!'."\n";
 
 //            if (($FindModels == null) and ($Receiv->id_abonent == null)) {
 //                $mes=$mes.'Пройдіть процедуру реєстрації, обравши кнопку Авторизація/Реєстрація';
