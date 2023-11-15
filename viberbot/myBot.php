@@ -796,7 +796,7 @@ function infoPokazn($schet,$lasdatehvd){
     }
 
     if ($modelPokazn!=null){
-
+        $mess = $mess.'----------------------------'."\n";
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
         $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
