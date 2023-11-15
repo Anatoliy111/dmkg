@@ -161,8 +161,8 @@ try {
         })
         ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
-            $receiverId = $event->getSender()->getId();
-            message($bot, $botSender, $event, $receiverId, getDmkgMenuOS(null));
+            $receiverName = $event->getSender()->getName();
+            message($bot, $botSender, $event, $receiverName, getDmkgMenuOS(null));
 //            $Receiv = verifyReceiver($event, $apiKey, $org);
 //            UpdateStatus($Receiv,'');
 //            message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
