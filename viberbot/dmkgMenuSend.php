@@ -16,7 +16,7 @@ function getDmkgMenuStart(){
         ->setButtons([
 
             (new \Viber\Api\Keyboard\Button())
-                ->setColumns(3)
+                ->setColumns(6)
                 //  ->setBgColor('#2fa4e7')
                 ->setTextHAlign('center')
                 ->setTextSize('large')
