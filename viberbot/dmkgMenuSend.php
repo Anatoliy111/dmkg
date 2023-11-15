@@ -14,7 +14,7 @@ use Monolog\Handler\StreamHandler;
 
 function getDmkgMenuOS($Receiv){
 
-    if ($Receiv!=null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
+//    if ($Receiv!=null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
     if ($Receiv == null) {
         return (new \Viber\Api\Keyboard())
