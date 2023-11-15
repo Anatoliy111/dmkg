@@ -60,7 +60,7 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler');
-//            $Receiv = verifyReceiver($event, $apiKey, $org);
+            $Receiv = verifyReceiver($event, $apiKey, $org);
 //            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
@@ -71,7 +71,7 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
-                ->setKeyboard(getDmkgMenuOS());
+                ->setKeyboard(getDmkgMenuOS($Receiv));
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
