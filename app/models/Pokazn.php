@@ -72,12 +72,12 @@ class Pokazn extends \yii\db\ActiveRecord
                     if (isset($session['bigkub'])) {
 //                   if (array_key_exists('bigkub',$session)) {
                       if ($kub<>$session['bigkub']) {
-                        $this->addError($attribute, "Ваш показник ".$this->pokazn." перевищує 100 кубів!!! Бажаєте продовжити(зберегти)?");
+                        $this->addError($attribute, "Ваш показник ".$this->pokazn." перевищує 100 кубів!!! Бажаєте продовжити(зберегти) ?");
                           $session['bigkub'] = $kub;
                       }
                    }
                    else {
-                       $this->addError($attribute, "Ваш показник " . $this->pokazn . " перевищує 100 кубів!!! Бажаєте продовжити(зберегти)?");
+                       $this->addError($attribute, "Ваш показник " . $this->pokazn . " перевищує 100 кубів !!! Бажаєте продовжити(зберегти)?");
                        $session['bigkub'] = $kub;
                    }
                 }
