@@ -58,6 +58,7 @@ class Pokazn extends \yii\db\ActiveRecord
             [['schet'], 'string', 'max' => 10],
 //            [['fio'], 'string', 'max' => 64],
             [['pokazn'], function ($attribute) {
+                $session = Yii::$app->session;
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->orderBy(['id' => SORT_DESC])->one();
                 $this->lastpokazn = $pok->pokazn;
                 $kub = $this->pokazn-$this->lastpokazn;
@@ -66,17 +67,18 @@ class Pokazn extends \yii\db\ActiveRecord
                 }
 //                if ($this->pokazn-$this->lastpokazn>100 and $this->fl_pokazn==1) {
                 //   ArrayHelper::setValue($_POST, ['Pokazn','fl_bigpok'],1);
-                if ($kub > 100) {
 
-                   if (array_key_exists('bigkub',$_SESSION)) {
-                      if ($kub<>$_SESSION['bigkub']) {
+                if ($kub > 100) {
+                    if (isset($session['bigkub'])) {
+//                   if (array_key_exists('bigkub',$session)) {
+                      if ($kub<>$session['bigkub']) {
                         $this->addError($attribute, "Ваш показник ".$this->pokazn." перевищує 100 кубів!!! Бажаєте продовжити(зберегти)?");
-                        $_SESSION['bigkub'] = $kub;
+                          $session['bigkub'] = $kub;
                       }
                    }
                    else {
                        $this->addError($attribute, "Ваш показник " . $this->pokazn . " перевищує 100 кубів!!! Бажаєте продовжити(зберегти)?");
-                       $_SESSION['bigkub'] = $kub;
+                       $session['bigkub'] = $kub;
                    }
                 }
                 else {
@@ -84,7 +86,7 @@ class Pokazn extends \yii\db\ActiveRecord
 //
 //
 //                    }
-                    $_SESSION['bigkub'] = 0;
+                    $session['bigkub'] = 0;
                     $poksite = UtAbonpokazn::find()->where(['schet' => iconv('windows-1251', 'UTF-8', $this->schet)])->orderBy(['date_ins' => SORT_DESC])->one();
                     if ($poksite<>null)
                         if ($poksite->data == $this->date_pok) {
