@@ -109,6 +109,12 @@ try {
 //            else $mes = 'Помилка реєстрації';
 //            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
         })
+        ->onText('|Start-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+        })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);

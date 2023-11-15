@@ -21,7 +21,7 @@ function getDmkgMenuStart(){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('Auth-button')
+                ->setActionBody('Start-button')
                 ->setBgColor("#fdbdaa")
                 // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                 ->setText('Почати'),
