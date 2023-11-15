@@ -690,6 +690,7 @@ function verifyReceiver($event, $apiKey, $org){
             $model->id_receiver = $receiverId;
             $model->name = $receiverName;
             $model->org = $org;
+            $model->status = 0;
             if ($model->validate() && $model->save())
             {
                 $FindModel = $model;
