@@ -73,12 +73,13 @@ class Pokazn extends \yii\db\ActiveRecord
 //                   if (array_key_exists('bigkub',$session)) {
                       if ($kub<>$session['bigkub']) {
                         $this->addError($attribute, "Ваш показник ".$this->pokazn." перевищує 100 кубів!!! Бажаєте продовжити(зберегти) ?");
-                          $session['bigkub'] = $kub;
+                          $session->set('bigkub', $kub);
+//                          $session['bigkub'] = $kub;
                       }
                    }
                    else {
                        $this->addError($attribute, "Ваш показник " . $this->pokazn . " перевищує 100 кубів !!! Бажаєте продовжити(зберегти)?");
-                       $session['bigkub'] = $kub;
+                       $session->set('bigkub', $kub);
                    }
                 }
                 else {
@@ -86,7 +87,7 @@ class Pokazn extends \yii\db\ActiveRecord
 //
 //
 //                    }
-                    $session['bigkub'] = 0;
+                    $session->set('bigkub', 0);
                     $poksite = UtAbonpokazn::find()->where(['schet' => iconv('windows-1251', 'UTF-8', $this->schet)])->orderBy(['date_ins' => SORT_DESC])->one();
                     if ($poksite<>null)
                         if ($poksite->data == $this->date_pok) {
