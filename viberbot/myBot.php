@@ -162,9 +162,8 @@ try {
         ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
-//            UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, $Receiv, getDmkgMenuOS(null));
-//            message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
+            UpdateStatus($Receiv,'');
+            message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
         })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -679,7 +678,7 @@ function message($bot, $botSender, $event, $mess, $menu){
 }
 
 function verifyReceiver($event, $apiKey, $org){
-    try {
+//    try {
         $receiverId = $event->getSender()->getId();
         $receiverName = $event->getSender()->getName();
         $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
@@ -715,12 +714,12 @@ function verifyReceiver($event, $apiKey, $org){
             }
         }
 
-    } catch (\Exception $e) {
-        $mess = $e->getMessage();
-        return $mess;
-    }
+//    } catch (\Exception $e) {
+//        $mess = $e->getMessage();
+//        return $mess;
+//    }
 
-    return '111';
+    return $FindModel;
 //    return $receiverId;
 
 }
