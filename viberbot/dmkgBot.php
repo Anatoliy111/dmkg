@@ -64,6 +64,7 @@ try {
 //            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
+            $mes = $mes.' Натисніть кнопку Почати"!!!'."\n";
 
 //            if (($FindModels == null) and ($Receiv->id_abonent == null)) {
 //                $mes=$mes.'Пройдіть процедуру реєстрації, обравши кнопку Авторизація/Реєстрація';
@@ -74,7 +75,7 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
-                ->setKeyboard(getDmkgMenuOS(null));
+                ->setKeyboard(getDmkgMenuStart());
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
@@ -107,6 +108,13 @@ try {
 //            }
 //            else $mes = 'Помилка реєстрації';
 //            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
+        })
+        ->onText('|Start-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('click on button');
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            if ($Receiv->id_abonent<>0) message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+            else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
