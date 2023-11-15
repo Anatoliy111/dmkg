@@ -679,35 +679,35 @@ function verifyReceiver($event, $apiKey, $org){
     $receiverId = $event->getSender()->getId();
     $receiverName = $event->getSender()->getName();
     $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
-//    if ($FindModel== null)
-//    {
-//        $model = new Viber();
-//        $model->api_key = $apiKey;
-//        $model->id_receiver = $receiverId;
-//        $model->name = $receiverName;
-//        $model->org = $org;
-//        if ($model->validate() && $model->save())
-//        {
-//            $FindModel = $model;
-//        }
-//        else
-//        {
-//            $messageLog = [
-//                'status' => 'Помилка додавання в підписника',
-//                'post' => $model->errors
-//            ];
-//
-//            Yii::error($messageLog, 'viber_err');
-//            $meserr='';
-//            foreach ($messageLog as $err){
-//                $meserr=$meserr.implode(",", $err);
-//            }
-//            getSend($meserr);
-//
-//            $FindModel = null;
-//
-//        }
-//    }
+    if ($FindModel== null)
+    {
+        $model = new Viber();
+        $model->api_key = $apiKey;
+        $model->id_receiver = $receiverId;
+        $model->name = $receiverName;
+        $model->org = $org;
+        if ($model->validate() && $model->save())
+        {
+            $FindModel = $model;
+        }
+        else
+        {
+            $messageLog = [
+                'status' => 'Помилка додавання в підписника',
+                'post' => $model->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            $meserr='';
+            foreach ($messageLog as $err){
+                $meserr=$meserr.implode(",", $err);
+            }
+            getSend($meserr);
+
+            $FindModel = null;
+
+        }
+    }
 
     return $FindModel;
 
