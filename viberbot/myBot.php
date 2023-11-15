@@ -60,14 +60,14 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler');
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
-            
+//            $Receiv = verifyReceiver($event, $apiKey, $org);
+//            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
+
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
 
-            if (($FindModels == null) and ($Receiv->id_abonent == null)) {
-                $mes=$mes.'Пройдіть процедуру реєстрації, обравши кнопку Авторизація/Реєстрація';
-            }
+//            if (($FindModels == null) and ($Receiv->id_abonent == null)) {
+//                $mes=$mes.'Пройдіть процедуру реєстрації, обравши кнопку Авторизація/Реєстрація';
+//            }
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
