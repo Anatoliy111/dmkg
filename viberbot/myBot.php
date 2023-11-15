@@ -162,7 +162,10 @@ try {
         ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $receiverName = $event->getSender()->getName();
-            message($bot, $botSender, $event, $receiverName, getDmkgMenuOS(null));
+            $receiverId = $event->getSender()->getId();
+            $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
+            if ($FindModel== null) message($bot, $botSender, $event, 'null', getDmkgMenuOS(null));
+            else message($bot, $botSender, $event, 'not null', getDmkgMenuOS(null));
 //            $Receiv = verifyReceiver($event, $apiKey, $org);
 //            UpdateStatus($Receiv,'');
 //            message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
