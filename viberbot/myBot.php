@@ -135,8 +135,8 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
             else {
-            UpdateStatus($Receiv, 'add-rah');
-            message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
+                UpdateStatus($Receiv, 'add-rah');
+                message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
             }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -237,7 +237,7 @@ try {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
                 $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
                 if ($hv != null) {
-                    message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah, 'pok-rah'));
+                    message($bot, $botSender, $event, infoPokazn($Rah->schet,$lasdatehvd), getRahList($FindRah, 'pok-rah'));
                     UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
                 }
                 else {
@@ -297,7 +297,7 @@ try {
                 if ($match[0][0] == 'add-rah'){
                     $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText()))]);
                     $ModelAbonReceiver = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => $event->getMessage()->getText()]);
-                    
+
 
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
@@ -395,7 +395,7 @@ try {
                     else {
                         $err = $modelemail->getErrors();
                         UpdateStatus($Receiv,'add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2);
-                    //    message($bot, $botSender, $event, 'OKKK', getDmkgMenuOS($Receiv));
+                        //    message($bot, $botSender, $event, 'OKKK', getDmkgMenuOS($Receiv));
                         if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0].' '.$modelemail->fio, getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
                         elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
@@ -423,28 +423,14 @@ try {
                 elseif ($match[0][0] == 'add-pok'){
                     $FindRah = $Receiv->getUtAbonkart()->all();
                     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $match[0][1]));
-                        $val = $event->getMessage()->getText();
-                        if (is_numeric($val) && floor($val) == $val && $val > 0) {
-                            $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll()[0];
-                            if ($modelPokazn != null) {
-                                    if ((intval($val) - $modelPokazn['pokazn']) > 100) {
-                                        message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
-                                    } else {
-
-                                        $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
-                                        if ($addpok[0] == 'ok') {
-                                            message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
-                                            UpdateStatus($Receiv, '');
-                                        }
-                                        if ($addpok[0] == 'err') {
-                                            message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
-                                        }
-                                        if ($addpok == null) {
-                                            message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
-                                            UpdateStatus($Receiv, '');
-                                        }
-                                    }
+                    $val = $event->getMessage()->getText();
+                    if (is_numeric($val) && floor($val) == $val && $val > 0) {
+                        $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll()[0];
+                        if ($modelPokazn != null) {
+                            if ((intval($val) - $modelPokazn['pokazn']) > 100) {
+                                message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
                             } else {
+
                                 $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
                                 if ($addpok[0] == 'ok') {
                                     message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
@@ -458,7 +444,21 @@ try {
                                     UpdateStatus($Receiv, '');
                                 }
                             }
-                        } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
+                        } else {
+                            $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
+                            if ($addpok[0] == 'ok') {
+                                message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
+                                UpdateStatus($Receiv, '');
+                            }
+                            if ($addpok[0] == 'err') {
+                                message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
+                            }
+                            if ($addpok == null) {
+                                message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                                UpdateStatus($Receiv, '');
+                            }
+                        }
+                    } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
 
 //                    }
 
@@ -492,33 +492,33 @@ function Addabon($modelemail,$Receiv)
 
     $message = '';
 //        $dataProviderEmail = $modelemail->searchemail(Yii::$app->request->bodyParams);
-        $model = new UtAuth();
-        $model->scenario = 'reg';
-        $model->fio = $modelemail->fio;
-        $model->email = $modelemail->email;
-        $model->authtoken = md5($modelemail->email . time());
-        $model->vid = 'authviber';
-        $model->pass = $modelemail->pass1;
-        $model->id_receiver = $Receiv->id_receiver;
+    $model = new UtAuth();
+    $model->scenario = 'reg';
+    $model->fio = $modelemail->fio;
+    $model->email = $modelemail->email;
+    $model->authtoken = md5($modelemail->email . time());
+    $model->vid = 'authviber';
+    $model->pass = $modelemail->pass1;
+    $model->id_receiver = $Receiv->id_receiver;
 
-        if ($model->validate()) {
-            $model->save();
+    if ($model->validate()) {
+        $model->save();
 
-            $sent = Yii::$app->mailer
-                ->compose(
-                    ['html' => 'user-signupviber-comfirm-html'],
-                    ['model' => $model])
-                ->setTo($model->email)
-                ->setFrom('supportdmkg@ukr.net')
-                ->setSubject('Реєстрація на вайберботі ДМКГ!')
-                ->send();
+        $sent = Yii::$app->mailer
+            ->compose(
+                ['html' => 'user-signupviber-comfirm-html'],
+                ['model' => $model])
+            ->setTo($model->email)
+            ->setFrom('supportdmkg@ukr.net')
+            ->setSubject('Реєстрація на вайберботі ДМКГ!')
+            ->send();
 
-            if (!$sent) {
-                throw new \RuntimeException('Sending error.');
-            }
-            return 'OK';
+        if (!$sent) {
+            throw new \RuntimeException('Sending error.');
         }
-        else return $model->getErrors();
+        return 'OK';
+    }
+    else return $model->getErrors();
 
 
 
@@ -779,12 +779,12 @@ function UpdateStatus($Model,$Status){
 }
 
 
-function infoPokazn($schet){
+function infoPokazn($schet,$lasdatehvd){
 
     $mess='';
 //    $modelPokazn = KpcentrPokazn::findOne(['schet' => $schet,'status' => 1]);
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-
+    $hv=Yii::$app->hvddb->createCommand('select first 1 * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
     $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
 
 //    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
@@ -793,6 +793,11 @@ function infoPokazn($schet){
         $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
         $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
+    }
+    elseif ($hv!=null) {
+        $mess = $mess.'----------------------------'."\n";
+        $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
+        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
@@ -882,7 +887,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
             $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
             $modelpokazn->yearmon = $nowdate;
             $modelpokazn->pokazn = $pokazn;
-         //   $modelpokazn->date_pok = date("Y-m-d");
+            //   $modelpokazn->date_pok = date("Y-m-d");
             $modelpokazn->vid_pok = 21;
             $modelpokazn->fio = trim(iconv('UTF-8', 'windows-1251', $abonent->fio));
 
