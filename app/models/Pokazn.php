@@ -68,7 +68,7 @@ class Pokazn extends \yii\db\ActiveRecord
 //                if ($this->pokazn-$this->lastpokazn>100 and $this->fl_pokazn==1) {
                 //   ArrayHelper::setValue($_POST, ['Pokazn','fl_bigpok'],1);
 
-                if ($kub > 100) {
+                if ($kub > 100 and $this->vid_pok <> 21) {
                     if (isset($session['bigkub'])) {
 //                   if (array_key_exists('bigkub',$session)) {
                       if ($kub<>$session['bigkub']) {
