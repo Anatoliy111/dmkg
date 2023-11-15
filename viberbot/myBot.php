@@ -786,18 +786,20 @@ function infoPokazn($schet,$lasdatehvd){
     $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
     $hv=Yii::$app->hvddb->createCommand('select first 1 * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
     $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
-
+    $mess = 'Особовий рахунок - '.$schet."\r\n";
 //    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
+
+    if ($hv!=null) {
+    $mess = $mess.'----------------------------'."\n";
+    $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
+    $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
+    }
+
     if ($modelPokazn!=null){
-        $mess = 'Особовий рахунок - '.$schet."\r\n";
-        $mess = $mess.'Останній зарахований показник по воді '.$hv[0]["yearmon"].':'."\n";
+
+        $mess = $mess.'Останній зарахований показник по воді :'."\n";
         $mess = $mess."Дата показника: ".date('d.m.Y',strtotime($modelPokazn[0]['date_pok']))."\n";
         $mess = $mess.'Показник: '.$modelPokazn[0]['pokazn']."\n";
-    }
-    elseif ($hv!=null) {
-        $mess = $mess.'----------------------------'."\n";
-        $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
-        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
     }
     else $mess = 'Ваш останній показник по воді не зафіксовано:'."\n";
     $mess = $mess.'----------------------------'."\n";
