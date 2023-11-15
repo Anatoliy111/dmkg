@@ -71,7 +71,7 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
-                ->setKeyboard(getDmkgMenuOS(null));
+                ->setKeyboard(getDmkgMenuOS());
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
