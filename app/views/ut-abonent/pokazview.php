@@ -34,8 +34,7 @@ use yii\helpers\Url;
 
             $layout1 = <<< HTML
 			<div class="NameTab">
-			     <h4>Нарахування</h4>
-
+			    <h4>Нарахування</h4>
 			</div>
 {items}
 HTML;

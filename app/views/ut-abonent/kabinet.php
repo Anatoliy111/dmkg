@@ -521,6 +521,7 @@ Modal::begin([
                         'columns' => [
                             [
                                 'attribute' => 'poslug',
+                                'label'=>'Послуга',
                                 'value'=>function ($model) {
                                     return iconv('windows-1251', 'UTF-8', $model["poslug"]);
                                 }

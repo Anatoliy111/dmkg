@@ -4,6 +4,7 @@
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 /** @var app\models\Pokazn $modelpokazn */
@@ -11,7 +12,6 @@ use yii\helpers\Html;
   $asset = \app\assets\AppAsset::register($this);
 
 ?>
-
 
 <h1><?= Html::encode($this->title) ?></h1>
 
@@ -32,6 +32,7 @@ use yii\helpers\Html;
 <?php
 ActiveForm::end();
 ?>
+
 
 
 

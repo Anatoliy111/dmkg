@@ -715,6 +715,7 @@ class UtAbonentController extends Controller
             if (Yii::$app->request->isAjax && $modelpokazn->load(Yii::$app->request->post())) {
 
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+               // if ($modelpokazn->pokazn-$modelpokazn->lastpokazn>100)  $modelpokazn->fl_bigpok=1;
 
                 return \yii\widgets\ActiveForm::validate($modelpokazn);
 
@@ -748,16 +749,27 @@ class UtAbonentController extends Controller
             if (Yii::$app->request->isAjax && $modelpokazn->load(Yii::$app->request->post())) {
 
                 Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
+//                if ($modelpokazn->lastpokazn <> null and $modelpokazn->pokazn-$modelpokazn->lastpokazn>100)  $modelpokazn->fl_pokazn=1;
                 return \yii\widgets\ActiveForm::validate($modelpokazn);
 
             }
 
             if ($modelpokazn->load(Yii::$app->request->post()) && $modelpokazn->validate()) {
+//            if ($modelpokazn->load(Yii::$app->request->post())) {
+
+
+
+//                $pok = Pokazn::find()->where(['schet' => $modelpokazn->schet])->orderBy(['id' => SORT_DESC])->one();
+//                if ($modelpokazn->pokazn-$modelpokazn->lastpokazn>100 and $modelpokazn->fl_pokazn==0) {
+//
+//                    $modelpokazn->fl_pokazn=1;
+//
+//                }
+
                 $modelpokazn->date_pok = null;
                     $modelpokazn->save();
 
-
+                    $_SESSION['bigkub']=0;
                     Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
                     $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
                     $_SESSION['modalmess']['addpokazn'] = $modelpokazn->pokazn;
@@ -765,6 +777,7 @@ class UtAbonentController extends Controller
 
                 return $this->redirect('kabinet');
             }
+            $_SESSION['bigkub']=0;
             return $this->renderAjax('addpokazn', ['modelpokazn' => $modelpokazn]);
 
         }
