@@ -70,8 +70,8 @@ try {
 //            }
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText($mes)
-                ->setKeyboard(getDmkgMenuOS(null));
+                ->setText($mes);
+//            ->setKeyboard(getDmkgMenuOS(null));
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
@@ -87,11 +87,11 @@ try {
         // when user subscribe to PA
         ->onSubscribe(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onSubscribe handler');
-            $Receiv = verifyReceiver($event, $apiKey, $org);
+//            $Receiv = verifyReceiver($event, $apiKey, $org);
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
-                ->setKeyboard(getDmkgMenuOS($Receiv));
+                ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.');
+//            ->setKeyboard(getDmkgMenuOS($Receiv));
 
             //  $receiverId = $event->getSender()->getId();
             //  $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
