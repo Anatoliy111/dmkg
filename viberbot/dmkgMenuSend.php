@@ -16,7 +16,7 @@ function getDmkgMenuOS($Receiv){
 
     if ($Receiv!=null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
-    if (($FindModels == null) and ($Receiv->id_abonent == null or $Receiv == null) ) {
+    if (($FindModels == null) and ($Receiv == null) ) {
         return (new \Viber\Api\Keyboard())
             ->setButtons([
 
