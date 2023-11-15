@@ -11,6 +11,25 @@ use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+function getDmkgMenuStart(){
+    return (new \Viber\Api\Keyboard())
+        ->setButtons([
+
+            (new \Viber\Api\Keyboard\Button())
+                ->setColumns(3)
+                //  ->setBgColor('#2fa4e7')
+                ->setTextHAlign('center')
+                ->setTextSize('large')
+                ->setActionType('reply')
+                ->setActionBody('Auth-button')
+                ->setBgColor("#fdbdaa")
+                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                ->setText('Підписатись'),
+
+        ]);
+
+}
+
 
 function getDmkgMenuOS($Receiv){
 

@@ -64,6 +64,7 @@ try {
 //            if ($Receiv<>null) $FindModels = ViberAbon::find()->where(['id_viber' => $Receiv->id]);
 
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
+            $mes = ' Натисніть кнопку Підписатись"!!!'."\n";
 
 //            if (($FindModels == null) and ($Receiv->id_abonent == null)) {
 //                $mes=$mes.'Пройдіть процедуру реєстрації, обравши кнопку Авторизація/Реєстрація';
@@ -74,7 +75,7 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
-                ->setKeyboard(getDmkgMenuOS(null));
+                ->setKeyboard(getDmkgMenuStart());
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
