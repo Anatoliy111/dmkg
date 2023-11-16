@@ -146,6 +146,10 @@ Modal::begin([
     ?>
 </div>
 
+    <div class="buttons" style="padding-bottom: 20px">
+        <?= Html::a('Ok', [''],['class'=>'btn-lg btn-success','data-dismiss'=>'modal','aria-label'=>'close']);?>
+    </div>
+
 
 <?php Modal::end();
 }
