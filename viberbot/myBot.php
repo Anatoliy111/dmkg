@@ -59,7 +59,7 @@ try {
     $bot
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onConversation handler');
+            $log->info('onConversation handler'. var_export($event, true));
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
             $mes = $mes.' Натисніть кнопку Почати"!!!'."\n";
 
@@ -118,15 +118,14 @@ try {
 //            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
         })
         ->onText('|Start-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
+            $log->info('Start-button'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent<>0) message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
             else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
-            $Receiv = verifyReceiver($event, $apiKey, $org);
+              $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
             else $FindRah = $Receiv->getUtAbonkart()->all();
@@ -134,7 +133,6 @@ try {
             else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
         })
         ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
@@ -145,14 +143,12 @@ try {
             }
         })
         ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'auth-email');
             message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту реєстрації в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
             else {
@@ -161,7 +157,6 @@ try {
             }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
@@ -170,19 +165,16 @@ try {
             else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah'));
         })
         ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, 'Редагування рахунків:', getRahMenu());
         })
         ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
         })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             if ($modelabon != null)  {
@@ -193,19 +185,18 @@ try {
 
         })
         ->onText('|DmkgMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
-            $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
 //            message($bot, $botSender, $event, 'Головне меню:'.$Receiv->id,null);
         })
         ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
+            $log->info('admin'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
             message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button');
+            $log->info('del-rah'. var_export($event, true));
 //            $match = [];
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -219,7 +210,7 @@ try {
             }
         })
         ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$period) {
-            $log->info('click on button');
+            $log->info('inf-rah'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
 
@@ -240,7 +231,7 @@ try {
             }
         })
         ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$lasdatehvd) {
-            $log->info('click on button');
+            $log->info('pok-rah'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
 
@@ -268,7 +259,7 @@ try {
             }
         })
         ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$lasdatehvd) {
-            $log->info('click on button');
+            $log->info('add-pok'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
@@ -289,11 +280,12 @@ try {
             }
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button privat24 ');
+            $log->info('click on button privat24 '. var_export($event, true));
             $Receiv = verifyReceiver($event,$apiKey, $org);
             message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenuOS($Receiv));
         })
         ->onText('|exit#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('exit kab '. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
 //            $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
