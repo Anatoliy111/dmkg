@@ -272,7 +272,7 @@ Modal::begin([
 			<h1>Кабінет споживача</h1>
 
 		</div>
-			<div class="col-sm-12">
+			<div class="col-sm-6">
 
 						<?=
                         DetailView::widget([
@@ -306,6 +306,8 @@ Modal::begin([
 
 							]) ?>
 			</div>
+        <div class="col-sm-6">
+        </div>
 
         <?php
            if (strlen(trim($model->email)) == 0 ) {
