@@ -77,7 +77,8 @@ class SiteController extends Controller
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
-			Yii::$app->session['perioddom']=$data['period'];
+			$session=Yii::$app->session;
+            $session['perioddom']=$data['period'];
 
 		}
 	}
@@ -87,7 +88,8 @@ class SiteController extends Controller
 //		Yii::$app->request->Ajax
 		if(\Yii::$app->request->isAjax){
 			$data = Yii::$app->request->post();
-			Yii::$app->session['periodkab']=$data['period'];
+            $session=Yii::$app->session;
+            $session['periodkab']=$data['period'];
 
 		}
 	}

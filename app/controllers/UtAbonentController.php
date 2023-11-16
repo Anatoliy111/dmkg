@@ -123,7 +123,7 @@ class UtAbonentController extends Controller
 
 
 
-        Yii::$app->session['periodkab']=null;
+        $session['periodkab']=null;
 
         $modeladres->scenario = 'adres';
         $dataProviderAdres = $modeladres->search(Yii::$app->request->queryParams);
@@ -196,7 +196,7 @@ class UtAbonentController extends Controller
 
     public function actionKabinet()
     {
-//		$session = Yii::$app->session;
+		$session = Yii::$app->session;
 //		if (isset($_POST['UtKart']['MonthYear']))
 //		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
 
@@ -219,10 +219,10 @@ class UtAbonentController extends Controller
 
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
-        Yii::$app->session['period']=$period;
+        $session['period']=$period;
 
-        if (Yii::$app->session['periodkab']==null)
-            Yii::$app->session['periodkab']=Yii::$app->dolgdb->createCommand('select * from period where period<>\''.$period.'\'  order by period desc')->QueryAll()[0]['period'];
+        if ($session['periodkab']==null)
+            $session['periodkab']=Yii::$app->dolgdb->createCommand('select * from period where period<>\''.$period.'\'  order by period desc')->QueryAll()[0]['period'];
 
         $periodkab=Yii::$app->session['periodkab'];
 
