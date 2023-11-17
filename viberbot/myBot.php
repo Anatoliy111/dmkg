@@ -60,8 +60,9 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler'. var_export($event, true));
-            $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
-            $mes = $mes.' Натисніть кнопку Почати"!!!'."\n";
+            $mes = ' Вітаємо вас в вайбер боті'."\n";
+            $mes = $mes.'КП "ДМКГ"!!!'."\n";
+            $mes = $mes.'Натисніть кнопку Почати"!!!'."\n";
             $context = $event->getContext();
            return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
@@ -127,7 +128,7 @@ try {
             }
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent<>0) {
-                $abon = UtAbonent::find($Receiv->id_abonent);
+                $abon = UtAbonent::findOne($Receiv->id_abonent);
                 message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
             }
             else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
