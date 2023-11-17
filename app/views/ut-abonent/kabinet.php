@@ -337,19 +337,19 @@ Modal::begin([
             if (strlen(trim($model->email)) <>0 ) {
             ?>
             <div class="viber col-sm-3">
-                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=dmkgBot&context='.$model->email])?>" style="width: 100%"/>
+                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=bondyukviberbot&context='.$model->email])?>" style="width: 100%"/>
             </div>
             <?php
             } else {
             ?>
             <div class="viber col-sm-3">
-                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=dmkgBot'])?>" style="width: 100%"/>
+                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=bondyukviberbot'])?>" style="width: 100%"/>
             </div>
             <?php
             }
             ?>
             <div class="viber col-sm-3">
-                <h4>Відскануйте код та підключайте ViberBot DMKG</h4>
+                <h4>Відскануйте QR-код та підключайте ViberBot DMKG</h4>
                 <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
                 <?= Html::a('ViberStart', Url::to('viber://pa?chatURI=bondyukviberbot&context='.$model->email), ['http','class' => 'btn btn-success','target'=>"_blank"]);?>
 

@@ -126,7 +126,10 @@ try {
                 $Receiv->save();
             }
             UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent<>0) message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+            if ($Receiv->id_abonent<>0) {
+                $abon = UtAbonent::find($Receiv->id_abonent);
+                message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+            }
             else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
