@@ -337,13 +337,13 @@ Modal::begin([
             if (strlen(trim($model->email)) <>0 ) {
             ?>
             <div class="viber col-sm-3">
-                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=bondyukviberbot&context='.$model->email])?>" style="width: 100%"/>
+                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=dmkgBot&context='.$model->email])?>" style="width: 100%"/>
             </div>
             <?php
             } else {
             ?>
             <div class="viber col-sm-3">
-                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=bondyukviberbot'])?>" style="width: 100%"/>
+                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=dmkgBot'])?>" style="width: 100%"/>
             </div>
             <?php
             }
