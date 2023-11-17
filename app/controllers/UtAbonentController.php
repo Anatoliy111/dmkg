@@ -254,6 +254,15 @@ class UtAbonentController extends Controller
             return $this->redirect(['kabinet']);
         }
 
+        $model->scenario = 'fio';
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            $model->save();
+            $session->setFlash('pass', 'ПІП змінено');
+            return $this->redirect(['kabinet']);
+        }
+
         $modelkart= new SearchDolgKart();
         $modelkart->scenario = 'rahunok';
 

@@ -35,6 +35,7 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         ),
         's' => 
         array (
+            'silentlun\\qrcode\\' => 17,
             'setasign\\Fpdi\\' => 14,
         ),
         'p' => 
@@ -180,6 +181,10 @@ class ComposerStaticInitea525fd3c0c6e75644c5c5bfb7587738
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
+        ),
+        'silentlun\\qrcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/silentlun/yii2-qrcode/src',
         ),
         'setasign\\Fpdi\\' => 
         array (

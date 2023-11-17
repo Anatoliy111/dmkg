@@ -170,11 +170,12 @@ ActiveForm::end();
 
 ]); ?>
 
+<h4 style="line-height: 1.5;">Введіть адресу ел.пошти на яку вибажаєте змінити!</h4>
+
 <?=	 $form->field($modelemail, 'email', ['addon' => ['type'=>'prepend', 'content'=>'@']]);?>
 
 <div class="buttons" style="padding-bottom: 20px">
     <?= Html::submitButton(Yii::t('easyii', 'Save'), ['class' => 'btn btn-success']) ?>
-    <?//= Html::a('Зберегти', ['ut-abonent/changeemail'], ['class' => 'btn btn-primary']) ?>
 </div>
 
 
@@ -271,7 +272,7 @@ Modal::begin([
 		<div class="col-xs-12">
 			<h1>Кабінет споживача</h1>
 
-		</div>
+
 			<div class="col-sm-6">
 
 						<?=
@@ -279,19 +280,22 @@ Modal::begin([
 								'model' => $model,
 								'hover'=>true,
 								'striped'=>true,
-								'mode'=>DetailView::MODE_VIEW,
+//								'mode'=>DetailView::MODE_VIEW,
+                            'panel'=>[
+                                'heading'=>'Профіль користувача',
+                                'type'=>DetailView::TYPE_PRIMARY,
+                            ],
+                            'buttons1' => '{update}',
+                            'buttons2' => '{save},{view}',
 								'attributes' => [
-
-									'fio',
-//									'telef',
-                                    'email',
+								        'fio',
                                     [
-                                        'label'=>' ',
+                                        'label'=>'Email',
                                         'format'=>'raw',
                                         'value'=>function ($model, $key){
                                             if (!empty($key->model['email']))
                                             {
-                                                return Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
+                                                return $key->model['email'].' '.Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
                                             }
                                             else
                                             {
@@ -300,14 +304,59 @@ Modal::begin([
 
                                         }
                                     ],
+//                                    [
+//                                        'label'=>' ',
+//                                        'format'=>'raw',
+//                                        'value'=>function ($model, $key){
+//                                            if (!empty($key->model['email']))
+//                                            {
+//                                                return Html::a("Змінити пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailchange','class'=>'btn-sm btn-success']);
+//                                            }
+//                                            else
+//                                            {
+//                                                return Html::a("Зареєструвати пошту", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#emailreg','class'=>'btn-sm btn-danger']);
+//                                            }
+//
+//                                        }
+//                                    ],
 								],
 								'hAlign'=>DetailView::ALIGN_RIGHT ,
 								'vAlign'=>DetailView::ALIGN_TOP  ,
 
 							]) ?>
+
+
+
+
+
+
 			</div>
-        <div class="col-sm-6">
-        </div>
+<!--        <div class="viber col-sm-6">-->
+
+            <?php
+            if (strlen(trim($model->email)) <>0 ) {
+            ?>
+            <div class="viber col-sm-3">
+                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=bondyukviberbot&context='.$model->email])?>" style="width: 100%"/>
+            </div>
+            <?php
+            } else {
+            ?>
+            <div class="viber col-sm-3">
+                <img src="<?= Url::to(['/site/qrcode','code_url'=>'viber://pa?chatURI=bondyukviberbot'])?>" style="width: 100%"/>
+            </div>
+            <?php
+            }
+            ?>
+            <div class="viber col-sm-3">
+                <h4>Відскануйте код та підключайте ViberBot DMKG</h4>
+                <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
+                <?= Html::a('ViberStart', Url::to('viber://pa?chatURI=bondyukviberbot&context='.$model->email), ['http','class' => 'btn btn-success','target'=>"_blank"]);?>
+
+            </div>
+<!--        </div>-->
+
+
 
         <?php
            if (strlen(trim($model->email)) == 0 ) {
@@ -320,33 +369,36 @@ Modal::begin([
            }
         ?>
 
-
-        <div class="col-sm-3 col-md-2 col-lg-2">
-
-
-            <?php echo Html::button("Додати рахунок", ['class' => 'btn btn-success','onclick' => "AddRah()",'target' => "_blank",]); ?>
-
+        <div class="col-xs-12">
+            <h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
         </div>
 
-        <?php
-
-        if ($abonents<>null) {
-
+        <div class="rah-button col-sm-12">
+            <div class="rah-button col-sm-6 col-md-2 col-lg-2">
 
 
-        ?>
+                <?php echo Html::button("Додати рахунок", ['class' => 'btn btn-success','onclick' => "AddRah()",'target' => "_blank",]); ?>
 
-        <div class="col-sm-3 col-md-2 col-lg-2">
+            </div>
 
-            <?= Html::a("Видалити рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#modaldelrah','class'=>'btn btn-danger'])?>
+            <?php
 
+            if ($abonents<>null) {
+
+
+
+            ?>
+
+            <div class="col-sm-6 col-md-2 col-lg-2">
+
+                <?= Html::a("Видалити рахунок", ['#'], ['data-toggle' =>'modal', 'data-target' =>'#modaldelrah','class'=>'btn btn-danger'])?>
+
+            </div>
+
+            <?php } ?>
         </div>
 
-        <?php } ?>
 
-		<div class="col-xs-12">
-			<h2><?=Yii::$app->formatter->asDate($period, 'LLLL Y')?></h2>
-		</div>
 
 
 

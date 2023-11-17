@@ -300,4 +300,13 @@ return array (
       '@yii/gii' => $vendorDir . '/yiisoft/yii2-gii/src',
     ),
   ),
+  'silentlun/yii2-qrcode' => 
+  array (
+    'name' => 'silentlun/yii2-qrcode',
+    'version' => '1.0.0.0',
+    'alias' => 
+    array (
+      '@silentlun/qrcode' => $vendorDir . '/silentlun/yii2-qrcode/src',
+    ),
+  ),
 );

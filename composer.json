@@ -31,7 +31,8 @@
         "bogdaan/viber-bot-php": "dev-master",
         "monolog/monolog": "1.x-dev",
         "mdmsoft/yii2-admin": "dev-master#e9cc1d8adc as 2.8-p1",
-        "edgardmessias/yii2-firebird": "*"
+        "edgardmessias/yii2-firebird": "*",
+        "silentlun/yii2-qrcode": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

@@ -730,6 +730,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'silentlun/yii2-qrcode' => array(
+            'pretty_version' => '1.0',
+            'version' => '1.0.0.0',
+            'reference' => '5b37205390dba3339b866af4734b3e4261954714',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../silentlun/yii2-qrcode',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'swiftmailer/swiftmailer' => array(
             'pretty_version' => 'v6.3.0',
             'version' => '6.3.0.0',

@@ -34,6 +34,7 @@ UtAbonent extends \yii\db\ActiveRecord
     const SCENARIO_REG = 'reg';
     const SCENARIO_CONFREG = 'confreg';
     const SCENARIO_EMAIL = 'email';
+    const SCENARIO_FIO = 'fio';
 
     public static function tableName()
     {
@@ -67,7 +68,7 @@ UtAbonent extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fio' => 'ПІБ',
+            'fio' => 'ПІП',
             'pass' => 'Введіть пароль',
             'date_pass' => 'Date Pass',
             'passopen' => 'Passopen',
@@ -93,6 +94,7 @@ UtAbonent extends \yii\db\ActiveRecord
         $scenarios[self::SCENARIO_REG] = ['email','fio','pass1','pass2'];
         $scenarios[self::SCENARIO_CONFREG] = ['fio','pass','email'];
         $scenarios[self::SCENARIO_EMAIL] = ['email'];
+        $scenarios[self::SCENARIO_FIO] = ['fio'];
         return $scenarios;
     }
 

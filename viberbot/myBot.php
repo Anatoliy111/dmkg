@@ -62,11 +62,11 @@ try {
             $log->info('onConversation handler'. var_export($event, true));
             $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
             $mes = $mes.' Натисніть кнопку Почати"!!!'."\n";
-
+            $context = $event->getContext();
            return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
-                ->setKeyboard(getDmkgMenuStart());
+                ->setKeyboard(getDmkgMenuStart($context));
 //            $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
 //
 //            try{
@@ -117,9 +117,14 @@ try {
 //            else $mes = 'Помилка реєстрації';
 //            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
         })
-        ->onText('|Start-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+        ->onText('|Start-button#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('Start-button'. var_export($event, true));
+            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
+            if (count($match[0])==2){
+                $Receiv->id_abonent=$match[0][1];
+                $Receiv->save();
+            }
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent<>0) message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
             else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));

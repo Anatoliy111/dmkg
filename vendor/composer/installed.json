@@ -4154,6 +4154,53 @@
             "install-path": "../setasign/fpdi"
         },
         {
+            "name": "silentlun/yii2-qrcode",
+            "version": "1.0",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silentlun/yii2-qrcode.git",
+                "reference": "5b37205390dba3339b866af4734b3e4261954714"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silentlun/yii2-qrcode/zipball/5b37205390dba3339b866af4734b3e4261954714",
+                "reference": "5b37205390dba3339b866af4734b3e4261954714",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "time": "2021-03-05T09:42:48+00:00",
+            "type": "yii2-extension",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "silentlun\\qrcode\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "silentlun",
+                    "email": "4668460@qq.com"
+                }
+            ],
+            "description": "Qrcode extension for YII2",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/silentlun/yii2-qrcode/issues",
+                "source": "https://github.com/silentlun/yii2-qrcode/tree/1.0"
+            },
+            "install-path": "../silentlun/yii2-qrcode"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.3.0",
             "version_normalized": "6.3.0.0",

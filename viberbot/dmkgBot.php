@@ -75,7 +75,7 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
-                ->setKeyboard(getDmkgMenuStart());
+                ->setKeyboard(getDmkgMenuStart(null));
 
             // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
 //            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
@@ -109,7 +109,7 @@ try {
 //            else $mes = 'Помилка реєстрації';
 //            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
         })
-        ->onText('|Start-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+        ->onText('|Start-button#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');

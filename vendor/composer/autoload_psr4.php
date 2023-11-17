@@ -15,6 +15,7 @@ return array(
     'yii\\codeception\\' => array($vendorDir . '/yiisoft/yii2-codeception'),
     'yii\\bootstrap\\' => array($vendorDir . '/yiisoft/yii2-bootstrap/src'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
+    'silentlun\\qrcode\\' => array($vendorDir . '/silentlun/yii2-qrcode/src'),
     'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
     'phpnt\\pace\\' => array($vendorDir . '/phpnt/yii2-pace'),
     'phpnt\\chartJS\\' => array($vendorDir . '/phpnt/yii2-chartjs'),

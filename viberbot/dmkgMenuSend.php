@@ -5,28 +5,57 @@
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
+use app\models\UtAbonent;
 use app\models\ViberAbon;
 use Viber\Bot;
 use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-function getDmkgMenuStart(){
-    return (new \Viber\Api\Keyboard())
-        ->setButtons([
+function getDmkgMenuStart($context){
 
-            (new \Viber\Api\Keyboard\Button())
-                ->setColumns(6)
-                //  ->setBgColor('#2fa4e7')
-                ->setTextHAlign('center')
-                ->setTextSize('large')
-                ->setActionType('reply')
-                ->setActionBody('Start-button')
-                ->setBgColor("#fdbdaa")
-                // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                ->setText('Почати'),
+    $idabon=null;
+    if (!empty($context)) {
+        if (($model = UtAbonent::findOne(['email' => $context])) !== null) {
+            $idabon=$model->id;
+        }
+    }
 
-        ]);
+    if ($idabon!=null) {
+
+        return (new \Viber\Api\Keyboard())
+            ->setButtons([
+
+                (new \Viber\Api\Keyboard\Button())
+                    ->setColumns(6)
+                    //  ->setBgColor('#2fa4e7')
+                    ->setTextHAlign('center')
+                    ->setTextSize('large')
+                    ->setActionType('reply')
+                    ->setActionBody('Start-button#'.$idabon)
+                    ->setBgColor("#fdbdaa")
+                    // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                    ->setText('Почати'),
+
+            ]);
+    }
+    else {
+        return (new \Viber\Api\Keyboard())
+            ->setButtons([
+
+                (new \Viber\Api\Keyboard\Button())
+                    ->setColumns(6)
+                    //  ->setBgColor('#2fa4e7')
+                    ->setTextHAlign('center')
+                    ->setTextSize('large')
+                    ->setActionType('reply')
+                    ->setActionBody('Start-button#')
+                    ->setBgColor("#fdbdaa")
+                    // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                    ->setText('Почати'),
+
+            ]);
+    }
 
 }
 

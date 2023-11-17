@@ -15,6 +15,7 @@ use DateTime;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use silentlun\qrcode\QrCode;
 use Throwable;
 use Viber\Api\Sender;
 use Viber\Bot;
@@ -93,6 +94,11 @@ class SiteController extends Controller
 
 		}
 	}
+
+    public function actionQrcode($code_url)
+    {
+        return QRcode::png($code_url);
+    }
 
 	public function actionOfferta()
 	{
