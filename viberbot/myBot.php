@@ -154,7 +154,7 @@ try {
         ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'auth-email');
-            message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту реєстрації в кабінеті споживача):', getDmkgMenuOS($Receiv));
+            message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
