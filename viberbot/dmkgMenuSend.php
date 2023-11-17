@@ -21,7 +21,7 @@ function getDmkgMenuStart($context){
         }
     }
 
-    if ($idabon!=null) {
+    if ($idabon=null) $idabon='';
 
         return (new \Viber\Api\Keyboard())
             ->setButtons([
@@ -38,25 +38,6 @@ function getDmkgMenuStart($context){
                     ->setText('Почати'),
 
             ]);
-    }
-    else {
-        return (new \Viber\Api\Keyboard())
-            ->setButtons([
-
-                (new \Viber\Api\Keyboard\Button())
-                    ->setColumns(6)
-                    //  ->setBgColor('#2fa4e7')
-                    ->setTextHAlign('center')
-                    ->setTextSize('large')
-                    ->setActionType('reply')
-                    ->setActionBody('Start-button#')
-                    ->setBgColor("#fdbdaa")
-                    // ->setImage("https://dmkg.com.ua/uploads/copy.png")
-                    ->setText('Почати'),
-
-            ]);
-    }
-
 }
 
 
