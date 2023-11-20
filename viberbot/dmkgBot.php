@@ -770,7 +770,7 @@ function addAbonkart($Receiv,$schet){
             $errors = $model->getErrors();
             foreach ($errors as $err) {
                 $meserr = $meserr . implode(",", $err);
-
+            }
             getSend($meserr);
 
             $FindModel = null;
