@@ -769,9 +769,14 @@ function addAbonkart($Receiv,$schet){
             foreach ($messageLog as $err){
                 $meserr=$meserr.implode(",", $err);
             }
+            $meserr = '';
+            $errors = $model->getErrors();
+            foreach ($errors as $err) {
+                $meserr = $meserr . implode(",", $err);
+
             getSend($meserr);
 
-            $FindModel = null;            
+            $FindModel = null;
 
         }
     }
