@@ -183,6 +183,11 @@ try {
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
         })
+        ->onText('|Prof-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            message($bot, $botSender, $event, infoProf($Receiv), getDmkgMenuOS($Receiv));
+        })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
@@ -842,6 +847,27 @@ function infoPokazn($schet,$lasdatehvd){
 }
 
 function infoKontakt(){
+    $mess='Комунальне підприємство «Долинське міське комунальне господарство» при Долинській міській раді'."\n"."\n";
+
+    $mess=$mess.'Адреса: Кіровоградська обл., Долинський р-н, місто Долинська, вул.Нова, будинок 80-А'."\n"."\n";
+
+    //  $mess=$mess.'Телефон бухгалтерія: (067)696-88-18'."\n"."\n";
+    $mess=$mess.'Телефон диcпетчер:'."\n";
+    $mess=$mess.'(067) 520-87-30'."\n";
+    $mess=$mess.'(066) 942-00-12'."\n";
+    $mess=$mess.'Телефон контролери:'."\n";
+    $mess=$mess.'(095)062-68-89 (Viber)'."\n"."\n";
+    //   $mess=$mess.'(099)120-31-54'."\n";
+    // $mess=$mess.'(095)791-32-62'."\n"."\n";
+    $mess = $mess.'e-mail: dmkg28500@ukr.net'."\n";
+
+    return $mess;
+
+}
+
+function infoProf($Receiv){
+
+    $abon = UtAbonent::findOne();
     $mess='Комунальне підприємство «Долинське міське комунальне господарство» при Долинській міській раді'."\n"."\n";
 
     $mess=$mess.'Адреса: Кіровоградська обл., Долинський р-н, місто Долинська, вул.Нова, будинок 80-А'."\n"."\n";
