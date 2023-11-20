@@ -869,20 +869,20 @@ function infoKontakt(){
 function infoProf($Receiv){
 
     $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
-    $FindRah = $Receiv->getUtAbonkart()->all();
+//    $FindRah = $Receiv->getUtAbonkart()->all();
 
     $mess='Профіль користувача:'."\n"."\n";
 
     $mess=$mess.'EMAIL: '.$abon->email.''."\n";
     $mess=$mess.'ПІП: '.$abon->fio.''."\n"."\n";
-    if ($FindRah!=null) {
-        $mess = $mess . 'Під"єднанні рахунки:' . "\n";
-        foreach ($FindRah as $rah) {
-            $mess = $mess . $rah . "\n";
-            $mess = $mess . '----------------------------' . "\n";
-        }
-    }
-    else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n"."\n";
+//    if ($FindRah!=null) {
+//        $mess = $mess . 'Під"єднанні рахунки:' . "\n";
+//        foreach ($FindRah as $rah) {
+//            $mess = $mess . $rah . "\n";
+//            $mess = $mess . '----------------------------' . "\n";
+//        }
+//    }
+//    else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n"."\n";
 
     //  $mess=$mess.'Телефон бухгалтерія: (067)696-88-18'."\n"."\n";
     $mess=$mess.'Якщо ви бажаєте змінити параметри користувача (email,ПІП) чи зміна паролю, скористайтесь кабінетом споживача на сайті https://dmkg.com.ua/ut-abonent/kabinet'."\n";
