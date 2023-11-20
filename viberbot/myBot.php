@@ -878,7 +878,7 @@ function infoProf($Receiv){
     if ($FindRah!=null) {
         $mess = $mess . 'Підєднанні рахунки:' . "\n";
         foreach ($FindRah as $rah) {
-            $mess = $mess . $rah . "\n";
+            $mess = $mess . $rah->schet . "\n";
             $mess = $mess . '----------------------------' . "\n";
         }
     }
