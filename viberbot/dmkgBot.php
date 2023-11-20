@@ -37,8 +37,8 @@ use yii\bootstrap\Html;
 
 
 //$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
-$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
-//$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';  //myBot
+//$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
+$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';  //myBot
 $org = 'dmkg';
 $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
 $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
@@ -182,6 +182,11 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
+        })
+        ->onText('|Prof-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv,'');
+            message($bot, $botSender, $event, infoProf($Receiv), getDmkgMenuOS($Receiv));
         })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -751,14 +756,12 @@ function addAbonkart($Receiv,$schet){
         $model = new UtAbonkart();
         $model->id_abon = $Receiv->id_abonent;
         $model->schet = $schet;
-        if ($model->validate())
+        if ($model->validate() && $model->save())
         {
-            $model->save();
             return $model;
         }
         else
         {
-
             $messageLog = [
                 'status' => 'Помилка додавання абонента',
                 'post' => $model->errors
@@ -766,19 +769,11 @@ function addAbonkart($Receiv,$schet){
 
             Yii::error($messageLog, 'viber_err');
 
-            $meserr = '';
-            $errors = $model->getErrors();
-            foreach ($errors as $err) {
-                $meserr = $meserr . implode(",", $err);
-            }
-            getSend($meserr);
-
-            $FindModel = null;
+            return null;
 
         }
     }
-
-    return $FindModel;
+    else return $FindModel;
 
 }
 
@@ -867,6 +862,30 @@ function infoKontakt(){
     // $mess=$mess.'(095)791-32-62'."\n"."\n";
     $mess = $mess.'e-mail: dmkg28500@ukr.net'."\n";
 
+    return $mess;
+
+}
+
+function infoProf($Receiv){
+
+    $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
+//    $FindRah = $Receiv->getUtAbonkart()->all();
+
+    $mess='Профіль користувача:'."\n"."\n";
+
+    $mess=$mess.'EMAIL: '.$abon->email.''."\n";
+    $mess=$mess.'ПІП: '.$abon->fio.''."\n"."\n";
+//    if ($FindRah!=null) {
+//        $mess = $mess . 'Під"єднанні рахунки:' . "\n";
+//        foreach ($FindRah as $rah) {
+//            $mess = $mess . $rah . "\n";
+//            $mess = $mess . '----------------------------' . "\n";
+//        }
+//    }
+//    else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n"."\n";
+
+    //  $mess=$mess.'Телефон бухгалтерія: (067)696-88-18'."\n"."\n";
+    $mess=$mess.'Якщо ви бажаєте змінити параметри користувача (email,ПІП) чи зміна паролю, скористайтесь кабінетом споживача на сайті https://dmkg.com.ua/ut-abonent/kabinet - вхід за електронною поштою'."\n";
     return $mess;
 
 }
