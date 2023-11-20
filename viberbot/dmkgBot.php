@@ -341,7 +341,7 @@ try {
                             if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
                                 $addabon = addAbonkart($Receiv, $match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета.', getRahMenu());
-                                else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, виконайте додавання рахунка '.$match[0][1].' заново!!!', getRahMenu());
+                                else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, виконайте додавання рахунка '.$Receiv->id_abonent.' '.$match[0][1].' заново!!!', getRahMenu());
                                 UpdateStatus($Receiv, '');
                             } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Введіть тільки прізвище! Спробуйте ще.', getRahMenu());
                         }
