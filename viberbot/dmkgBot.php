@@ -751,8 +751,9 @@ function addAbonkart($Receiv,$schet){
         $model = new UtAbonkart();
         $model->id_abon = $Receiv->id_abonent;
         $model->schet = $schet;
-        if ($model->validate() && $model->save())
+        if ($model->validate())
         {
+            $model->save();
             return $model;
         }
         else
