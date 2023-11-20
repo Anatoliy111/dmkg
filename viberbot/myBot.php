@@ -869,7 +869,7 @@ function infoKontakt(){
 function infoProf($Receiv){
 
     $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
-//    $FindRah = $Receiv->getUtAbonkart()->all();
+    $FindRah = $Receiv->getUtAbonkart()->all();
 
     $mess='Профіль користувача:'."\n"."\n";
 
