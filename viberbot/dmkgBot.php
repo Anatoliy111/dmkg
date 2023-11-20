@@ -758,18 +758,25 @@ function addAbonkart($Receiv,$schet){
         }
         else
         {
+
             $messageLog = [
                 'status' => 'Помилка додавання абонента',
                 'post' => $model->errors
             ];
 
             Yii::error($messageLog, 'viber_err');
+            $meserr='';
+            foreach ($messageLog as $err){
+                $meserr=$meserr.implode(",", $err);
+            }
+            getSend($meserr);
 
-            return null;
+            $FindModel = null;            
 
         }
     }
-    else return $FindModel;
+
+    return $FindModel;
 
 }
 
