@@ -346,6 +346,7 @@ try {
                             if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
                                 $addabon = addAbonkart($Receiv, $match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета.', getRahMenu());
+                                else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, можливо ваш аккаунт було видалено, здійсніть вихід з кабінета в пункті меню ПРОФІЛЬ КОРИСТУВАЧА та зареєструйтесь заново !!!', getDmkgMenuOS($Receiv));
                                 UpdateStatus($Receiv, '');
                             } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Введіть тільки прізвище! Спробуйте ще.', getRahMenu());
                         }
@@ -867,21 +868,24 @@ function infoKontakt(){
 
 function infoProf($Receiv){
 
-    $abon = UtAbonent::findOne();
-    $mess='Комунальне підприємство «Долинське міське комунальне господарство» при Долинській міській раді'."\n"."\n";
+    $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
+    $FindRah = $Receiv->getUtAbonkart()->all();
 
-    $mess=$mess.'Адреса: Кіровоградська обл., Долинський р-н, місто Долинська, вул.Нова, будинок 80-А'."\n"."\n";
+    $mess='Профіль користувача:'."\n"."\n";
+
+    $mess=$mess.'EMAIL: '.$abon->email.''."\n";
+    $mess=$mess.'ПІП: '.$abon->fio.''."\n"."\n";
+    if ($FindRah!=null) {
+        $mess = $mess . 'Під"єднанні рахунки:' . "\n";
+        foreach ($FindRah as $rah) {
+            $mess = $mess . $rah . "\n";
+            $mess = $mess . '----------------------------' . "\n";
+        }
+    }
+    else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n"."\n";
 
     //  $mess=$mess.'Телефон бухгалтерія: (067)696-88-18'."\n"."\n";
-    $mess=$mess.'Телефон диcпетчер:'."\n";
-    $mess=$mess.'(067) 520-87-30'."\n";
-    $mess=$mess.'(066) 942-00-12'."\n";
-    $mess=$mess.'Телефон контролери:'."\n";
-    $mess=$mess.'(095)062-68-89 (Viber)'."\n"."\n";
-    //   $mess=$mess.'(099)120-31-54'."\n";
-    // $mess=$mess.'(095)791-32-62'."\n"."\n";
-    $mess = $mess.'e-mail: dmkg28500@ukr.net'."\n";
-
+    $mess=$mess.'Якщо ви бажаєте змінити параметри користувача (email,ПІП) чи зміна паролю, скористайтесь кабінетом споживача на сайті https://dmkg.com.ua/ut-abonent/kabinet'."\n";
     return $mess;
 
 }
