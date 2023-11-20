@@ -876,13 +876,13 @@ function infoProf($Receiv){
     $mess=$mess.'EMAIL: '.$abon->email.''."\n";
     $mess=$mess.'ПІП: '.$abon->fio.''."\n"."\n";
     if ($FindRah!=null) {
-        $mess = $mess . 'Підєднанні рахунки:' . "\n";
+        $mess = $mess . 'Під"єднанні рахунки:' . "\n";
         foreach ($FindRah as $rah) {
-            $mess = $mess . $rah->schet . "\n";
             $mess = $mess . '----------------------------' . "\n";
+            $mess = $mess . $rah->schet .' '.$rah->fio . "\n";
         }
     }
-    else $mess = $mess . 'У вас немає підєднаних рахунків!' . "\n"."\n";
+    else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n"."\n";
 
     //  $mess=$mess.'Телефон бухгалтерія: (067)696-88-18'."\n"."\n";
     $mess=$mess.'Якщо ви бажаєте змінити параметри користувача (email,ПІП) чи зміна паролю, скористайтесь кабінетом споживача на сайті https://dmkg.com.ua/ut-abonent/kabinet - вхід за електронною поштою'."\n";
