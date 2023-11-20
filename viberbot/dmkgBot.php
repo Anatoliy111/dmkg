@@ -765,10 +765,7 @@ function addAbonkart($Receiv,$schet){
             ];
 
             Yii::error($messageLog, 'viber_err');
-            $meserr='';
-            foreach ($messageLog as $err){
-                $meserr=$meserr.implode(",", $err);
-            }
+
             $meserr = '';
             $errors = $model->getErrors();
             foreach ($errors as $err) {
