@@ -122,7 +122,7 @@ try {
             $log->info('Start-button'. var_export($event, true));
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            message($bot, $botSender, $event, 'sdfsdf', getDmkgMenuOS($Receiv));
+            message($bot, $botSender, $event, $event->getMessage()->getText(), getDmkgMenuOS($Receiv));
 
 //            if (count($match[0])==2){
 //                $abon = UtAbonent::findOne(['email' => $match[0][1]]);
