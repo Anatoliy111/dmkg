@@ -232,7 +232,7 @@ try {
                 $Receiv->save();
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
                 message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $match[0][1] . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
-            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
+            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!'.$event->getMessage()->getText(), getDmkgMenuOS($Receiv));
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('del-rah'. var_export($event, true));
