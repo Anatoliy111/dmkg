@@ -187,7 +187,8 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($abon));
+//            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($abon));
+            message($bot, $botSender, $event, 'gdfsgsdfg', getProfMenu($abon));
         })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
