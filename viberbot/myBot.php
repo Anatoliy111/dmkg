@@ -227,7 +227,7 @@ try {
             UpdateStatus($Receiv, '');
 //            $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if (count($match[0]) == 2) {
+            if (count($match[0])==4 && $match[0][3]=='yes') {
                 $Receiv->id_abonent = $match[0][1];
                 $Receiv->save();
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
