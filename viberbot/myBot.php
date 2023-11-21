@@ -139,7 +139,7 @@ try {
                 UpdateStatus($Receiv, '');
                 if ($Receiv->id_abonent <> 0) {
                     $abon = UtAbonent::findOne($Receiv->id_abonent);
-                    message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! ' . $abon->fio . ' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+                    message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! ' . $abon->fio . ' ви вже зареєстровані в кабінеті споживача ' . $abon->email . ', оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
                 } else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
             }
         })
@@ -203,7 +203,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             if ($modelabon != null)  {
-                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вад доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#'.$Receiv->id));
+                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вам доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#'.$Receiv->id));
             }
             else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#'.$Receiv->id));
 
