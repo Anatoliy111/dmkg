@@ -233,7 +233,7 @@ try {
             UpdateStatus($Receiv, '');
             if ($Receiv->id_abonent <> 0) {
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
-                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $abon->email .' '. $abon->fio . '!!!', getDmkgMenuOS($Receiv));
+                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' .$match[0][1]. $abon->email .' '. $abon->fio . '!!!', getDmkgMenuOS($Receiv));
             } else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
 
         })
