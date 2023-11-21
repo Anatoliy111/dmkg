@@ -16,12 +16,13 @@ function getDmkgMenuStart($context){
 
     $idabon=null;
     if (!empty($context)) {
+
         if (($model = UtAbonent::findOne(['email' => $context])) !== null) {
             $idabon=$model->id;
         }
     }
 
-    if ($idabon=null) $idabon='';
+    if ($idabon==null) $idabon='';
 
         return (new \Viber\Api\Keyboard())
             ->setButtons([
