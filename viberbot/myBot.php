@@ -224,18 +224,15 @@ try {
         ->onText('|editprof#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('edit kab '. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv, '');
 //            $FindRah = $Receiv->getViberAbons()->all();
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             if (count($match[0]) == 2) {
                 $Receiv->id_abonent = $match[0][1];
                 $Receiv->save();
-            }
-            UpdateStatus($Receiv, '');
-            if ($Receiv->id_abonent <> 0) {
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
-                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' .$match[0][1]. $abon->email .' '. $abon->fio . '!!!', getDmkgMenuOS($Receiv));
-            } else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
-
+                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $match[0][1] . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
+            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('del-rah'. var_export($event, true));
