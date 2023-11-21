@@ -60,10 +60,10 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler'. var_export($event, true));
+            $context = $event->getContext();
             $mes = ' Вітаємо вас в вайбер боті'."\n";
             $mes = $mes.'КП "ДМКГ"!!!'."\n";
-            $mes = $mes.'Натисніть кнопку Почати"!!!'."\n";
-            $context = $event->getContext();
+            $mes = $mes.'Натисніть кнопку Почати"!!!'.$context."\n";
            return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
