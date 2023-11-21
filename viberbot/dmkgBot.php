@@ -918,7 +918,7 @@ function infoKontakt(){
     $mess=$mess.'Телефон юр.відділ:'."\n";
     $mess=$mess.'(067) 522-77-90'."\n";
     $mess=$mess.'Телефон контролери:'."\n";
-    $mess=$mess.'(066)128-11-85 (Viber)'."\n"."\n";
+    $mess=$mess.'(066)128-11-85 (Viber)'."\n";
     $mess=$mess.'(095)791-32-62'."\n"."\n";
     $mess = $mess.'e-mail: dmkg28500@ukr.net'."\n";
 
