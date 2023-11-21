@@ -25,7 +25,7 @@ require_once(__DIR__ . '\botMenu.php');
 
 //echo infoDmkgSchet('0014001');
 //$schet='7020006а';
-preg_match_all('/([^#]+)/ui','start#bondyuk.a.g@gmail.com',$match);
+preg_match_all('/([^#]+)/ui','editprof#6809#yes',$match);
 if (count($match[0])==2) $abon = UtAbonent::findOne(['email' => $match[0][1]]);
 $schet='0092124';
 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
