@@ -127,7 +127,9 @@ try {
             if ($Receiv->id_abonent<>0 and count($match[0]) == 2)  {
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
                 $abon2 = UtAbonent::findOne($match[0][1]);
-                message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!! Бажаєте змінити профіль на '.$abon2->email .'?', getYesNoMenu('editprof#'.$match[0][1]));
+                if ($abon->id == $abon2->id) {
+                    message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!!', getDmkgMenuOS($Receiv));
+                } else message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!! Бажаєте змінити профіль на '.$abon2->email .'?', getYesNoMenu('editprof#'.$match[0][1]));
             }
             else {
                 if (count($match[0]) == 2) {
