@@ -187,7 +187,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($Receiv,$abon));
+            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($abon));
         })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -649,7 +649,10 @@ function getYesNoMenu($action){
 
 //92519753
 
-function getProfMenu($Receiv,$abon){
+function getProfMenu($abon){
+
+    if ($abon!=null) $email=$abon->email;
+    else $email='';
     return (new \Viber\Api\Keyboard())
         ->setButtons([
 
@@ -672,7 +675,7 @@ function getProfMenu($Receiv,$abon){
                 ->setActionType('reply')
                 ->setActionBody('Exit-button')
                 ->setBgColor("#fdbdaa")
-                ->setText('Вийти з профіля '.$abon->email),
+                ->setText('Вийти з профіля '.$email),
 
 
         ]);
@@ -901,20 +904,26 @@ function infoKontakt(){
 function infoProf($Receiv,$abon){
 
 
-    $FindRah = $Receiv->getUtAbonkart()->all();
+
 
     $mess='Профіль користувача:'."\n"."\n";
-
-    $mess=$mess.'EMAIL: '.$abon->email.''."\n";
-    $mess=$mess.'ПІП: '.$abon->fio.''."\n"."\n";
-    if ($FindRah!=null) {
-        $mess = $mess . 'Під"єднанні рахунки:' . "\n";
-        foreach ($FindRah as $rah) {
-            $mess = $mess . '----------------------------' . "\n";
-            $mess = $mess . $rah->schet . "\n";
-        }
+    if ($abon==null) {
+        $mess = $mess . 'Вибачте, але сталася помилка, можливо ваш аккаунт було видалено, здійсніть вихід з кабінета в пункті меню "Вийти з профілю" та зареєструйтесь заново !!!' . "\n" . "\n";
     }
-    else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n"."\n";
+    else {
+        $FindRah = $Receiv->getUtAbonkart()->all();
+        $mess = $mess . 'EMAIL: ' . $abon->email . '' . "\n";
+        $mess = $mess . 'ПІП: ' . $abon->fio . '' . "\n" . "\n";
+        if ($FindRah != null) {
+            $mess = $mess . 'Під"єднанні рахунки:' . "\n";
+            foreach ($FindRah as $rah) {
+                $mess = $mess . '----------------------------' . "\n";
+                $mess = $mess . $rah->schet . "\n";
+            }
+        } else $mess = $mess . 'У вас немає під"єднаних рахунків!' . "\n" . "\n";
+    }
+
+
 
     //  $mess=$mess.'Телефон бухгалтерія: (067)696-88-18'."\n"."\n";
     $mess=$mess.'Якщо ви бажаєте змінити параметри користувача (email,ПІП) чи зміна паролю, скористайтесь кабінетом споживача на сайті https://dmkg.com.ua/ut-abonent/kabinet - вхід за електронною поштою'."\n";
