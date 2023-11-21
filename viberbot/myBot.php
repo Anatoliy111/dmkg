@@ -187,7 +187,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($Receiv,$abon));
+            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($abon));
         })
         ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -649,10 +649,10 @@ function getYesNoMenu($action){
 
 //92519753
 
-function getProfMenu($Receiv,$abon){
+function getProfMenu($abon){
 
     if ($abon!=null) $email=$abon->email;
-    else $email=''; 
+    else $email='';
     return (new \Viber\Api\Keyboard())
         ->setButtons([
 
@@ -904,13 +904,14 @@ function infoKontakt(){
 function infoProf($Receiv,$abon){
 
 
-    $FindRah = $Receiv->getUtAbonkart()->all();
+
 
     $mess='Профіль користувача:'."\n"."\n";
     if ($abon=null) {
         $mess = $mess . 'Вибачте, але сталася помилка, можливо ваш аккаунт було видалено, здійсніть вихід з кабінета в пункті меню "Вийти з профілю" та зареєструйтесь заново !!!' . "\n" . "\n";
     }
     else {
+        $FindRah = $Receiv->getUtAbonkart()->all();
         $mess = $mess . 'EMAIL: ' . $abon->email . '' . "\n";
         $mess = $mess . 'ПІП: ' . $abon->fio . '' . "\n" . "\n";
         if ($FindRah != null) {
