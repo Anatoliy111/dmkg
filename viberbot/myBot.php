@@ -64,7 +64,7 @@ try {
             $mes = ' Вітаємо вас в вайбер боті'."\n";
             $mes = $mes.'КП "ДМКГ"!!!'."\n";
             $mes = $mes.'Натисніть кнопку Почати"!!!'."\n";
-           return (new \Viber\Api\Message\Text())
+            return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
                 ->setKeyboard(getDmkgMenuStart($context));
@@ -104,7 +104,7 @@ try {
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
-            ->setKeyboard(getDmkgMenuOS(null));
+                ->setKeyboard(getDmkgMenuOS(null));
 
             //  $receiverId = $event->getSender()->getId();
             //  $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
@@ -144,7 +144,7 @@ try {
             }
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-              $Receiv = verifyReceiver($event, $apiKey, $org);
+            $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
             else $FindRah = $Receiv->getUtAbonkart()->all();
@@ -164,7 +164,7 @@ try {
         ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'auth-email');
-            message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
+            message($bot, $botSender, $event, 'Введіть (в графі повідомлення/сообщение) вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -172,7 +172,7 @@ try {
             if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
             else {
                 UpdateStatus($Receiv, 'add-rah');
-                message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
+                message($bot, $botSender, $event, 'Введіть (в графі повідомлення/сообщение) номер вашого особового рахунку:', getRahMenu());
             }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -353,7 +353,7 @@ try {
 
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
+                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть (в графі повідомлення/сообщение) прізвище власника рахунку:', getRahMenu());
                     }
                     elseif ($ModelKart == null) {
                         message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще.', getRahMenu());
@@ -390,10 +390,10 @@ try {
                         $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
                         if ($modelabon != null)  {
                             UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
-                            message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть (в графі повідомлення/сообщение) пароль кабінета споживача:', getDmkgMenuOS($Receiv));
                         }
                         else {
-                            message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Для продовження реєстації введіть (в графі повідомлення/сообщение) ваш ПІБ', getDmkgMenuOS($Receiv));
                             UpdateStatus($Receiv,'add-abon#'.'email='.$event->getMessage()->getText());
                         }
                     }
@@ -761,40 +761,40 @@ function message($bot, $botSender, $event, $mess, $menu){
 
 function verifyReceiver($event, $apiKey, $org){
 //    try {
-        $receiverId = $event->getSender()->getId();
-        $receiverName = $event->getSender()->getName();
-        $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
-        if ($FindModel== null)
+    $receiverId = $event->getSender()->getId();
+    $receiverName = $event->getSender()->getName();
+    $FindModel = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $receiverId,'org' => $org]);
+    if ($FindModel== null)
+    {
+        $model = new Viber();
+        $model->api_key = $apiKey;
+        $model->id_receiver = $receiverId;
+        $model->name = $receiverName;
+        $model->org = $org;
+        $model->status = '';
+        $model->id_abonent = 0;
+        if ($model->validate() && $model->save())
         {
-            $model = new Viber();
-            $model->api_key = $apiKey;
-            $model->id_receiver = $receiverId;
-            $model->name = $receiverName;
-            $model->org = $org;
-            $model->status = '';
-            $model->id_abonent = 0;
-            if ($model->validate() && $model->save())
-            {
-                $FindModel = $model;
-            }
-            else
-            {
-                $messageLog = [
-                    'status' => 'Помилка додавання в підписника',
-                    'post' => $model->errors
-                ];
-
-                Yii::error($messageLog, 'viber_err');
-                $meserr='';
-                foreach ($messageLog as $err){
-                    $meserr=$meserr.implode(",", $err);
-                }
-                getSend($meserr);
-
-                $FindModel = null;
-
-            }
+            $FindModel = $model;
         }
+        else
+        {
+            $messageLog = [
+                'status' => 'Помилка додавання в підписника',
+                'post' => $model->errors
+            ];
+
+            Yii::error($messageLog, 'viber_err');
+            $meserr='';
+            foreach ($messageLog as $err){
+                $meserr=$meserr.implode(",", $err);
+            }
+            getSend($meserr);
+
+            $FindModel = null;
+
+        }
+    }
 
 //    } catch (\Exception $e) {
 //        $mess = $e->getMessage();
@@ -885,9 +885,9 @@ function infoPokazn($schet,$lasdatehvd){
 //    $modelPokazn = Pokazn::find()->where(['schet' => $schet1251])->orderBy(['id' => SORT_DESC])->one();
 
     if ($hv!=null) {
-    $mess = $mess.'----------------------------'."\n";
-    $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
-    $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
+        $mess = $mess.'----------------------------'."\n";
+        $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
+        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
     }
 
     if ($modelPokazn!=null){
@@ -900,7 +900,7 @@ function infoPokazn($schet,$lasdatehvd){
     $mess = $mess.'----------------------------'."\n";
 //    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
 //    $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Введіть новий показник по воді (це має бути ціле число і не меньше останього показника):'."\n";
+    $mess = $mess.'Введіть (в графі повідомлення/сообщение) новий показник по воді (це має бути ціле число і не меньше останього показника):'."\n";
 
     return $mess;
 
