@@ -124,19 +124,19 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             message($bot, $botSender, $event, $match[0][1], getDmkgMenuOS($Receiv));
 
-            if (count($match[0])==2){
-                $abon = UtAbonent::findOne(['email' => $match[0][1]]);
-                if ($abon!=null) {
-                    $Receiv->id_abonent = $abon->id;
-                    $Receiv->save();
-                }
-            }
-            UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent<>0) {
-                $abon = UtAbonent::findOne($Receiv->id_abonent);
-                message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
-            }
-            else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
+//            if (count($match[0])==2){
+//                $abon = UtAbonent::findOne(['email' => $match[0][1]]);
+//                if ($abon!=null) {
+//                    $Receiv->id_abonent = $abon->id;
+//                    $Receiv->save();
+//                }
+//            }
+//            UpdateStatus($Receiv,'');
+//            if ($Receiv->id_abonent<>0) {
+//                $abon = UtAbonent::findOne($Receiv->id_abonent);
+//                message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+//            }
+//            else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
               $Receiv = verifyReceiver($event, $apiKey, $org);
