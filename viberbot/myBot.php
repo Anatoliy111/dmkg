@@ -129,7 +129,7 @@ try {
                 $abon2 = UtAbonent::findOne($match[0][1]);
                 if ($abon->id == $abon2->id) {
                     message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!!', getDmkgMenuOS($Receiv));
-                } else message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' .$abon->id. $abon->email . '!!! Бажаєте змінити профіль на '.$abon2->id.$abon2->email .'?', getYesNoMenu('editprof#'.$match[0][1]));
+                } else message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!! Бажаєте змінити профіль на '.$abon2->email .'?', getYesNoMenu('editprof#'.$match[0][1]));
             }
             else {
                 if (count($match[0]) == 2) {
@@ -203,7 +203,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             if ($modelabon != null)  {
-                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача - ' . $modelabon->email. ' ?', getYesNoMenu('exit#'.$Receiv->id));
+                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вад доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#'.$Receiv->id));
             }
             else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#'.$Receiv->id));
 
@@ -231,8 +231,8 @@ try {
                 $Receiv->id_abonent = $match[0][1];
                 $Receiv->save();
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
-                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $match[0][1] . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
-            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!'.$event->getMessage()->getText(), getDmkgMenuOS($Receiv));
+                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
+            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('del-rah'. var_export($event, true));
