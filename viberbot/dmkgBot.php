@@ -164,7 +164,7 @@ try {
         ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv, 'auth-email');
-            message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
+            message($bot, $botSender, $event, 'Введіть (в графі повідомлення/сообщение) вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -172,7 +172,7 @@ try {
             if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
             else {
                 UpdateStatus($Receiv, 'add-rah');
-                message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
+                message($bot, $botSender, $event, 'Введіть (в графі повідомлення/сообщение) номер вашого особового рахунку:', getRahMenu());
             }
         })
         ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -353,7 +353,7 @@ try {
 
                     if ($ModelKart != null && $ModelAbonReceiver == null)  {
                         UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
+                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть (в графі повідомлення/сообщение) прізвище власника рахунку:', getRahMenu());
                     }
                     elseif ($ModelKart == null) {
                         message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще.', getRahMenu());
@@ -390,10 +390,10 @@ try {
                         $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
                         if ($modelabon != null)  {
                             UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
-                            message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть (в графі повідомлення/сообщение) пароль кабінета споживача:', getDmkgMenuOS($Receiv));
                         }
                         else {
-                            message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Для продовження реєстації введіть (в графі повідомлення/сообщение) ваш ПІБ', getDmkgMenuOS($Receiv));
                             UpdateStatus($Receiv,'add-abon#'.'email='.$event->getMessage()->getText());
                         }
                     }
@@ -900,7 +900,7 @@ function infoPokazn($schet,$lasdatehvd){
     $mess = $mess.'----------------------------'."\n";
 //    $mess = $mess.'Увага!!! Обробка показників триває протягом 1-3 днів:'."\n";
 //    $mess = $mess.'----------------------------'."\n";
-    $mess = $mess.'Введіть новий показник по воді (це має бути ціле число і не меньше останього показника):'."\n";
+    $mess = $mess.'Введіть (в графі повідомлення/сообщение) новий показник по воді (це має бути ціле число і не меньше останього показника):'."\n";
 
     return $mess;
 
