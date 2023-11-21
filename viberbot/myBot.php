@@ -193,8 +193,9 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             if ($modelabon != null)  {
-                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача - ' . $modelabon->email, getYesNoMenu('exit#'.$Receiv->id));
+                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача - ' . $modelabon->email. ' ?', getYesNoMenu('exit#'.$Receiv->id));
             }
+            else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#'.$Receiv->id));
 
 //            UpdateStatus($Receiv,'');
 
