@@ -670,7 +670,7 @@ function getProfMenu($Receiv,$abon){
                 ->setTextHAlign('center')
                 ->setTextSize('large')
                 ->setActionType('reply')
-                ->setActionBody('exit-button')
+                ->setActionBody('Exit-button')
                 ->setBgColor("#fdbdaa")
                 ->setText('Вийти з профіля '.$abon->email),
 
