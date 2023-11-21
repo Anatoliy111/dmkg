@@ -16,7 +16,6 @@ function getDmkgMenuStart($context){
 
     $idabon=null;
     if (!empty($context)) {
-
         if (($model = UtAbonent::findOne(['email' => $context])) !== null) {
             $idabon=$model->id;
         }

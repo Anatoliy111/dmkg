@@ -63,7 +63,7 @@ try {
             $context = $event->getContext();
             $mes = ' Вітаємо вас в вайбер боті'."\n";
             $mes = $mes.'КП "ДМКГ"!!!'."\n";
-            $mes = $mes.'Натисніть кнопку Почати"!!!'.$context."\n";
+            $mes = $mes.'Натисніть кнопку Почати"!!!'."\n";
            return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
@@ -122,21 +122,18 @@ try {
             $log->info('Start-button'. var_export($event, true));
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            message($bot, $botSender, $event, $event->getMessage()->getText(), getDmkgMenuOS($Receiv));
+//            message($bot, $botSender, $event, $event->getMessage()->getText(), getDmkgMenuOS($Receiv));
 
-//            if (count($match[0])==2){
-//                $abon = UtAbonent::findOne(['email' => $match[0][1]]);
-//                if ($abon!=null) {
-//                    $Receiv->id_abonent = $abon->id;
-//                    $Receiv->save();
-//                }
-//            }
-//            UpdateStatus($Receiv,'');
-//            if ($Receiv->id_abonent<>0) {
-//                $abon = UtAbonent::findOne($Receiv->id_abonent);
-//                message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
-//            }
-//            else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
+            if (count($match[0])==2){
+                    $Receiv->id_abonent = $match[0][1];
+                    $Receiv->save();
+            }
+            UpdateStatus($Receiv,'');
+            if ($Receiv->id_abonent<>0) {
+                $abon = UtAbonent::findOne($Receiv->id_abonent);
+                message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+            }
+            else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
               $Receiv = verifyReceiver($event, $apiKey, $org);
