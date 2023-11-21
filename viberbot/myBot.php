@@ -123,8 +123,11 @@ try {
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
             if (count($match[0])==2){
-                $Receiv->id_abonent=$match[0][1];
-                $Receiv->save();
+                $abon = UtAbonent::findOne(['email' => $match[0][1]]);
+                if ($abon!=null) {
+                    $Receiv->id_abonent = $abon->id;
+                    $Receiv->save();
+                }
             }
             UpdateStatus($Receiv,'');
             if ($Receiv->id_abonent<>0) {
