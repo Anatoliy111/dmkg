@@ -60,10 +60,10 @@ try {
         // first interaction with bot - return "welcome message"
         ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('onConversation handler'. var_export($event, true));
+            $context = $event->getContext();
             $mes = ' Вітаємо вас в вайбер боті'."\n";
             $mes = $mes.'КП "ДМКГ"!!!'."\n";
             $mes = $mes.'Натисніть кнопку Почати"!!!'."\n";
-            $context = $event->getContext();
             return (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
                 ->setText($mes)
@@ -122,16 +122,26 @@ try {
             $log->info('Start-button'. var_export($event, true));
             preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            if (count($match[0])==2){
-                $Receiv->id_abonent=$match[0][1];
-                $Receiv->save();
-            }
-            UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent<>0) {
+//            message($bot, $botSender, $event, $event->getMessage()->getText(), getDmkgMenuOS($Receiv));
+
+            if ($Receiv->id_abonent<>0 and count($match[0]) == 2)  {
                 $abon = UtAbonent::findOne($Receiv->id_abonent);
-                message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! '.$abon->fio.' ви вже зареєстровані в кабінеті споживача, оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+                $abon2 = UtAbonent::findOne($match[0][1]);
+                if ($abon->id == $abon2->id) {
+                    message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!!', getDmkgMenuOS($Receiv));
+                } else message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!! Бажаєте змінити профіль на '.$abon2->email .'?', getYesNoMenu('editprof#'.$match[0][1]));
             }
-            else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
+            else {
+                if (count($match[0]) == 2) {
+                    $Receiv->id_abonent = $match[0][1];
+                    $Receiv->save();
+                }
+                UpdateStatus($Receiv, '');
+                if ($Receiv->id_abonent <> 0) {
+                    $abon = UtAbonent::findOne($Receiv->id_abonent);
+                    message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! ' . $abon->fio . ' ви вже зареєстровані в кабінеті споживача ' . $abon->email . ', оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+                } else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
+            }
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -193,7 +203,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             if ($modelabon != null)  {
-                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача - ' . $modelabon->email. ' ?', getYesNoMenu('exit#'.$Receiv->id));
+                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вам доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#'.$Receiv->id));
             }
             else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#'.$Receiv->id));
 
@@ -210,6 +220,19 @@ try {
             $log->info('admin'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
             message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
+        })
+        ->onText('|editprof#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('edit kab '. var_export($event, true));
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            UpdateStatus($Receiv, '');
+//            $FindRah = $Receiv->getViberAbons()->all();
+            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
+            if (count($match[0])==3 && $match[0][2]=='yes') {
+                $Receiv->id_abonent = $match[0][1];
+                $Receiv->save();
+                $abon = UtAbonent::findOne($Receiv->id_abonent);
+                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
+            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
         })
         ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('del-rah'. var_export($event, true));
