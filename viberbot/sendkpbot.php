@@ -15,9 +15,9 @@ use Monolog\Handler\StreamHandler;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 require_once (__DIR__ .'/../viberbot/botMenu.php');
-//require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-//$yiiConfig = require __DIR__ . '/../app/config/web.php';
-//new yii\web\Application($yiiConfig);
+require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+$yiiConfig = require __DIR__ . '/../app/config/web.php';
+new yii\web\Application($yiiConfig);
 //require_once(__DIR__ . '\dmkgMenuSend.php');
 
 
