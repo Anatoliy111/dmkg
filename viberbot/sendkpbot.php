@@ -51,9 +51,9 @@ $receivid = 'WhD/fEV4c9rtUBGOAihTqA==';
 $FindModels = Viber::findAll(['api_key' => $apiKey]);
 
 foreach ($FindModels as $model) {
-    if ($model->id_receiver == $receivid) {
+//    if ($model->id_receiver == $receivid) {
         send($apiKey,$botSender,$log,$message,$model->id_receiver);
-    }
+//    }
 }
 
 
@@ -96,6 +96,8 @@ function send($apiKey,$botSender,$log,$message,$receivid)
             $log->warning('Actual body: ' . $bot->getInputBody());
         }
     }
+
+    return '';
 }
 
 
