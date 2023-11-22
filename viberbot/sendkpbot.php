@@ -66,7 +66,7 @@ foreach ($FindModels as $model) {
 function send($apiKey,$botSender,$log,$message,$receivid)
 {
 
-
+    $res ='ok - '.$receivid;
 
     try {
         // create bot instance
@@ -80,14 +80,10 @@ function send($apiKey,$botSender,$log,$message,$receivid)
         );
 
     } catch (Exception $e) {
-        $log->warning('Exception: ' . $e->getMessage());
-        if ($bot) {
-            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-            $log->warning('Actual body: ' . $bot->getInputBody());
-        }
+        $res='bad '.$receivid;
     }
 
-    return '';
+    return $res;
 }
 
 
