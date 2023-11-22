@@ -128,7 +128,7 @@ try {
             $log->info('click on button');
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoKontakt().$Receiv->id_receiver, getKpMenu());
+            message($bot, $botSender, $event, infoKontakt(), getKpMenu());
         })
         ->onText('|KpMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
             $log->info('click on button');

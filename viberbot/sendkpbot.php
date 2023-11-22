@@ -48,7 +48,7 @@ try {
     $bot->getClient()->sendMessage(
         (new \Viber\Api\Message\Text())
             ->setSender($botSender)
-            ->setReceiver('gN0uFHnqvanHwb17QuwMaQ==')
+            ->setReceiver('WhD/fEV4c9rtUBGOAihTqA==')
             ->setText($message)
     );
 
