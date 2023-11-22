@@ -10,9 +10,6 @@ use Viber\Api\Sender;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-getSend('asfsdf');
-
-
 function getSend($message)
 {
 
