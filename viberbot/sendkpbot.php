@@ -80,11 +80,11 @@ function send($apiKey,$botSender,$log,$message,$receivid)
 
     } catch (Exception $e) {
         $res='bad '.$receivid;
-        $log->warning('Exception: ' . $e->getMessage());
-        if ($bot) {
-            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-            $log->warning('Actual body: ' . $bot->getInputBody());
-        }
+//        $log->warning('Exception: ' . $e->getMessage());
+//        if ($bot) {
+//            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+//            $log->warning('Actual body: ' . $bot->getInputBody());
+//        }
     }
 
     return $res;
