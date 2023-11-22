@@ -54,9 +54,9 @@ $log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
 
 
 foreach ($FindModels as $model) {
-    if ($model->id_receiver == $receivid or $model->id_receiver == $receivid2) {
+//    if ($model->id_receiver == $receivid or $model->id_receiver == $receivid2) {
        echo send($apiKey,$botSender,$log,$message,$model->id_receiver);
-    }
+//    }
 }
 
 
