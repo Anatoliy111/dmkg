@@ -42,26 +42,30 @@ $receivid = 'WhD/fEV4c9rtUBGOAihTqA==';
 
 $FindModels = Viber::findAll(['api_key' => $apiKey]);
 
+$botSender = new Sender([
+    'name' => 'KpCentrBot',
+    'avatar' => '',
+]);
+
+// log bot interaction
+$log = new Logger('bot');
+$log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
+
+
+
 foreach ($FindModels as $model) {
     if ($model->id_receiver == $receivid) {
-        send($apiKey,$message,$model->id_receiver);
+
+        send($apiKey,$botSender,$log,$message,$model->id_receiver);
     }
 }
 
 
 
 
-function send($apiKey,$message,$receivid)
+function send($apiKey,$botSender,$log,$message,$receivid)
 {
 
-    $botSender = new Sender([
-        'name' => 'KpCentrBot',
-        'avatar' => '',
-    ]);
-
-// log bot interaction
-    $log = new Logger('bot');
-    $log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
 
 
     try {
@@ -77,10 +81,10 @@ function send($apiKey,$message,$receivid)
 
     } catch (Exception $e) {
         $log->warning('Exception: ' . $e->getMessage());
-//        if ($bot) {
-//            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-//            $log->warning('Actual body: ' . $bot->getInputBody());
-//        }
+        if ($bot) {
+            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+            $log->warning('Actual body: ' . $bot->getInputBody());
+        }
     }
 
     return '';
