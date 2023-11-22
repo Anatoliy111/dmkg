@@ -37,7 +37,7 @@ viber://pa?chatURI=dmkgBot або реєструйтесь в кабінеті �
 EOD;
 
 $receivid = 'WhD/fEV4c9rtUBGOAihTqA==';
-
+$receivid2 = 'nvQjHkgKvAU+9xhpbUxp1g==';
 //send($apiKey,$botSender,$log,$message,$receivid);
 
 $FindModels = Viber::findAll(['api_key' => $apiKey]);
@@ -54,7 +54,7 @@ $log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
 
 
 foreach ($FindModels as $model) {
-    if ($model->id_receiver == $receivid) {
+    if ($model->id_receiver == $receivid or $model->id_receiver == $receivid2) {
        echo send($apiKey,$botSender,$log,$message,$model->id_receiver);
     }
 }
