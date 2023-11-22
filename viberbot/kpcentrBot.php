@@ -175,8 +175,8 @@ try {
             if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
             else {
                 message($bot, $botSender, $event, infoPokazn($Rah->schet), getRahList($FindRah,'pok-rah'));
-                UpdateStatus($Receiv,'add-pok#'.$match[0][1]);
             }
+            UpdateStatus($Receiv,'');
         })
         ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button');
@@ -186,8 +186,8 @@ try {
             if (count($match[0])==4 && $match[0][3]=='yes'){
                 $addpok = addPokazn(intval($match[0][2]),$match[0][1],$event->getSender()->getName());
                 if ($addpok != null) message($bot, $botSender, $event, 'Вітаємо!!! Показник '.$match[0][2].' здано успішно!', getKpMenu());
-                UpdateStatus($Receiv,'');
             }
+            UpdateStatus($Receiv,'');
         })
         ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('click on button privat24 ');
@@ -261,7 +261,7 @@ try {
 
                 }
                 else{
-                     message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getRahMenu());
+                     message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getKpMenu());
                      UpdateStatus($Receiv,'');
                 }
 
