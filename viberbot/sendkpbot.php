@@ -43,9 +43,9 @@ $receivid = 'WhD/fEV4c9rtUBGOAihTqA==';
 $FindModels = Viber::findAll(['api_key' => $apiKey]);
 
 foreach ($FindModels as $model) {
-//    if ($model->id_receiver == $receivid) {
+    if ($model->id_receiver == $receivid) {
         send($apiKey,$message,$model->id_receiver);
-//    }
+    }
 }
 
 
@@ -73,22 +73,6 @@ function send($apiKey,$message,$receivid)
                 ->setReceiver($receivid)
                 ->setText($message)
                 ->setKeyboard(getKpMenu())
-//            ->setKeyboard(
-//                (new \Viber\Api\Keyboard())
-//                    ->setButtons([
-//                        (new \Viber\Api\Keyboard\Button())
-//                            ->setColumns(2)
-//                            //->setBgColor('#8074d6')
-//                            // ->setTextSize('small')
-//                            ->setTextSize('small')
-//                            ->setTextHAlign('center')
-//                            ->setTextVAlign('center')
-//                            ->setActionType('reply')
-//                            ->setActionBody('Infomenu-button')
-//                            ->setBgColor("#75C5F3")
-//                            ->setText('📈  Інформація по ос.рахунках')]
-//                    )
-//            )
         );
 
     } catch (Exception $e) {
