@@ -13,6 +13,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
+require_once (__DIR__ .'/botMenu.php');
 //require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 //$yiiConfig = require __DIR__ . '/../app/config/web.php';
 //new yii\web\Application($yiiConfig);
@@ -50,6 +51,7 @@ try {
             ->setSender($botSender)
             ->setReceiver('WhD/fEV4c9rtUBGOAihTqA==')
             ->setText($message)
+            ->setKeyboard(getKpMenu())
     );
 
 } catch (Exception $e) {
