@@ -13,10 +13,10 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
-require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../app/config/web.php';
-new yii\web\Application($yiiConfig);
-require_once(__DIR__ . '\dmkgMenuSend.php');
+//require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+//$yiiConfig = require __DIR__ . '/../app/config/web.php';
+//new yii\web\Application($yiiConfig);
+//require_once(__DIR__ . '\dmkgMenuSend.php');
 
 
 //$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot

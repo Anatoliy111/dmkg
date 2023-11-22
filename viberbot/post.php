@@ -14,7 +14,7 @@ $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';
 //
 //echo "Ответ на Ваш запрос: ".$response;
 
-$url = 'http://dmkg/viberbot/myBot.php';
+$url = 'http://dmkg.com.ua/viberbot/myBot.php';
 $params = array(
     'event'=> "message",
     'timestamp'=> 1457764197627,
