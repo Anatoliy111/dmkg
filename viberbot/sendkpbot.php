@@ -43,15 +43,23 @@ viber://pa?chatURI=dmkgBot або реєструйтесь в кабінеті �
 До кінця листопада 2023, бот "KpCentrBot" буде ПРАЦЮВАТИ та приймати показники!!!
 EOD;
 
-try {
-    // create bot instance
-    $bot = new Bot(['token' => $apiKey]);
-    $bot->getClient()->sendMessage(
-        (new \Viber\Api\Message\Text())
-            ->setSender($botSender)
-            ->setReceiver('WhD/fEV4c9rtUBGOAihTqA==')
-            ->setText($message)
-            ->setKeyboard(getKpMenu())
+$receivid = 'WhD/fEV4c9rtUBGOAihTqA==';
+
+send($apiKey,$botSender,$log,$message,$receivid);
+
+
+function send($apiKey,$botSender,$log,$message,$receivid)
+{
+
+    try {
+        // create bot instance
+        $bot = new Bot(['token' => $apiKey]);
+        $bot->getClient()->sendMessage(
+            (new \Viber\Api\Message\Text())
+                ->setSender($botSender)
+                ->setReceiver($receivid)
+                ->setText($message)
+                ->setKeyboard(getKpMenu())
 //            ->setKeyboard(
 //                (new \Viber\Api\Keyboard())
 //                    ->setButtons([
@@ -68,13 +76,14 @@ try {
 //                            ->setText('📈  Інформація по ос.рахунках')]
 //                    )
 //            )
-    );
+        );
 
-} catch (Exception $e) {
-    $log->warning('Exception: ' . $e->getMessage());
-    if ($bot) {
-        $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-        $log->warning('Actual body: ' . $bot->getInputBody());
+    } catch (Exception $e) {
+        $log->warning('Exception: ' . $e->getMessage());
+        if ($bot) {
+            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+            $log->warning('Actual body: ' . $bot->getInputBody());
+        }
     }
 }
 
