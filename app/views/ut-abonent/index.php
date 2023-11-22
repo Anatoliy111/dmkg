@@ -82,6 +82,12 @@ if (isset($_SESSION['modalmess'])) {
        ?>
 
 
+
+
+    </div>
+
+    <div class="well col-xs-12" style="text-align: center;">
+        <h4>При виникненні проблем з реєстрацією звертайтесь в кабінет ЕКОНОМІСТИ в приміщенні Долинського Міськомунгоспу.</h4>
     </div>
 
     <div class="row">

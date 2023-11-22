@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="ut-abonent-email">
 
+
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
@@ -54,7 +55,13 @@ use yii\widgets\ActiveForm;
 
             </div>
 
+
+
     <?php ActiveForm::end(); ?>
+
+
+
+
 
 </div>
 
