@@ -61,7 +61,7 @@ function send($apiKey,$message,$receivid)
 
 // log bot interaction
     $log = new Logger('bot');
-    $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
+    $log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
 
 
     try {
