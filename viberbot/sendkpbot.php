@@ -25,14 +25,6 @@ new yii\web\Application($yiiConfig);
 //$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';  //myBot
 $apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';  //kpBot
 
-$botSender = new Sender([
-    'name' => 'KpCentrBot',
-    'avatar' => '',
-]);
-
-// log bot interaction
-$log = new Logger('bot');
-$log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
 
 //$message='Доброго дня! Повідомляємо що з  01.12.2023р. вайбербот KPCentrBot припинить працювати. Для подачі показників по воді реєструйтесь у вайберботі ДМКГ DmkgBot натиснувши на посилання viber://pa?chatURI=dmkgBot або реєструйтесь в кабінеті споживача на сайті dmkg.com.ua. При виникненні проблем з реєстрацією звертайтесь в кабінет ЕКОНОМІСТИ в приміщенні Долинського Міськомунгоспу за адресою м.Долинська вул.Нова 80-а. До кінця листопада 2023, бот буде ПРАЦЮВАТИ та приймати показники!!!';
 
@@ -52,15 +44,25 @@ $FindModels = Viber::findAll(['api_key' => $apiKey]);
 
 foreach ($FindModels as $model) {
 //    if ($model->id_receiver == $receivid) {
-        send($apiKey,$botSender,$log,$message,$model->id_receiver);
+        send($apiKey,$message,$model->id_receiver);
 //    }
 }
 
 
 
 
-function send($apiKey,$botSender,$log,$message,$receivid)
+function send($apiKey,$message,$receivid)
 {
+
+    $botSender = new Sender([
+        'name' => 'KpCentrBot',
+        'avatar' => '',
+    ]);
+
+// log bot interaction
+    $log = new Logger('bot');
+    $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
+
 
     try {
         // create bot instance
