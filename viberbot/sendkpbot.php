@@ -55,8 +55,7 @@ $log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
 
 foreach ($FindModels as $model) {
     if ($model->id_receiver == $receivid) {
-
-        send($apiKey,$botSender,$log,$message,$model->id_receiver);
+       echo send($apiKey,$botSender,$log,$message,$model->id_receiver);
     }
 }
 
@@ -81,6 +80,11 @@ function send($apiKey,$botSender,$log,$message,$receivid)
 
     } catch (Exception $e) {
         $res='bad '.$receivid;
+        $log->warning('Exception: ' . $e->getMessage());
+        if ($bot) {
+            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+            $log->warning('Actual body: ' . $bot->getInputBody());
+        }
     }
 
     return $res;
