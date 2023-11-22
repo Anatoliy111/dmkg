@@ -13,7 +13,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
-require_once (__DIR__ .'/botMenu.php');
+require_once (__DIR__ .'/../viberbot/botMenu.php');
 //require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 //$yiiConfig = require __DIR__ . '/../app/config/web.php';
 //new yii\web\Application($yiiConfig);
@@ -51,22 +51,23 @@ try {
             ->setSender($botSender)
             ->setReceiver('WhD/fEV4c9rtUBGOAihTqA==')
             ->setText($message)
-            ->setKeyboard(
-                (new \Viber\Api\Keyboard())
-                    ->setButtons([
-                        (new \Viber\Api\Keyboard\Button())
-                            ->setColumns(2)
-                            //->setBgColor('#8074d6')
-                            // ->setTextSize('small')
-                            ->setTextSize('small')
-                            ->setTextHAlign('center')
-                            ->setTextVAlign('center')
-                            ->setActionType('reply')
-                            ->setActionBody('Infomenu-button')
-                            ->setBgColor("#75C5F3")
-                            ->setText('📈  Інформація по ос.рахунках')]
-                    )
-            )
+            ->setKeyboard(getKpMenu())
+//            ->setKeyboard(
+//                (new \Viber\Api\Keyboard())
+//                    ->setButtons([
+//                        (new \Viber\Api\Keyboard\Button())
+//                            ->setColumns(2)
+//                            //->setBgColor('#8074d6')
+//                            // ->setTextSize('small')
+//                            ->setTextSize('small')
+//                            ->setTextHAlign('center')
+//                            ->setTextVAlign('center')
+//                            ->setActionType('reply')
+//                            ->setActionBody('Infomenu-button')
+//                            ->setBgColor("#75C5F3")
+//                            ->setText('📈  Інформація по ос.рахунках')]
+//                    )
+//            )
     );
 
 } catch (Exception $e) {
