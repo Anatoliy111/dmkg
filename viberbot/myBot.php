@@ -73,7 +73,7 @@ try {
                 if ($cli<>null) {
 
                     try {
-                        $meserr='';
+                        $meserr=$cli;
                         foreach ($cli as $err){
                             $meserr=$meserr.implode(",", $err);
                         }
