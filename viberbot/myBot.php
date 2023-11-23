@@ -69,8 +69,8 @@ try {
                                 і відпишіться та видаліть MyBot зі своєї Viber програми. 
                                 Вибачте за незручності!!!
                             EOD;
-
-                message($bot, $botSender, $event, $message, null);
+                if ($cli<>null) message($bot, $botSender, $event, $message.' cli', null);
+                else message($bot, $botSender, $event, $message, null);
             })
             ->on(function ($event) {
                 return true; // match all
