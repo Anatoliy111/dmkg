@@ -37,8 +37,8 @@ viber://pa?chatURI=dmkgBot або заново виконайте підключ
 Вибачте за незручності!!!
 EOD;
 
-$receivid = 'WhD/fEV4c9rtUBGOAihTqA==';
-$receivid2 = 'nvQjHkgKvAU+9xhpbUxp1g==';
+$receivid = 'gN0uFHnqvanHwb17QuwMaQ='; //myBot
+
 //send($apiKey,$botSender,$log,$message,$receivid);
 
 $FindModels = Viber::findAll(['api_key' => $apiKey]);

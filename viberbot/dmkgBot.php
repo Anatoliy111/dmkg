@@ -341,7 +341,7 @@ try {
             $Receiv = verifyReceiver($event,$apiKey, $org);
             // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
             if ($Receiv == null || $Receiv->status == ''){
-                message($bot, $botSender, $event, 'Не визначений запит:'.$event->getMessage()->getText(), null);
+                message($bot, $botSender, $event, 'Не визначений запит:'.$event->getMessage()->getText().' '.$event->getSender()->getId(), null);
                 message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
             }
             else {
