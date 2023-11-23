@@ -44,7 +44,7 @@ $period=Yii::$app->dolgdb->createCommand('select first 1 period from period orde
 $lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
 
 $botSender = new Sender([
-    'name' => 'dmkgBot',
+    'name' => 'myBot',
     'avatar' => '',
 ]);
 

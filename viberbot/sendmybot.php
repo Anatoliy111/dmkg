@@ -44,7 +44,7 @@ $receivid2 = 'nvQjHkgKvAU+9xhpbUxp1g==';
 $FindModels = Viber::findAll(['api_key' => $apiKey]);
 
 $botSender = new Sender([
-    'name' => 'KpCentrBot',
+    'name' => 'MyBot',
     'avatar' => '',
 ]);
 
