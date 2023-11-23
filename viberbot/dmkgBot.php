@@ -140,7 +140,7 @@ try {
                 if ($Receiv->id_abonent <> 0) {
                     $abon = UtAbonent::findOne($Receiv->id_abonent);
                     message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! ' . $abon->fio . ' ви вже зареєстровані в кабінеті споживача ' . $abon->email . ', оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
-                } else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
+                } else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
             }
         })
         ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
@@ -154,7 +154,7 @@ try {
         ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
             else {
                 $FindRah = $Receiv->getUtAbonkart()->all();
                 if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
@@ -169,7 +169,7 @@ try {
         })
         ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
             else {
                 UpdateStatus($Receiv, 'add-rah');
                 message($bot, $botSender, $event, 'Введіть (в графі повідомлення/сообщение) номер вашого особового рахунку:', getRahMenu());
@@ -203,7 +203,7 @@ try {
             $Receiv = verifyReceiver($event, $apiKey, $org);
             $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
             if ($modelabon != null)  {
-                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вам доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#'.$Receiv->id));
+                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вам доведеться пройти процедуру авторизації заново або виконати підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!!', getYesNoMenu('exit#'.$Receiv->id));
             }
             else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#'.$Receiv->id));
 
@@ -313,7 +313,7 @@ try {
                     message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
                 }
                 if ($addpok == null) {
-                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
                     UpdateStatus($Receiv, '');
                 }
             }
@@ -441,7 +441,7 @@ try {
                         }
                         else {
                             UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!!!', getDmkgMenuOS($Receiv));
 //                            message($bot, $botSender, $event, $res, getDmkgMenuOS($Receiv));
                         }
                     }
@@ -470,7 +470,7 @@ try {
                     }
                     else {
                         UpdateStatus($Receiv,'');
-                        message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+                        message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!!!', getDmkgMenuOS($Receiv));
                     }
                 }
                 elseif ($match[0][0] == 'add-pok'){
@@ -493,7 +493,7 @@ try {
                                     message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
                                 }
                                 if ($addpok == null) {
-                                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
                                     UpdateStatus($Receiv, '');
                                 }
                             }
@@ -507,7 +507,7 @@ try {
                                 message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
                             }
                             if ($addpok == null) {
-                                message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                                message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
                                 UpdateStatus($Receiv, '');
                             }
                         }
