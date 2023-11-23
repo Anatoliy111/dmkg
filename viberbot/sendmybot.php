@@ -76,7 +76,6 @@ function send($apiKey,$botSender,$log,$message,$receivid)
                 ->setSender($botSender)
                 ->setReceiver($receivid)
                 ->setText($message)
-                ->setKeyboard(getKpMenu())
         );
 
     } catch (Exception $e) {
