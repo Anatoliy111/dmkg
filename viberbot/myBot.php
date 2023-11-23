@@ -84,7 +84,7 @@ try {
 //                        message($bot, $botSender, $event, $mess, null);
 //                    }
 
-                    message($bot, $botSender, $event, $message, null);
+                    message($bot, $botSender, $event, $message.' '.$event->getSender()->getId(), null);
 
                 }
                 else message($bot, $botSender, $event, $message, null);
