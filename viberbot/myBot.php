@@ -55,60 +55,53 @@ $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
 try {
     // create bot instance
 
-    $bot = new Bot(['token' => $apiKey]);
-    $bot
-        // first interaction with bot - return "welcome message"
-        ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onConversation handler'. var_export($event, true));
-            $context = $event->getContext();
-            $mes = ' Вітаємо вас в вайбер боті'."\n";
-            $mes = $mes.'КП "ДМКГ"!!!'."\n";
-            $mes = $mes.'Натисніть кнопку Почати"!!!'."\n";
-           return (new \Viber\Api\Message\Text())
-                ->setSender($botSender)
-                ->setText($mes)
-                ->setKeyboard(getDmkgMenuStart($context));
-//            $mes = ' Вітаємо вас в вайбер боті КП "ДМКГ"!!!'."\n";
-//
-//            try{
-//                $Receiv = verifyReceiver($event, $apiKey, $org);
-//                $mes = $mes.'Оберіть потрібну функцію кнопками нижче.';
-//                return (new \Viber\Api\Message\Text())
-//                    ->setSender($botSender)
-//                    ->setText($mes)
-//                    ->setKeyboard(getDmkgMenuOS($Receiv));
-//            }
-//            catch(\Exception $e){
-//                $mes = $mes.' Натисніть кнопку Почати"!!!'."\n";
-//                return (new \Viber\Api\Message\Text())
-//                    ->setSender($botSender)
-//                    ->setText($mes)
-//                    ->setKeyboard(getDmkgMenuStart());
-//            }
-
-            // $mes = 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-//            message($bot, $botSender, $event, 'Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
-//            $receiverId = $event->getSender()->getId();
-//            $receiverName = $event->getSender()->getName();
-//            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
-//            if ($Receiv <> null) {
-//                $mes = $receiverName . ' Вітаємо в вайбер боті! Оберіть потрібну функцію кнопками нижче.';
-//            }
-//            else $mes = 'Помилка реєстрації';
-//            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
-        })
-        // when user subscribe to PA
-        ->onSubscribe(function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('onSubscribe handler');
+    $my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
+    if ($my_date->format('Y-m-d') >= '2023-11-01') {
+        $bot = new Bot(['token' => $apiKey]);
+        $bot
+            ->onText('|.*|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd) {
+                $message = <<<EOD
+                            Доброго дня! Повідомляємо що з  01.12.2023р. вайбербот "KPCentrBot" припинив працювати.
+                            Для подачі показників по воді реєструйтесь у вайберботі ДМКГ DmkgBot натиснувши на посилання
+                            viber://pa?chatURI=dmkgBot або реєструйтесь в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою).
+                            При виникненні проблем з реєстрацією звертайтесь в кабінет ЕКОНОМІСТИ в приміщенні Долинського Міськомунгоспу за адресою м.Долинська вул.Нова 80-а.
+                            EOD;
+                message($bot, $botSender, $event, $message, null);
+            })
+            ->on(function ($event) {
+                return true; // match all
+            }, function ($event) use ($log) {
+                $log->info('Other event: ' . var_export($event, true));
+            })
+            ->run();
+    }
+    else {
+        $bot = new Bot(['token' => $apiKey]);
+        $bot
+            // first interaction with bot - return "welcome message"
+            ->onConversation(function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('onConversation handler' . var_export($event, true));
+                $context = $event->getContext();
+                $mes = ' Вітаємо вас в вайбер боті' . "\n";
+                $mes = $mes . 'КП "ДМКГ"!!!' . "\n";
+                $mes = $mes . 'Натисніть кнопку Почати"!!!' . "\n";
+                return (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setText($mes)
+                    ->setKeyboard(getDmkgMenuStart($context));
+            })
+            // when user subscribe to PA
+            ->onSubscribe(function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('onSubscribe handler');
 //            $Receiv = verifyReceiver($event, $apiKey, $org);
-            return (new \Viber\Api\Message\Text())
-                ->setSender($botSender)
-                ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
-            ->setKeyboard(getDmkgMenuOS(null));
+                return (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setText('Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.')
+                    ->setKeyboard(getDmkgMenuOS(null));
 
-            //  $receiverId = $event->getSender()->getId();
-            //  $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
-            //    message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
+                //  $receiverId = $event->getSender()->getId();
+                //  $mes = ' Дякуємо що підписалися на наш бот! Оберіть потрібну функцію кнопками нижче.';
+                //    message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
 //            $receiverId = $event->getSender()->getId();
 //            $receiverName = $event->getSender()->getName();
 //            $Receiv = verifyReceiver($receiverId, $event, $apiKey, $org);
@@ -117,374 +110,368 @@ try {
 //            }
 //            else $mes = 'Помилка реєстрації';
 //            message($bot, $botSender, $event, $mes, getDmkgMenuOS($Receiv));
-        })
-        ->onText('|Start-button#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('Start-button'. var_export($event, true));
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            $Receiv = verifyReceiver($event, $apiKey, $org);
+            })
+            ->onText('|Start-button#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('Start-button' . var_export($event, true));
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
+                $Receiv = verifyReceiver($event, $apiKey, $org);
 //            message($bot, $botSender, $event, $event->getMessage()->getText(), getDmkgMenuOS($Receiv));
 
-            if ($Receiv->id_abonent<>0 and count($match[0]) == 2)  {
-                $abon = UtAbonent::findOne($Receiv->id_abonent);
-                $abon2 = UtAbonent::findOne($match[0][1]);
-                if ($abon->id == $abon2->id) {
-                    message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!!', getDmkgMenuOS($Receiv));
-                } else message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!! Бажаєте змінити профіль на '.$abon2->email .'?', getYesNoMenu('editprof#'.$match[0][1]));
-            }
-            else {
-                if (count($match[0]) == 2) {
-                    $Receiv->id_abonent = $match[0][1];
-                    $Receiv->save();
-                }
-                UpdateStatus($Receiv, '');
-                if ($Receiv->id_abonent <> 0) {
+                if ($Receiv->id_abonent <> 0 and count($match[0]) == 2) {
                     $abon = UtAbonent::findOne($Receiv->id_abonent);
-                    message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! ' . $abon->fio . ' ви вже зареєстровані в кабінеті споживача ' . $abon->email . ', оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
-                } else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
-            }
-        })
-        ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-              $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
-            else $FindRah = $Receiv->getUtAbonkart()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah,'inf-rah'));
-        })
-        ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
-            else {
-                $FindRah = $Receiv->getUtAbonkart()->all();
+                    $abon2 = UtAbonent::findOne($match[0][1]);
+                    if ($abon->id == $abon2->id) {
+                        message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!!', getDmkgMenuOS($Receiv));
+                    } else message($bot, $botSender, $event, 'Ви вже підписані на кабінет споживача ' . $abon->email . '!!! Бажаєте змінити профіль на ' . $abon2->email . '?', getYesNoMenu('editprof#' . $match[0][1]));
+                } else {
+                    if (count($match[0]) == 2) {
+                        $Receiv->id_abonent = $match[0][1];
+                        $Receiv->save();
+                    }
+                    UpdateStatus($Receiv, '');
+                    if ($Receiv->id_abonent <> 0) {
+                        $abon = UtAbonent::findOne($Receiv->id_abonent);
+                        message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! ' . $abon->fio . ' ви вже зареєстровані в кабінеті споживача ' . $abon->email . ', оберіть потрібну функцію кнопками нижче.', getDmkgMenuOS($Receiv));
+                    } else message($bot, $botSender, $event, 'Дякуємо що підписалися на наш бот! Ви поки що не зареєстровані в кабінеті споживача. Натисніть кнопку Авторизація/Реєстрація для початку процедури реєстрації!', getDmkgMenuOS($Receiv));
+                }
+            })
+            ->onText('|Infomenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+                if ($Receiv->id_abonent == 0) $FindRah = $Receiv->getViberAbons()->all();
+                else $FindRah = $Receiv->getUtAbonkart()->all();
                 if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-                else message($bot, $botSender, $event, 'Виберіть рахунок по якому подати показник:', getRahList($FindRah, 'pok-rah'));
-            }
-        })
-        ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv, 'auth-email');
-            message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:'."\n".' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
+                else message($bot, $botSender, $event, 'Виберіть рахунок:', getRahList($FindRah, 'inf-rah'));
+            })
+            ->onText('|Pokazmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+                if ($Receiv->id_abonent == 0) message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                else {
+                    $FindRah = $Receiv->getUtAbonkart()->all();
+                    if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+                    else message($bot, $botSender, $event, 'Виберіть рахунок по якому подати показник:', getRahList($FindRah, 'pok-rah'));
+                }
+            })
+            ->onText('|Auth-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, 'auth-email');
+                message($bot, $botSender, $event, 'Напишіть вашу ел.пошту - email:' . "\n" . ' (якщо ви вже реєструвались на сайті dmkg.com.ua, вкажіть пошту з якою ви реєструвались в кабінеті споживача):', getDmkgMenuOS($Receiv));
 //            }
-        })
-        ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            if ($Receiv->id_abonent==0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
-            else {
-                UpdateStatus($Receiv, 'add-rah');
-                message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
-            }
-        })
-        ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==0) $FindRah = $Receiv->getViberAbons()->all();
-            else $FindRah = $Receiv->getUtAbonkart()->all();
-            if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
-            else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah,'del-rah'));
-        })
-        ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, 'Редагування рахунків:', getRahMenu());
-        })
-        ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
-        })
-        ->onText('|Prof-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
-            UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, infoProf($Receiv,$abon), getProfMenu($abon));
-        })
-        ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
-            if ($modelabon != null)  {
-                message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email. ' ? Вам доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#'.$Receiv->id));
-            }
-            else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#'.$Receiv->id));
+            })
+            ->onText('|Addrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                if ($Receiv->id_abonent == 0) message($bot, $botSender, $event, 'Додати рахунок мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                else {
+                    UpdateStatus($Receiv, 'add-rah');
+                    message($bot, $botSender, $event, 'Напишіть номер вашого особового рахунку:', getRahMenu());
+                }
+            })
+            ->onText('|Delrah-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+                if ($Receiv->id_abonent == 0) $FindRah = $Receiv->getViberAbons()->all();
+                else $FindRah = $Receiv->getUtAbonkart()->all();
+                if ($FindRah == null) message($bot, $botSender, $event, 'У вас немає під"єднаних рахунків:', getRahMenu());
+                else message($bot, $botSender, $event, 'Виберіть рахунок для видалення:', getRahList($FindRah, 'del-rah'));
+            })
+            ->onText('|Rahmenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+                message($bot, $botSender, $event, 'Редагування рахунків:', getRahMenu());
+            })
+            ->onText('|Kontakt-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+                message($bot, $botSender, $event, infoKontakt(), getDmkgMenuOS($Receiv));
+            })
+            ->onText('|Prof-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                $abon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
+                UpdateStatus($Receiv, '');
+                message($bot, $botSender, $event, infoProf($Receiv, $abon), getProfMenu($abon));
+            })
+            ->onText('|Exit-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                $modelabon = UtAbonent::findOne(['id' => $Receiv->id_abonent]);
+                if ($modelabon != null) {
+                    message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з профілю кабінета споживача - ' . $modelabon->email . ' ? Вам доведеться пройти процедуру авторизації заново!', getYesNoMenu('exit#' . $Receiv->id));
+                } else message($bot, $botSender, $event, 'Ви дійсно бажаєте вийти з кабінета споживача?', getYesNoMenu('exit#' . $Receiv->id));
 
 //            UpdateStatus($Receiv,'');
 
-        })
-        ->onText('|DmkgMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
-//            message($bot, $botSender, $event, 'Головне меню:'.$Receiv->id,null);
-        })
-        ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('admin'. var_export($event, true));
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
-        })
-        ->onText('|editprof#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('edit kab '. var_export($event, true));
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv, '');
-//            $FindRah = $Receiv->getViberAbons()->all();
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if (count($match[0])==3 && $match[0][2]=='yes') {
-                $Receiv->id_abonent = $match[0][1];
-                $Receiv->save();
-                $abon = UtAbonent::findOne($Receiv->id_abonent);
-                message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
-            }else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
-        })
-        ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('del-rah'. var_export($event, true));
-//            $match = [];
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-            if ($Receiv->id_abonent==0) $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => $match[0][1]]);
-            else $DelRah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => trim($match[0][1])]);
-            if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
-            else {
-                $DelRah->delete();
-                message($bot, $botSender, $event, 'Рахунок '.$match[0][1].' видалено з кабінета!', getRahMenu());
-            }
-        })
-        ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$period) {
-            $log->info('inf-rah'. var_export($event, true));
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            UpdateStatus($Receiv,'');
-
-
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if ($Receiv->id_abonent==0) {
-                $FindRah = $Receiv->getViberAbons()->all();
-                $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
-            }
-            else {
-                $FindRah = $Receiv->getUtAbonkart()->all();
-                $Rah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => trim($match[0][1])]);
-            }
-            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'inf-rah'));
-            else {
-                message($bot, $botSender, $event, infoSchetOS($Rah->schet,$period), getRahList($FindRah,'inf-rah'));
-//                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
-            }
-        })
-        ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$lasdatehvd) {
-            $log->info('pok-rah'. var_export($event, true));
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-
-            if ($Receiv->id_abonent==0) {
-                $FindRah = $Receiv->getViberAbons()->all();
-                $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id,'schet' => trim($match[0][1])]);
-            }
-            else {
-                $FindRah = $Receiv->getUtAbonkart()->all();
-                $Rah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => trim($match[0][1])]);
-            }
-
-            if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah,'pok-rah'));
-            else {
-                $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
-                $hv=Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\''.$lasdatehvd.'\' and schet=\''.$schet1251.'\'')->QueryAll();
-                if ($hv != null) {
-                    message($bot, $botSender, $event, infoPokazn($Rah->schet,$lasdatehvd), getRahList($FindRah, 'pok-rah'));
-                    UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
-                }
-                else {
-                    message($bot, $botSender, $event, 'По рахунку '.$Rah->schet. ' немає послуги холодна вода', getRahList($FindRah, 'pok-rah'));
-                    UpdateStatus($Receiv, '');
-                }
-            }
-        })
-        ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org,$lasdatehvd) {
-            $log->info('add-pok'. var_export($event, true));
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-            $FindRah = $Receiv->getViberAbons()->all();
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if (count($match[0])==4 && $match[0][3]=='yes'){
-                $addpok = addPokazn($Receiv,intval($match[0][2]),$match[0][1],$lasdatehvd);
-//                message($bot, $botSender, $event, 'ok333', getYesNoMenu('add-pok#'.$match[0][1].'#'.$match[0][2]));
-                if ($addpok[0] == 'ok') {
-                    message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
-                    UpdateStatus($Receiv, '');
-                }
-                if ($addpok[0] == 'err') {
-                    message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
-                }
-                if ($addpok == null) {
-                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
-                    UpdateStatus($Receiv, '');
-                }
-            }
-        })
-        ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('click on button privat24 '. var_export($event, true));
-            $Receiv = verifyReceiver($event,$apiKey, $org);
-            message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenuOS($Receiv));
-        })
-        ->onText('|exit#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
-            $log->info('exit kab '. var_export($event, true));
-            $Receiv = verifyReceiver($event, $apiKey, $org);
-//            $FindRah = $Receiv->getViberAbons()->all();
-            preg_match_all('/([^#]+)/ui',$event->getMessage()->getText(),$match);
-            if ($Receiv->id_abonent=$match[0][0]){
-                $Receiv->id_abonent=0;
-                $Receiv->save();
-                message($bot, $botSender, $event, 'Ви вишли з кабінета!', getDmkgMenuOS($Receiv));
-                UpdateStatus($Receiv,'');
-            }
-        })
-        ->onText('|.*|s', function ($event) use ($bot, $botSender, $log ,$apiKey, $org,$lasdatehvd) {
-            $log->info('onText ' . var_export($event, true));
-            // .* - match any symbols
-            $Receiv = verifyReceiver($event,$apiKey, $org);
-            // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
-            if ($Receiv == null || $Receiv->status == ''){
-                message($bot, $botSender, $event, 'Не визначений запит:'.$event->getMessage()->getText(), null);
+            })
+            ->onText('|DmkgMenu-button|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
                 message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
-            }
-            else {
-                preg_match_all('/([^#]+)/ui',$Receiv->status,$match);
-                if ($match[0][0] == 'add-rah'){
-                    $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText()))]);
-                    $ModelAbonReceiver = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent,'schet' => $event->getMessage()->getText()]);
-
-
-                    if ($ModelKart != null && $ModelAbonReceiver == null)  {
-                        UpdateStatus($Receiv,'verify-rah#'.$event->getMessage()->getText());
-                        message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
-                    }
-                    elseif ($ModelKart == null) {
-                        message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще.', getRahMenu());
-                        //UpdateStatus($Receiv,'');
-                    }
-                    elseif ($ModelKart != null && $ModelAbonReceiver != null) {
-                        message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до кабінета!', getRahMenu());
-                        //UpdateStatus($Receiv,'');
-                    }
+//            message($bot, $botSender, $event, 'Головне меню:'.$Receiv->id,null);
+            })
+            ->onText('|admin|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('admin' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
+            })
+            ->onText('|editprof#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('edit kab ' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+//            $FindRah = $Receiv->getViberAbons()->all();
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
+                if (count($match[0]) == 3 && $match[0][2] == 'yes') {
+                    $Receiv->id_abonent = $match[0][1];
+                    $Receiv->save();
+                    $abon = UtAbonent::findOne($Receiv->id_abonent);
+                    message($bot, $botSender, $event, 'Вітаємо! Ви змінили профіль користувача на ' . $abon->email . ' ' . $abon->fio . '!!!', getDmkgMenuOS($Receiv));
+                } else message($bot, $botSender, $event, 'Виникла помилка при зміні профілю. Спробуйте ще!', getDmkgMenuOS($Receiv));
+            })
+            ->onText('|del-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('del-rah' . var_export($event, true));
+//            $match = [];
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
+                if ($Receiv->id_abonent == 0) $DelRah = ViberAbon::findOne(['id_viber' => $Receiv->id, 'schet' => $match[0][1]]);
+                else $DelRah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent, 'schet' => trim($match[0][1])]);
+                if ($DelRah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahMenu());
+                else {
+                    $DelRah->delete();
+                    message($bot, $botSender, $event, 'Рахунок ' . $match[0][1] . ' видалено з кабінета!', getRahMenu());
                 }
-                elseif ($match[0][0] == 'verify-rah') {
-                    try {
-                        $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
-                        if ($ModelKart != null) {
-                            if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
-                                $addabon = addAbonkart($Receiv, $match[0][1]);
-                                if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета.', getRahMenu());
-                                else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, можливо ваш аккаунт було видалено, здійсніть вихід з кабінета в пункті меню ПРОФІЛЬ КОРИСТУВАЧА та зареєструйтесь заново !!!', getDmkgMenuOS($Receiv));
-                                UpdateStatus($Receiv, '');
-                            } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Введіть тільки прізвище! Спробуйте ще.', getRahMenu());
-                        }
-                        else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, виконайте додавання рахунка заново!!!', getRahMenu());
+            })
+            ->onText('|inf-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $period) {
+                $log->info('inf-rah' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                UpdateStatus($Receiv, '');
 
-                    } catch (\Exception $e) {
-                        $mess = $e->getMessage();
-                        message($bot, $botSender, $event, $mess, getRahMenu());
-                    }
-                }
-                elseif ($match[0][0] == 'auth-email'){
-                    $modelemail = new UtAbonent();
-                    $modelemail->scenario = 'email';
-                    $modelemail->email=$event->getMessage()->getText();
-                    if ($modelemail->validate()) {
-                        $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
-                        if ($modelabon != null)  {
-                            UpdateStatus($Receiv,'auth-passw#'.$event->getMessage()->getText());
-                            message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
-                        }
-                        else {
-                            message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
-                            UpdateStatus($Receiv,'add-abon#'.'email='.$event->getMessage()->getText());
-                        }
-                    }
-                    else {
-                        message($bot, $botSender, $event, $modelemail->getErrors()['email'][0], getDmkgMenuOS($Receiv));
-                    }
 
-                }
-                elseif ($match[0][0] == 'add-abon'){
-
-                    $modelemail = new UtAbonent();
-                    $modelemail->scenario = 'reg';
-
-                    foreach ($match[0] as $col) {
-                        preg_match_all('/([^=]+)/ui',$col,$match2);
-                        switch ($match2[0][0]) {
-                            case 'email':
-                                $modelemail->email=isset($match2[0][1])?$match2[0][1]:'';
-                                break;
-                            case 'fio':
-                                $modelemail->fio=isset($match2[0][1])?$match2[0][1]:'';
-                                break;
-                            case 'pass1':
-                                $modelemail->pass1=isset($match2[0][1])?$match2[0][1]:'';
-                                break;
-                            case 'pass2':
-                                $modelemail->pass2=isset($match2[0][1])?$match2[0][1]:'';
-                                break;
-                        }
-
-                    }
-
-                    if (!$modelemail->validate()) {
-                        $err=$modelemail->getErrors();
-                        if (array_key_exists('fio',$err)) $modelemail->fio = $event->getMessage()->getText();
-                        elseif (array_key_exists('pass1',$err)) $modelemail->pass1 = $event->getMessage()->getText();
-                        elseif (array_key_exists('pass2',$err)) $modelemail->pass2 = $event->getMessage()->getText();
-
-                    }
-                    if ($modelemail->validate()) {
-                        $res = Addabon($modelemail,$Receiv);
-                        if ($res=='OK') {
-                            UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Дякуємо '.$modelemail->fio.'! Ви здійснили процедуру реєстрації в кабінеті споживача ДМКГ. На вашу пошту '.$modelemail->email.' вислано лист для підтвердження реєстрації. Для завершення реєстрації виконайте підтвердження обов"язково!!!', getDmkgMenuOS($Receiv));
-                        }
-                        else {
-                            UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
-//                            message($bot, $botSender, $event, $res, getDmkgMenuOS($Receiv));
-                        }
-                    }
-                    else {
-                        $err = $modelemail->getErrors();
-                        UpdateStatus($Receiv,'add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2);
-                        //    message($bot, $botSender, $event, 'OKKK', getDmkgMenuOS($Receiv));
-                        if (array_key_exists('fio',$err)) message($bot, $botSender, $event, $err['fio'][0].' '.$modelemail->fio, getDmkgMenuOS($Receiv));
-                        elseif (array_key_exists('pass1',$err)) message($bot, $botSender, $event, $err['pass1'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
-                        elseif (array_key_exists('pass2',$err)) message($bot, $botSender, $event, $err['pass2'][0].' '.$modelemail->pass1, getDmkgMenuOS($Receiv));
-                    }
-                }
-                elseif ($match[0][0] == 'auth-passw'){
-                    $modelabon = UtAbonent::findOne(['email' => $match[0][1]]);
-                    if ($modelabon != null)  {
-                        if ($modelabon->passopen == $event->getMessage()->getText()) {
-                            $Receiv->id_abonent = $modelabon->id;
-                            $Receiv->save();
-                            UpdateStatus($Receiv,'');
-                            message($bot, $botSender, $event, 'Вітаємо '.$modelabon->fio.'! Ви здійснили вхід в систему, тепер для вас доступні всі функції!!!', getDmkgMenuOS($Receiv));
-                        }
-                        else {
-//                            UpdateStatus($Receiv, 'auth-passw#' . $event->getMessage()->getText());
-                            message($bot, $botSender, $event, 'Введений вами пароль не вірний! Спробуйте ще!'."\n\n".'Якщо ви забули пароль, скористайтесь посиланням (https://dmkg.com.ua/ut-abonent/fogotpass - Забули пароль) на сторінці входу в кабінет споживача!', getDmkgMenuOS($Receiv));
-                        }
-                    }
-                    else {
-                        UpdateStatus($Receiv,'');
-                        message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
-                    }
-                }
-                elseif ($match[0][0] == 'add-pok'){
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
+                if ($Receiv->id_abonent == 0) {
+                    $FindRah = $Receiv->getViberAbons()->all();
+                    $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id, 'schet' => trim($match[0][1])]);
+                } else {
                     $FindRah = $Receiv->getUtAbonkart()->all();
-                    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $match[0][1]));
-                    $val = $event->getMessage()->getText();
-                    if (is_numeric($val) && floor($val) == $val && $val > 0) {
-                        $modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll()[0];
-                        if ($modelPokazn != null) {
-                            if ((intval($val) - $modelPokazn['pokazn']) > 100) {
-                                message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#'.$match[0][1].'#'.$val));
-                            } else {
+                    $Rah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent, 'schet' => trim($match[0][1])]);
+                }
+                if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah, 'inf-rah'));
+                else {
+                    message($bot, $botSender, $event, infoSchetOS($Rah->schet, $period), getRahList($FindRah, 'inf-rah'));
+//                message($bot, $botSender, $event, $Rah->schet, getRahList($FindRah,'inf-rah'));
+                }
+            })
+            ->onText('|pok-rah#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd) {
+                $log->info('pok-rah' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
 
-                                $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
+                if ($Receiv->id_abonent == 0) {
+                    $FindRah = $Receiv->getViberAbons()->all();
+                    $Rah = ViberAbon::findOne(['id_viber' => $Receiv->id, 'schet' => trim($match[0][1])]);
+                } else {
+                    $FindRah = $Receiv->getUtAbonkart()->all();
+                    $Rah = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent, 'schet' => trim($match[0][1])]);
+                }
+
+                if ($Rah == null) message($bot, $botSender, $event, 'У вас немає цього рахунку:', getRahList($FindRah, 'pok-rah'));
+                else {
+                    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $Rah->schet));
+                    $hv = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\'')->QueryAll();
+                    if ($hv != null) {
+                        message($bot, $botSender, $event, infoPokazn($Rah->schet, $lasdatehvd), getRahList($FindRah, 'pok-rah'));
+                        UpdateStatus($Receiv, 'add-pok#' . $match[0][1]);
+                    } else {
+                        message($bot, $botSender, $event, 'По рахунку ' . $Rah->schet . ' немає послуги холодна вода', getRahList($FindRah, 'pok-rah'));
+                        UpdateStatus($Receiv, '');
+                    }
+                }
+            })
+            ->onText('|add-pok#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd) {
+                $log->info('add-pok' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                $FindRah = $Receiv->getViberAbons()->all();
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
+                if (count($match[0]) == 4 && $match[0][3] == 'yes') {
+                    $addpok = addPokazn($Receiv, intval($match[0][2]), $match[0][1], $lasdatehvd);
+//                message($bot, $botSender, $event, 'ok333', getYesNoMenu('add-pok#'.$match[0][1].'#'.$match[0][2]));
+                    if ($addpok[0] == 'ok') {
+                        message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
+                        UpdateStatus($Receiv, '');
+                    }
+                    if ($addpok[0] == 'err') {
+                        message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
+                    }
+                    if ($addpok == null) {
+                        message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                        UpdateStatus($Receiv, '');
+                    }
+                }
+            })
+            ->onText('|privat24|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('click on button privat24 ' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenuOS($Receiv));
+            })
+            ->onText('|exit#|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org) {
+                $log->info('exit kab ' . var_export($event, true));
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+//            $FindRah = $Receiv->getViberAbons()->all();
+                preg_match_all('/([^#]+)/ui', $event->getMessage()->getText(), $match);
+                if ($Receiv->id_abonent = $match[0][0]) {
+                    $Receiv->id_abonent = 0;
+                    $Receiv->save();
+                    message($bot, $botSender, $event, 'Ви вишли з кабінета!', getDmkgMenuOS($Receiv));
+                    UpdateStatus($Receiv, '');
+                }
+            })
+            ->onText('|.*|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd) {
+                $log->info('onText ' . var_export($event, true));
+                // .* - match any symbols
+                $Receiv = verifyReceiver($event, $apiKey, $org);
+                // message($bot, $botSender, $event, $event->getMessage()->getText(), getRahMenu());
+                if ($Receiv == null || $Receiv->status == '') {
+                    message($bot, $botSender, $event, 'Не визначений запит:' . $event->getMessage()->getText(), null);
+                    message($bot, $botSender, $event, 'Головне меню:', getDmkgMenuOS($Receiv));
+                } else {
+                    preg_match_all('/([^#]+)/ui', $Receiv->status, $match);
+                    if ($match[0][0] == 'add-rah') {
+                        $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $event->getMessage()->getText()))]);
+                        $ModelAbonReceiver = UtAbonkart::findOne(['id_abon' => $Receiv->id_abonent, 'schet' => $event->getMessage()->getText()]);
+
+
+                        if ($ModelKart != null && $ModelAbonReceiver == null) {
+                            UpdateStatus($Receiv, 'verify-rah#' . $event->getMessage()->getText());
+                            message($bot, $botSender, $event, 'Для підтвердження рахунку введіть прізвище власника рахунку:', getRahMenu());
+                        } elseif ($ModelKart == null) {
+                            message($bot, $botSender, $event, 'Вибачте, але цей рахунок не знайдено!!! Спробуйте ще.', getRahMenu());
+                            //UpdateStatus($Receiv,'');
+                        } elseif ($ModelKart != null && $ModelAbonReceiver != null) {
+                            message($bot, $botSender, $event, 'Цей рахунок вже під"єднано до кабінета!', getRahMenu());
+                            //UpdateStatus($Receiv,'');
+                        }
+                    } elseif ($match[0][0] == 'verify-rah') {
+                        try {
+                            $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
+                            if ($ModelKart != null) {
+                                if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
+                                    $addabon = addAbonkart($Receiv, $match[0][1]);
+                                    if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета.', getRahMenu());
+                                    else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, можливо ваш аккаунт було видалено, здійсніть вихід з кабінета в пункті меню ПРОФІЛЬ КОРИСТУВАЧА та зареєструйтесь заново !!!', getDmkgMenuOS($Receiv));
+                                    UpdateStatus($Receiv, '');
+                                } else message($bot, $botSender, $event, 'Вибачте, але це прізвище не правильне!!! Введіть тільки прізвище! Спробуйте ще.', getRahMenu());
+                            } else message($bot, $botSender, $event, 'Вибачте, але сталася помилка, виконайте додавання рахунка заново!!!', getRahMenu());
+
+                        } catch (\Exception $e) {
+                            $mess = $e->getMessage();
+                            message($bot, $botSender, $event, $mess, getRahMenu());
+                        }
+                    } elseif ($match[0][0] == 'auth-email') {
+                        $modelemail = new UtAbonent();
+                        $modelemail->scenario = 'email';
+                        $modelemail->email = $event->getMessage()->getText();
+                        if ($modelemail->validate()) {
+                            $modelabon = UtAbonent::findOne(['email' => $event->getMessage()->getText()]);
+                            if ($modelabon != null) {
+                                UpdateStatus($Receiv, 'auth-passw#' . $event->getMessage()->getText());
+                                message($bot, $botSender, $event, 'Дякуємо! Ваш email вже зареєстровано в системі, для входу введіть пароль кабінета споживача:', getDmkgMenuOS($Receiv));
+                            } else {
+                                message($bot, $botSender, $event, 'Для продовження реєстації введіть ваш ПІБ', getDmkgMenuOS($Receiv));
+                                UpdateStatus($Receiv, 'add-abon#' . 'email=' . $event->getMessage()->getText());
+                            }
+                        } else {
+                            message($bot, $botSender, $event, $modelemail->getErrors()['email'][0], getDmkgMenuOS($Receiv));
+                        }
+
+                    } elseif ($match[0][0] == 'add-abon') {
+
+                        $modelemail = new UtAbonent();
+                        $modelemail->scenario = 'reg';
+
+                        foreach ($match[0] as $col) {
+                            preg_match_all('/([^=]+)/ui', $col, $match2);
+                            switch ($match2[0][0]) {
+                                case 'email':
+                                    $modelemail->email = isset($match2[0][1]) ? $match2[0][1] : '';
+                                    break;
+                                case 'fio':
+                                    $modelemail->fio = isset($match2[0][1]) ? $match2[0][1] : '';
+                                    break;
+                                case 'pass1':
+                                    $modelemail->pass1 = isset($match2[0][1]) ? $match2[0][1] : '';
+                                    break;
+                                case 'pass2':
+                                    $modelemail->pass2 = isset($match2[0][1]) ? $match2[0][1] : '';
+                                    break;
+                            }
+
+                        }
+
+                        if (!$modelemail->validate()) {
+                            $err = $modelemail->getErrors();
+                            if (array_key_exists('fio', $err)) $modelemail->fio = $event->getMessage()->getText();
+                            elseif (array_key_exists('pass1', $err)) $modelemail->pass1 = $event->getMessage()->getText();
+                            elseif (array_key_exists('pass2', $err)) $modelemail->pass2 = $event->getMessage()->getText();
+
+                        }
+                        if ($modelemail->validate()) {
+                            $res = Addabon($modelemail, $Receiv);
+                            if ($res == 'OK') {
+                                UpdateStatus($Receiv, '');
+                                message($bot, $botSender, $event, 'Дякуємо ' . $modelemail->fio . '! Ви здійснили процедуру реєстрації в кабінеті споживача ДМКГ. На вашу пошту ' . $modelemail->email . ' вислано лист для підтвердження реєстрації. Для завершення реєстрації виконайте підтвердження обов"язково!!!', getDmkgMenuOS($Receiv));
+                            } else {
+                                UpdateStatus($Receiv, '');
+                                message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+//                            message($bot, $botSender, $event, $res, getDmkgMenuOS($Receiv));
+                            }
+                        } else {
+                            $err = $modelemail->getErrors();
+                            UpdateStatus($Receiv, 'add-abon#' . 'email=' . $modelemail->email . '#' . 'fio=' . $modelemail->fio . '#' . 'pass1=' . $modelemail->pass1 . '#' . 'pass2=' . $modelemail->pass2);
+                            //    message($bot, $botSender, $event, 'OKKK', getDmkgMenuOS($Receiv));
+                            if (array_key_exists('fio', $err)) message($bot, $botSender, $event, $err['fio'][0] . ' ' . $modelemail->fio, getDmkgMenuOS($Receiv));
+                            elseif (array_key_exists('pass1', $err)) message($bot, $botSender, $event, $err['pass1'][0] . ' ' . $modelemail->pass1, getDmkgMenuOS($Receiv));
+                            elseif (array_key_exists('pass2', $err)) message($bot, $botSender, $event, $err['pass2'][0] . ' ' . $modelemail->pass1, getDmkgMenuOS($Receiv));
+                        }
+                    } elseif ($match[0][0] == 'auth-passw') {
+                        $modelabon = UtAbonent::findOne(['email' => $match[0][1]]);
+                        if ($modelabon != null) {
+                            if ($modelabon->passopen == $event->getMessage()->getText()) {
+                                $Receiv->id_abonent = $modelabon->id;
+                                $Receiv->save();
+                                UpdateStatus($Receiv, '');
+                                message($bot, $botSender, $event, 'Вітаємо ' . $modelabon->fio . '! Ви здійснили вхід в систему, тепер для вас доступні всі функції!!!', getDmkgMenuOS($Receiv));
+                            } else {
+//                            UpdateStatus($Receiv, 'auth-passw#' . $event->getMessage()->getText());
+                                message($bot, $botSender, $event, 'Введений вами пароль не вірний! Спробуйте ще!' . "\n\n" . 'Якщо ви забули пароль, скористайтесь посиланням (https://dmkg.com.ua/ut-abonent/fogotpass - Забули пароль) на сторінці входу в кабінет споживача!', getDmkgMenuOS($Receiv));
+                            }
+                        } else {
+                            UpdateStatus($Receiv, '');
+                            message($bot, $botSender, $event, 'Вибачте сталася помилка, пройдіть процедуру Авторизаці/Реєстрації заново !!!', getDmkgMenuOS($Receiv));
+                        }
+                    } elseif ($match[0][0] == 'add-pok') {
+                        $FindRah = $Receiv->getUtAbonkart()->all();
+                        $schet1251 = trim(iconv('UTF-8', 'windows-1251', $match[0][1]));
+                        $val = $event->getMessage()->getText();
+                        if (is_numeric($val) && floor($val) == $val && $val > 0) {
+                            $modelPokazn = Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\'' . $schet1251 . '\' order by id desc')->QueryAll()[0];
+                            if ($modelPokazn != null) {
+                                if ((intval($val) - $modelPokazn['pokazn']) > 100) {
+                                    message($bot, $botSender, $event, 'Вибачте, але ваш показник перевищує 100 кубів!!! Ви впевнені що бажаєте подати цей показник - ' . intval($val), getYesNoMenu('add-pok#' . $match[0][1] . '#' . $val));
+                                } else {
+
+                                    $addpok = addPokazn($Receiv, intval($val), $match[0][1], $lasdatehvd);
+                                    if ($addpok[0] == 'ok') {
+                                        message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
+                                        UpdateStatus($Receiv, '');
+                                    }
+                                    if ($addpok[0] == 'err') {
+                                        message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
+                                    }
+                                    if ($addpok == null) {
+                                        message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
+                                        UpdateStatus($Receiv, '');
+                                    }
+                                }
+                            } else {
+                                $addpok = addPokazn($Receiv, intval($val), $match[0][1], $lasdatehvd);
                                 if ($addpok[0] == 'ok') {
                                     message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
                                     UpdateStatus($Receiv, '');
@@ -497,39 +484,25 @@ try {
                                     UpdateStatus($Receiv, '');
                                 }
                             }
-                        } else {
-                            $addpok = addPokazn($Receiv,intval($val), $match[0][1],$lasdatehvd);
-                            if ($addpok[0] == 'ok') {
-                                message($bot, $botSender, $event, $addpok[1], getDmkgMenuOS($Receiv));
-                                UpdateStatus($Receiv, '');
-                            }
-                            if ($addpok[0] == 'err') {
-                                message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
-                            }
-                            if ($addpok == null) {
-                                message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації:', getDmkgMenuOS($Receiv));
-                                UpdateStatus($Receiv, '');
-                            }
-                        }
-                    } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
+                        } else message($bot, $botSender, $event, 'Вибачте, але значення не є цілим числом!!! Спробуйте ще', getRahList($FindRah, 'pok-rah'));
 
 //                    }
 
-                }
-                else{
-                    message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getDmkgMenuOS($Receiv));
-                    UpdateStatus($Receiv,'');
+                    } else {
+                        message($bot, $botSender, $event, 'Не визначений статус: ' . $Receiv->status, getDmkgMenuOS($Receiv));
+                        UpdateStatus($Receiv, '');
+                    }
+
                 }
 
-            }
-
-        })
-        ->on(function ($event) {
-            return true; // match all
-        }, function ($event) use ($log) {
-            $log->info('Other event: ' . var_export($event, true));
-        })
-        ->run();
+            })
+            ->on(function ($event) {
+                return true; // match all
+            }, function ($event) use ($log) {
+                $log->info('Other event: ' . var_export($event, true));
+            })
+            ->run();
+    }
 } catch (Exception $e) {
     $log->warning('Exception: ' . $e->getMessage());
     if ($bot) {
