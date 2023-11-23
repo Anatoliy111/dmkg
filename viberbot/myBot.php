@@ -77,7 +77,7 @@ try {
                         foreach ($cli as $err){
                             $meserr=$meserr.implode(",", $err);
                         }
-                        message($bot, $botSender, $event, $message.' '.$meserr, null);
+                        message($bot, $botSender, $event, $message.' cli '.$meserr, null);
 
                     } catch (\Exception $e) {
                         $mess = $e->getMessage();
