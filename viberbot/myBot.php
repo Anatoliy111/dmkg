@@ -58,8 +58,10 @@ try {
     $my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
     if ($my_date->format('Y-m-d') >= '2023-11-01') {
         $bot = new Bot(['token' => $apiKey]);
+        $cli = '';
+        $cli = $bot->getClient();
         $bot
-            ->onText('|.*|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd) {
+            ->onText('|.*|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd,$cli) {
                 $message = <<<EOD
                                 Доброго дня! MyBot до якого ви підписались є тестовий бот. 
                                 Виникла помилка при тестуванні кабінета споживача і сформувалось неправильне посилання на MyBot.
@@ -68,7 +70,8 @@ try {
                                 і відпишіться та видаліть MyBot зі своєї Viber програми. 
                                 Вибачте за незручності!!!
                             EOD;
-                message($bot, $botSender, $event, $message, null);
+                
+                message($bot, $botSender, $event, $message.' '.$cli, null);
             })
             ->on(function ($event) {
                 return true; // match all
