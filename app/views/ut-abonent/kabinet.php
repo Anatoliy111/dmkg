@@ -20,7 +20,7 @@ use yii\widgets\Pjax;
 /** @var app\models\SearchDolgKart $modelkart */
 
 
-
+$asset = \app\assets\AppAsset::register($this);
 
 //    $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
     $period =date('Y-m-d', strtotime($lastperiod));
@@ -350,11 +350,11 @@ Modal::begin([
             ?>
             <div class="viber col-sm-3">
                 <h4>Відскануйте QR-код та підключайте ViberBot DMKG</h4>
+                <?= Html::a('Інструкція', Url::to($asset->baseUrl.'/Інструкція Viber на телефоні.pdf'), ['style' => "font-size: x-large;",'data-pjax' => 0,'target'=>"_blank"]);?>
                 <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
                 <?= Html::a('ViberStart', Url::to('viber://pa?chatURI=bondyukviberbot&context='.$model->email), ['http','class' => 'btn btn-success','target'=>"_blank"]);?>
 
             </div>
-<!--        </div>-->
 
 
 
