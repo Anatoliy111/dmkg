@@ -56,7 +56,7 @@ try {
     // create bot instance
 
     $my_date = new \DateTime("now", new \DateTimeZone('Europe/Kiev'));
-    if ($my_date->format('Y-m-d') >= '2023-11-01') {
+    if ($my_date->format('Y-m-d') >= '2023-12-01') {
         $bot = new Bot(['token' => $apiKey]);
         $bot
             ->onText('|.*|s', function ($event) use ($bot, $botSender, $log, $apiKey, $org, $lasdatehvd) {
