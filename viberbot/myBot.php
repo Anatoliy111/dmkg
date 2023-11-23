@@ -72,17 +72,19 @@ try {
 
                 if ($cli<>null) {
 
-                    try {
-                        $meserr=$cli;
-                        foreach ($cli as $err){
-                            $meserr=$meserr.implode(",", $err);
-                        }
-                        message($bot, $botSender, $event, $message.' cli '.$meserr, null);
+//                    try {
+//                        $meserr=$cli;
+//                        foreach ($cli as $err){
+//                            $meserr=$meserr.implode(",", $err);
+//                        }
+//                        message($bot, $botSender, $event, $message.' cli '.$meserr, null);
+//
+//                    } catch (\Exception $e) {
+//                        $mess = $e->getMessage();
+//                        message($bot, $botSender, $event, $mess, null);
+//                    }
 
-                    } catch (\Exception $e) {
-                        $mess = $e->getMessage();
-                        message($bot, $botSender, $event, $mess, null);
-                    }
+                    message($bot, $botSender, $event, $message, null);
 
                 }
                 else message($bot, $botSender, $event, $message, null);
