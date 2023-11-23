@@ -73,6 +73,7 @@ try {
                 if ($cli<>null) {
 
                     try {
+                        $meserr='';
                         foreach ($cli as $err){
                             $meserr=$meserr.implode(",", $err);
                         }
@@ -82,7 +83,7 @@ try {
                         $mess = $e->getMessage();
                         message($bot, $botSender, $event, $mess, null);
                     }
-                    
+
                 }
                 else message($bot, $botSender, $event, $message, null);
             })
