@@ -69,7 +69,13 @@ try {
                                 або заново виконайте підключання до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою), і відпишіться та видаліть MyBot зі своєї Viber програми.
                                 Вибачте за незручності!!!
                             EOD;
-                if ($cli<>null) message($bot, $botSender, $event, $message.' cli', null);
+
+                if ($cli<>null) {
+                    foreach ($cli as $err){
+                        $meserr=$meserr.implode(",", $err);
+                    }
+                    message($bot, $botSender, $event, $message.' '.$meserr, null);
+                }
                 else message($bot, $botSender, $event, $message, null);
             })
             ->on(function ($event) {
