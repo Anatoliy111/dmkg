@@ -71,10 +71,18 @@ try {
                             EOD;
 
                 if ($cli<>null) {
-                    foreach ($cli as $err){
-                        $meserr=$meserr.implode(",", $err);
+
+                    try {
+                        foreach ($cli as $err){
+                            $meserr=$meserr.implode(",", $err);
+                        }
+                        message($bot, $botSender, $event, $message.' '.$meserr, null);
+
+                    } catch (\Exception $e) {
+                        $mess = $e->getMessage();
+                        message($bot, $botSender, $event, $mess, null);
                     }
-                    message($bot, $botSender, $event, $message.' '.$meserr, null);
+                    
                 }
                 else message($bot, $botSender, $event, $message, null);
             })
