@@ -84,6 +84,7 @@ foreach ($FindEmailSchet as $abon) {
                         $kol = $kol + 1;
                     }
                     $mess = 'Особовий рахунок - ' . $abon['schet'] . "\n";
+                    $mess = $mess . $hv[0]['fio'] . "\n";
                     $mess = $mess . 'Останній показник по воді :' . "\n";
                     $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
                     $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
