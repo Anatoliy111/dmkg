@@ -15,9 +15,9 @@ use app\models\UtAbonpokazn;
 use app\models\UtAuth;
 use app\models\Viber;
 
-require_once(__DIR__ . '/../vendor/autoload.php');
-require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../app/config/web.php';
+require_once(__DIR__ . '/../../vendor/autoload.php');
+require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
+$yiiConfig = require __DIR__ . '/../../app/config/web.php';
 new yii\web\Application($yiiConfig);
 require_once(__DIR__ . '\botMenu.php');
 
