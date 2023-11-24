@@ -305,7 +305,7 @@ function getDmkgSend($message,$Receiv)
         $bot->getClient()->sendMessage(
             (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setReceiver($receivid)
+                ->setReceiver($Receiv->id_abonent)
                 ->setText($message)
 //                ->setKeyboard(getDmkgMenuOS($Receiv))
         );
