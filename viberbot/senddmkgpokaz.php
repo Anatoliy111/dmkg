@@ -100,7 +100,7 @@ foreach ($FindEmailSchet as $abon) {
     }
 }
 
-echo 'ok' - $kol;
+echo 'ok - '.$kol;
 
 
 
