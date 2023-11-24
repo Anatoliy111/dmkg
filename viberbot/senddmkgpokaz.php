@@ -82,6 +82,7 @@ foreach ($FindEmailSchet as $abon) {
                             $mess = $mess . 'Подати показник ви можете за допомогою вайбербота або в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою) або за телефонами:' . "\n";
                             $mess = $mess . '(066)128-11-85 (Viber)' . "\n";
                             $mess = $mess . '(095)791-32-62' . "\n";
+                            getMySend($mess);
 //                            getDmkgSend($mess,$Receiv);
                             $fl_mes = false;
                             $kol = $kol + 1;
@@ -92,6 +93,7 @@ foreach ($FindEmailSchet as $abon) {
                         $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
                         $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
 //                        getDmkgSend($mess,$Receiv);
+                        getMySend($mess);
                     }
                 }
             }
