@@ -15,9 +15,9 @@ use app\models\UtAbonpokazn;
 use app\models\UtAuth;
 use app\models\Viber;
 
-require_once(__DIR__ . '/../../vendor/autoload.php');
-require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';
-$yiiConfig = require __DIR__ . '/../../app/config/web.php';
+require_once(__DIR__ . '/../vendor/autoload.php');
+require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+$yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
 require_once(__DIR__ . '\botMenu.php');
 
@@ -66,6 +66,7 @@ foreach ($FindEmailSchet as $abon) {
                     $kol = $kol + 1;
                 }
                 $mess = 'Особовий рахунок - ' . $abon['schet'] . "\r\n";
+                $mess = $mess . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])). "\n";
                 $mess = $mess . 'Останній зарахований показник по воді :' . "\n";
                 $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
                 $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
