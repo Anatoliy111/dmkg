@@ -307,7 +307,7 @@ function getDmkgSend($message,$Receiv)
                 ->setSender($botSender)
                 ->setReceiver($receivid)
                 ->setText($message)
-//                ->setKeyboard(getDmkgMenuOS($Receiv))
+                ->setKeyboard(getDmkgMenuOS($Receiv))
         );
 
     } catch (Exception $e) {
