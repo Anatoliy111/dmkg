@@ -75,20 +75,18 @@ foreach ($FindEmailSchet as $abon) {
                 $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
                 if (count($pokaz) == 0) {
                     if ($fl_mes) {
-                        $mess = 'Доброго дня! ' . $abon['fio'] . ' нагадуємо вам про здачу показників водопостачання по вашим під"єднаним рахункам!!!' . "\r\n";
+                        $mess = 'Доброго дня '. $abon['fio'] . '! Нагадуємо вам про здачу показників водопостачання по вашим під"єднаним рахункам!!!' . "\r\n";
                         $mess = $mess . 'Подати показник ви можете за допомогою вайбербота або в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою) або за телефонами:' . "\n";
                         $mess = $mess . '(066)128-11-85 (Viber)' . "\n";
                         $mess = $mess . '(095)791-32-62' . "\n";
-                        $mess = $mess . '----------------------------' . "\n";
                         echo send($apiKey, $botSender, $log, $mess, $abon['id_receiver']);
                         $fl_mes = false;
                         $kol = $kol + 1;
                     }
-                    $mess = 'Особовий рахунок - ' . $abon['schet'] . "\r\n";
-                    $mess = $mess . 'Останній зарахований показник по воді :' . "\n";
+                    $mess = 'Особовий рахунок - ' . $abon['schet'] . "\n";
+                    $mess = $mess . 'Останній показник по воді :' . "\n";
                     $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
                     $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
-                    $mess = $mess . '----------------------------' . "\n";
                     echo send($apiKey, $botSender, $log, $mess, $abon['id_receiver']);
                 }
             }
