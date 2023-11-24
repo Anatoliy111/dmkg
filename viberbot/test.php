@@ -22,33 +22,92 @@ new yii\web\Application($yiiConfig);
 require_once(__DIR__ . '\botMenu.php');
 
 
+$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742';
 
-//echo infoDmkgSchet('0014001');
-//$schet='7020006а';
-preg_match_all('/([^#]+)/ui','start#bondyuk.a.g@gmail.com',$match);
-if (count($match[0])==2) $abon = UtAbonent::findOne(['email' => $match[0][1]]);
-$schet='0092124';
-$schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
-$modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
-
-
-//$session->destroy();
-$event='qwer3';
-//$stat='add-abon#'.'email=qwe@qwe.com';
-$stat='add-abon#email=qwe@qwe.com#fio=qwerty#pass1=12345#pass2';
-//$stat='add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2;
-preg_match_all('/([^#]+)/ui',$stat,$match);
-//echo addPokazn(802,'0092124','asfsadfasdf');
-
-$lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
 $period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
+$lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
 
-//echo infoSchetOS($schet,$period);
-//echo infoPokazn($schet);
-$Receiv = Viber::findOne(2);
+$FindEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
+    ->select('viber.id_receiver,viber.id_abonent,ut_abonkart.schet,ut_abonent.fio')
+    ->innerJoin('ut_abonent','ut_abonent.id = viber.id_abonent')
+    ->innerJoin('ut_abonkart','ut_abonent.id = ut_abonkart.id_abon')
+    ->andwhere(['<>', 'viber.id_abonent',0])
+    ->orderBy('viber.id')
+    ->asArray()->all();
 
-echo addPokazn($Receiv,799,'0092124',$lasdatehvd)[1];
-//$modelemail = UtAbonent::findOne(['id' => 2071]);
+$FindViberSchet = Viber::find()->where(['viber.api_key' => $apiKey])
+    ->select('viber.id_receiver,viber_abon.schet')
+    ->innerJoin('viber_abon','viber_abon.id_viber = viber.id')
+    ->andwhere(['=', 'viber.id_abonent',0])
+    ->orderBy('viber.id')
+    ->asArray()->all();
+
+$id_reciv = '';
+$fl_mes = true;
+$kol = 0;
+
+foreach ($FindEmailSchet as $abon) {
+    if ($id_reciv<>$abon['id_receiver']) $fl_mes = true;
+    $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
+    $hv=Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' and wid=\'hv\'')->QueryAll();
+    if ($hv != null) {
+        $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+        if (count($pokazold) <> 0) {
+            $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+            if (count($pokaz) == 0) {
+                if ($fl_mes) {
+                    $mess = 'Доброго дня! ' . $abon['fio'] . ' нагадуємо вам про здачу показників водопостачання по вашим під"єднаним рахункам!!!' . "\r\n";
+                    $mess = $mess . 'Подати показник ви можете за допомогою вайбербота або в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою) або за телефонами:' . "\n";
+                    $mess = $mess . '(066)128-11-85 (Viber)' . "\n";
+                    $mess = $mess . '(095)791-32-62' . "\n";
+                    $mess = $mess . '----------------------------' . "\n";
+                    echo $mess;
+                    $fl_mes = false;
+                    $kol = $kol + 1;
+                }
+                $mess = 'Особовий рахунок - ' . $abon['schet'] . "\r\n";
+                $mess = $mess . 'Останній зарахований показник по воді :' . "\n";
+                $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
+                $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                $mess = $mess . '----------------------------' . "\n";
+                echo $mess;
+            }
+        }
+    }
+    $id_reciv=$abon['id_receiver'];
+}
+
+
+
+
+
+
+echo 'ok-'.$kol;
+////$schet='7020006а';
+//preg_match_all('/([^#]+)/ui','start#bondyuk.a.g@gmail.com',$match);
+//if (count($match[0])==2) $abon = UtAbonent::findOne(['email' => $match[0][1]]);
+//$schet='0092124';
+//$schet1251 = trim(iconv('UTF-8', 'windows-1251', $schet));
+//$modelPokazn=Yii::$app->hvddb->createCommand('select first 1 * from pokazn where schet=\''.$schet1251.'\' order by id desc')->QueryAll();
+//
+//
+////$session->destroy();
+//$event='qwer3';
+////$stat='add-abon#'.'email=qwe@qwe.com';
+//$stat='add-abon#email=qwe@qwe.com#fio=qwerty#pass1=12345#pass2';
+////$stat='add-abon#'.'email='.$modelemail->email.'#'.'fio='.$modelemail->fio.'#'.'pass1='.$modelemail->pass1.'#'.'pass2='.$modelemail->pass2;
+//preg_match_all('/([^#]+)/ui',$stat,$match);
+////echo addPokazn(802,'0092124','asfsadfasdf');
+//
+//$lasdatehvd = Yii::$app->hvddb->createCommand('select first 1 yearmon from data order by yearmon desc')->queryAll()[0]['yearmon'];
+//$period=Yii::$app->dolgdb->createCommand('select first 1 period from period order by period desc')->QueryAll()[0]["period"];
+//
+////echo infoSchetOS($schet,$period);
+////echo infoPokazn($schet);
+//$Receiv = Viber::findOne(2);
+//
+//echo addPokazn($Receiv,799,'0092124',$lasdatehvd)[1];
+////$modelemail = UtAbonent::findOne(['id' => 2071]);
 //$Receiv = Viber::findOne(['id' => 2]);
 //Addabon($modelemail,$Receiv);
 
