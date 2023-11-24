@@ -245,15 +245,16 @@ function getDmkgMenuOS($Receiv){
 }
 
 
-function getDmkgSend($message,$Receiv)
+function getMySend($message)
 {
 
 
 
-    $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // <- PLACE-YOU-API-KEY-HERE
+    $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // MyBot
+    $receivid = 'gN0uFHnqvanHwb17QuwMaQ=';//MyReceiv
 
     $botSender = new Sender([
-        'name' => 'bondyukViberBot',
+        'name' => 'MyBot',
         'avatar' => '',
     ]);
 
@@ -267,7 +268,46 @@ function getDmkgSend($message,$Receiv)
         $bot->getClient()->sendMessage(
             (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setReceiver($Receiv->id_receiver)
+                ->setReceiver($receivid)
+                ->setText($message)
+//                ->setKeyboard(getDmkgMenuOS($Receiv))
+        );
+
+    } catch (Exception $e) {
+        $log->warning('Exception: ' . $e->getMessage());
+        if ($bot) {
+            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+            $log->warning('Actual body: ' . $bot->getInputBody());
+        }
+    }
+
+    return '';
+}
+
+function getDmkgSend($message,$Receiv)
+{
+
+
+
+    $apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
+    $receivid = '78QXYFX3IiSsRdaPuPtF7Q=='; //dmkgBot
+
+    $botSender = new Sender([
+        'name' => 'DmkgBot',
+        'avatar' => '',
+    ]);
+
+// log bot interaction
+    $log = new Logger('bot');
+    $log->pushHandler(new StreamHandler(__DIR__ .'/tmp/bot.log'));
+
+    try {
+        // create bot instance
+        $bot = new Bot(['token' => $apiKey]);
+        $bot->getClient()->sendMessage(
+            (new \Viber\Api\Message\Text())
+                ->setSender($botSender)
+                ->setReceiver($Receiv->id_abonent)
                 ->setText($message)
                 ->setKeyboard(getDmkgMenuOS($Receiv))
         );

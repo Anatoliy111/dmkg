@@ -789,7 +789,7 @@ function verifyReceiver($event, $apiKey, $org){
             foreach ($messageLog as $err){
                 $meserr=$meserr.implode(",", $err);
             }
-            getSend($meserr);
+            getMySend($meserr);
 
             $FindModel = null;
 
@@ -861,7 +861,7 @@ function UpdateStatus($Model,$Status){
                 foreach ($messageLog as $err) {
                     $meserr = $meserr . implode(",", $err);
                 }
-                getDmkgSend($meserr,$Model);
+                getMySend($meserr,$Model);
 
                 return false;
 

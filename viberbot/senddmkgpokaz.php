@@ -18,7 +18,7 @@ require_once(__DIR__ . '/../viberbot/botMenu.php');
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 $yiiConfig = require __DIR__ . '/../app/config/web.php';
 new yii\web\Application($yiiConfig);
-//require_once(__DIR__ . '\dmkgMenuSend.php');
+require_once(__DIR__ . '\dmkgMenuSend.php');
 
 
 $apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
@@ -66,29 +66,32 @@ $kol = 0;
 
 foreach ($FindEmailSchet as $abon) {
     if ($abon['id_receiver'] == $receivid) {
-        if ($id_reciv <> $abon['id_receiver']) $fl_mes = true;
-        $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
-        $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
-        if ($hv != null) {
-            $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-            if (count($pokazold) <> 0) {
-                $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-                if (count($pokaz) == 0) {
-                    if ($fl_mes) {
-                        $mess = 'Доброго дня '. $abon['fio'] . '! Нагадуємо вам про здачу показників водопостачання по вашим під"єднаним рахункам!!!' . "\r\n";
-                        $mess = $mess . 'Подати показник ви можете за допомогою вайбербота або в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою) або за телефонами:' . "\n";
-                        $mess = $mess . '(066)128-11-85 (Viber)' . "\n";
-                        $mess = $mess . '(095)791-32-62' . "\n";
-                        echo send($apiKey, $botSender, $log, $mess, $abon['id_receiver']);
-                        $fl_mes = false;
-                        $kol = $kol + 1;
+        $Receiv = Viber::findOne(['api_key' => $apiKey,'id_receiver' => $abon['id_receiver']]);
+        if ($Receiv != null) {
+            if ($id_reciv <> $abon['id_receiver']) $fl_mes = true;
+            $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
+            $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
+            if ($hv != null) {
+                $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                if (count($pokazold) <> 0) {
+                    $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                    if (count($pokaz) == 0) {
+                        if ($fl_mes) {
+                            $mess = 'Доброго дня ' . $abon['fio'] . '! Нагадуємо вам про здачу показників водопостачання по вашим під"єднаним рахункам!!!' . "\r\n";
+                            $mess = $mess . 'Подати показник ви можете за допомогою вайбербота або в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою) або за телефонами:' . "\n";
+                            $mess = $mess . '(066)128-11-85 (Viber)' . "\n";
+                            $mess = $mess . '(095)791-32-62' . "\n";
+                            getDmkgSend($mess,$Receiv);
+                            $fl_mes = false;
+                            $kol = $kol + 1;
+                        }
+                        $mess = 'Особовий рахунок - ' . $abon['schet'] . "\n";
+                        $mess = $mess . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
+                        $mess = $mess . 'Останній показник по воді :' . "\n";
+                        $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
+                        $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                        getDmkgSend($mess,$Receiv);
                     }
-                    $mess = 'Особовий рахунок - ' . $abon['schet'] . "\n";
-                    $mess = $mess . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])). "\n";
-                    $mess = $mess . 'Останній показник по воді :' . "\n";
-                    $mess = $mess . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
-                    $mess = $mess . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
-                    echo send($apiKey, $botSender, $log, $mess, $abon['id_receiver']);
                 }
             }
         }
@@ -96,33 +99,7 @@ foreach ($FindEmailSchet as $abon) {
     }
 }
 
-
-function send($apiKey,$botSender,$log,$message,$receivid)
-{
-
-    $res ='ok - '.$receivid;
-
-    try {
-        // create bot instance
-        $bot = new Bot(['token' => $apiKey]);
-        $bot->getClient()->sendMessage(
-            (new \Viber\Api\Message\Text())
-                ->setSender($botSender)
-                ->setReceiver($receivid)
-                ->setText($message)
-        );
-
-    } catch (Exception $e) {
-        $res='bad '.$receivid;
-//        $log->warning('Exception: ' . $e->getMessage());
-//        if ($bot) {
-//            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-//            $log->warning('Actual body: ' . $bot->getInputBody());
-//        }
-    }
-
-    return $res;
-}
+echo $kol;
 
 
 

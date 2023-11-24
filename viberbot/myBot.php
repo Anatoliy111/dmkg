@@ -855,7 +855,7 @@ function UpdateStatus($Model,$Status){
                 foreach ($messageLog as $err) {
                     $meserr = $meserr . implode(",", $err);
                 }
-                getDmkgSend($meserr,$Model);
+                getMySend($meserr,$Model);
 
                 return false;
 
