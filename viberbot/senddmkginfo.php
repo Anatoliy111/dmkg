@@ -169,7 +169,7 @@ function infoSchetOS($mess,$schet,$period) {
         $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 
         $mess = $mess . '-----------------------------'. "\n";
-        $mess = 'Особовий рахунок - '.$schet."\r\n";
+        $mess = $mess . 'Особовий рахунок - '.$schet."\r\n";
 
         $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
         $mess = $mess.$fio . "\n";
@@ -179,7 +179,7 @@ function infoSchetOS($mess,$schet,$period) {
 
         $mess = $mess.Yii::$app->formatter->asDate($period, 'LLLL Y')."\n";
         $mess = $mess.'----------------------------'."\n";
-        $mess = $mess.'Ваша заборгованість по послугам:'."\n\r";
+        $mess = $mess.'Заборгованість по послугам:'."\n\r";
         $summa =0;
         foreach($dolg as $obb)
         {
