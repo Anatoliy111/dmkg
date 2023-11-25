@@ -55,13 +55,13 @@ $botSender = new Sender([
 //
 
 
-//foreach ($FindModels as $model) {
-////    if ($model->id_receiver == $receivid) {
-//       echo send($apiKey,$botSender,$message,$model->id_receiver);
-////    }
-//}
+foreach ($FindModels as $model) {
 
-echo send($apiKey,$botSender,$message,$receivid);
+       echo send($apiKey,$botSender,$message,$model->id_receiver);
+
+}
+
+//echo send($apiKey,$botSender,$message,$receivid);
 
 
 
