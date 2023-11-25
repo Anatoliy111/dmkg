@@ -326,12 +326,12 @@ try {
         ->onText('|myinfo|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('myinfo'. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
-            $mess = 'idviber -'.$Receiv->id . "\n";
-            $mess = $mess . 'idreceiver -'.$Receiv->id_receiver . "\n";
-            $mess = $mess . 'idabon -'.$Receiv->id_abonent. "\n";
-            $mess = $mess . 'Name -'.$Receiv->name . "\n";
-            $mess = $mess . 'Date ins dmkg -'.$Receiv->date_ins . "\n";
-            $mess = $mess . 'Status -'.$Receiv->status . "\n";
+            $mess = 'idviber:'.$Receiv->id . "\n";
+            $mess = $mess . 'idreceiver:'.$Receiv->id_receiver . "\n";
+            $mess = $mess . 'idabon:'.$Receiv->id_abonent. "\n";
+            $mess = $mess . 'Name:'.$Receiv->name . "\n";
+            $mess = $mess . 'Date ins dmkg:'.$Receiv->date_ins . "\n";
+            $mess = $mess . 'Status:'.$Receiv->status . "\n";
             message($bot, $botSender, $event, $mess, getDmkgMenuOS($Receiv));
             UpdateStatus($Receiv,'');
         })

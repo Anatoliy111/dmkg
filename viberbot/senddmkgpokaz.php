@@ -109,6 +109,8 @@ foreach ($FindEmailSchet as $abon) {
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 
 
+
+echo $messschet;
 echo 'countSend - '.$countSend."\n";
 echo 'countAbon - '.$countAbon."\n";
 

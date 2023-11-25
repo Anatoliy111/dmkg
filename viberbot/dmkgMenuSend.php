@@ -247,7 +247,14 @@ function getDmkgMenuOS($Receiv){
 
 function getMySend($message,$Receiv)
 {
-    if ($Receiv<>null) $mess='Message from '.$Receiv->name.' id - '.$Receiv->id_receiver. "\r\n";
+    if ($Receiv<>null) {
+        $mess = 'Message from:'.$Receiv->name. "\n";
+        $mess = $mess . 'idreceiver:'.$Receiv->id_receiver . "\n";
+        $mess = $mess . 'idabon:'.$Receiv->id_abonent. "\n";
+        $mess = $mess . 'Name:'.$Receiv->name. "\n";
+        $mess = $mess . 'Message:'. "\r\n";
+        $mess = $mess . $message;
+    }
     else $mess=$message;
 
     $apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b'; // MyBot
