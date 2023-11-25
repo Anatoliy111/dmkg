@@ -21,8 +21,8 @@ new yii\web\Application($yiiConfig);
 //require_once(__DIR__ . '\dmkgMenuSend.php');
 
 
-$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
-//$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';  //myBot
+//$apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
+$apiKey = '4cca41c0f8a7df2d-744b96600fc80160-bd5e7b2d32cfdc9b';  //myBot
 //$apiKey = '4d098f46d267dd30-1785f1390be821c1-7f30efd773daf6d2';  //kpBot
 
 
@@ -37,8 +37,8 @@ viber://pa?chatURI=dmkgBot або заново виконайте підключ
 Вибачте за незручності!!!
 EOD;
 
-//$receivid = 'gN0uFHnqvanHwb17QuwMaQ='; //myBot
-$receivid = ' 	78QXYFX3IiSsRdaPuPtF7Q=='; //dmkgBot
+$receivid = 'gN0uFHnqvanHwb17QuwMaQ='; //myBot
+//$receivid = ' 	78QXYFX3IiSsRdaPuPtF7Q=='; //dmkgBot
 
 //send($apiKey,$botSender,$log,$message,$receivid);
 
