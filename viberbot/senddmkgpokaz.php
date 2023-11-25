@@ -84,6 +84,7 @@ foreach ($FindEmailSchet as $abon) {
                     if (count($pokazold) <> 0) {
                         $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
                         if (count($pokaz) == 0) {
+                            $messschet = $messschet . '-----------------------------'. "\n";
                             $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
                             $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
                             $messschet = $messschet . 'Останній показник по воді :' . "\n";
