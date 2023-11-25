@@ -58,14 +58,13 @@ $FindEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->innerJoin('ut_abonent','ut_abonent.id = viber.id_abonent')
     ->innerJoin('ut_abonkart','ut_abonent.id = ut_abonkart.id_abon')
     ->andwhere(['<>', 'viber.id_abonent',0])
-//    ->andwhere(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
-//    ->orwhere(['=', 'viber.id_receiver','TDts4sPNiTEJS/Y6WkPVQg=='])
+    ->andwhere(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
+    ->orwhere(['=', 'viber.id_receiver','TDts4sPNiTEJS/Y6WkPVQg=='])
     ->orderBy('viber.id')
     ->asArray()->all();
 
 
 $id_reciv = '';
-$fl_mes = true;
 $countSend = 0;
 $countAbon= 0;
 $fio = '';
@@ -111,9 +110,62 @@ foreach ($FindEmailSchet as $abon) {
 
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 
+$FindViberSchet = Viber::find()->where(['viber.api_key' => $apiKey])
+    ->select('viber.id_receiver,viber_abon.schet,viber.name as fio')
+    ->innerJoin('viber_abon','viber_abon.id_viber = viber.id')
+    ->andwhere(['=', 'viber.id_abonent',0])
+    ->andwhere(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
+    ->orwhere(['=', 'viber.id_receiver','TDts4sPNiTEJS/Y6WkPVQg=='])
+    ->orderBy('viber.id')
+    ->asArray()->all();
+
+$id_reciv = '';
+$fio = '';
+$messschet = '';
+
+foreach ($FindViberSchet as $abon) {
+    try {
+//        if ($abon['id_receiver'] == $receivid) {
+        if ($id_reciv <> $abon['id_receiver']) {
+            $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+            $countAbon = $countAbon + 1;
+            $messschet='';
+        }
+        $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
+        $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
+        if ($hv != null) {
+            $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+            if (count($pokazold) <> 0) {
+                $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                if (count($pokaz) == 0) {
+                    $messschet = $messschet . '-----------------------------'. "\n";
+                    $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
+                    $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
+                    $messschet = $messschet . 'Останній показник по воді :' . "\n";
+                    $messschet = $messschet . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
+                    $messschet = $messschet . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                }
+            }
+        }
+//        }
+        $fio = $abon['fio'];
+        $id_reciv = $abon['id_receiver'];
+
+    }
+    catch (Exception $e) {
+        $mess = $e->getMessage();
+        $mess = $mess.'--sendpokazn';
+        if ($abon<>null) $mess = $mess.'--idreceiver--'.$abon->id_receiver;
+        getMySend($mess,null);
+    }
+}
 
 
-echo $messschet;
+$countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+
+
+
+
 echo 'countSend - '.$countSend."\n";
 echo 'countAbon - '.$countAbon."\n";
 
