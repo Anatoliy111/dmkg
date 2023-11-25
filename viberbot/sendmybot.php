@@ -50,21 +50,21 @@ $botSender = new Sender([
 ]);
 
 // log bot interaction
-$log = new Logger('bot');
-$log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
-
+//$log = new Logger('bot');
+//$log->pushHandler(new StreamHandler(__DIR__ .'/../viberbot/tmp/bot.log'));
+//
 
 
 foreach ($FindModels as $model) {
-    if ($model->id_receiver == $receivid) {
-       echo send($apiKey,$botSender,$log,$message,$model->id_receiver);
-    }
+//    if ($model->id_receiver == $receivid) {
+       echo send($apiKey,$botSender,$message,$receivid);
+//    }
 }
 
 
 
 
-function send($apiKey,$botSender,$log,$message,$receivid)
+function send($apiKey,$botSender,$message,$receivid)
 {
 
     $res ='ok - '.$receivid;
