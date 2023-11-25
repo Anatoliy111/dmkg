@@ -195,7 +195,7 @@ function infoSchetOS($schet,$period) {
 
         $mess = $mess."\r".'Всього до сплати: '.$summa."\r\n";
 
-        if ($summa<1000) $mess='';
+//        if ($summa<1000) $mess='';
     }
     catch (\Exception $e) {
         $errmess = $e->getMessage();
