@@ -110,7 +110,7 @@ foreach ($FindEmailSchet as $abon) {
 
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 
-$FindViberSchet = Viber::find()->where(['viber.api_key' => $apiKey])
+$FindNoEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->select('viber.id_receiver,viber_abon.schet,viber.name as fio')
     ->innerJoin('viber_abon','viber_abon.id_viber = viber.id')
     ->andwhere(['=', 'viber.id_abonent',0])
@@ -123,7 +123,7 @@ $id_reciv = '';
 $fio = '';
 $messschet = '';
 
-foreach ($FindViberSchet as $abon) {
+foreach ($FindNoEmailSchet as $abon) {
     try {
 //        if ($abon['id_receiver'] == $receivid) {
         if ($id_reciv <> $abon['id_receiver']) {
