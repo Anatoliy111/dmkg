@@ -78,7 +78,7 @@ foreach ($FindEmailSchet as $abon) {
                     $countAbon = $countAbon + 1;
                     $messschet='';
                 }
-        $messschet = infoSchetOS($abon['schet'],$period);
+        $messschet = infoSchetOS($messschet,$abon['schet'],$period);
 //        }
         $fio = $abon['fio'];
         $id_reciv = $abon['id_receiver'];
@@ -117,7 +117,7 @@ foreach ($FindNoEmailSchet as $abon) {
             $messschet='';
         }
 //        $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
-        $messschet = infoSchetOS($abon['schet'],$period);
+        $messschet = infoSchetOS($messschet,$abon['schet'],$period);
 //        }
         $fio = $abon['fio'];
         $id_reciv = $abon['id_receiver'];
@@ -142,11 +142,12 @@ echo 'countAbon - '.$countAbon."\n";
 
 function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
     if ($messschet<>'') {
-        $mess = 'Доброго дня ' . $fio . '! Нагадуємо вам про вашу заборгованість по вашим під"єднаним рахункам!!!' . "\r\n";
-        $mess2 = 'Шановні споживачі! Своєчасно сплачуйте за житлово-комунальні послуги, це надає можливість стабільної роботи підприємства!!!';
+        $mess = 'Доброго дня ' . $fio . '! Нагадуємо вам про заборгованість по вашим під"єднаним рахункам!!!' . "\r\n";
+        $mess = $mess.$messschet . "\r\n";
+        $mess = $mess.'Шановні споживачі! Своєчасно сплачуйте за житлово-комунальні послуги, це надає можливість стабільної роботи підприємства!!!';
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
-            getDmkgSend($mess.$messschet.$mess2, $Receiv);
+            getDmkgSend($mess, $Receiv);
 //            getMySend($mess.$messschet,$Receiv);
             $countSend = $countSend + 1;
         }
@@ -157,10 +158,7 @@ function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
 
 }
 
-function infoSchetOS($schet,$period) {
-
-    $mess='';
-    $mess2='';
+function infoSchetOS($mess,$schet,$period) {
 
     try {
 
@@ -169,7 +167,8 @@ function infoSchetOS($schet,$period) {
 
 
         $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
-//
+
+        $mess = $mess . '-----------------------------'. "\n";
         $mess = 'Особовий рахунок - '.$schet."\r\n";
 
         $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
