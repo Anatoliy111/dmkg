@@ -311,11 +311,8 @@ function getDmkgSend($message,$Receiv)
         );
 
     } catch (Exception $e) {
-        $log->warning('Exception: ' . $e->getMessage());
-        if ($bot) {
-            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-            $log->warning('Actual body: ' . $bot->getInputBody());
-        }
+        $mess = $e->getMessage();
+        getMySend($mess);
     }
 
     return '';
