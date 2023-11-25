@@ -123,7 +123,6 @@ function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
         $mess = $mess . 'або за телефонами:' . "\n";
         $mess = $mess . '(066)128-11-85 (Viber)' . "\n";
         $mess = $mess . '(095)791-32-62' . "\n";
-        $mess = $mess . '-----------------------' . "\n";
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
 //            getDmkgSend($mess.$messschet, $Receiv);
