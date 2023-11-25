@@ -106,8 +106,8 @@ foreach ($FindEmailSchet as $abon) {
     }
     catch (Exception $e) {
         $mess = $e->getMessage();
-        if ($abon<>null) $mess = $mess.'--'.$abon->id_receiver;
         $mess = $mess.'--sendpokazn';
+        if ($abon<>null) $mess = $mess.'--idreceiver--'.$abon->id_receiver;
         getMySend($mess);
     }
 }

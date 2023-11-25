@@ -312,6 +312,9 @@ function getDmkgSend($message,$Receiv)
 
     } catch (Exception $e) {
         $mess = $e->getMessage();
+        $mess = $mess.'--DmkgSend';
+        if ($Receiv<>null) $mess = $mess.'--idreceiver--'.$Receiv->id_receiver;
+        if ($message<>null) $mess = $mess.'--message--'.$message;
         getMySend($mess);
     }
 
