@@ -792,7 +792,7 @@ function verifyReceiver($event, $apiKey, $org){
         else
         {
             $messageLog = [
-                'status' => 'Помилка додавання в підписника',
+                'status' => 'Помилка додавання підписника',
                 'post' => $model->errors
             ];
 
@@ -801,7 +801,11 @@ function verifyReceiver($event, $apiKey, $org){
             foreach ($messageLog as $err){
                 $meserr=$meserr.implode(",", $err);
             }
-            getMySend($meserr);
+            $mess = 'Помилка додавання підписника'. "\n";
+            $mess = $mess.'ReceivId-'.$receiverId. "\n";
+            $mess = $mess.'Reveiv Name - '.$receiverName. "\n";
+            $mess = $mess.'message:'.$meserr. "\n";
+            getMySend($mess,null);
 
             $FindModel = null;
 
