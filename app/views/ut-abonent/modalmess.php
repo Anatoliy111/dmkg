@@ -74,7 +74,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addabon', $session['modalmess'])) {
         $modalformheader='Успішна реєстрація';
-        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну(email) та паролю!';
+        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі!';
         $modalformimage='registration.png';
 
     }
