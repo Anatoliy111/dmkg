@@ -36,7 +36,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('errtokenauth', $session['modalmess'])) {
         $modalformheader='Помилка';
-        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру реєстрації заново.';
+        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Якщо ви вже натискали це посилання то виконайте вхід в кабінет, а якщо ні то пройдіть процедуру реєстрації заново.';
         $modalformimage='nothyperlink.png';
     }
 
