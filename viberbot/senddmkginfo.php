@@ -142,7 +142,8 @@ echo 'countAbon - '.$countAbon."\n";
 
 function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
     if ($messschet<>'') {
-        $mess = 'Доброго дня ' . $fio . '! Нагадуємо вам про заборгованість по вашим під"єднаним рахункам!!!' . "\r\n";
+        $mess = 'Доброго дня ' . $fio . '! Нагадуємо вам про заборгованість по вашим під"єднаним рахункам на період' . "\r\n";
+        $mess = $mess.Yii::$app->formatter->asDate($period, 'LLLL Y').'р.!!!'."\n";
         $mess = $mess.$messschet . "\r\n";
         $mess = $mess.'Шановні споживачі! Своєчасно сплачуйте за житлово-комунальні послуги, це надає можливість стабільної роботи підприємства!!!';
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
@@ -175,9 +176,9 @@ function infoSchetOS($mess,$schet,$period) {
         $mess = $mess.$fio . "\n";
 
         $mess = $mess.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["ulnaim"])).' буд.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomdom"])).' '.(isset($dolg[0]["nomkv"])?'кв.'.trim(iconv('windows-1251', 'UTF-8', $dolg[0]["nomkv"])):'')."\r\n";
-        $mess = $mess.'----------------------------'."\n";
-
-        $mess = $mess.Yii::$app->formatter->asDate($period, 'LLLL Y')."\n";
+//        $mess = $mess.'----------------------------'."\n";
+//
+//        $mess = $mess.Yii::$app->formatter->asDate($period, 'LLLL Y')."\n";
         $mess = $mess.'----------------------------'."\n";
         $mess = $mess.'Заборгованість по послугам:'."\n\r";
         $summa =0;
@@ -192,7 +193,7 @@ function infoSchetOS($mess,$schet,$period) {
         }
         $mess = $mess.'----------------------------'."\n";
 
-        $mess = $mess."\r".'Всього до сплати: '.$summa."\r\n";
+        $mess = $mess."\r".'Всього до сплати по рахунку '.$schet.' становить: '.$summa."\r\n";
 
 //        if ($summa<1000) $mess='';
     }
