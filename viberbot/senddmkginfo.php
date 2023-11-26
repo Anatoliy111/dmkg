@@ -74,7 +74,7 @@ foreach ($FindEmailSchet as $abon) {
     try {
 //        if ($abon['id_receiver'] == $receivid) {
                 if ($id_reciv <> $abon['id_receiver']) {
-                    $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+                    $countSend = send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend);
                     $countAbon = $countAbon + 1;
                     $messschet='';
                 }
@@ -93,7 +93,7 @@ foreach ($FindEmailSchet as $abon) {
 }
 
 
-$countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+$countSend = send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend);
 
 $FindNoEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->select('viber.id_receiver,viber_abon.schet,viber.name as fio')
@@ -112,7 +112,7 @@ foreach ($FindNoEmailSchet as $abon) {
     try {
 //        if ($abon['id_receiver'] == $receivid) {
         if ($id_reciv <> $abon['id_receiver']) {
-            $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+            $countSend = send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend);
             $countAbon = $countAbon + 1;
             $messschet='';
         }
@@ -132,7 +132,7 @@ foreach ($FindNoEmailSchet as $abon) {
 }
 
 
-$countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+$countSend = send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend);
 
 
 
@@ -140,7 +140,7 @@ $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 echo 'countSend - '.$countSend."\n";
 echo 'countAbon - '.$countAbon."\n";
 
-function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
+function send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend){
     if ($messschet<>'') {
         $mess = 'Доброго дня ' . $fio . '! Нагадуємо вам про заборгованість по вашим під"єднаним рахункам на період' . "\r\n";
         $mess = $mess.Yii::$app->formatter->asDate($period, 'LLLL Y').'р.!!!'."\n";
