@@ -200,7 +200,7 @@ function infoSchetOS($mess,$schet,$period) {
     catch (\Exception $e) {
         $errmess = $e->getMessage();
         $errmess = $errmess.'--sendinfo';
-        if ($abon<>null) $errmess = $errmess.'--idreceiver--'.$abon->id_receiver;
+//        if ($abon<>null) $errmess = $errmess.'--idreceiver--'.$abon->id_receiver;
         getMySend($errmess.$mess,null);
         $mess='';
     }
