@@ -159,7 +159,7 @@ function send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend){
 
 }
 
-function infoSchetOS($mess,$schet,$period) {
+function infoSchetOS($messout,$schet,$period) {
 
     try {
 
@@ -169,7 +169,7 @@ function infoSchetOS($mess,$schet,$period) {
 
         $dolg=Yii::$app->dolgdb->createCommand('select vw_obkr.*,round((dolg-fullopl),2) as dolgopl from vw_obkr where period=\''.$period.'\' and schet=\''.$schet1251.'\' order by npp')->QueryAll();
 
-        $mess = $mess . '-----------------------------'. "\n";
+        $mess = '-----------------------------'. "\n";
         $mess = $mess . 'Особовий рахунок - '.$schet."\r\n";
 
         $fio = trim(iconv('windows-1251', 'UTF-8',$dolg[0]["fio"]));
@@ -196,16 +196,18 @@ function infoSchetOS($mess,$schet,$period) {
         $mess = $mess."\r".'Всього до сплати по рахунку '.$schet.' становить: '.$summa."\r\n";
 
         if ($summa<1000) $mess='';
+
+        $messout = $messout.$mess;
     }
     catch (\Exception $e) {
         $errmess = $e->getMessage();
         $errmess = $errmess.'--sendinfo';
 //        if ($abon<>null) $errmess = $errmess.'--idreceiver--'.$abon->id_receiver;
-        getMySend($errmess.$mess,null);
-        $mess='';
+        getMySend($errmess.$messout,null);
+        $messout='';
     }
 
-    return $mess;
+    return $messout;
 
 }
 
