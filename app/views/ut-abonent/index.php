@@ -65,7 +65,7 @@ if (isset($_SESSION['modalmess'])) {
             ],
         ];
 
-        if ($tab<>'email')
+        if ($tab<>'adres')
             $items[1]['active'] = true;
         else
             $items[0]['active'] = true;
