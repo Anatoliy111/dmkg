@@ -32,6 +32,16 @@ $FindEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->innerJoin('ut_abonent','ut_abonent.id = viber.id_abonent')
     ->innerJoin('ut_abonkart','ut_abonent.id = ut_abonkart.id_abon')
     ->andwhere(['<>', 'viber.id_abonent',0])
+    ->andwhere(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
+    ->andwhere(['=', 'viber.id_receiver','TDts4sPNiTEJS/Y6WkPVQg=='])
+    ->orderBy('viber.id')
+    ->asArray()->all();
+
+$FindEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
+    ->select('viber.id_receiver,viber.id_abonent,ut_abonkart.schet,ut_abonent.fio')
+    ->innerJoin('ut_abonent','ut_abonent.id = viber.id_abonent')
+    ->innerJoin('ut_abonkart','ut_abonent.id = ut_abonkart.id_abon')
+    ->andwhere(['<>', 'viber.id_abonent',0])
     ->orderBy('viber.id')
     ->asArray()->all();
 

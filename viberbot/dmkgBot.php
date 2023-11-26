@@ -323,6 +323,18 @@ try {
             $Receiv = verifyReceiver($event,$apiKey, $org);
             message($bot, $botSender, $event, 'Дякуємо за вашу оплату!!! Нагадуємо, що дані в privat24 оновлюються один раз на місяць!', getDmkgMenuOS($Receiv));
         })
+        ->onText('|myinfo|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
+            $log->info('myinfo'. var_export($event, true));
+            $Receiv = verifyReceiver($event, $apiKey, $org);
+            $mess = 'idviber:'.$Receiv->id . "\n";
+            $mess = $mess . 'idreceiver:'.$Receiv->id_receiver . "\n";
+            $mess = $mess . 'idabon:'.$Receiv->id_abonent. "\n";
+            $mess = $mess . 'Name:'.$Receiv->name . "\n";
+            $mess = $mess . 'Date ins dmkg:'.$Receiv->date_ins . "\n";
+            $mess = $mess . 'Status:'.$Receiv->status . "\n";
+            message($bot, $botSender, $event, $mess, getDmkgMenuOS($Receiv));
+            UpdateStatus($Receiv,'');
+        })
         ->onText('|exit#|s', function ($event) use ($bot, $botSender, $log, $apiKey,$org) {
             $log->info('exit kab '. var_export($event, true));
             $Receiv = verifyReceiver($event, $apiKey, $org);
@@ -493,7 +505,7 @@ try {
                                     message($bot, $botSender, $event, $addpok[1], getRahList($FindRah, 'pok-rah'));
                                 }
                                 if ($addpok == null) {
-                                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
+                                    message($bot, $botSender, $event, 'Подати показник по воді мають змогу тільки зареєстровані користувачі. Пройдіть процедуру Авторизаці/Реєстрації (кнопкою нижче в меню), або виконайте підключення до вайбербота в кабінеті споживача на сайті dmkg.com.ua (вхід за ел.поштою)!', getDmkgMenuOS($Receiv));
                                     UpdateStatus($Receiv, '');
                                 }
                             }
@@ -780,7 +792,7 @@ function verifyReceiver($event, $apiKey, $org){
         else
         {
             $messageLog = [
-                'status' => 'Помилка додавання в підписника',
+                'status' => 'Помилка додавання підписника',
                 'post' => $model->errors
             ];
 
@@ -789,7 +801,11 @@ function verifyReceiver($event, $apiKey, $org){
             foreach ($messageLog as $err){
                 $meserr=$meserr.implode(",", $err);
             }
-            getMySend($meserr);
+            $mess = 'Помилка додавання підписника'. "\n";
+            $mess = $mess.'ReceivId-'.$receiverId. "\n";
+            $mess = $mess.'Reveiv Name - '.$receiverName. "\n";
+            $mess = $mess.'message:'.$meserr. "\n";
+            getMySend($mess,null);
 
             $FindModel = null;
 
