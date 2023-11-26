@@ -14,4 +14,6 @@ $confirmLink = str_replace('viberbot/','',$confirmLink);
     <p>Перейдіть за посиланням нижче, щоб завершити процедуру реєстрації в кабінеті споживача через Viberbot:</p>
 
     <p><?= Html::a(Html::encode($confirmLink), $confirmLink) ?></p>
+
+    <p>Ваш пароль: <?= Html::encode($model->pass)?>:</p>
 </div>

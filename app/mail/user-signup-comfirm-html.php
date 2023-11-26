@@ -12,4 +12,6 @@ $confirmLink = Yii::$app->urlManager->createAbsoluteUrl(['ut-abonent/confirm-sig
     <p>Перейдіть за посиланням нижче, щоб завершити процедуру реєстрації:</p>
 
     <p><?= Html::a(Html::encode($confirmLink), $confirmLink) ?></p>
+
+    <p>Ваш пароль: <?= Html::encode($model->pass)?>:</p>
 </div>
