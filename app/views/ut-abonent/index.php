@@ -118,7 +118,7 @@ if (isset($_SESSION['modalmess'])) {
                     'type' => Growl::TYPE_DANGER,
                     'title' => 'Помилка!',
                     'icon' => 'glyphicon glyphicon-remove-sign',
-                    'body' => 'Не вірний код доступу !!!',
+                    'body' => 'Не вірний пароль!!!',
                     'showSeparator' => true,
                     'delay' => false,
                     'pluginOptions' => [
