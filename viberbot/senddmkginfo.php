@@ -195,7 +195,7 @@ function infoSchetOS($messout,$schet,$period) {
 
         $mess = $mess."\r".'Всього до сплати по рахунку '.$schet.' становить: '.$summa."\r\n";
 
-        if ($summa<1000) $mess='';
+        if ($summa<100) $mess='';
 
         $messout = $messout.$mess;
     }
