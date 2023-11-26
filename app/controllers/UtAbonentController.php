@@ -810,6 +810,7 @@ class UtAbonentController extends Controller
                 if ($modelabon->validate() && $modelabon->save()) {
                     UtAuth::deleteAll('email = :email', [':email' => $modelabon->email]);
                     $_SESSION['modalmess']['addabon']=$modelabon;
+                    $_SESSION['model']=$modelabon;
                 }
             }
             else $_SESSION['modalmess']['erremail']=$modelauth;

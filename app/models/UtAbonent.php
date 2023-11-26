@@ -74,7 +74,7 @@ UtAbonent extends \yii\db\ActiveRecord
             'passopen' => 'Passopen',
             'telef' => 'телефон',
             'del' => 'Del',
-            'email' => 'Email',
+            'email' => 'Логін (Email)',
             'status' => 'Status',
             'pass1' => 'Введіть пароль',
             'pass2' => 'Повторіть пароль',

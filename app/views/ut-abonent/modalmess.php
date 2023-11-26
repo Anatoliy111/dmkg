@@ -36,7 +36,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('errtokenauth', $session['modalmess'])) {
         $modalformheader='Помилка';
-        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Пройдіть процедуру реєстрації заново.';
+        $modalformtext='Вибачте, але ваше посилання з листа вже не дійсне!!! Якщо ви вже натискали це посилання то виконайте вхід в кабінет, а якщо ні то пройдіть процедуру реєстрації заново.';
         $modalformimage='nothyperlink.png';
     }
 
@@ -74,7 +74,7 @@ if (isset($_SESSION['modalmess']))  {
 
     if (array_key_exists('addabon', $session['modalmess'])) {
         $modalformheader='Успішна реєстрація';
-        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі! Виконайте вхід за допомогою вашого логіну(email) та паролю!';
+        $modalformtext='Вітаємо '.$session['modalmess']['addabon']->fio.', вас зареєстровано в системі!';
         $modalformimage='registration.png';
 
     }

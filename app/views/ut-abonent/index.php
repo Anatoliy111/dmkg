@@ -65,10 +65,10 @@ if (isset($_SESSION['modalmess'])) {
             ],
         ];
 
-        if ($tab<>'email')
-            $items[0]['active'] = true;
-        else
+        if ($tab<>'adres')
             $items[1]['active'] = true;
+        else
+            $items[0]['active'] = true;
 
         echo TabsX::widget([
             'items'=>$items,
@@ -118,7 +118,7 @@ if (isset($_SESSION['modalmess'])) {
                     'type' => Growl::TYPE_DANGER,
                     'title' => 'Помилка!',
                     'icon' => 'glyphicon glyphicon-remove-sign',
-                    'body' => 'Не вірний код доступу !!!',
+                    'body' => 'Не вірний пароль!!!',
                     'showSeparator' => true,
                     'delay' => false,
                     'pluginOptions' => [
