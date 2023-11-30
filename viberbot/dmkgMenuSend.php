@@ -294,7 +294,7 @@ function getMySend($message,$Receiv)
 function getDmkgSend($message,$Receiv)
 {
 
-
+    $truesend = 0;
 
     $apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
     $receivid = '78QXYFX3IiSsRdaPuPtF7Q=='; //dmkgBot
@@ -318,6 +318,8 @@ function getDmkgSend($message,$Receiv)
                 ->setText($message)
                 ->setKeyboard(getDmkgMenuOS($Receiv))
         );
+        $truesend = 1;
+
 
     } catch (Exception $e) {
         $mess = $e->getMessage();
@@ -327,7 +329,7 @@ function getDmkgSend($message,$Receiv)
         getMySend($mess,$Receiv);
     }
 
-    return '';
+    return $truesend;
 }
 
 

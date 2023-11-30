@@ -220,9 +220,12 @@ class AController extends Controller
                     ->where(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
                     ->orderBy('viber.id')
                     ->all();
-                foreach ($FindViber as $abon)
-                        getDmkgSend(strip_tags($informing->getText()), $abon);
 
+                $vibersend = 0;
+                foreach ($FindViber as $abon)
+                    $vibersend = $vibersend + getDmkgSend(strip_tags($informing->getText()), $abon);
+
+                $this->flash('success', 'Відправлено '.$vibersend.' оголошень на Viber!!!');
             }
             else $this->flash('success', 'Оголошення застаріле!!!');
         } else $this->flash('success', 'Немає оголошень!!!');
