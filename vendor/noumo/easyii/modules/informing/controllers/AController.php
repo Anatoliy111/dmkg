@@ -221,7 +221,7 @@ class AController extends Controller
                     ->orderBy('viber.id')
                     ->all();
                 foreach ($FindViber as $abon)
-                        getDmkgSend($informing->getText(), $abon);
+                        getDmkgSend(strip_tags($informing->getText()), $abon);
 
             }
             else $this->flash('success', 'Оголошення застаріле!!!');
