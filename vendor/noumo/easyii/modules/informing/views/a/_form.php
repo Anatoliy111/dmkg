@@ -34,10 +34,6 @@ $module = $this->context->module->id;
     ]
 ]) ?>
 
-<?//= $form->field($model, 'time'); ?>
-<?//= $form->field($model, 'time')->widget(DateTimePicker::className()); ?>
-
-<?//= $form->field($model, 'date')->label(); ?>
 <div class="form-group field-informing-date">
     <label class="control-label" for="informing-date-selectized">Дата</label>
     <p><?= $model->date ?></p>
