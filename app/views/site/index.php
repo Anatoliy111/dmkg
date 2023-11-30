@@ -48,13 +48,14 @@ $asset = \app\assets\AppAsset::register($this);
 
 <?php
 //$informing = Informing::last();
-$informingmodel = InformingModel::find()->sortDate()->limit(1)->all()[0];
-if ($informingmodel!=null and $informingmodel['status']<>0 ) {
+$informingmodel = InformingModel::find()->sortDate()->limit(1)->all();
+
+if ($informingmodel!=null) {
 //    time
     $day=\yii\easyii\models\Setting::get('visible_informing');
 
-    if ($informingmodel['status']<>0 and date('Y-m-d', strtotime('+'.$day.' days',$informingmodel['time']))>=date('Y-m-d', time())) {
-    $informing = new InformingObject($informingmodel);
+    if ($informingmodel[0]['status']<>0 and date('Y-m-d', strtotime('+'.$day.' days',$informingmodel[0]['time']))>=date('Y-m-d', time())) {
+    $informing = new InformingObject($informingmodel[0]);
 ?>
 
 <section class="our_advisor">
