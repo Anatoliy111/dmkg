@@ -95,7 +95,8 @@ function send($apiKey,$botSender,$message,$receivid)
         }
 
     } catch (Exception $e) {
-        $res='bad '.$receivid;
+        $mess = $e->getMessage();
+        $res='bad -- '.$mess;
 //        $log->warning('Exception: ' . $e->getMessage());
 //        if ($bot) {
 //            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
