@@ -77,7 +77,7 @@ function send($apiKey,$botSender,$message,$receivid)
         $bot->getClient()->sendMessage(
             (new \Viber\Api\Message\Text())
                 ->setSender($botSender)
-                ->setReceiver($receivid)
+//                ->setReceiver($receivid)
                 ->setText($message)
         );
 
