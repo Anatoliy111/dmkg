@@ -35,6 +35,8 @@ class PeriodDomWidget extends Widget
 	{
 		parent::init();
 
+        $session = Yii::$app->session;
+
 		$ModelPeriod = new Period();
 //		$lastperiod = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orderBy(['period' => SORT_DESC])->one();
 		$lastperiod = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
@@ -50,7 +52,7 @@ class PeriodDomWidget extends Widget
 			if (Yii::$app->session['perioddom']==null)
 			{
 
-				Yii::$app->session['perioddom']=$lastperiod->period;
+                $session['perioddom']=$lastperiod->period;
 				$ModelPeriod->perioddom=$lastperiod->period;
 			}
 			else
@@ -87,7 +89,7 @@ class PeriodDomWidget extends Widget
 				}
 			}
 
-			Yii::$app->session['periodspisoksite']=$per;
+            $session['periodspisoksite']=$per;
 		}
 
 

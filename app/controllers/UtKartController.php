@@ -295,7 +295,7 @@ class UtKartController extends Controller
 		}
         $searchModel = new SearchUtKart();
 		$findmodel = null;
-		Yii::$app->session['periodkab']=null;
+        $session['periodkab']=null;
 		$searchModel->scenario = 'adres';
 //		$searchModel->scenario = isset($_REQUEST['SearchUtKart']['enterpass']) ? $searchModel->scenario = 'password' : $searchModel->scenario = 'adres';
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -385,21 +385,20 @@ class UtKartController extends Controller
      */
 	public function actionKabinet($id)
 	{
-//		$session = Yii::$app->session;
+		$session = Yii::$app->session;
 //		if (isset($_POST['UtKart']['MonthYear']))
 //		{ $session['period'] = $_POST['UtKart']['MonthYear'];}
 
 		if (Yii::$app->session['periodkab']==null)
-    		Yii::$app->session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
+            $session['periodkab']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
 //		if (Yii::$app->session['period']==null)
-			Yii::$app->session['period']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
+            $session['period']=UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->one()->period;
 
 //		Yii::$app->session['periodkab']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 ////		if (Yii::$app->session['period']==null)
 //		Yii::$app->session['period']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 		$model = $this->findModel($id);
-		$session = Yii::$app->session;
 		if ($session['model']==null || $session['model']<>$model )
 		{
 			return $this->redirect(['ut-kart/index']);

@@ -33,20 +33,21 @@ class PeriodWidget extends Widget
 	public function init()
 	{
 		parent::init();
+        $session = Yii::$app->session;
 		$ModelPeriod = new Period();
 		$lastperiod = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
 
 		$ModelPeriod->lastperiod = $lastperiod->period;
 		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 		{
-				Yii::$app->session['periodoblik']=$ModelPeriod->periodoblik;
+            $session['periodoblik']=$ModelPeriod->periodoblik;
 		}
 		else
 		{
 			if (Yii::$app->session['periodoblik']==null)
 			{
 
-				Yii::$app->session['periodoblik']=$lastperiod->period;
+                $session['periodoblik']=$lastperiod->period;
 				$ModelPeriod->periodoblik=$lastperiod->period;
 			}
 			else
@@ -80,7 +81,7 @@ class PeriodWidget extends Widget
 				}
 			}
 
-			Yii::$app->session['periodspisok']=$per;
+            $session['periodspisok']=$per;
 		}
 
 

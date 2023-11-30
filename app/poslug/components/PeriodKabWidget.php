@@ -35,6 +35,7 @@ class PeriodKabWidget extends Widget
 	public function init()
 	{
 		parent::init();
+        $session = Yii::$app->session;
 		$ModelPeriod = new Period();
 //		$lastperiod = DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
         $lastperiod = Yii::$app->dolgdb->createCommand('select period from period order by period desc')->QueryAll()[0];
@@ -49,7 +50,7 @@ class PeriodKabWidget extends Widget
 			if (Yii::$app->session['periodkab']==null)
 			{
 
-				Yii::$app->session['periodkab']=$lastperiod["period"];
+                $session['periodkab']=$lastperiod["period"];
 				$ModelPeriod->periodkab=$lastperiod["period"];
 			}
 			else
@@ -87,7 +88,7 @@ class PeriodKabWidget extends Widget
 				}
 			}
 
-			Yii::$app->session['periodspisoksite']=$per;
+            $session['periodspisoksite']=$per;
 		}
 
 

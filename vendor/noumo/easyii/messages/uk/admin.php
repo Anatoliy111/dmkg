@@ -188,6 +188,7 @@ return [
 	'Articles' => 'Статті',
 	'Create article' => 'Створити статтю',
 	'News' => 'Новини',
+    'informing' => 'Оголошення',
 	'Select the body if there is...' => 'Виберіть корпус...',
 	'Select the street...' => 'Виберіть вулицю...',
 	'house №' => 'буд. №',
@@ -263,6 +264,14 @@ return [
 	'Ut Tarifplans' => 'Планові тарифи',
 	'Ut Tarifplans' => 'Планові тарифи',
 	'Ut Tarifplans' => 'Планові тарифи',
+
+    'Create informing' => 'Створити оголошення',
+    'Edit informing' => 'Редагувати оголошення',
+    'Informing created' => 'Оголошення створене',
+    'Informing updated' => 'Оголошення оновлене',
+    'Informing deleted' => 'Оголошення видалене',
+    'Short' => 'Коротко',
+    'Informing' => 'Оголошення',
 
 
 

@@ -424,10 +424,10 @@ class UtAbonentController extends Controller
 //                    ->groupBy('ut_opl.id_kart, ut_opl.id_posl');
 
 
-                $dolg = DolgObor::find();
-                $dolg->select(["vw_obkr.*", "round((dolg-fullopl),2) as dolgopl"]);
-                $dolg->where(['schet' => $abon->schet, 'period' => $session['period']]);
-                $dolg->orderBy('npp');
+//                $dolg = DolgObor::find();
+//                $dolg->select(["vw_obkr.*", "round((dolg-fullopl),2) as dolgopl"]);
+//                $dolg->where(['schet' => $abon->schet, 'period' => $session['period']]);
+//                $dolg->orderBy('npp');
     //				    $dolg->join('LEFT JOIN', ['b' => $subQuery],  '`b`.`id_kart` = ut_obor.`id_kart` and `b`.`id_posl`=`ut_obor`.`id_posl`');
     //				    $dolg->join('LEFT JOIN', 'ut_opl',  '`ut_opl`.`id_kart` = ut_obor.`id_kart` and `ut_opl`.`id_posl`=`ut_obor`.`id_posl`');
 

@@ -9,4 +9,5 @@ return [
     'News image cleared' => 'عکس های خبر پاک شد',
     'Short' => 'کوتاه',
     'Clear image' => 'پاک کردن عکس',
+    'informing' => 'Оголошення',
 ];

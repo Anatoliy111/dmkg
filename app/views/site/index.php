@@ -1,12 +1,17 @@
 <?php
 use yii\bootstrap\Collapse;
 use yii\bootstrap\Modal;
+use yii\easyii\components\ApiObject;
+use yii\easyii\helpers\Image;
 use yii\easyii\models\Tag;
 	use yii\easyii\models\TagAssign;
 	use yii\easyii\modules\article\api\Article;
 use yii\easyii\modules\carousel\api\Carousel;
 use yii\easyii\modules\gallery\api\Gallery;
 
+use yii\easyii\modules\informing\api\Informing;
+use yii\easyii\modules\informing\api\InformingObject;
+use yii\easyii\modules\informing\models\Informing as InformingModel;
 use yii\easyii\modules\news\api\News;
 
 use yii\easyii\modules\text\api\Text;
@@ -40,6 +45,53 @@ $asset = \app\assets\AppAsset::register($this);
 </section>
 
 <hr/>
+
+<?php
+//$informing = Informing::last();
+$informingmodel = InformingModel::find()->sortDate()->limit(1)->all()[0];
+if ($informingmodel!=null and $informingmodel['status']<>0 ) {
+//    time
+    $day=\yii\easyii\models\Setting::get('visible_informing');
+
+    if ($informingmodel['status']<>0 and date('Y-m-d', strtotime('+'.$day.' days',$informingmodel['time']))>=date('Y-m-d', time())) {
+    $informing = new InformingObject($informingmodel);
+?>
+
+<section class="our_advisor">
+    <div class="container">
+        <h2>Оголошення!!!</h2>
+    </div>
+
+    </br>
+
+    <div class="row welcome welcome_details">
+        <div class="col-lg-12 col-md-12">
+
+            <div class="welcome_item">
+                <?php if (!empty($informing->image)) {?>
+                         <?=Html::img($informing->thumb(120, 120));?>
+                <?php } else {?>
+                <?= Html::img(Image::thumb($asset->baseUrl.'/ogoloshennya.jpg',120, 120)); ?>
+                <?php } ?>
+
+
+
+                <div class="welcome_text">
+
+                    <p><?= $informing->getText(); ?></p>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div> <!-- End Row -->
+
+</section>
+
+<hr/>
+
+<?php } } ?>
 
 
 <section class="our_advisor">

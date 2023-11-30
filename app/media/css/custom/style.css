@@ -1134,6 +1134,22 @@ button#buttperiod{
     -o-transition: all 0.3s linear;
     transition: all 0.3s linear;
 }
+
+.welcome_details .welcome_text {
+	position: relative;
+	width:77%;
+	background: #fdfdfd;
+	border: 1px solid #e6e6e6;
+	margin-left: 140px;
+	padding-top: 7px;
+	padding-bottom: 24px;
+	-webkit-transition: all 0.3s linear;
+	-o-transition: all 0.3s linear;
+	transition: all 0.3s linear;
+}
+
+
+
 .welcome_details h3 {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 700;
