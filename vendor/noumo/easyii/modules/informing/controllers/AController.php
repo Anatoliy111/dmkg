@@ -11,8 +11,17 @@ use yii\web\UploadedFile;
 
 use yii\easyii\components\Controller;
 use yii\easyii\modules\informing\models\Informing;
+use yii\easyii\modules\informing\api\InformingObject;
 use yii\easyii\helpers\Image;
 use yii\easyii\behaviors\StatusController;
+
+use Viber\Bot;
+use Viber\Api\Sender;
+use app\models\Viber;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+require (Yii::getAlias('@webroot'). '/viberbot/dmkgMenuSend.php');
 
 class AController extends Controller
 {
@@ -191,6 +200,35 @@ class AController extends Controller
 
     public function actionSendmess()
     {
+        $informingmodel = Informing::find()->sortDate()->limit(1)->all();
+        if ($informingmodel!=null) {
+//    time
+            $day = \yii\easyii\models\Setting::get('visible_informing');
+
+            if ($informingmodel[0]['status'] <> 0 and date('Y-m-d', strtotime('+' . $day . ' days', $informingmodel[0]['time'])) >= date('Y-m-d', time())) {
+                $log = new Logger('bot');
+                $log->pushHandler(new StreamHandler(__DIR__ .'/viberbot/tmp/bot.log'));
+
+                $informing = new InformingObject($informingmodel[0]);
+
+                $apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742'; //dmkgBot
+                $receivid = '78QXYFX3IiSsRdaPuPtF7Q=='; //dmkgBot
+                $FindViber = Viber::find()->where(['viber.api_key' => $apiKey])
+                    ->select('viber.id_receiver,viber.id_abonent')
+                    ->where(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
+                    ->orderBy('viber.id')
+                    ->all();
+                foreach ($FindViber as $abon)
+                        getDmkgSend($informing->getText(), $abon);
+
+            }
+            else $this->flash('success', 'Оголошення застаріле!!!');
+        } else $this->flash('success', 'Немає оголошень!!!');
+
+
+        return $this->redirect('index');
+
+
 
     }
 

@@ -88,7 +88,7 @@ function send($apiKey,$botSender,$message,$receivid)
             $bot->getClient()->sendMessage(
                 (new \Viber\Api\Message\Text())
                     ->setSender($botSender)
-                ->setReceiver($receivid)
+                   ->setReceiver($receivid)
                     ->setText($message)
             );
 
@@ -96,7 +96,7 @@ function send($apiKey,$botSender,$message,$receivid)
 
     } catch (Exception $e) {
         $mess = $e->getMessage();
-        $res='bad -- '.$mess;
+        $res='bad -- '.$mess.' ';
 //        $log->warning('Exception: ' . $e->getMessage());
 //        if ($bot) {
 //            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());

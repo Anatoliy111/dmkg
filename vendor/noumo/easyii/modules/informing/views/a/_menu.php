@@ -14,10 +14,16 @@ $module = $this->context->module->id;
             <?= Yii::t('easyii', 'List') ?>
         </a>
     </li>
+    <?php
+    if ($action === 'index') {
+    ?>
     <li <?= ($action === 'create') ? 'class="active"' : '' ?>><a href="<?= Url::to(['/admin/'.$module.'/a/create']) ?>"><?= Yii::t('easyii', 'Create') ?></a></li>
     <li><a href="<?= Url::to(['/admin/'.$module.'/a/sendmess']) ?>">Відправити останнє оголошення на ViberBot та Email</a></li>
+    <?php } ?>
 </ul>
-
+<?php
+if ($action === 'index') {
+?>
 <div class="dropdown_day" style="margin: 10px;">
     <?= Html::dropDownList('', \yii\easyii\models\Setting::get('visible_informing'),[range(0, 30)][0],[
             'empty' => 'Виберіть кількість днів',
@@ -41,11 +47,9 @@ $module = $this->context->module->id;
     ]) ?>
 </div>
 
-
-
 <div class="text_day" style="margin: 10px;">
     <p>Кількість днів відображення останнього оголошення на головній сторінці сайту, від дати створення оголошення.</p>
 </div>
-
+<?php } ?>
 
 <br/>
