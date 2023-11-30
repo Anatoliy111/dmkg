@@ -206,8 +206,8 @@ class AController extends Controller
 
             $day = \yii\easyii\models\Setting::get('visible_informing');
 
-            if (date('Y-m-d', strtotime('+' . $day . ' days', $informingmodel[0]['time'])) >= date('Y-m-d', time())) {
-//            if ($informingmodel[0]['status'] <> 0 and date('Y-m-d', strtotime('+' . $day . ' days', $informingmodel[0]['time'])) >= date('Y-m-d', time())) {
+//            if (date('Y-m-d', strtotime('+' . $day . ' days', $informingmodel[0]['time'])) >= date('Y-m-d', time())) {
+            if ($informingmodel[0]['status'] <> 0 and date('Y-m-d', strtotime('+' . $day . ' days', $informingmodel[0]['time'])) >= date('Y-m-d', time())) {
                 $log = new Logger('bot');
                 $log->pushHandler(new StreamHandler(__DIR__ .'/viberbot/tmp/bot.log'));
 
