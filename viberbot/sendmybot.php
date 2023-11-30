@@ -55,11 +55,13 @@ $botSender = new Sender([
 //
 
 
-foreach ($FindModels as $model) {
+//foreach ($FindModels as $model) {
+//
+//       echo send($apiKey,$botSender,$message,$model->id_receiver);
+//
+//}
 
-       echo send($apiKey,$botSender,$message,$model->id_receiver);
-
-}
+echo send($apiKey,$botSender,$message,null);
 
 //echo send($apiKey,$botSender,$message,$receivid);
 
@@ -72,14 +74,25 @@ function send($apiKey,$botSender,$message,$receivid)
     $res ='ok - '.$receivid;
 
     try {
-        // create bot instance
-        $bot = new Bot(['token' => $apiKey]);
-        $bot->getClient()->sendMessage(
-            (new \Viber\Api\Message\Text())
-                ->setSender($botSender)
-//                ->setReceiver($receivid)
-                ->setText($message)
-        );
+
+        if ($receivid==null) {
+            // create bot instance
+            $bot = new Bot(['token' => $apiKey]);
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                    ->setText($message)
+            );
+        }else {
+            $bot = new Bot(['token' => $apiKey]);
+            $bot->getClient()->sendMessage(
+                (new \Viber\Api\Message\Text())
+                    ->setSender($botSender)
+                ->setReceiver($receivid)
+                    ->setText($message)
+            );
+
+        }
 
     } catch (Exception $e) {
         $res='bad '.$receivid;
