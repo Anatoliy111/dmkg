@@ -19,7 +19,6 @@ $module = $this->context->module->id;
 </ul>
 
 <div class="dropdown_day" style="margin: 10px;">
-<!--    --><?//= Html::dropDownList('', \yii\easyii\models\Setting::get('visible_informing'),[range(1, 30)][0],['empty' => 'Виберіть кількість днів']) ?>
     <?= Html::dropDownList('', \yii\easyii\models\Setting::get('visible_informing'),[range(0, 30)][0],[
             'empty' => 'Виберіть кількість днів',
             'id' => 'dropday',

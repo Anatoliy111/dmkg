@@ -42,8 +42,6 @@ $module = $this->context->module->id;
                 <td><?= $item->date ?></td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group">
-<!--                        <a href="--><?//= Url::to(['/admin/'.$module.'/a/up', 'id' => $item->primaryKey]) ?><!--" class="btn btn-default move-up" title="--><?//= Yii::t('easyii', 'Move up') ?><!--"><span class="glyphicon glyphicon-arrow-up"></span></a>-->
-<!--                        <a href="--><?//= Url::to(['/admin/'.$module.'/a/down', 'id' => $item->primaryKey]) ?><!--" class="btn btn-default move-down" title="--><?//= Yii::t('easyii', 'Move down') ?><!--"><span class="glyphicon glyphicon-arrow-down"></span></a>-->
                         <a href="<?= Url::to(['/admin/'.$module.'/a/delete', 'id' => $item->primaryKey]) ?>" class="btn btn-default confirm-delete" title="<?= Yii::t('easyii', 'Delete item') ?>"><span class="glyphicon glyphicon-remove"></span></a>
                     </div>
                 </td>
