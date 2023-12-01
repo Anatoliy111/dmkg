@@ -254,7 +254,7 @@ class AController extends Controller
                 }
 
 
-                $this->flash('success', 'Відправлено '.$emailsend.' оголошень на Email, та '.$vibersend.' оголошень на Viber!!!);
+                $this->flash('success', 'Відправлено '.$emailsend.' оголошень на Email, та '.$vibersend.' оголошень на Viber!!!');
 
 
 
