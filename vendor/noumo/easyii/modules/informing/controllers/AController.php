@@ -230,7 +230,7 @@ class AController extends Controller
 
                 $FindEmail = UtAbonent::find()
                     ->where(['<>', 'email',''])
-                    ->andwhere(['=', 'email','bondyuk.a.g@gmail.com'])
+                    ->andwhere(['=', 'email','bondyuk111.a.g@gmail.com'])
                     ->orderBy('id')
                     ->all();
 
@@ -254,7 +254,7 @@ class AController extends Controller
                 }
 
 
-                $this->flash('success', 'Відправлено '.$emailsend.' оголошень на Email!!!');
+                $this->flash('success', 'Відправлено '.$emailsend.' оголошень на Email, та '.$vibersend.' оголошень на Viber!!!);
 
 
 
