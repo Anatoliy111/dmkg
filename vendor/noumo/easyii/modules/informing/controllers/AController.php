@@ -230,7 +230,7 @@ class AController extends Controller
 
                 $FindEmail = UtAbonent::find()
                     ->where(['<>', 'email',''])
-                    ->andwhere(['=', 'email','bondyuk111.a.g@gmail.com'])
+                    ->andwhere(['=', 'email','bondyuk.a.g@gmail.com'])
                     ->orderBy('id')
                     ->all();
 
@@ -240,7 +240,7 @@ class AController extends Controller
                         ->compose(
                             ['html' => 'user-inform-html'],
                             ['model' => $informing])
-                        ->setTo($abon->email)
+                        ->setTo('bondyuk111.a.g@gmail.com')
                         ->setFrom('supportdmkg@ukr.net')
                         ->setSubject('Оголошення ДМКГ!')
                         ->send();
