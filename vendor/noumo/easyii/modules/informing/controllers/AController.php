@@ -1,6 +1,7 @@
 <?php
 namespace yii\easyii\modules\informing\controllers;
 
+use app\models\UtAbonent;
 use Yii;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
@@ -226,6 +227,37 @@ class AController extends Controller
                     $vibersend = $vibersend + getDmkgSend(strip_tags($informing->getText()), $abon);
 
                 $this->flash('success', 'Відправлено '.$vibersend.' оголошень на Viber!!!');
+
+                $FindEmail = UtAbonent::find()
+                    ->where(['<>', 'email',''])
+                    ->andwhere(['=', 'email','bondyuk.a.g@gmail.com'])
+                    ->orderBy('id')
+                    ->all();
+
+                $emailsend = 0;
+                foreach ($FindEmail as $abon) {
+                    $sent = Yii::$app->mailer
+                        ->compose(
+                            ['html' => 'user-inform-html'],
+                            ['model' => $informing])
+                        ->setTo($abon->email)
+                        ->setFrom('supportdmkg@ukr.net')
+                        ->setSubject('Оголошення ДМКГ!')
+                        ->send();
+
+                    if (!$sent) {
+                        throw new \RuntimeException('Sending error.');
+                    }
+                    return 'OK';
+
+                }
+
+
+                $this->flash('success', 'Відправлено '.$vibersend.' оголошень на Viber!!!');
+
+
+
+
             }
             else $this->flash('success', 'Оголошення застаріле!!!');
         } else $this->flash('success', 'Немає оголошень!!!');
