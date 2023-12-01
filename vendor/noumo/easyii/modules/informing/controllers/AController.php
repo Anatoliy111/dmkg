@@ -218,7 +218,7 @@ class AController extends Controller
                 $receivid = '78QXYFX3IiSsRdaPuPtF7Q=='; //dmkgBot
                 $FindViber = Viber::find()->where(['viber.api_key' => $apiKey])
                     ->select('viber.id_receiver,viber.id_abonent')
-                    ->where(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
+//                    ->where(['=', 'viber.id_receiver','78QXYFX3IiSsRdaPuPtF7Q=='])
                     ->orderBy('viber.id')
                     ->all();
 
@@ -230,7 +230,7 @@ class AController extends Controller
 
                 $FindEmail = UtAbonent::find()
                     ->where(['<>', 'email',''])
-                    ->andwhere(['=', 'email','bondyuk.a.g@gmail.com'])
+//                    ->andwhere(['=', 'email','bondyuk.a.g@gmail.com'])
                     ->orderBy('id')
                     ->all();
 
@@ -240,7 +240,7 @@ class AController extends Controller
                         ->compose(
                             ['html' => 'user-inform-html'],
                             ['model' => $informing])
-                        ->setTo('bondyuk111.a.g@gmail.com')
+                        ->setTo($abon->email)
                         ->setFrom('supportdmkg@ukr.net')
                         ->setSubject('Оголошення ДМКГ!')
                         ->send();
