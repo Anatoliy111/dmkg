@@ -1574,6 +1574,11 @@ button#buttperiod{
 	top: 42px;
     left: 14px;
 }
+
+.our_advisor .welcome_text h2:before {
+	position: inherit;
+}
+
 .our_advisor .container {
     /*margin-left: 1px;*/
 }
