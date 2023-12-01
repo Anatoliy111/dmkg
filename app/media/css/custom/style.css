@@ -1112,6 +1112,7 @@ button#buttperiod{
 	padding-right: 15px;
     padding-left: 15px;
 }
+
 .welcome_details {
 	/*margin-top:80px;*/
 }
@@ -1124,7 +1125,7 @@ button#buttperiod{
 }
 .welcome_details .welcome_info {
 	position: relative;
-	width:77%;
+	/*width:77%;*/
 	background: #fdfdfd;
 	border: 1px solid #e6e6e6;
 	margin-left: 140px;
@@ -1133,6 +1134,32 @@ button#buttperiod{
     -webkit-transition: all 0.3s linear;
     -o-transition: all 0.3s linear;
     transition: all 0.3s linear;
+}
+
+.welcome .welcome_tel {
+	position: relative;
+	/*width:77%;*/
+	background: #fdfdfd;
+	border: 1px solid #e6e6e6;
+	/*margin-left: 140px;*/
+	padding-top: 7px;
+	padding-bottom: 24px;
+	-webkit-transition: all 0.3s linear;
+	-o-transition: all 0.3s linear;
+	transition: all 0.3s linear;
+}
+
+.welcome_details .welcome_tel {
+	/*position: relative;*/
+	/*width:77%;*/
+	background: #fdfdfd;
+	border: 1px solid #e6e6e6;
+	/*margin-left: 140px;*/
+	/*padding-top: 7px;*/
+	padding-bottom: 24px;
+	-webkit-transition: all 0.3s linear;
+	-o-transition: all 0.3s linear;
+	transition: all 0.3s linear;
 }
 
 .welcome_details .welcome_text {
@@ -1188,6 +1215,33 @@ button#buttperiod{
 .welcome_details .welcome_info:hover a {
 	color: #e4e8e8;
 }
+
+.welcome_tel:hover {
+	background: #12a0b1;
+}
+.welcome_tel:hover h3{
+	color: #fff;
+}
+.welcome_tel:hover h4{
+	color: #fff;
+}
+.welcome_tel:hover h5{
+	color: #fff;
+}
+.welcome_tel:hover p {
+	color: #e4e8e8;
+}
+.welcome_tel:hover a {
+	color: #e4e8e8;
+}
+
+/*.welcome_tel i {*/
+/*	background: #fff;*/
+/*	padding: 8px;*/
+/*	position: absolute;*/
+/*	z-index: 1;*/
+/*	top: 14px;*/
+/*}*/
 
 /*====== Who we are =========*/
 .we_are .left_side{
