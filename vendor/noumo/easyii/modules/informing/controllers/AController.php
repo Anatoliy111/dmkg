@@ -248,12 +248,13 @@ class AController extends Controller
                     if (!$sent) {
                         throw new \RuntimeException('Sending error.');
                     }
-                    return 'OK';
+                    else $emailsend = $emailsend +1;
+
 
                 }
 
 
-                $this->flash('success', 'Відправлено '.$vibersend.' оголошень на Viber!!!');
+                $this->flash('success', 'Відправлено '.$emailsend.' оголошень на Email!!!');
 
 
 
