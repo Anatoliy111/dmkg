@@ -234,9 +234,6 @@ if ($informingmodel!=null) {
 	</div> <!-- End container -->
 </section> <!-- End career_details -->
 
-
-
-
 <hr/>
 
 <!-- ======== Some Facts ======== -->
@@ -251,69 +248,67 @@ if ($informingmodel!=null) {
 <!-- ======== /Some Facts ======== -->
 
 <section class="our_advisor affordable_pricing">
-    <div class="container">
+    <div class="row">
         <h2>Наші контакти!!!</h2>
 
-        <div class="row welcome" style="padding-top: 39px;">
-            <div class="col-lg-6">
+        <div class="row welcome" style="padding: 10px;">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
-                <div class="col-lg-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="welcome_tel col-lg-12">
-                            <div class="col-lg-6">
+
                                 <i class="fa fa fa-phone"></i>
-                            </div>
-                            <div class="col-lg-6">
+
+
                                 <h3>Диспетчер</h3>
                                 <h4 class="text-primary mb-0">(067) 520-87-30</h4>
-                            </div>
+
                         </div>
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <div class="welcome_tel col-lg-12">
-                        <div class="col-lg-6">
-                            <i class="fa fa fa-phone"></i>
-                        </div>
-                        <div class="col-lg-6">
+
+                            <i class="fa fa fa-calculator"></i>
+
                             <h3>Бухгалтерія</h3>
                             <h4 class="text-primary mb-0">(099) 213-00-75</h4>
-                        </div>
+
                     </div>
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <div class="welcome_tel col-lg-12">
-                        <div class="col-lg-6">
-                            <i class="fa fa fa-phone"></i>
-                        </div>
-                        <div class="col-lg-6">
+
+                            <i class="fa fa fa-balance-scale"></i>
+
                             <h3>Юр.відділ</h3>
                             <h4 class="text-primary mb-0">(067) 522-77-90</h4>
-                        </div>
+
                     </div>
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <div class="welcome_tel col-lg-12">
-                        <div class="col-lg-6">
-                            <i class="fa fa fa-phone"></i>
-                        </div>
-                        <div class="col-lg-6">
+
+                            <i class="fa fa fa-users"></i>
+
                             <h3>Контролери</h3>
                             <h4 class="text-primary mb-0">(066) 128-11-85</h4>
                             <h4 class="text-primary mb-0">(095) 791-32-62</h4>
-                        </div>
+
                     </div>
-    
+
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="viber col-lg-6">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="viber col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <img src="/site/qrcode?code_url=viber%3A%2F%2Fpa%3FchatURI%3DdmkgBot%26context%3Dbondyuk.a.g%40gmail.com" style="width: 100%">
                 </div>
-                <div class="viber col-lg-6">
+                <div class="viber col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <h4>Відскануйте QR-код та підключайте ViberBot DMKG</h4>
-                    <a href="/assets/4baeebd2/Інструкція Viber на телефоні.pdf" style="font-size: x-large;" data-pjax="0" target="_blank">Інструкція</a>                <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
+                    <a href="/assets/4baeebd2/Інструкція Viber на телефоні.pdf" style="font-size: large;" data-pjax="0" target="_blank">Інструкція</a>
+                    <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
                     <a class="btn btn-success" href="viber://pa?chatURI=dmkgBot&amp;context=bondyuk.a.g@gmail.com" 0="http" target="_blank">ViberStart</a>
                 </div>
             </div>
@@ -322,106 +317,6 @@ if ($informingmodel!=null) {
 </section>
 
 <hr/>
-
-<section class="our_advisor">
-    <div class="container">
-        <h2>Наші контакти!!!</h2>
-    </div>
-
-    </br>
-
-    <div class="row welcome welcome_details">
-        <div class="col-sm-12">
-            <div class="d-flex align-items-center mb-4 wow fadeIn" data-wow-delay="0.6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeIn;">
-                <div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-                    <i class="fa fa-phone-alt text-white"></i>
-                </div>
-                <div class="ps-4">
-                    <h5 class="mb-2">Call to ask any question</h5>
-                    <h4 class="text-primary mb-0">+012 345 6789</h4>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-12 pdlf">
-                <div class="em-service2 sleft all_color_service">
-                    <div class="em_service_content ">
-                        <div class="em_single_service_text width_height_link_0 ">
-                            <div class="service_top_image"></div>
-                            <div class="text_box witr_s_flex">
-                                <div class="bg-primary d-flex align-items-center justify-content-center rounded" style="width: 60px; height: 60px;">
-                                    <i class="fa fa-phone-alt text-white"></i>
-                                </div>
-                                <div class="em-service-inner">
-                                    <div class="em-service-title">
-                                        <h3><a href="#">Бухгалтерія</a></h3>
-                                    </div>
-                                    <div class="em-service-desc">
-                                        <p>(066) 97-34-590 </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-
-                    <div class="welcome_itemtel">
-                        <div class="welcome_tel">
-                            <h3>Investment Planning</h3>
-                            <p>Neque porro quisquam est</p>
-                        </div>
-                    </div>
-
-
-
-                    <div class="welcome_itemtel">
-                        <div class="welcome_tel">
-                            <h3>Investment Planning</h3>
-                            <p>Neque porro quisquam est</p>
-                        </div>
-                    </div>
-
-
-
-                    <div class="welcome_itemtel">
-                        <div class="welcome_tel">
-                            <h3>Investment Planning</h3>
-                            <p>Neque porro quisquam est</p>
-                        </div>
-                    </div>
-
-
-
-                    <div class="welcome_itemtel">
-                        <div class="welcome_tel">
-                            <h3>Investment Planning</h3>
-                            <p>Neque porro quisquam est</p>
-                        </div>
-                    </div>
-
-            </div>
-
-            <div class="col-sm-6">
-                <div class="viber col-sm-6">
-                    <img src="/site/qrcode?code_url=viber%3A%2F%2Fpa%3FchatURI%3DdmkgBot%26context%3Dbondyuk.a.g%40gmail.com" style="width: 100%">
-                </div>
-                <div class="viber col-sm-6">
-                    <h4>Відскануйте QR-код та підключайте ViberBot DMKG</h4>
-                    <a href="/assets/4baeebd2/Інструкція Viber на телефоні.pdf" style="font-size: x-large;" data-pjax="0" target="_blank">Інструкція</a>                <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
-                    <a class="btn btn-success" href="viber://pa?chatURI=dmkgBot&amp;context=bondyuk.a.g@gmail.com" 0="http" target="_blank">ViberStart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-</section>
-
-<hr/>
-
-
 
 <section class="our_advisor">
 	<div class="container">

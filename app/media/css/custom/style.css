@@ -1140,10 +1140,10 @@ button#buttperiod{
 	position: relative;
 	/*width:77%;*/
 	background: #fdfdfd;
-	border: 1px solid #e6e6e6;
+	/*border: 1px solid #e6e6e6;*/
 	/*margin-left: 140px;*/
-	padding-top: 7px;
-	padding-bottom: 24px;
+	/*padding-top: 7px;*/
+	/*padding-bottom: 24px;*/
 	-webkit-transition: all 0.3s linear;
 	-o-transition: all 0.3s linear;
 	transition: all 0.3s linear;
@@ -4068,8 +4068,8 @@ footer .bottom_footer .footer-counter img{
 
 .affordable_pricing {
 	text-align: center;
-	margin-top: 74px;
-	padding-bottom: 86px;
+	/*margin-top: 74px;*/
+	/*padding-bottom: 86px;*/
 }
 .affordable_pricing h2,
 .pricing_who_we h2 {
@@ -4109,10 +4109,10 @@ footer .bottom_footer .footer-counter img{
 .affordable_pricing a{
 	display: block;
 	font-size: 1em;
-	color: #000;
+	/*color: #000;*/
 	text-transform: uppercase;
 	margin-top: 26px;
-    margin-bottom: -18px;
+    /*margin-bottom: -18px;*/
     letter-spacing: 1.6px;
 }
 /*============= Pricing page/ who we are================*/
