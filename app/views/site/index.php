@@ -309,7 +309,7 @@ if ($informingmodel!=null) {
                     <h4>Відскануйте QR-код та підключайте ViberBot DMKG</h4>
                     <a href="/assets/4baeebd2/Інструкція Viber на телефоні.pdf" style="font-size: large;" data-pjax="0" target="_blank">Інструкція</a>
                     <h4>Якщо на вашому пристрої, на якому ви зараз працюєте, встановлений вайбер, то натисніть кнопку ViberStart</h4>
-                    <a class="btn btn-success" href="viber://pa?chatURI=dmkgBot;" 0="http" target="_blank">ViberStart</a>
+                    <a class="btn btn-success" href="viber://pa?chatURI=dmkgBot" 0="http" target="_blank">ViberStart</a>
                 </div>
             </div>
         </div>
