@@ -303,7 +303,7 @@ if ($informingmodel!=null) {
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="viber col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <img src="/site/qrcode?code_url=viber%3A%2F%2Fpa%3FchatURI%3DdmkgBot%26context%3Dbondyuk.a.g%40gmail.com" style="width: 100%">
+                    <img src="/site/qrcode?code_url=viber%3A%2F%2Fpa%3FchatURI%3DdmkgBot%26" style="width: 100%">
                 </div>
                 <div class="viber col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <h4>Відскануйте QR-код та підключайте ViberBot DMKG</h4>
