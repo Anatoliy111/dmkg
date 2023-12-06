@@ -216,6 +216,100 @@ class SearchDolgKart extends DolgKart
         return $dataProvider;
     }
 
+    public function searchdom($params)
+    {
+        $query = DolgKart::find()->select('schet');
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        $this->nomdom=iconv('UTF-8','windows-1251', $this->nomdom);
+        $this->nomkv=iconv('UTF-8','windows-1251', $this->nomkv);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $Get = Yii::$app->request->get('SearchDolgKart');
+
+        if (($Get['nomkv']==null) or ($Get['nomkv']=="") or ($Get['nomkv']==0))
+        {
+            $this->nomkv='';
+        }
+        $query->andWhere([
+            'kl_ul' => $this->kl_ul,
+            'nomkv' => $this->nomkv,
+        ]);
+
+//		if ($Get['korp']<>null)
+//		{
+//			$this->korp=$Get['korp'];
+//			$domkorp = $Get['dom'].$Get['korp'];
+//			$query->andWhere(['=', 'dom', $domkorp]);
+//		}
+//		else {
+//			$this->korp=null;
+        $query->andWhere(['=', 'nomdom', $this->nomdom]);
+//		}
+
+//		if ($this->enterpass<>null){
+//			$query->andWhere(['=', 'pass', $this->enterpass]);
+//			if ($dataProvider->getTotalCount() <> 0) {
+//				return $dataProvider->getModels()[0];
+//			}
+//		}
+
+
+//		if ($dataProvider->getTotalCount() == 0) {
+////			Yii::$app->getSession()->setFlash('alert', [
+////				'body'=>'Thank you for contacting us. We will respond to you as soon as possible.',
+////				'options'=>['class'=>'alert-warning']
+////			]);
+//			Alert::begin([
+//				'options' => [
+//					'class' => 'alert-danger', 'style' => 'float:bottom; margin-top:50px',
+//				],
+//			]);
+//
+//			echo 'По вашій адресі абонентів не знайдено ';
+//
+//			Alert::end();
+//		}
+
+
+
+
+
+
+//        // grid filtering conditions
+//        $query->andFilterWhere([
+//            'id' => $this->id,
+//            'id_ulica' => $this->id_ulica,
+//            'kv' => $this->kv,
+//            'ur_fiz' => $this->ur_fiz,
+//            'id_oldkart' => $this->id_oldkart,
+//        ]);
+//
+//        $query->andFilterWhere(['like', 'name_f', $this->name_f])
+//            ->andFilterWhere(['like', 'name_i', $this->name_i])
+//            ->andFilterWhere(['like', 'name_o', $this->name_o])
+//            ->andFilterWhere(['like', 'fio', $this->fio])
+//            ->andFilterWhere(['like', 'idcod', $this->idcod])
+//            ->andFilterWhere(['like', 'dom', $this->dom])
+//            ->andFilterWhere(['like', 'korp', $this->korp])
+//            ->andFilterWhere(['like', 'pass', $this->pass])
+//            ->andFilterWhere(['like', 'telef', $this->telef]);
+
+        return $dataProvider;
+    }
+
 
 	public function searchPass($params, $dataProvider)
 	{

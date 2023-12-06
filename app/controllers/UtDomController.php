@@ -44,8 +44,8 @@ class UtDomController extends Controller
      */
     public function actionIndex()
     {
-
-		Yii::$app->session['perioddom']=null;
+        $session = Yii::$app->session;
+        $session['perioddom']=null;
 
 		$searchModel = new SearchUtDom();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -96,8 +96,9 @@ class UtDomController extends Controller
 	public function actionView($id)
 	{
 		$model = $this->findModel($id);
+        $session = Yii::$app->session;
 		if (Yii::$app->session['perioddom']==null)
-			Yii::$app->session['perioddom']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+            $session['perioddom']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
 
 
 //		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);

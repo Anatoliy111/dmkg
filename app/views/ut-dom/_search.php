@@ -1,6 +1,7 @@
 <?php
 
-	use kartik\select2\Select2;
+use app\models\DolgUl;
+use kartik\select2\Select2;
 	use yii\helpers\ArrayHelper;
 	use yii\helpers\Html;
 	use app\poslug\models\UtUlica;
@@ -23,7 +24,7 @@ use yii\widgets\ActiveForm;
 
 	<div class="col-sm-12">
 		<?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
-			'data' => ArrayHelper::map(UtUlica::find()->all(), 'id', 'ul'),
+            'data' => ArrayHelper::map(DolgUl::getUL(), 'kl', 'ul'),
 			'language' => 'uk',
 			'options' => ['placeholder' => Yii::t('easyii', 'Select the street...')],
 			'pluginOptions' => [
