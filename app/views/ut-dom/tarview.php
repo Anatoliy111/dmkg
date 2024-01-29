@@ -34,7 +34,10 @@ use yii\helpers\Url;
 
 	Modal::end(); ?>
 
+
+
 <?php
+
     $prev = 0;
 	echo GridView::widget([
 		'dataProvider' =>  $dataProvider,
@@ -52,69 +55,70 @@ use yii\helpers\Url;
 //				'headerOptions' => ['class' => 'kartik-sheet-style'],
 //    			'expandOneOnly' => false
 //],
-
 			[
 				'attribute' => 'period',
 				'label' => 'Період',
 				'format' => ['date', 'php:MY'],
 			],
-			[
-				'attribute' => 'id_tipposl',
-				'value' => 'tipposl.poslug',
-				'group'=>true,
+            [
+                'attribute'=>'naim',
+                'label' => 'Послуга',
+                'value'=>function ($mod) {
+                    return iconv('windows-1251', 'UTF-8', $mod["naim"]);
+                }
 			],
-
-
 			[
-				'attribute' => 'id_tipposl',
+				'attribute' => 'vid',
 				'label' => 'Показник',
 				'format' => 'raw',
-				'value' => 'poslvid.vid_pokaz',
-				'group'=>true,
-			],
-			[
-				'attribute' => 'tarifplan',
-				'group'=>true,
-			],
-			[
-				'attribute' => 'tariffact',
-				'group'=>true,
+                'value'=>function ($mod) {
+                    return iconv('windows-1251', 'UTF-8', $mod['vid']);
+                }
 			],
 			[
 				'attribute' => 'name',
-				'label'=>'Назва тарифу'
+				'label'=>'Назва тарифу',
+                'value'=>function ($mod) {
+                    return iconv('windows-1251', 'UTF-8', $mod['name']);
+                }
 			],
 			[
-				'attribute' => 'tariffakt',
+				'attribute' => 'tarif',
+                'label'=>'Тариф',
+                'format'=>['decimal', 2],
 
 			],
 			[
 				'attribute' => 'norma',
+                'label'=>'Норма',
+                'format'=>['decimal', 3],
 			],
-			[
-				'attribute' => 'val',
-				'label'=>'Складові тарифу',
-				'format' => 'raw',
-				'group'=>true,
-				'value' => function ($key) {
-//						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
-//						if ($prev<>$model->id_tipposl)
-					if ($key->val<>null) {
-						$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $key->val])],['class' => 'btn btn-primary btn-md','title'=>'Cкладові тарифу',
-							'style'=> 'vertical-align: top',
-							'id' => 'tar-info',
-							'data-toggle' => 'modal',
-							'data-target' => '#tarinfo-modal',
-							'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
-					}
-					else
-						$res = null;
-					return $res;
-//							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
-////						}
-//						return $res;
-				}
-			],
+
+
+//			[
+//				'attribute' => 'val',
+//				'label'=>'Складові тарифу',
+//				'format' => 'raw',
+//				'group'=>true,
+//				'value' => function ($key) {
+////						return Html::button('<i class="glyphicon glyphicon-eye-open" aria-hidden="true"> fgsdfhdsfh</i>', ['id' => $model->ID]);
+////						if ($prev<>$model->id_tipposl)
+//					if ($key->val<>null) {
+//						$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', [Url::to(['ut-dom/tarinfo', 'id' => $key->val])],['class' => 'btn btn-primary btn-md','title'=>'Cкладові тарифу',
+//							'style'=> 'vertical-align: top',
+//							'id' => 'tar-info',
+//							'data-toggle' => 'modal',
+//							'data-target' => '#tarinfo-modal',
+//							'onclick' => "$('#tarinfo-modal .modal-dialog .modal-content .modal-body').load($(this).attr('href'))",]);
+//					}
+//					else
+//						$res = null;
+//					return $res;
+////							$res = Html::a('<i class="glyphicon glyphicon-info-sign"></i>', ['tarinfo','id' => $model->id], ['class' => 'btn btn-info']);
+//////						}
+////						return $res;
+//				}
+//			],
 //				'nnorma',
 //				 'activ',
 //								[

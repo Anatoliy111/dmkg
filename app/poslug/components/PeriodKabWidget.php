@@ -39,6 +39,7 @@ class PeriodKabWidget extends Widget
 		$ModelPeriod = new Period();
 //		$lastperiod = DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
         $lastperiod = Yii::$app->dolgdb->createCommand('select period from period order by period desc')->QueryAll()[0];
+        $lastperiodarc = Yii::$app->dolgdb->createCommand('select period from period order by period desc')->QueryAll()[1];
 		$ModelPeriod->lastperiod = $lastperiod["period"];
 //		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 //		if ($ModelPeriod->load(Yii::$app->request->post()))
@@ -62,7 +63,8 @@ class PeriodKabWidget extends Widget
 		$value=false;
 
 		if (isset(Yii::$app->session['periodspisoksite']))
-			$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod["period"], Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod["period"], 'php:Y')], false) : false ;
+//		    if (ArrayHelper::keyExists(Yii::$app->formatter->asDate($lastperiod["period"], 'php:Y'), Yii::$app->session['periodspisoksite'], false))
+			   $value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiodarc["period"], Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiodarc["period"], 'php:Y')], false) : false ;
 
 
 

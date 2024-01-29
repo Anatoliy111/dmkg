@@ -39,9 +39,13 @@ class PeriodDomWidget extends Widget
 
 		$ModelPeriod = new Period();
 //		$lastperiod = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orderBy(['period' => SORT_DESC])->one();
-		$lastperiod = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
+//		$lastperiod = UtPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one();
+        $allperiod = Yii::$app->dolgdb->createCommand('select period from period order by period desc')->QueryAll();
+        $periodnow = $allperiod[0]["period"];
+        $lastperiod =$allperiod[1]["period"];
+        array_splice($allperiod, 0, 1);
 
-		$ModelPeriod->lastperiod = $lastperiod->period;
+		$ModelPeriod->lastperiod = $lastperiod;
 //		if ($ModelPeriod->load(Yii::$app->request->queryParams))
 //		if ($ModelPeriod->load(Yii::$app->request->post()))
 //		{
@@ -52,8 +56,8 @@ class PeriodDomWidget extends Widget
 			if (Yii::$app->session['perioddom']==null)
 			{
 
-                $session['perioddom']=$lastperiod->period;
-				$ModelPeriod->perioddom=$lastperiod->period;
+                $session['perioddom']=$lastperiod;
+				$ModelPeriod->perioddom=$lastperiod;
 			}
 			else
 			{
@@ -65,7 +69,7 @@ class PeriodDomWidget extends Widget
 		$value=false;
 
 		if (isset(Yii::$app->session['periodspisoksite']))
-			$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
+			$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod, Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod, 'php:Y')], false) : false ;
 
 
 //		$value = isset(Yii::$app->session['periodspisoksite']) ?  ArrayHelper::keyExists($lastperiod->period, Yii::$app->session['periodspisoksite'][\Yii::$app->formatter->asDate($lastperiod->period, 'php:Y')], false) : false ;
@@ -73,7 +77,8 @@ class PeriodDomWidget extends Widget
 		if (!$value)
 		{
 			$per = [];
-			$ar  = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->all();
+//			$ar  = UtPeriod::find()->select('period')->where(['ut_period.imp_km' => 1])->orWhere(['ut_period.imp_kp' => 1])->orderBy(['period' => SORT_DESC])->all();
+            $ar  = $allperiod;
 			$dat = ArrayHelper::map($ar, 'period', 'period');
 			foreach ($dat as $dt)
 			{

@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
 	<div class="col-sm-12">
-		<?= $form->field($model, 'id_ulica')->widget(Select2::classname(), [
+		<?= $form->field($model, 'kl_ul')->widget(Select2::classname(), [
             'data' => ArrayHelper::map(DolgUl::getUL(), 'kl', 'ul'),
 			'language' => 'uk',
 			'options' => ['placeholder' => Yii::t('easyii', 'Select the street...')],

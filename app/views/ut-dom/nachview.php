@@ -46,14 +46,20 @@ use yii\helpers\Url;
 				'format' => ['date', 'php:MY'],
 				'pageSummary' => 'Всього',
 			],
-			'tipposl',
+            [
+                'attribute'=>'poslug',
+                'label' => 'Послуга',
+                'value'=>function ($mod) {
+                    return iconv('windows-1251', 'UTF-8', $mod["poslug"]);
+                }
+            ],
             [
 				'attribute' => 'dolg',
 				'format'=>['decimal', 2],
 				'pageSummary'=>true,
 			],
 			[
-				'attribute' => 'nach',
+				'attribute' => 'fullnach',
 				'format'=>['decimal', 2],
 				'pageSummary'=>true,
 			],
@@ -63,7 +69,7 @@ use yii\helpers\Url;
 				'pageSummary'=>true,
 			],
 			[
-				'attribute' => 'opl',
+				'attribute' => 'oplnotsubs',
 				'format'=>['decimal', 2],
 				'pageSummary'=>true,
 			],

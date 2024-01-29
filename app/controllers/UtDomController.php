@@ -2,18 +2,26 @@
 
 namespace app\controllers;
 
+use app\models\DolgDom;
+use app\models\DolgNtarif;
+use app\models\DolgObor;
+use app\models\DolgPeriod;
+use app\models\Obor;
 use app\models\UtKart;
+use app\poslug\models\DolgOborNow;
 use app\poslug\models\UtAbonent;
 use app\poslug\models\UtDominfo;
-use app\poslug\models\UtDomzatrat;
 use app\poslug\models\UtObor;
 use app\poslug\models\UtTarif;
 use app\poslug\models\UtTarifinfo;
 use app\poslug\models\UtTarifplan;
 use Yii;
 use app\poslug\models\UtDom;
-use app\poslug\models\SearchUtDom;
+use app\models\SearchDolgDom;
+use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -47,7 +55,7 @@ class UtDomController extends Controller
         $session = Yii::$app->session;
         $session['perioddom']=null;
 
-		$searchModel = new SearchUtDom();
+		$searchModel = new SearchDolgDom();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $doms = $dataProvider->getModels();
         return $this->render('index', [
@@ -93,76 +101,59 @@ class UtDomController extends Controller
     }
 
 
-	public function actionView($id)
+	public function actionView($kl_ul,$nomdom)
 	{
-		$model = $this->findModel($id);
+		$model = $this->findModel($kl_ul,$nomdom);
         $session = Yii::$app->session;
+        $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 		if (Yii::$app->session['perioddom']==null)
-            $session['perioddom']=UtTarif::find()->select('period')->groupBy('period')->orderBy(['period' => SORT_DESC])->one()->period;
+            $session['perioddom']=$period;
 
 
-//		$dominfo= UtDominfo::findOne(['id_dom' => $model->id]);
-//		if ($dominfo==null)
-//		{
-//			$newinfo = new UtDominfo();
-//			$newinfo->id_dom=$model->id;
-//			$newinfo->save();
-//			$dominfo=$newinfo;
-//		}
+//        $nach = Obor::find();
+//        $nach->select('obor.period, obor.wid, obor.kl_ntar,wid.naim poslug,wid.vid,wid.npp,sum(obor.dolg) dolg,sum(obor.nach+obor.pere+obor.wozw) fullnach,sum(obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ) oplnotsubs,sum(obor.subs) subs,sum(obor.sal) sal');
+//        $nach->leftJoin('kart','(obor.schet=kart.schet and kart.upd=1)');
+//        $nach->leftJoin('wid','(obor.wid=wid.wid)');
+//        $nach->where(['kart.kl_ul' => $kl_ul, 'kart.nomdom' => $nomdom, 'obor.period' => $session['perioddom'], 'obor.upd'=>1]);
+//        $nach->andWhere(['is not','obor.kl_ntar', null]);
+//        $nach->orderBy('wid.npp');
+//        $nach->groupBy('obor.period, obor.wid, obor.kl_ntar,wid.naim,wid.vid,wid.npp');
 
-		$Find = UtTarif::find()->where(['ut_tarif.period' => Yii::$app->session['perioddom']])->all();
-        if ($Find<>null)
-		{
-		$domtarif1= UtTarif::find();
-		$domtarif1->select('ut_tarif.period,ut_tarif.name,ut_tarif.id_tipposl,ut_tarif.norma,ut_tarif.tariffakt as tariffakt,ut_tarifplan.tarifplan,ut_tarifplan.tariffact as tariffact,ut_tarifplan.id as val');
-//		$domtarif1->select('ut_tarif.period,ut_tarif.id_tipposl,ut_tarifplan.tariffact,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
-		$domtarif1->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
-		$domtarif1->where(['ut_tarif.id_dom' => $model->id]);
-		$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['perioddom']]);
-//		$domtarif1->orderBy(['ut_tarif.id_tipposl,ut_tarif.id']);
-		$domtarif1->orderBy(['ut_tarif.id_tipposl' => SORT_ASC,'ut_tarif.id' => SORT_ASC]);
-//		$domtarif1->groupBy('ut_tarif.period,ut_tarif.id_tipposl,ut_tarifplan.tarifplan,ut_tarifplan.tariffact,ut_tarifplan.id');
+        $nach2 = Yii::$app->dolgdb->createCommand('select obor.period, obor.wid, obor.kl_ntar,wid.naim poslug,wid.vid,wid.npp,sum(obor.dolg) dolg,sum(obor.nach+obor.pere+obor.wozw) fullnach,sum(obor.OPL+obor.UDER+obor.KOMP+obor.WZMZ) oplnotsubs,sum(obor.subs) subs,sum(obor.sal) sal from obor left join wid on (obor.wid=wid.wid) left join kart on (obor.schet=kart.schet and kart.upd=1) where kart.kl_ul =\''.$kl_ul.'\' and kart.nomdom =\''. $nomdom.'\' and obor.period =\''.$session['perioddom'].'\' and  obor.upd=1 and obor.kl_ntar is not null group by obor.period, obor.wid, obor.kl_ntar,wid.naim,wid.vid,wid.npp order by wid.npp')->QueryAll();
+
+        $dPnach = new ArrayDataProvider([
+            'allModels' => $nach2,
+        ]);
 
 
-//			$domtarif1= UtTarif::find();
-//			$domtarif1->select('ut_tarif.period,ut_tarif.id_tipposl,ut_tarif.norma,sum(ut_tarif.tariffakt) as tariffakt,ut_tarifplan.tarifplan,ut_tarifplan.tariffact as tariffact,ut_tarifplan.id as val');
-////		$domtarif1->select('ut_tarif.period,ut_tarif.id_tipposl,ut_tarifplan.tariffact,ut_tarifplan.tarifplan,ut_tarifplan.id as val');
-//			$domtarif1->leftJoin('ut_tarifplan','(`ut_tarifplan`.`id_dom`=`ut_tarif`.`id_dom` and `ut_tarifplan`.`id_tipposl`=`ut_tarif`.`id_tipposl` and `ut_tarifplan`.`period`=`ut_tarif`.`period`)');
-//			$domtarif1->where(['ut_tarif.id_dom' => $model->id]);
-//			$domtarif1->andWhere(['ut_tarif.period' => Yii::$app->session['perioddom']]);
-//			$domtarif1->orderBy(['ut_tarif.id_tipposl' => SORT_ASC]);
-//			$domtarif1->groupBy('ut_tarif.period,ut_tarif.id_tipposl,ut_tarifplan.tarifplan,ut_tarifplan.tariffact,ut_tarifplan.id');
+//        $res = $nach->asArray()->all();
+//        $arrkl = [];
+//
+        foreach ($nach2 as $kl){
+            $arrkl[] = $kl['kl_ntar'];
+        }
 
-		}
-		else
-		{
-			$domtarif1= UtTarifplan::find();
-			$domtarif1->select('ut_tarifplan.*,ut_tarifplan.id as val');
-			$domtarif1->where(['ut_tarifplan.id_dom' => $model->id]);
-			$domtarif1->andWhere(['ut_tarifplan.period' => Yii::$app->session['perioddom']]);
-			$domtarif1->orderBy(['ut_tarifplan.id_tipposl' => SORT_ASC]);
-		}
+//        $dPnach = new ActiveDataProvider([
+//			'query' => $nach,
+//		]);
 
-		$nachdom = UtObor::find()->select('period, tipposl, sum(dolg) as dolg, sum(nach) as nach, sum(subs) as subs, sum(opl) as opl, sum(sal) as sal');
-//		$nachdom->leftJoin('ut_abonent','ut_abonent.id = ut_obor.id_kart');
-		$nachdom->leftJoin('ut_kart','ut_kart.id = ut_obor.id_kart');
-		$nachdom->where(['ut_kart.id_dom' => $model->id]);
-		$nachdom->andWhere(['ut_obor.period' => Yii::$app->session['perioddom']]);
-		$nachdom->andWhere(['!=', '`ut_obor`.`dolg`+`ut_obor`.`nach`+`ut_obor`.`subs`+`ut_obor`.`opl`+`ut_obor`.`sal`', 0]);
-		$nachdom->groupBy('period,tipposl');
-
-
-		$dPtarif = new ActiveDataProvider([
-			'query' => $domtarif1,
-			'sort' => false,
+        $tardom = DolgNtarif::find();
+        $tardom->select('*');
+//        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
+//        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
+        $tardom->leftJoin('wid','(ntarif.wid=wid.wid)');
+//        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1]);
+        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl])->all();
+        $tardom->orderBy('wid.npp')->asArray()->all();
+//
+//
+////        $res2 = $tardom->asArray()->all();
+//
+		$dPtarif= new ActiveDataProvider([
+			'query' => $tardom,
 		]);
 
-
-		$dPnach= new ActiveDataProvider([
-			'query' => $nachdom,
-			'sort' => false,
-		]);
-
+//        $tt = ArrayHelper::toArray($dPtarif);
 
 		return $this->render('view', [
 			'model' => $model,
@@ -203,9 +194,9 @@ class UtDomController extends Controller
      * @return UtDom the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($kl_ul,$nomdom)
     {
-        if (($model = UtDom::findOne($id)) !== null) {
+        if (($model = DolgDom::find()->where(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

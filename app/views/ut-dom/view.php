@@ -22,10 +22,10 @@ use yii\widgets\DetailView;
 ?>
 <?php Pjax::begin(); ?>
 <?php
-$ul = $model->getUlica()->one();
-$this->title = $ul->ul.' '.$model->n_dom;
+//$ul = $model->getUlica()->one();
+$this->title = iconv('windows-1251', 'UTF-8', $model->ulnaim.' '.$model->nomdom);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $ul->ul, 'url' => ['index', 'SearchUtDom'=>['id_ulica' => $ul->id]]];
+$this->params['breadcrumbs'][] = ['label' => iconv('windows-1251', 'UTF-8', $model->ulnaim), 'url' => ['index', 'SearchUtDom'=>['id_ulica' => $model->kl_ul]]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php
 
-
+//    $sdfsd = $dPtarif->getModels();
 
 
     $items = [

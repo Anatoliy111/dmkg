@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php foreach($doms as $dom) : ?>
                 <div class="col-xs-6 col-sm-4 col-md-2 col-xs-offset-1 form-group">
                     <div class="top5">
-                    <?= Html::a('<i class="glyphicon glyphicon-home"></i> Буд. '.$dom->n_dom , ['view', 'id' => $dom->id], ['class' => 'btn btn-primary btn-block']) ?>
+                    <?= Html::a('<i class="glyphicon glyphicon-home"></i> Буд. '.iconv('windows-1251', 'UTF-8', $dom->nomdom) , ['view', 'kl_ul' => $dom->kl_ul,'nomdom' => $dom->nomdom], ['class' => 'btn btn-primary btn-block']) ?>
                     </div>
                 </div>
             <?php endforeach;?>
