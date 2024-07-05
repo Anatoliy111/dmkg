@@ -78,7 +78,7 @@ class DolgObor extends \yii\db\ActiveRecord
         return [
             [['kl'], 'integer'],
             [['period', 'fio'], 'string'],
-            [['npp', 'org', 'koli_p', 'koli_pf', 'plos_bb', 'plos_ob', 'tarif', 'kl_ntar', 'tartarif', 'tarnorma', 'dolg', 'nach', 'subs', 'opl', 'uder', 'komp', 'wzmz', 'wozw', 'movw', 'pere', 'sal', 'bgst', 'prst', 'bgend', 'prend', 'fullnach', 'fullopl', 'oplnotsubs'], 'number'],
+            [['npp', 'org', 'koli_p', 'koli_pf', 'plos_bb', 'plos_ob', 'tarif', 'kl_ntar', 'dolg', 'nach', 'subs', 'opl', 'uder', 'komp', 'wzmz', 'wozw', 'movw', 'pere', 'sal', 'bgst', 'prst', 'bgend', 'prend', 'fullnach', 'fullopl', 'oplnotsubs'], 'number'],
             [['schet', 'n_dog'], 'string', 'max' => 10],
             [['wid'], 'string', 'max' => 2],
             [['poslug'], 'string', 'max' => 15],
@@ -89,7 +89,7 @@ class DolgObor extends \yii\db\ActiveRecord
             [['priv'], 'string', 'max' => 1],
             [['lgota'], 'string', 'max' => 9],
             [['d_dog'], 'string', 'max' => 8],
-            [['tarname'], 'string', 'max' => 50],
+           // [['tarname'], 'string', 'max' => 50],
         ];
     }
 
@@ -122,9 +122,9 @@ class DolgObor extends \yii\db\ActiveRecord
             'd_dog' => 'Дата договору',
             'tarif' => 'Tarif',
             'kl_ntar' => 'Kl Ntar',
-            'tarname' => 'Назва тарифу',
-            'tartarif' => 'Тариф',
-            'tarnorma' => 'Норма',
+      //      'tarname' => 'Назва тарифу',
+      //      'tartarif' => 'Тариф',
+      //      'tarnorma' => 'Норма',
             'dolg' => 'Борг на початок',
             'nach' => 'Нарахування',
             'subs' => 'Субсидія',
