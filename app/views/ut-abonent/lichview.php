@@ -16,16 +16,7 @@ use yii\helpers\Url;
 ?>
 <div class="utkart-pokaz-view">
 
-            <?php
-            $lich=$dplich->getModels();
 
-             foreach($lich as $value){
-                 if ($value['data_pov']<date("Y-m-d")){
-//                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
-                     echo '<div class="info' . $value['n_lich'] . '" style="color: #b92c28; text-align: center"><h4>Увага!!! Лічильник №'.$value['n_lich'].' потребує повірки!</h4></div>';
-                 }
-             }
-            ?>
         </div>
 
 

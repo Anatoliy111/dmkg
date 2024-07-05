@@ -626,6 +626,39 @@ Modal::begin([
                 <h2>Холодна вода</h2>
         </div>
 
+        <div class="col-xs-12">
+            <?php
+            $lich=$dplich->getModels();
+
+            foreach($lich as $value){
+                $monthpov = date('m', strtotime($value['data_pov']));
+                $yearpov = date('Y', strtotime($value['data_pov']));
+                $yearmonthpov =date('Y', strtotime($value['data_pov'])).date('m', strtotime($value['data_pov']));
+
+                $month = date('m', strtotime(date("Y-m-d")));
+                $year = date('Y', strtotime(date("Y-m-d")));
+                $yearmonth=date('Y', strtotime(date("Y-m-d"))).date('m', strtotime(date("Y-m-d")));
+
+                $monthpov2 = date('m', strtotime($value['data_pov'].' +1 month'));
+                $yearpov2 = date('Y', strtotime($value['data_pov'].' +1 month'));
+
+                $yearmonthpov2 = date('Y', strtotime($value['data_pov'].' +1 month')).date('m', strtotime($value['data_pov'].' -1 month'));
+
+
+                if ($yearmonth>=$yearmonthpov){
+//                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
+                    echo '<div class="info' . $value['n_lich'] . '" style="color: #b92c28; text-align: center"><h4>Увага!!! Лічильник №'.$value['n_lich'].' потребує повірки!</h4></div>';
+                }
+                if ($yearmonth==$yearmonthpov2){
+//                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
+                    echo '<div class="info' . $value['n_lich'] . '" style="color: #337db6; text-align: center"><h4>Увага, в наступному місяці виходить термін повірки лічильника!!! Лічильник №' .$value['n_lich'].' потребує повірки!</h4></div>';
+                }
+            }
+            ?>
+        </div>
+
+
+
 
         <div class="col-xs-12 .col-sm-6 .col-lg-8">
 
