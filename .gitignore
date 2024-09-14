@@ -1,4 +1,5 @@
 .idea
+.osp
 uploads/*
 !uploads/images/
 viberbot/tmp/*
