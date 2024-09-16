@@ -37,6 +37,18 @@ function getDmkgMenuStart($context){
                     // ->setImage("https://dmkg.com.ua/uploads/copy.png")
                     ->setText('Почати'),
 
+                (new \Viber\Api\Keyboard\Button())
+                    ->setColumns(3)
+                    //  ->setBgColor('#2fa4e7')
+                    ->setTextHAlign('center')
+                    ->setTextSize('large')
+                    ->setActionType('reply')
+                    ->setActionBody('Kontakt-button')
+                    ->setBgColor("#aafdc8")
+                    // ->setBgColor("#F3DD27")
+                    // ->setImage("https://dmkg.com.ua/uploads/copy.png")
+                    ->setText('📬 Контактна інформація'),
+
             ]);
 }
 
