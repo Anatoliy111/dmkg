@@ -315,7 +315,7 @@ class SiteController extends Controller
                                     ->setSender($botSender)
                                     ->setReceiver($reciv['id_receiver'])
                                     ->setText($message)
-                                    ->setKeyboard($menu)
+                                  //  ->setKeyboard($menu)
                             );
 
                         }
