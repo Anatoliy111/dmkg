@@ -315,7 +315,7 @@ class SiteController extends Controller
                         }
 
 //                        $mes = 'OK';
-                        $mes = $reciv['id_receiver'];
+                        $mes = $message;
 
                     } catch (Exception $e) {
                         $log->warning('Exception: ' . $e->getMessage());
