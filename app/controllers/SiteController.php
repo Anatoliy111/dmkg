@@ -304,17 +304,18 @@ class SiteController extends Controller
 
                             $bot = new Bot(['token' => $apiKey]);
 
-                            $bot->getClient()->sendMessage(
-                                (new \Viber\Api\Message\Text())
-                                    ->setSender($botSender)
-                                    ->setReceiver($reciv['id_receiver'])
-                                    ->setText($message)
-                                    ->setKeyboard($menu)
-                            );
+//                            $bot->getClient()->sendMessage(
+//                                (new \Viber\Api\Message\Text())
+//                                    ->setSender($botSender)
+//                                    ->setReceiver($reciv['id_receiver'])
+//                                    ->setText($message)
+//                                    ->setKeyboard($menu)
+//                            );
 
                         }
 
-                        $mes = 'OK';
+//                        $mes = 'OK';
+                        $mes = $reciv['id_receiver'];
 
                     } catch (Exception $e) {
                         $log->warning('Exception: ' . $e->getMessage());
