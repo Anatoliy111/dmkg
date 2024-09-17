@@ -290,13 +290,13 @@ class SiteController extends Controller
                 $model = Viber::find()
                     ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
 
-                return 'vidmess';
-            }
-//                if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
-//
-//                    $log = new Logger('bot');
-//                    $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
-//
+
+
+                if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
+
+                    $log = new Logger('bot');
+                    $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
+
 //                    try {
 //                        // create bot instance
 //
@@ -321,10 +321,11 @@ class SiteController extends Controller
 //                            $log->warning('Actual body: ' . $bot->getInputBody());
 //                        }
 //                    }
-//
-//                    return $mes;
-//                }
-//            }
+
+                    //return $mes;
+                    $mes = 'log';
+                }
+            }
 
             if ($res['vidmess'] == 'info') {
 
