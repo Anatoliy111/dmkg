@@ -314,8 +314,8 @@ class SiteController extends Controller
 
                         }
 
-//                        $mes = 'OK';
-                        $mes = $menu;
+                        $mes = 'OK';
+//                        $mes = $menu;
 
                     } catch (Exception $e) {
                         $log->warning('Exception: ' . $e->getMessage());
