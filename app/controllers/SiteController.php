@@ -288,7 +288,7 @@ class SiteController extends Controller
             if ($res['vidmess'] == 'mess') {
 
                 $model = Viber::find()
-                    ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
+                    ->where(['api_key' => $apiKey, 'org' => $res['org'], 'id'=>69])->asArray()->all();
 
 
 
