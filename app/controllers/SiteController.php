@@ -303,18 +303,18 @@ class SiteController extends Controller
                         foreach ($model as $reciv) {
 
                             $bot = new Bot(['token' => $apiKey]);
-                            $mes = 'new Bot';
-//                            $bot->getClient()->sendMessage(
-//                                (new \Viber\Api\Message\Text())
-//                                    ->setSender($botSender)
-//                                    ->setReceiver($reciv['id_receiver'])
-//                                    ->setText($message)
-//                                    ->setKeyboard($menu)
-//                            );
+
+                            $bot->getClient()->sendMessage(
+                                (new \Viber\Api\Message\Text())
+                                    ->setSender($botSender)
+                                    ->setReceiver($reciv['id_receiver'])
+                                    ->setText($message)
+                                    ->setKeyboard($menu)
+                            );
 
                         }
 
-                     //   $mes = 'OK';
+                        $mes = 'OK';
 
                     } catch (Exception $e) {
                         $log->warning('Exception: ' . $e->getMessage());
