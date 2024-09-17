@@ -306,7 +306,7 @@ class SiteController extends Controller
 
                          //   $Receiv = verifyReceiver($reciv,$apiKey, $res['org']);
 
-                            $menu = getDmkgMenuOS($reciv);
+                       //     $menu = getDmkgMenuOS($reciv);
 
                             $bot = new Bot(['token' => $apiKey]);
 
