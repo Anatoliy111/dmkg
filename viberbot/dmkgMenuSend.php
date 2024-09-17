@@ -257,6 +257,8 @@ function getDmkgMenuOS($Receiv){
 }
 
 
+
+
 function getMySend($message,$Receiv)
 {
     if ($Receiv<>null) {

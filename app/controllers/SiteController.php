@@ -27,7 +27,9 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 
 require (Yii::getAlias('@webroot'). '/viberbot/mySendBot.php');
-require (Yii::getAlias('@webroot'). '/viberbot/botMenu.php');
+require (Yii::getAlias('@webroot'). '/viberbot/dmkgBot.php');
+require (Yii::getAlias('@webroot'). '/viberbot/dmkgMenuSend.php');
+//require (Yii::getAlias('@webroot'). '/viberbot/botMenu.php');
 //require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
 //require (Yii::getAlias('@webroot'). '/viberbot/kpcentrBot.php');
 
@@ -277,7 +279,7 @@ class SiteController extends Controller
                 $apiKey = '4d2db29edaa7d108-28c0c073fd1dca37-bc9a431e51433742';
                 $message = $res['mess'];
 
-                $menu = getDmkgMenu();
+
 
                 $botSender = new Sender([
                     'name' => 'dmkgBot',
@@ -301,6 +303,10 @@ class SiteController extends Controller
                         // create bot instance
 
                         foreach ($model as $reciv) {
+
+                            $Receiv = verifyReceiver($reciv,$apiKey, $res['org']);
+
+                            $menu = getDmkgMenuOS($Receiv);
 
                             $bot = new Bot(['token' => $apiKey]);
 
