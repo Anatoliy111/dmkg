@@ -289,7 +289,7 @@ class SiteController extends Controller
 
             if ($res['vidmess'] == 'mess') {
 
-                $model = Viber::find()
+                $models = Viber::find()
                     ->where(['api_key' => $apiKey, 'org' => $res['org'], 'id'=>69])->asArray()->all();
 
 
@@ -302,11 +302,11 @@ class SiteController extends Controller
                     try {
                         // create bot instance
 
-                        foreach ($model as $reciv) {
+                        foreach ($models as $reciv) {
 
-                            $Receiv = verifyReceiver($reciv,$apiKey, $res['org']);
+                         //   $Receiv = verifyReceiver($reciv,$apiKey, $res['org']);
 
-                            $menu = getDmkgMenuOS($Receiv);
+                            $menu = getDmkgMenuOS($reciv);
 
                             $bot = new Bot(['token' => $apiKey]);
 
