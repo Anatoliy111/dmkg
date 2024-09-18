@@ -294,7 +294,7 @@ class SiteController extends Controller
 
                // $menu = getDmkgMenu($models);
 
-                if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
+                if (($apiKey <> '') && ($message <> '') && ($models <> null)) {
 
                     $log = new Logger('bot');
                     $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
@@ -303,6 +303,8 @@ class SiteController extends Controller
                         // create bot instance
 
                         foreach ($models as $reciv) {
+
+
 
                          //   $Receiv = verifyReceiver($reciv,$apiKey, $res['org']);
 

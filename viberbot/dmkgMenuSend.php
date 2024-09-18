@@ -95,7 +95,14 @@ function getDmkgMenuOS($Receiv){
             ]);
     }
     else {
-        if ($Receiv->id_abonent == 0) {
+        $idabon = 0;
+        if (is_array($Receiv)) {
+            $idabon = $Receiv['id_abonent'];
+        }
+        else
+            $idabon = $Receiv->id_abonent;
+
+        if ($idabon == 0) {
 
 
             return (new \Viber\Api\Keyboard())
