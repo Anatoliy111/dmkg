@@ -292,7 +292,7 @@ class SiteController extends Controller
                 $models = Viber::find()
                     ->where(['api_key' => $apiKey, 'org' => $res['org'], 'id'=>69])->asArray()->all();
 
-
+                $menu = getDmkgMenu($models);
 
                 if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
 
@@ -315,7 +315,7 @@ class SiteController extends Controller
                                     ->setSender($botSender)
                                     ->setReceiver($reciv['id_receiver'])
                                     ->setText($message)
-                                  //  ->setKeyboard($menu)
+                                    ->setKeyboard($menu)
                             );
 
                         }
@@ -338,11 +338,12 @@ class SiteController extends Controller
 
             if ($res['vidmess'] == 'info') {
 
-                $model = Viber::find()
+                $models = Viber::find()
                     ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
 
+                $menu = getDmkgMenu($models);
 
-                if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
+                if (($apiKey <> '') && ($message <> '') && ($models <> null)) {
 
                     $log = new Logger('bot');
                     $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
@@ -350,7 +351,7 @@ class SiteController extends Controller
                     try {
                         // create bot instance
 
-                        foreach ($model as $reciv) {
+                        foreach ($models as $reciv) {
 
                             $Abons = ViberAbon::find()
                                 ->where(['id_viber' => $reciv['id']])->asArray()->all();
