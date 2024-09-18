@@ -156,7 +156,7 @@ function send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend){
         $mess = $mess.'Шановні споживачі! Своєчасно сплачуйте за житлово-комунальні послуги, це надає можливість стабільної роботи підприємства!!!';
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
-    //        getDmkgSend($mess, $Receiv);
+            getDmkgSend($mess, $Receiv);
 //            getMySend($mess.$messschet,$Receiv);
             $countSend = $countSend + 1;
         }
