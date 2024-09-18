@@ -169,8 +169,8 @@ foreach ($FindNoEmailSchet as $abon) {
 
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 
-
-$senderr = 'countSend - '.$countSend."\n";
+$senderr = '---Send pokazn---'."\n";
+$senderr = $senderr.'countSend - '.$countSend."\n";
 $senderr = $senderr.'countAbon - '.$countAbon."\n";
 $senderr = $senderr.$errmess;
 
