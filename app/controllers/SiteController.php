@@ -292,7 +292,7 @@ class SiteController extends Controller
                 $models = Viber::find()
                     ->where(['api_key' => $apiKey, 'org' => $res['org'], 'id'=>69])->asArray()->all();
 
-                $menu = getDmkgMenu($models);
+               // $menu = getDmkgMenu($models);
 
                 if (($apiKey <> '') && ($message <> '') && ($model <> null)) {
 
@@ -306,7 +306,7 @@ class SiteController extends Controller
 
                          //   $Receiv = verifyReceiver($reciv,$apiKey, $res['org']);
 
-                       //     $menu = getDmkgMenuOS($reciv);
+                            $menu = getDmkgMenu($reciv);
 
                             $bot = new Bot(['token' => $apiKey]);
 
@@ -341,7 +341,7 @@ class SiteController extends Controller
                 $models = Viber::find()
                     ->where(['api_key' => $apiKey, 'org' => $res['org']])->asArray()->all();
 
-                $menu = getDmkgMenu($models);
+             //   $menu = getDmkgMenu($models);
 
                 if (($apiKey <> '') && ($message <> '') && ($models <> null)) {
 
@@ -356,10 +356,14 @@ class SiteController extends Controller
                             $Abons = ViberAbon::find()
                                 ->where(['id_viber' => $reciv['id']])->asArray()->all();
 
+                            $menu = getDmkgMenu($reciv);
+
                             foreach ($Abons as $schet) {
 
                                 if ($res['org'] == 'dmkg') $message=infoDmkgSchet($schet['schet']);
                                 if ($res['org'] == 'kpcentr') $message=infoKpSchet($schet['schet']);
+
+
 
                                 $bot = new Bot(['token' => $apiKey]);
                                 $bot->getClient()->sendMessage(

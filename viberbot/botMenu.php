@@ -83,9 +83,9 @@ function getKpMenu(){
 
 }
 
-function getDmkgMenu($models){
+function getDmkgMenu($model){
 
-    return getDmkgMenuOS($models);
+    return getDmkgMenuOS($model);
 
 //    return (new \Viber\Api\Keyboard())
 //        ->setButtons([
