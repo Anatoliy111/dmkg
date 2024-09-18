@@ -303,10 +303,10 @@ function getMySend($message,$Receiv)
 
     } catch (Exception $e) {
         $log->warning('Exception: ' . $e->getMessage());
-        if ($bot) {
-            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-            $log->warning('Actual body: ' . $bot->getInputBody());
-        }
+//        if ($bot) {
+//            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+//            $log->warning('Actual body: ' . $bot->getInputBody());
+//        }
     }
 
     return '';
@@ -346,7 +346,7 @@ function getDmkgSend($message,$Receiv)
         $mess = $e->getMessage();
         $mess = $mess.'--DmkgSend';
         if ($Receiv<>null) $mess = $mess.'--idreceiver--'.$Receiv->id_receiver;
-        if ($message<>null) $mess = $mess.'--message--'.$message;
+     //   if ($message<>null) $mess = $mess.'--message--'.$message;
         getMySend($mess,$Receiv);
     }
 

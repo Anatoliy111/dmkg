@@ -69,6 +69,8 @@ $countSend = 0;
 $countAbon= 0;
 $fio = '';
 $messschet = '';
+$errmess = '';
+
 
 foreach ($FindEmailSchet as $abon) {
     try {
@@ -103,7 +105,8 @@ foreach ($FindEmailSchet as $abon) {
         $mess = $e->getMessage();
         $mess = $mess.'--sendpokazn';
         if ($abon<>null) $mess = $mess.'--idreceiver--'.$abon->id_receiver;
-        getMySend($mess,null);
+        $errmess = $errmess.$mess. "\n";
+       // getMySend($mess,null);
     }
 }
 
@@ -156,12 +159,22 @@ foreach ($FindNoEmailSchet as $abon) {
         $mess = $e->getMessage();
         $mess = $mess.'--sendpokazn';
         if ($abon<>null) $mess = $mess.'--idreceiver--'.$abon->id_receiver;
-        getMySend($mess,null);
+        $errmess = $errmess.$mess. "\n";
+       // getMySend($mess,null);
     }
 }
 
 
+
+
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+
+
+$senderr = 'countSend - '.$countSend."\n";
+$senderr = $senderr.'countAbon - '.$countAbon."\n";
+$senderr = $senderr.$errmess;
+
+getMySend($errmess,null);
 
 
 
@@ -179,7 +192,7 @@ function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
         $mess = $mess . '(095)791-32-62' . "\n";
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
-            getDmkgSend($mess.$messschet, $Receiv);
+        //    getDmkgSend($mess.$messschet, $Receiv);
 //            getMySend($mess.$messschet,$Receiv);
             $countSend = $countSend + 1;
         }
