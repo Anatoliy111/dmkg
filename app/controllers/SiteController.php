@@ -327,10 +327,10 @@ class SiteController extends Controller
 
                             } catch (Exception $e) {
                                 $log->warning('Exception: ' . $e->getMessage());
-                                if ($bot) {
-                                    $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-                                    $log->warning('Actual body: ' . $bot->getInputBody());
-                                }
+//                                if ($bot) {
+//                                    $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+//                                    $log->warning('Actual body: ' . $bot->getInputBody());
+//                                }
                             }
 
                         }
