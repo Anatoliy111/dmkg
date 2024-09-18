@@ -302,7 +302,7 @@ class SiteController extends Controller
                     $log = new Logger('bot');
                     $log->pushHandler(new StreamHandler(__DIR__ . '/tmp/bot.log'));
 
-                    try {
+
                         // create bot instance
 
                         foreach ($models as $reciv) {
@@ -315,6 +315,8 @@ class SiteController extends Controller
 
                             $bot = new Bot(['token' => $apiKey]);
 
+                            try {
+
                             $bot->getClient()->sendMessage(
                                 (new \Viber\Api\Message\Text())
                                     ->setSender($botSender)
@@ -323,18 +325,20 @@ class SiteController extends Controller
                                     ->setKeyboard($menu)
                             );
 
+                            } catch (Exception $e) {
+                                $log->warning('Exception: ' . $e->getMessage());
+                                if ($bot) {
+                                    $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+                                    $log->warning('Actual body: ' . $bot->getInputBody());
+                                }
+                            }
+
                         }
 
                         $mes = 'OK';
 //                        $mes = $menu;
 
-                    } catch (Exception $e) {
-                        $log->warning('Exception: ' . $e->getMessage());
-//                        if ($bot) {
-//                            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-//                            $log->warning('Actual body: ' . $bot->getInputBody());
-//                        }
-                    }
+
 
                     //return $mes;
                    // $mes = 'log';
