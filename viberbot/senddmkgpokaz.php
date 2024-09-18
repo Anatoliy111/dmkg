@@ -174,7 +174,7 @@ $senderr = 'countSend - '.$countSend."\n";
 $senderr = $senderr.'countAbon - '.$countAbon."\n";
 $senderr = $senderr.$errmess;
 
-getMySend($errmess,null);
+getMySend($senderr,null);
 
 
 
@@ -192,7 +192,7 @@ function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
         $mess = $mess . '(095)791-32-62' . "\n";
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
-        //    getDmkgSend($mess.$messschet, $Receiv);
+      //      getDmkgSend($mess.$messschet, $Receiv);
 //            getMySend($mess.$messschet,$Receiv);
             $countSend = $countSend + 1;
         }

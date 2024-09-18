@@ -69,6 +69,7 @@ $countSend = 0;
 $countAbon= 0;
 $fio = '';
 $messschet = '';
+$errmess = '';
 
 foreach ($FindEmailSchet as $abon) {
     try {
@@ -88,7 +89,8 @@ foreach ($FindEmailSchet as $abon) {
         $mess = $e->getMessage();
         $mess = $mess.'--sendpokazn';
         if ($abon<>null) $mess = $mess.'--idreceiver--'.$abon->id_receiver;
-        getMySend($mess,null);
+        $errmess = $errmess.$mess. "\n";
+      //  getMySend($mess,null);
     }
 }
 
@@ -127,14 +129,19 @@ foreach ($FindNoEmailSchet as $abon) {
         $mess = $e->getMessage();
         $mess = $mess.'--sendpokazn';
         if ($abon<>null) $mess = $mess.'--idreceiver--'.$abon->id_receiver;
-        getMySend($mess,null);
+        $errmess = $errmess.$mess. "\n";
+       // getMySend($mess,null);
     }
 }
 
 
 $countSend = send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend);
 
+$senderr = 'countSend - '.$countSend."\n";
+$senderr = $senderr.'countAbon - '.$countAbon."\n";
+$senderr = $senderr.$errmess;
 
+getMySend($senderr,null);
 
 
 echo 'countSend - '.$countSend."\n";
@@ -148,7 +155,7 @@ function send($period,$apiKey,$id_reciv,$fio,$messschet,$countSend){
         $mess = $mess.'Шановні споживачі! Своєчасно сплачуйте за житлово-комунальні послуги, це надає можливість стабільної роботи підприємства!!!';
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
-            getDmkgSend($mess, $Receiv);
+    //        getDmkgSend($mess, $Receiv);
 //            getMySend($mess.$messschet,$Receiv);
             $countSend = $countSend + 1;
         }
@@ -203,7 +210,7 @@ function infoSchetOS($messout,$schet,$period) {
         $errmess = $e->getMessage();
         $errmess = $errmess.'--sendinfo';
 //        if ($abon<>null) $errmess = $errmess.'--idreceiver--'.$abon->id_receiver;
-        getMySend($errmess.$messout,null);
+     //   getMySend($errmess.$messout,null);
         $messout='';
     }
 
