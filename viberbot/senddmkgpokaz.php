@@ -77,7 +77,7 @@ foreach ($FindEmailSchet as $abon) {
 //        if ($abon['id_receiver'] == $receivid) {
                 if ($id_reciv <> $abon['id_receiver']) {
                     $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
-
+                    $countAbon = $countAbon + 1;
                     $messschet='';
                 }
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
@@ -133,8 +133,10 @@ foreach ($FindEmailSchet as $abon) {
     }
 }
 
-
-$countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+if ($FindEmailSchet<>null) {
+    $countSend = send($apiKey, $id_reciv, $fio, $messschet, $countSend);
+    $countAbon = $countAbon + 1;
+}
 
 
 $FindNoEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
@@ -155,6 +157,7 @@ foreach ($FindNoEmailSchet as $abon) {
 //        if ($abon['id_receiver'] == $receivid) {
         if ($id_reciv <> $abon['id_receiver']) {
             $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
+            $countAbon = $countAbon + 1;
             $messschet='';
         }
         $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
@@ -213,15 +216,16 @@ foreach ($FindNoEmailSchet as $abon) {
 
 
 
-
-$countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
-
+if ($FindNoEmailSchet<>null) {
+    $countSend = send($apiKey, $id_reciv, $fio, $messschet, $countSend);
+    $countAbon = $countAbon + 1;
+}
 
 $countSchet= count($FindEmailSchet) + count($FindNoEmailSchet);
 
 $senderr = '---Send pokazn---'."\n";
 $senderr = $senderr.'countSend - '.$countSend."\n";
-$senderr = $senderr.'countSchet - '.$countSchet."\n";
+$senderr = $senderr.'countAbon - '.$countAbon."\n";
 $senderr = $senderr.$errmess;
 
 getMySend($senderr,null);
@@ -230,7 +234,7 @@ getMySend($senderr,null);
 
 
 echo 'countSend - '.$countSend."\n";
-echo 'countSchet - '.$countSchet."\n";
+echo 'countAbon - '.$countAbon."\n";
 
 function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
     if ($messschet<>'') {
