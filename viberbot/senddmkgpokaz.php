@@ -64,7 +64,7 @@ $FindEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->asArray()->all();
 
 
-$id_reciv = '';
+$id_reciv = ($FindEmailSchet<>null) ? $FindEmailSchet[0]["id_receiver"] : '';
 $countSend = 0;
 $countAbon= 0;
 $fio = '';
@@ -77,43 +77,44 @@ foreach ($FindEmailSchet as $abon) {
 //        if ($abon['id_receiver'] == $receivid) {
                 if ($id_reciv <> $abon['id_receiver']) {
                     $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
-                    $countAbon = $countAbon + 1;
+
                     $messschet='';
                 }
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
                 $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
                 if ($hv != null) {
-                    $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-                    $lichdata = $h_voda[0]['lich_pov'];
-                    $lichym =yearmon($h_voda[0]['lich_pov']);
-                    if ($lichym>$lasdatehvd) {
+                    $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by kl desc')->QueryAll();
+                    if ($h_voda[0]['lich_pov']!=null) {
+                        $lichdata = $h_voda[0]['lich_pov'];
+                        $lichym = yearmon($h_voda[0]['lich_pov']);
+                        if ($lichym < $lasdatehvd) {
                             $messschet = $messschet . '-----------------------------' . "\n";
                             $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
                             $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
                             $messschet = $messschet . 'Увага, у вас закінчилась повірка лічильника. Ви не зможете здати показник! Вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
                             $messschet = $messschet . "Дата повірки лічильника: " . date('d.m.Y', strtotime($lichdata)) . "\n";
                             $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а' . "\n";
-                    }
-                    else {
-                        if ($lichym==$lasdatehvd) {
-                            $messschet = $messschet . '-----------------------------' . "\n";
-                            $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
-                            $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
-                            $messschet = $messschet . 'Увага, в цьому місяці у вас закінчюється повірка лічильника. В наступному місяці ви не зможете здати показник і вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
-                            $messschet = $messschet . "Дата повірки лічильника: " . date('d.m.Y', strtotime($lichdata)) . "\n";
-                            $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а' . "\n";
-                        }
-
-                        $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-                        if (count($pokazold) <> 0) {
-                            $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-                            if (count($pokaz) == 0) {
+                        } else {
+                            if ($lichym == $lasdatehvd) {
                                 $messschet = $messschet . '-----------------------------' . "\n";
                                 $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
                                 $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
-                                $messschet = $messschet . 'Останній показник по воді :' . "\n";
-                                $messschet = $messschet . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
-                                $messschet = $messschet . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                                $messschet = $messschet . 'Увага, в цьому місяці у вас закінчюється повірка лічильника. В наступному місяці ви не зможете здати показник і вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
+                                $messschet = $messschet . "Дата повірки лічильника: " . date('d.m.Y', strtotime($lichdata)) . "\n";
+                                $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а' . "\n";
+                            }
+
+                            $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                            if (count($pokazold) <> 0) {
+                                $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                                if (count($pokaz) == 0) {
+                                    $messschet = $messschet . '-----------------------------' . "\n";
+                                    $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
+                                    $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
+                                    $messschet = $messschet . 'Останній показник по воді :' . "\n";
+                                    $messschet = $messschet . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
+                                    $messschet = $messschet . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                                }
                             }
                         }
                     }
@@ -135,6 +136,7 @@ foreach ($FindEmailSchet as $abon) {
 
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 
+
 $FindNoEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->select('viber.id_receiver,viber_abon.schet,viber.name as fio')
     ->innerJoin('viber_abon','viber_abon.id_viber = viber.id')
@@ -144,7 +146,7 @@ $FindNoEmailSchet = Viber::find()->where(['viber.api_key' => $apiKey])
     ->orderBy('viber.id')
     ->asArray()->all();
 
-$id_reciv = '';
+$id_reciv = ($FindNoEmailSchet<>null) ? $FindNoEmailSchet[0]["id_receiver"] : '';
 $fio = '';
 $messschet = '';
 
@@ -153,44 +155,44 @@ foreach ($FindNoEmailSchet as $abon) {
 //        if ($abon['id_receiver'] == $receivid) {
         if ($id_reciv <> $abon['id_receiver']) {
             $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
-            $countAbon = $countAbon + 1;
             $messschet='';
         }
         $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
         $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
         if ($hv != null) {
             $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-            $lichdata = $h_voda[0]['lich_pov'];
-            $lichym =yearmon($h_voda[0]['lich_pov']);
-            if ($lichym>$lasdatehvd) {
-                $messschet = $messschet . '-----------------------------' . "\n";
-                $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
-                $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
-                $messschet = $messschet . 'Увага, у вас закінчилась повірка лічильника. Ви не зможете здати показник! Вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
-                $messschet = $messschet . "Дата повірки лічильника: " . date('d.m.Y', strtotime($lichdata)) . "\n";
-                $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а' . "\n";
-            }
-            else {
-                if ($lichym == $lasdatehvd) {
+            if ($h_voda[0]['lich_pov']!=null) {
+                $lichdata = $h_voda[0]['lich_pov'];
+                $lichym = yearmon($h_voda[0]['lich_pov']);
+                if ($lichym < $lasdatehvd) {
                     $messschet = $messschet . '-----------------------------' . "\n";
                     $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
                     $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
-                    $messschet = $messschet . 'Увага, в цьому місяці у вас закінчюється повірка лічильника. В наступному місяці ви не зможете здати показник і вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
+                    $messschet = $messschet . 'Увага, у вас закінчилась повірка лічильника. Ви не зможете здати показник! Вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
                     $messschet = $messschet . "Дата повірки лічильника: " . date('d.m.Y', strtotime($lichdata)) . "\n";
                     $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а' . "\n";
-                }
-
-
-                $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-                if (count($pokazold) <> 0) {
-                    $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
-                    if (count($pokaz) == 0) {
+                } else {
+                    if ($lichym == $lasdatehvd) {
                         $messschet = $messschet . '-----------------------------' . "\n";
                         $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
                         $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
-                        $messschet = $messschet . 'Останній показник по воді :' . "\n";
-                        $messschet = $messschet . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
-                        $messschet = $messschet . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                        $messschet = $messschet . 'Увага, в цьому місяці у вас закінчюється повірка лічильника. В наступному місяці ви не зможете здати показник і вам буде нараховано споживання по нормі, або небаланс по будинку!' . "\n";
+                        $messschet = $messschet . "Дата повірки лічильника: " . date('d.m.Y', strtotime($lichdata)) . "\n";
+                        $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а' . "\n";
+                    }
+
+
+                    $pokazold = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon<>\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                    if (count($pokazold) <> 0) {
+                        $pokaz = Yii::$app->hvddb->createCommand('select * from pokazn where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                        if (count($pokaz) == 0) {
+                            $messschet = $messschet . '-----------------------------' . "\n";
+                            $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
+                            $messschet = $messschet . trim(iconv('windows-1251', 'UTF-8', $hv[0]['fio'])) . "\n";
+                            $messschet = $messschet . 'Останній показник по воді :' . "\n";
+                            $messschet = $messschet . "Дата показника: " . date('d.m.Y', strtotime($pokazold[0]['date_pok'])) . "\n";
+                            $messschet = $messschet . 'Показник: ' . $pokazold[0]['pokazn'] . "\n";
+                        }
                     }
                 }
             }
@@ -214,18 +216,21 @@ foreach ($FindNoEmailSchet as $abon) {
 
 $countSend = send($apiKey,$id_reciv,$fio,$messschet,$countSend);
 
+
+$countSchet= count($FindEmailSchet) + count($FindNoEmailSchet);
+
 $senderr = '---Send pokazn---'."\n";
 $senderr = $senderr.'countSend - '.$countSend."\n";
-$senderr = $senderr.'countAbon - '.$countAbon."\n";
+$senderr = $senderr.'countSchet - '.$countSchet."\n";
 $senderr = $senderr.$errmess;
 
-getMySend($senderr,null);
+//getMySend($senderr,null);
 
 
 
 
 echo 'countSend - '.$countSend."\n";
-echo 'countAbon - '.$countAbon."\n";
+echo 'countSchet - '.$countSchet."\n";
 
 function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
     if ($messschet<>'') {
@@ -237,7 +242,7 @@ function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
         $mess = $mess . '(095)791-32-62' . "\n";
         $Receiv = Viber::findOne(['api_key' => $apiKey, 'id_receiver' => $id_reciv]);
         if ($Receiv != null) {
-            getDmkgSend($mess.$messschet, $Receiv);
+//            getDmkgSend($mess.$messschet, $Receiv);
 //            getMySend($mess.$messschet,$Receiv);
             $countSend = $countSend + 1;
         }
@@ -251,9 +256,9 @@ function send($apiKey,$id_reciv,$fio,$messschet,$countSend){
 function yearmon($dt) {
     $year = date("Y", strtotime($dt));
     $month = date("m", strtotime($dt));
-    if ($month<10) {
-        $month = '0'+$month;
-    }
+//    if ($month<10) {
+//        $month = '0'+$month;
+//    }
     return $year.$month;
 
 }
