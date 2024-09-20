@@ -380,6 +380,8 @@ try {
                     try {
                         $ModelKart = DolgKart::findOne(['schet' => trim(iconv('UTF-8', 'windows-1251', $match[0][1]))]);
                         if ($ModelKart != null) {
+                            getSend(mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))));
+                            getSend(mb_strtolower(trim($event->getMessage()->getText())));
                             if (mb_strtolower(trim(iconv('windows-1251', 'UTF-8', $ModelKart->fio))) == mb_strtolower(trim($event->getMessage()->getText()))) {
                                 $addabon = addAbonkart($Receiv, $match[0][1]);
                                 if ($addabon != null) message($bot, $botSender, $event, 'Вітаємо!!! Рахунок ' . $match[0][1] . ' під"єднано до кабінета.', getRahMenu());
@@ -903,7 +905,7 @@ function infoPokazn($schet,$lasdatehvd){
     if ($hv!=null) {
         $mess = $mess.'----------------------------'."\n";
         $dt=Yii::$app->formatter->asDate('01.'.substr($hv[0]["yearmon"], 4, 2).'.'.substr($hv[0]["yearmon"], 0, 4), 'LLLL Y');
-        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води'."\n";
+        $mess = $mess.'Нараховано за: '.$dt.' '.$hv[0]['sch_razn'].' куб.води по лічильнику'."\n";
     }
 
     if ($modelPokazn!=null){
