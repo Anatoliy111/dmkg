@@ -83,7 +83,7 @@ foreach ($FindEmailSchet as $abon) {
                 $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
                 $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
                 if ($hv != null) {
-                    $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+                    $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by kl desc')->QueryAll();
                     if ($h_voda[0]['wid']==42) {
                         $messschet = $messschet . '-----------------------------' . "\n";
                         $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
@@ -188,7 +188,7 @@ foreach ($FindNoEmailSchet as $abon) {
         $schet1251 = trim(iconv('UTF-8', 'windows-1251', $abon['schet']));
         $hv = Yii::$app->dolgdb->createCommand('select * from vw_obkr where period=\'' . $period . '\' and schet=\'' . $schet1251 . '\' and wid=\'hv\'')->QueryAll();
         if ($hv != null) {
-            $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by id desc')->QueryAll();
+            $h_voda = Yii::$app->hvddb->createCommand('select * from h_voda where yearmon=\'' . $lasdatehvd . '\' and schet=\'' . $schet1251 . '\' order by kl desc')->QueryAll();
             if ($h_voda[0]['wid']==42) {
                 $messschet = $messschet . '-----------------------------' . "\n";
                 $messschet = $messschet . 'Особовий рахунок - ' . $abon['schet'] . "\n";
