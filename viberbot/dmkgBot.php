@@ -990,76 +990,100 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
 
     if ($abonent!=null) {
-        if ($lasdatehvd < $nowdate) {
-            $modelpokazn = new UtAbonpokazn();
-            $modelpokazn->schet = trim($schet);
-            $modelpokazn->name = $abonent->fio;
-            $modelpokazn->id_abonent = $abonent->id;
-            $modelpokazn->data = date("Y-m-d");
-            $modelpokazn->pokazn = $pokazn;
-            $modelpokazn->vid = 'viber';
-            if ($modelpokazn->validate()) {
-                $modelpokazn->save();
+        $voda = HVoda::find()->where(['schet' => trim($schet), 'yearmon' => $lasdatehvd])->orderBy(['kl' => SORT_DESC])->one();
+        if ($voda['wid']==42) {
+            $mess = [];
+            $mess[0] = 'err';
+            $messschet = 'Здача показника неможлива, бо у вас відсутній зареєстрований лічильник.' . "\n";
+            $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а,' . "\n";
+            $messschet = $messschet . 'або зателефонуйте за номером:' . "\n";
+            $messschet = $messschet . '(066)128-11-85 (Viber)' . "\n";
+            $messschet = $messschet . '(095)791-32-62' . "\n";
+            $mess[1] = $messschet;
+        }
+        else if ($voda['wid']==45) {
+            $mess = [];
+            $mess[0] = 'err';
+            $messschet = 'Здача показника неможлива, бо у вас закінчився термін повірки лічильника. Дата повірки:'.$voda['lich_pov'].'.' . "\n";
+            $messschet = $messschet . 'Для вирішення питання повірки або заміни лічильника зверніться в абонвідділ адміністрації ДМКГ вул.Нова 80а,' . "\n";
+            $messschet = $messschet . 'або зателефонуйте за номером:' . "\n";
+            $messschet = $messschet . '(066)128-11-85 (Viber)' . "\n";
+            $messschet = $messschet . '(095)791-32-62' . "\n";
+            $mess[1] = $messschet;
+        }
+        else if ($voda['wid']>45) {
+            $mess = [];
+            $mess[0] = 'err';
+            $mess[1] = 'Здача показника неможлива, бо у вас вид нарахування не передбачає здачу показника.';
+        }
+        else {
+            if ($lasdatehvd < $nowdate) {
+                $modelpokazn = new UtAbonpokazn();
+                $modelpokazn->schet = trim($schet);
+                $modelpokazn->name = $abonent->fio;
+                $modelpokazn->id_abonent = $abonent->id;
+                $modelpokazn->data = date("Y-m-d");
+                $modelpokazn->pokazn = $pokazn;
+                $modelpokazn->vid = 'viber';
+                if ($modelpokazn->validate()) {
+                    $modelpokazn->save();
 //            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
 //            getDmkgSend($meserr,$Receiv);
 
 
-                $mess = [];
-                $mess[0] = 'ok';
-                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . $pokazn . ' по рахунку ' . $schet . ' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено';
+                    $mess = [];
+                    $mess[0] = 'ok';
+                    $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . $pokazn . ' по рахунку ' . $schet . ' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено';
 
 
-                return $mess;
-            } else {
-                $messageLog = [
-                    'status' => 'Помилка додавання показника',
-                    'post' => $modelpokazn->errors
-                ];
+                } else {
+                    $messageLog = [
+                        'status' => 'Помилка додавання показника',
+                        'post' => $modelpokazn->errors
+                    ];
 
-                Yii::error($messageLog, 'viber_err');
-                $meserr = '';
-                $errors = $modelpokazn->getErrors();
-                foreach ($errors as $err) {
-                    $meserr = $meserr . implode(",", $err);
+                    Yii::error($messageLog, 'viber_err');
+                    $meserr = '';
+                    $errors = $modelpokazn->getErrors();
+                    foreach ($errors as $err) {
+                        $meserr = $meserr . implode(",", $err);
+                    }
+                    $mess = [];
+                    $mess[0] = 'err';
+                    $mess[1] = $meserr;
+
+
                 }
-                $mess = [];
-                $mess[0] = 'err';
-                $mess[1] = $meserr;
-                return $mess;
+            } else {
 
-            }
-        } else {
-
-            $modelpokazn = new Pokazn();
-            $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
-            $modelpokazn->yearmon = $nowdate;
-            $modelpokazn->pokazn = $pokazn;
-            //   $modelpokazn->date_pok = date("Y-m-d");
-            $modelpokazn->vid_pok = 21;
-            $modelpokazn->fio = trim(iconv('UTF-8', 'windows-1251', $abonent->fio));
+                $modelpokazn = new Pokazn();
+                $modelpokazn->schet = trim(iconv('UTF-8', 'windows-1251', $schet));
+                $modelpokazn->yearmon = $nowdate;
+                $modelpokazn->pokazn = $pokazn;
+                //   $modelpokazn->date_pok = date("Y-m-d");
+                $modelpokazn->vid_pok = 21;
+                $modelpokazn->fio = trim(iconv('UTF-8', 'windows-1251', $abonent->fio));
 
 
+                if ($modelpokazn->validate()) {
 
-            if ($modelpokazn->validate()) {
-
-                $modelpokazn->save();
+                    $modelpokazn->save();
 //                $mess = [];
 //                $mess[0] = 'ok';
 //                $mess[1] = 'aftersave';
 //                return $mess;
 
 
-
-                Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
-                $voda = HVoda::find()->where(['schet' => $modelpokazn->schet])->orderBy(['kl' => SORT_DESC])->one();
+                    Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
+                    $voda = HVoda::find()->where(['schet' => $modelpokazn->schet, 'yearmon' => $lasdatehvd])->orderBy(['kl' => SORT_DESC])->one();
 //            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води по рахунку '.$schet.' становить '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>';
 //            $meserr=$meserr.'<h3 style="line-height: 1.5;">'.' Вам нараховано в цьому місяці '.$voda['sch_razn'].' кубометрів води!'.'</h3>';
 //            getDmkgSend($meserr,$Receiv);
-                $mess = [];
-                $mess[0] = 'ok';
-                $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . $pokazn . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!';
-                return $mess;
-            } else {
+                    $mess = [];
+                    $mess[0] = 'ok';
+                    $mess[1] = 'Вітаємо ' . $abonent->fio . ', ваш показник лічильника холодної води ' . $pokazn . ' по рахунку ' . $schet . ' зараховано! Вам нараховано в цьому місяці ' . $voda['sch_razn'] . ' кубометрів води!';
+
+                } else {
 
 //                $messageLog = [
 //                    'status' => 'Помилка додавання показника',
@@ -1067,21 +1091,20 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 //                ];
 //
 //                Yii::error($messageLog, 'viber_err');
-                $meserr = '';
-                $errors = $modelpokazn->getErrors();
-                foreach ($errors as $err) {
-                    $meserr = $meserr . implode(",", $err);
+                    $meserr = '';
+                    $errors = $modelpokazn->getErrors();
+                    foreach ($errors as $err) {
+                        $meserr = $meserr . implode(",", $err);
+                    }
+                    $mess = [];
+                    $mess[0] = 'err';
+                    $mess[1] = $meserr;
                 }
-                $mess = [];
-                $mess[0] = 'err';
-                $mess[1] = $meserr;
-                return $mess;
-
             }
-
         }
+    } else $mess=null;
 
-    } else return null;
+    return $mess;
 }
 
 function infoSchetOS($schet,$period) {
@@ -1171,10 +1194,10 @@ function getSend($message)
 
     } catch (Exception $e) {
         $log->warning('Exception: ' . $e->getMessage());
-        if ($bot) {
-            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-            $log->warning('Actual body: ' . $bot->getInputBody());
-        }
+//        if ($bot) {
+//            $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+//            $log->warning('Actual body: ' . $bot->getInputBody());
+//        }
     }
 
     return '';
