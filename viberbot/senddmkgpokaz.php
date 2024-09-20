@@ -224,7 +224,7 @@ $senderr = $senderr.'countSend - '.$countSend."\n";
 $senderr = $senderr.'countSchet - '.$countSchet."\n";
 $senderr = $senderr.$errmess;
 
-//getMySend($senderr,null);
+getMySend($senderr,null);
 
 
 
