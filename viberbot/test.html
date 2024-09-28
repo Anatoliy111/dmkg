@@ -7,11 +7,18 @@
 </head>
 <body>
 <h1>Надіслати POST-запит</h1>
-<form action="http://dmkg/site/sendmess" method="POST">
+<form action="http://dmkg/viberbot/dmkgBot.php" method="POST">
 <!--    <label for="name">Ім'я:</label>-->
-    <input type="text" id="org" name="org" value="dmkg"><br><br>
-    <input type="text" id="vidmess" name="vidmess" value="mess"><br><br>
-    <input type="text" id="mess" name="mess" value="Privet"><br><br>
+    <input type="text" name="event" value="message"><br><br>
+    <input type="text" name="timestamp" value="1457764197627"><br><br>
+    <input type="text" name="message_token" value="4912661846655238145"><br><br>
+    <input type="text" name="sender[id]" value="01234567890A="><br><br>
+    <input type="text" name="sender[name]" value="jon"><br><br>
+    <input type="text" name="message[type]" value="text"><br><br>
+    <input type="text" name="message[text]" value="123"><br><br>
+    <input type="text" name="message[tracking_data]" value="tracking_data"><br><br>
+
+<!--    <input type="text" id="mess" name="mess" value="Privet"><br><br>-->
 
 <!--    <label for="email">Email:</label>-->
 <!--    <input type="email" id="email" name="email" required><br><br>-->

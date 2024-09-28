@@ -544,12 +544,12 @@ try {
         ->run();
 } catch (Exception $e) {
     $log->warning('Exception: ' . $e->getMessage());
-    if ($bot) {
-        $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
-        $log->warning('Actual body: ' . $bot->getInputBody());
-        echo $e->getMessage();
-
-    }
+//    if ($bot) {
+//        $log->warning('Actual sign: ' . $bot->getSignHeaderValue());
+//        $log->warning('Actual body: ' . $bot->getInputBody());
+//        echo $e->getMessage();
+//
+//    }
 }
 
 function Addabon($modelemail,$Receiv)
