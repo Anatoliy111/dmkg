@@ -30,7 +30,7 @@ class SearchUtAbonent extends UtAbonent
             [['id', 'del', 'status'], 'integer'],
             [['date_pass', 'passopen', 'telef'], 'safe'],
             [['fio', 'email', 'pass1','pass2','pass'], 'required'],
-            [['pass1','pass2','pass'], 'string', 'min' => 5],
+            [['pass1','pass2','pass','fio'], 'string', 'min' => 5],
             ['email', 'email'],
             [['fio', 'pass', 'email'], 'string', 'max' => 64],
             [['email'], 'exist', 'skipOnError' => true, 'targetClass' => UtAbonent::class, 'targetAttribute' => ['email' => 'email'],'message' => 'Email не зареєстрований!!!','on' => self::SCENARIO_EMAIL],

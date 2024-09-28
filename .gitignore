@@ -14,3 +14,5 @@ app/config/db.php
 app/config/dolgdb.php
 app/config/fdb.php
 app/config/hvddb.php
+app/config/web.php
+app/config/web.php

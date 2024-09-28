@@ -80,7 +80,7 @@ $config = [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.ukr.net',
                 'username' => 'supportdmkg@ukr.net',
-                'password' => '9H8cYWpgD3TxnbbM',
+                'password' => 'BmAOj4kvdokMUp1l',
                 'port' => '465',
                 'encryption' => 'ssl',
             ],
