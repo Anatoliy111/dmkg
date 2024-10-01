@@ -21,13 +21,15 @@ use yii\helpers\Url;
              <h4>Нарахування суми до оплати по нарахованим кубометрам води відбувається по закриттю облікового місяця, яке триває від 3-х до 6-ти днів з початку наступного місяця.</h4>
 
             <?php
+
+            $voda=$dpvoda->getModels()[0];
 //            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
-            if ($closeaddpokaz<>true) {
+            if ($voda["wid"]==41 or $voda["wid"]==43 or $voda["wid"]==44) {
                 echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
             }
             else
             {
-                echo '<div class="infopokaz" style="color: #b92c28; text-align: center"><h4>Ви не можете подати показник доки не повірите або заміните лічильник!!!</h4></div>';
+                echo '<div class="infopokaz" style="color: #b92c28; text-align: center"><h4>По вашому виду нарахувань "'. iconv('windows-1251', 'UTF-8', $voda["sprzn"]["vid_zn"]) .'" ви не можете подати показник!!!</h4></div>';
             }
             ?>
 
