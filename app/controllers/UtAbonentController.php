@@ -343,7 +343,11 @@ class UtAbonentController extends Controller
                        if ($hv != null) {
                            try {
 //                    $voda = UtVoda::find()->limit(1)->where(['schet' => $abon->schet])->orderBy(['id' => SORT_DESC])->asArray()->all()[0];
-                               $voda = HVoda::find()->where(['schet' => $abon->schet])->orderBy(['kl' => SORT_DESC]);
+//                               $voda = HVoda::find()->where(['h_voda.schet' => $abon->schet])->orderBy(['h_voda.kl' => SORT_DESC]);
+//                               $voda->select('h_voda.*, spr_zn.vid_zn');
+//                               $voda->leftJoin('spr_zn','(spr_zn.id=h_voda.wid)');
+
+                               $voda = HVoda::find()->joinWith('sprzn')->where(['h_voda.schet' => $abon->schet])->orderBy(['h_voda.kl' => SORT_DESC]);
 
 //                               $voda2 = $voda->asArray()->all();
 
@@ -359,7 +363,7 @@ class UtAbonentController extends Controller
 //                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
                                    ->orderBy(['id' => SORT_DESC]);
 
-//                    $pokazn2 = $pokazn->asArray()->all();
+ //                   $pokazn2 = $pokazn->asArray()->all();
 
                                $dataProvider = new ActiveDataProvider([
                                    'query' => $pokazn,

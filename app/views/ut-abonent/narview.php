@@ -49,7 +49,7 @@ HTML;
 				],
                     [
                         'attribute' => 'naim',
-                        'label' => 'Плслуга',
+                        'label' => 'Послуга',
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["naim"]);
                         }

@@ -24,6 +24,7 @@ $asset = \app\assets\AppAsset::register($this);
 
 //    $period =date('Y-m-d', strtotime($lastperiod.' +1 month'));
     $period =date('Y-m-d', strtotime($lastperiod));
+    $yearmon =date('Y', strtotime($period)).date('m', strtotime($period));
     $model = $_SESSION['model'];
 
 //if ($abonents<>null) {
@@ -629,6 +630,9 @@ Modal::begin([
         <div class="col-xs-12">
             <?php
             $lich=$dplich->getModels();
+            $closeaddpokaz=false;
+
+
 
             foreach($lich as $value){
                 $monthpov = date('m', strtotime($value['data_pov']));
@@ -653,6 +657,10 @@ Modal::begin([
 //                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
                     echo '<div class="info' . $value['n_lich'] . '" style="color: #337db6; text-align: center"><h4>Увага, в наступному місяці виходить термін повірки лічильника!!! Лічильник №' .$value['n_lich'].' потребує повірки!</h4></div>';
                 }
+                if ($yearmon>$yearmonthpov){
+                    $closeaddpokaz=true;
+                }
+
             }
             ?>
         </div>
@@ -674,7 +682,7 @@ Modal::begin([
                 $itemshv = [
                     [
                         'label'=>'Показники',
-                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn]),
+                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'closeaddpokaz' => $closeaddpokaz]),
                     ],
                     [
                         'label'=>'Лічильники',

@@ -22,13 +22,19 @@ use yii\helpers\Url;
 
             <?php
 //            echo Html::button("Подати показник", ['id' => 'btn-addpokaz','class' => 'btn-lg btn-success','data-target' => 'addpokazn']);
-            echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
+            if ($closeaddpokaz<>true) {
+                echo Html::button("Подати показник", ['class' => 'btn-lg btn-success', 'onclick' => "AddPokaz()", 'target' => "_blank",]);
+            }
+            else
+            {
+                echo '<div class="infopokaz" style="color: #b92c28; text-align: center"><h4>Ви не можете подати показник доки не повірите або заміните лічильник!!!</h4></div>';
+            }
             ?>
 
         </div>
 
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-12">
 
             <?php
 
@@ -42,16 +48,46 @@ HTML;
                 'dataProvider' =>$dpvoda,
                 'columns' => [
                     [
-                        'attribute' => 'yearmon',
+                        'attribute' => 'h_voda.yearmon',
                         'label'=>'Місяць обліку',
                         'value'=>function ($model) {
                             return Yii::$app->formatter->asDate('01.'.substr($model["yearmon"], 4, 2).'.'.substr($model["yearmon"], 0, 4), 'LLLL Y');
                         }
                     ],
-                    'sch_cur',
+                    [
+                        'attribute' => 'sch_cur',
+                        'label'=>'Показник'
+                    ],
+                    [
+                        'attribute' => 'sprzn.vid_zn',
+                        'label'=>'Вид нарахування',
+                        'value'=>function ($model) {
+                            return iconv('windows-1251', 'UTF-8', $model["sprzn"]["vid_zn"]);
+                        }
+                    ],
                     [
                         'attribute' => 'sch_razn',
-                        'label'=>'Нараховано кубів'
+                        'label'=>'Куби по ліч.'
+                    ],
+                    [
+                        'label'=>'Розрах. споживання',
+                        'value'=>function ($model) {
+                            return $model["nor_razn"]+$model["norm_blich"];
+                        }
+                    ],
+                    [
+                        'attribute' => 'kub_nobalans',
+                        'label'=>'Небаланс'
+                    ],
+                    [
+                        'label'=>'Перерахунок',
+                        'value'=>function ($model) {
+                            return $model["del_norm"]+$model["pererah"]+$model["spis"];
+                        }
+                    ],
+                    [
+                        'attribute' => 'kub_all',
+                        'label'=>'Нарах. всього кубів'
                     ],
                 ],
                 'layout' => $layout1,
@@ -77,7 +113,7 @@ HTML;
 
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-12">
 
 
             <?php
@@ -94,7 +130,8 @@ HTML;
                 'columns' => [
                     [
                         'attribute' => 'date_pok',
-                        'label'=>'Дата прийнятого показника'
+                        'label'=>'Дата прийнятого показника',
+                        'width'=>'150px',
                     ],
                     [
                         'attribute' => 'pokazn',
@@ -110,7 +147,7 @@ HTML;
                     [
                         'attribute' => 'fio',
                         'label'=>'ПІП',
-                        'width'=>'50px',
+                        'width'=>'150px',
                         'value'=>function ($model) {
                             return iconv('windows-1251', 'UTF-8', $model["fio"]);
                         }
