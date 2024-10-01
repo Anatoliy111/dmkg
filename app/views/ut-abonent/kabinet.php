@@ -649,11 +649,11 @@ Modal::begin([
                 $yearmonthpov2 = date('Y', strtotime($value['data_pov'].' +1 month')).date('m', strtotime($value['data_pov'].' -1 month'));
 
 
-                if ($yearmonth>=$yearmonthpov){
+                if ($yearmon>=$yearmonthpov){
 //                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
                     echo '<div class="info' . $value['n_lich'] . '" style="color: #b92c28; text-align: center"><h4>Увага!!! Лічильник №'.$value['n_lich'].' потребує повірки!</h4></div>';
                 }
-                if ($yearmonth==$yearmonthpov2){
+                if ($yearmon==$yearmonthpov2){
 //                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
                     echo '<div class="info' . $value['n_lich'] . '" style="color: #337db6; text-align: center"><h4>Увага, в наступному місяці виходить термін повірки лічильника!!! Лічильник №' .$value['n_lich'].' потребує повірки!</h4></div>';
                 }
