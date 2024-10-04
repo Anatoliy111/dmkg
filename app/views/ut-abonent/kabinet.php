@@ -528,6 +528,17 @@ Modal::begin([
         </div>
 
 
+            <div class="col-xs-12">
+
+                <div class="center" style="padding-bottom: 20px; margin-left: auto; margin-right: auto;">
+                    <?= Html::a('<i class="glyphicon glyphicon-home"></i> Інформація по будинку '.iconv('windows-1251', 'UTF-8',$_SESSION['abon']->ulnaim.' '.$_SESSION['abon']->nomdom)  , ['/ut-dom/view','kl_ul' => $_SESSION['abon']->kl_ul,'nomdom' => $_SESSION['abon']->nomdom], ['class' => 'btn btn-primary btn-block' ]) ?>
+                </div>
+
+            </div>
+
+
+
+
             <div class="schet col-xs-12">
 
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 box-sum">
@@ -630,9 +641,6 @@ Modal::begin([
         <div class="col-xs-12">
             <?php
             $lich=$dplich->getModels();
-            $closeaddpokaz=false;
-
-
 
             foreach($lich as $value){
                 $monthpov = date('m', strtotime($value['data_pov']));
@@ -657,9 +665,6 @@ Modal::begin([
 //                     echo Html::encode('<h4>Увага!!! Лічильник №'.$value['N_LICH'].' потребує повірки!</h4>');
                     echo '<div class="info' . $value['n_lich'] . '" style="color: #337db6; text-align: center"><h4>Увага, в наступному місяці виходить термін повірки лічильника!!! Лічильник №' .$value['n_lich'].' потребує повірки!</h4></div>';
                 }
-                if ($yearmon>$yearmonthpov){
-                    $closeaddpokaz=true;
-                }
 
             }
             ?>
@@ -682,7 +687,7 @@ Modal::begin([
                 $itemshv = [
                     [
                         'label'=>'Показники',
-                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn,'closeaddpokaz' => $closeaddpokaz]),
+                        'content'=>$this->render('pokazview', ['model' => $model,'dpvoda' => $dpvoda,'dppokazn' => $dppokazn]),
                     ],
                     [
                         'label'=>'Лічильники',

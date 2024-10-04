@@ -50,6 +50,7 @@ class DolgNtarif extends \yii\db\ActiveRecord
         return [
             [['kl', 'kl_old', 'tarif', 'tarif_bl', 'tarif_l', 'norma', 'lift', 'tarsubs', 'val'], 'number'],
             [['period'], 'string'],
+            [['id'], 'integer'],
             [['upd'], 'integer'],
             [['wid'], 'string', 'max' => 2],
             [['name'], 'string', 'max' => 50],

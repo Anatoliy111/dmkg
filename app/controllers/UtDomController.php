@@ -143,7 +143,7 @@ class UtDomController extends Controller
 //        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
         $tardom->leftJoin('wid','(ntarif.wid=wid.wid)');
 //        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1]);
-        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl])->all();
+        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl]);
         $tardom->orderBy('wid.npp')->asArray()->all();
 //
 //
