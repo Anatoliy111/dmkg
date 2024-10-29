@@ -360,6 +360,7 @@ class UtAbonentController extends Controller
 
                                $pokazn = Pokazn::find()->joinWith('sprzn')->
                                where(['pokazn.schet' => $abon->schet])
+                               ->andWhere(['or', ['pokazn.del' => 0], ['pokazn.del' => null]])
 //                    ->andwhere(['>=', 'yearmon', $yearmon[0]['yearmon']-200])
                                    ->orderBy(['id' => SORT_DESC]);
 

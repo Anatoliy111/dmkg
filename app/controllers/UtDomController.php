@@ -153,6 +153,19 @@ class UtDomController extends Controller
 			'query' => $tardom,
 		]);
 
+        $vodadom = DolgNtarif::find();
+        $vodadom->select('*');
+        $vodadom->leftJoin('wid','(ntarif.wid=wid.wid)');
+        $vodadom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl]);
+        $vodadom->orderBy('wid.npp')->asArray()->all();
+//
+//
+////        $res2 = $tardom->asArray()->all();
+//
+        $dPvoda= new ActiveDataProvider([
+            'query' => $vodadom,
+        ]);
+
 //        $tt = ArrayHelper::toArray($dPtarif);
 
 		return $this->render('view', [
