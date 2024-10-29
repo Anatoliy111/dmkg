@@ -40,7 +40,7 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 64],
             [['vid'], 'string', 'max' => 32],
             [['pokazn'], function ($attribute) {
-                $pok = Pokazn::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $this->schet)])->orderBy(['date_pok' => SORT_DESC])->one();
+                $pok = Pokazn::find()->where(['schet' => iconv('UTF-8', 'windows-1251', $this->schet)])->andWhere(['or', ['del' => 0], ['del' => null]])->orderBy(['date_pok' => SORT_DESC])->one();
                 if ($this->pokazn<$pok->pokazn) {
                     $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$pok->pokazn."!!! Спробуйте ще");
                 }
