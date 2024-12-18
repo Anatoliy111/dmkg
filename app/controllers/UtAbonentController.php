@@ -780,7 +780,8 @@ class UtAbonentController extends Controller
 //
 //                }
 
-                $modelpokazn->date_pok = null;
+               // $modelpokazn->date_pok = null;
+                $modelpokazn->date_pok = date("Y-m-d");
                     $modelpokazn->save();
 
                     $_SESSION['bigkub']=0;
