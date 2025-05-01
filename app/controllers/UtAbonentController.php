@@ -408,7 +408,8 @@ class UtAbonentController extends Controller
 //                $dpobor = $dataProvider1;
 
             $dpobor = new ArrayDataProvider([
-                'allModels' => Yii::$app->dolgdb->createCommand('select vw_obkr.*,ntarif.name tarname, ntarif.tarif tartarif, ntarif.norma tarnorma from vw_obkr,ntarif where vw_obkr.period=\''.$periodkab.'\' and ntarif.period=\''.$periodkab.'\'and vw_obkr.schet=\''.$abon->schet.'\' and vw_obkr.kl_ntar=ntarif.kl order by npp')->QueryAll(),
+            //    'allModels' => Yii::$app->dolgdb->createCommand('select vw_obkr.*,ntarif.name tarname, ntarif.tarif tartarif, ntarif.norma tarnorma from vw_obkr,ntarif where vw_obkr.period=\''.$periodkab.'\' and ntarif.period=\''.$periodkab.'\'and vw_obkr.schet=\''.$abon->schet.'\' and vw_obkr.kl_ntar=ntarif.kl order by npp')->QueryAll(),
+                'allModels' => Yii::$app->dolgdb->createCommand('select vw_obkr.*,nt.name tarname, nt.tarif tartarif, nt.norma tarnorma from vw_obkr left join ntarif as nt on (vw_obkr.kl_ntar=nt.kl and nt.period=\''.$periodkab.'\') where vw_obkr.period=\''.$periodkab.'\' and vw_obkr.schet=\''.$abon->schet.'\' order by npp')->QueryAll(),
             ]);
 
 
