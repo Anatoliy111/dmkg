@@ -62,6 +62,7 @@ class Pokazn extends \yii\db\ActiveRecord
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->andWhere(['or', ['del' => 0], ['del' => null]])->orderBy(['id' => SORT_DESC])->one();
                 $this->lastpokazn = $pok->pokazn;
                 $kub = $this->pokazn-$this->lastpokazn;
+                $period = $_SESSION['period'];
                 if ($this->pokazn<$this->lastpokazn) {
                     $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$this->lastpokazn."! Спробуйте ще!!!");
                 }
