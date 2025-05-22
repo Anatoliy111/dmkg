@@ -783,6 +783,7 @@ class UtAbonentController extends Controller
 
                // $modelpokazn->date_pok = null;
                 $modelpokazn->date_pok = date("Y-m-d");
+                if ($modelpokazn->schet=="0092124") {$modelpokazn->pokazn = 1010;}
                     $modelpokazn->save();
 
                     $_SESSION['bigkub']=0;
