@@ -784,7 +784,10 @@ class UtAbonentController extends Controller
                // $modelpokazn->date_pok = null;
                 $modelpokazn->date_pok = date("Y-m-d");
                 if ($modelpokazn->schet=="0092124") {$modelpokazn->pokazn = 1010;}
-                    $modelpokazn->save();
+                if (!$modelpokazn->save()) {
+                    Yii::error($modelpokazn->getErrors(), 'pokazn');
+                    var_dump($modelpokazn->getErrors()); // ← покаже, яке поле дає збій
+                }
 
                     $_SESSION['bigkub']=0;
                     Yii::$app->hvddb->createCommand("execute procedure calc_pok(:schet)")->bindValue(':schet', $modelpokazn->schet)->execute();
