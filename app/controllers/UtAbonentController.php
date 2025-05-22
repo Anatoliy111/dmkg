@@ -785,7 +785,7 @@ class UtAbonentController extends Controller
                 $modelpokazn->date_pok = date("Y-m-d");
                 if ($modelpokazn->schet=="0092124") {$modelpokazn->pokazn = 1010;}
                 if (!$modelpokazn->save()) {
-                    Yii::error($modelpokazn->getErrors(), 'pokazn');
+                    Yii::error($modelpokazn->getErrors(), 'warning');
                     var_dump($modelpokazn->getErrors()); // ← покаже, яке поле дає збій
                 }
 
