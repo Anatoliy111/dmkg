@@ -46,8 +46,8 @@ class UtAbonpokazn extends \yii\db\ActiveRecord
                     $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$pok->pokazn."!!! Спробуйте ще");
                 }
                 else {
-                 //   $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
-                    $poksite = UtAbonpokazn::find()->where(['schet' => iconv('windows-1251', 'UTF-8', $this->schet)])->andwhere(['>=','data',$period])->orderBy(['date_ins' => SORT_DESC])->one();
+                    $poksite = UtAbonpokazn::find()->where(['schet' => $this->schet])->orderBy(['date_ins' => SORT_DESC])->one();
+         //           $poksite = UtAbonpokazn::find()->where(['schet' => iconv('windows-1251', 'UTF-8', $this->schet)])->andwhere(['>=','data',$period])->orderBy(['date_ins' => SORT_DESC])->one();
                     if ($poksite<>null)
                         if ($poksite->data == $this->data) {
                             if ($poksite->vid == 'site') $this->addError($attribute,  "Ви вже сьогодні подали показник " . $poksite->pokazn . " через кабінет споживача!!! За один день здаємо тільки один показник!");
