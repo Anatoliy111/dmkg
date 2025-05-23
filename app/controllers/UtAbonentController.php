@@ -709,7 +709,7 @@ class UtAbonentController extends Controller
         $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
         $modelpokazn->date_pok = date("Y-m-d");
         $modelpokazn->vid_pok = 37;
-        $modelpokazn->pokazn = 1024;
+      //  $modelpokazn->pokazn = 1024;
         $modelpokazn->pokaznik = 1024;
         $modelpokazn->id_lich = 111;
         $modelpokazn->save();
@@ -791,7 +791,7 @@ class UtAbonentController extends Controller
 
                // $modelpokazn->date_pok = null;
                 $modelpokazn->date_pok = date("Y-m-d");
-                $modelpokazn->pokaznik = $modelpokazn->pokazn;  
+                $modelpokazn->pokaznik = $modelpokazn->pokazn;
                 if (!$modelpokazn->save()) {
                     Yii::error($modelpokazn->getErrors(), 'warning');
                 }
