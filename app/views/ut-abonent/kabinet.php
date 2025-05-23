@@ -494,7 +494,14 @@ Modal::begin([
 
         <div class="col-xs-12">
             <h1>Особовий рахунок <?= Html::encode(trim(iconv('windows-1251', 'UTF-8', $_SESSION['abon']->schet)))?></h1>
+            <?php
+            if ($_SESSION['abon']->schet=='0092124') {
 
+            ?>
+
+            <?= Html::a('1111111111111111111111111111111111111111111111', ['ut-abonent/temp'], ['class' => 'btn btn-primary']) ?>
+
+            <?php } ?>
         </div>
 
         <div class="col-sm-12">
@@ -630,6 +637,8 @@ Modal::begin([
     if ($hv<>null) {
 
     ?>
+
+
 
     <div class="mywell well-large3 container">
 

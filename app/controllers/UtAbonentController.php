@@ -710,6 +710,23 @@ class UtAbonentController extends Controller
         return $this->redirect('kabinet');
     }
 
+    public function actionTemp()
+    {
+        $this->returnIndex();
+//        $schet = Yii::$app->request->post()['schet'];
+        $nowdate = intval(date('Y').date('m'));
+        $modelpokazn = new Pokazn();
+        $modelpokazn->schet = $_SESSION['abon']->schet;
+        $modelpokazn->yearmon =$nowdate;
+        $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
+        $modelpokazn->date_pok = date("Y-m-d");
+        $modelpokazn->vid_pok = 37;
+        $modelpokazn->pokazn = 1010;
+        $modelpokazn->save();
+
+            return $this->redirect('kabinet');
+    }
+
     public function actionAddpokazn()
     {
         $this->returnIndex();
@@ -724,6 +741,7 @@ class UtAbonentController extends Controller
         $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
         $modelpokazn->date_pok = date("Y-m-d");
         $modelpokazn->vid_pok = 37;
+
 
         if ($lasdatehvd[0]['yearmon']<$nowdate) {
 
