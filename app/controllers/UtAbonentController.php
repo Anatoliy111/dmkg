@@ -707,7 +707,8 @@ class UtAbonentController extends Controller
         $modelpokazn->schet = $_SESSION['abon']->schet;
         $modelpokazn->yearmon =$nowdate;
         $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
-        $modelpokazn->date_pok = date('d.m.Y');
+       // $modelpokazn->date_pok = date('d.m.Y');
+        $modelpokazn->date_pok = Yii::$app->formatter->asDate(date("Y-m-d"), 'php:Y-m-d');
         $modelpokazn->vid_pok = 37;
         $modelpokazn->pokazn = 1024;
         $modelpokazn->pokaznik = 1024;
