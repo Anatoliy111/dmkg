@@ -20,19 +20,7 @@ use app\models\SearchUtAbonent;
 use app\models\UtAbonkart;
 use app\models\UtAbonpokazn;
 use app\models\UtAuth;
-use app\models\UtKart;
-use app\models\UtLich;
-use app\models\UtPokazn;
-use app\models\UtVoda;
 use app\models\Viber;
-use app\poslug\models\UtNarah;
-use app\poslug\models\UtObor;
-use app\poslug\models\UtOpl;
-use app\poslug\models\UtPeriod;
-use app\poslug\models\UtPosl;
-use app\poslug\models\UtTarif;
-use app\poslug\models\UtTarifinfo;
-use app\poslug\models\UtUtrim;
 use Yii;
 use yii\base\ExitException;
 use yii\data\ActiveDataProvider;
@@ -721,7 +709,9 @@ class UtAbonentController extends Controller
         $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
         $modelpokazn->date_pok = date("Y-m-d");
         $modelpokazn->vid_pok = 37;
-        $modelpokazn->pokazn = 1010;
+        $modelpokazn->pokazn = 1024;
+        $modelpokazn->pokaznik = 1024;
+        $modelpokazn->id_lich = 111;
         $modelpokazn->save();
 
             return $this->redirect('kabinet');
@@ -801,11 +791,9 @@ class UtAbonentController extends Controller
 
                // $modelpokazn->date_pok = null;
                 $modelpokazn->date_pok = date("Y-m-d");
-                if ($modelpokazn->schet=="0092124") {$modelpokazn->pokazn = 1010;}
+                $modelpokazn->pokaznik = $modelpokazn->pokazn;  
                 if (!$modelpokazn->save()) {
                     Yii::error($modelpokazn->getErrors(), 'warning');
-                    Yii::debug($modelpokazn->getErrors(), 'warning');
-                    var_dump($modelpokazn->getErrors()); // ← покаже, яке поле дає збій
                 }
 
                     $_SESSION['bigkub']=0;

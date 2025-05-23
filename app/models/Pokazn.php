@@ -3,17 +3,15 @@
 namespace app\models;
 
 use Yii;
-use yii\easyii\helpers\Data;
-use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "pokazn".
+ * This is the model class for table "{{%pokazn}}".
  *
  * @property int $id
  * @property int|null $yearmon
  * @property float|null $pokazn
  * @property string|null $date_pok
- * @property string|null $vid_pok
+ * @property int|null $vid_pok
  * @property int|null $n_doc
  * @property string|null $date_zn
  * @property int|null $vid_zn
@@ -22,19 +20,21 @@ use yii\helpers\ArrayHelper;
  * @property float|null $ppp
  * @property string|null $fio
  * @property int|null $fl_bigpok
+ * @property string|null $user_naim
+ * @property int|null $id_user
+ * @property string $date_user
+ * @property string|null $note
+ * @property int|null $del
+ * @property int|null $pokaznik
  */
 class Pokazn extends \yii\db\ActiveRecord
 {
-
-    public $lastpokazn;
-    public $fl_pokazn;
-//    public $kub;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'pokazn';
+        return '{{%pokazn}}';
     }
 
     /**
@@ -51,50 +51,14 @@ class Pokazn extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pokazn'], 'required'],
-            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich','fl_bigpok'], 'integer'],
+            [['yearmon', 'vid_pok', 'n_doc', 'vid_zn', 'id_lich', 'fl_bigpok', 'id_user', 'del', 'pokaznik'], 'integer'],
             [['pokazn', 'ppp'], 'number'],
-            [['date_pok', 'date_zn'], 'safe'],
+            [['date_pok', 'date_zn'], 'string'],
+            [['date_user'], 'safe'],
             [['schet'], 'string', 'max' => 10],
-       //     [['fio'], 'string', 'max' => 64],
-            [['pokazn'], function ($attribute) {
-                $session = Yii::$app->session;
-                $pok = Pokazn::find()->where(['schet' => $this->schet])->andWhere(['or', ['del' => 0], ['del' => null]])->orderBy(['id' => SORT_DESC])->one();
-                $this->lastpokazn = $pok->pokazn;
-                $kub = $this->pokazn-$this->lastpokazn;
-                $period = $_SESSION['period'];
-                if ($this->pokazn<$this->lastpokazn) {
-                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$this->lastpokazn."! Спробуйте ще!!!");
-                }
-                else {
-                    if ($kub > 100 and $this->vid_pok <> 21) {
-                        if (isset($session['bigkub'])) {
-                            //                   if (array_key_exists('bigkub',$session)) {
-                            if ($kub <> $session['bigkub']) {
-                                $this->addError($attribute, "Ваш показник " . $this->pokazn . " перевищує 100 кубів!!! Бажаєте продовжити(зберегти) ?");
-                                $session->set('bigkub', $kub);
-                                //                          $session['bigkub'] = $kub;
-                            }
-                        } else {
-                            $this->addError($attribute, "Ваш показник " . $this->pokazn . " перевищує 100 кубів !!! Бажаєте продовжити(зберегти)?");
-                            $session->set('bigkub', $kub);
-                        }
-                    } else {
-                        $session->set('bigkub', 0);
-//                       // $poksite = UtAbonpokazn::find()->where(['schet' => iconv('windows-1251', 'UTF-8', $this->schet)])->orderBy(['date_ins' => SORT_DESC])->one();
-                        $poksite = UtAbonpokazn::find()->where(['schet' => iconv('windows-1251', 'UTF-8', $this->schet)])->andwhere(['>=','data',$period])->orderBy(['date_ins' => SORT_DESC])->one();
-                        if ($poksite <> null)
-                            if ($poksite->data == $this->date_pok) {
-                                if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже сьогодні подали показник " . $poksite->pokazn . " через кабінет споживача!!! За один день здаємо тільки один показник!");
-                                if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже сьогодні подали показник " . $poksite->pokazn . " через ViberBot!!! За один день здаємо тільки один показник!");
-                            } elseif ($this->pokazn <= $poksite->pokazn) {
-                                if ($poksite->vid == 'site') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->data . " через кабінет споживача!!!");
-                                if ($poksite->vid == 'viber') $this->addError($attribute, "Ви вже подали показник " . $poksite->pokazn . ' ' . $poksite->data . " через ViberBot!!!");
-                            }
-                    }
-                }
-
-            }],
+            [['fio'], 'string', 'max' => 64],
+            [['user_naim'], 'string', 'max' => 50],
+            [['note'], 'string', 'max' => 300],
         ];
     }
 
@@ -106,8 +70,7 @@ class Pokazn extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'yearmon' => 'Yearmon',
-            'pokazn' => 'Введіть показник',
-            'pok' => 'Введіть показник',
+            'pokazn' => 'Pokazn',
             'date_pok' => 'Date Pok',
             'vid_pok' => 'Vid Pok',
             'n_doc' => 'N Doc',
@@ -115,11 +78,17 @@ class Pokazn extends \yii\db\ActiveRecord
             'vid_zn' => 'Vid Zn',
             'schet' => 'Schet',
             'id_lich' => 'Id Lich',
-            'ppp' => 'Ppp'
-       //     'fio' => 'ПІП'
+            'ppp' => 'Ppp',
+            'fio' => 'Fio',
+            'fl_bigpok' => 'Fl Bigpok',
+            'user_naim' => 'User Naim',
+            'id_user' => 'Id User',
+            'date_user' => 'Date User',
+            'note' => 'Note',
+            'del' => 'Del',
+            'pokaznik' => 'Pokaznik',
         ];
     }
-
 
     public function getSprzn()
     {
