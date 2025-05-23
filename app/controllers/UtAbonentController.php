@@ -730,7 +730,7 @@ class UtAbonentController extends Controller
         $modelpokazn->schet = $_SESSION['abon']->schet;
         $modelpokazn->yearmon =$nowdate;
         $modelpokazn->fio = trim(iconv('UTF-8','windows-1251',$_SESSION['model']->fio));
-        $modelpokazn->date_pok = date("Y-m-d");
+     //   $modelpokazn->date_pok = date("Y-m-d");
         $modelpokazn->vid_pok = 37;
 
 
@@ -751,7 +751,7 @@ class UtAbonentController extends Controller
                 $modelabonpokazn->name = $_SESSION['model']->fio;
                 $modelabonpokazn->id_abonent = $_SESSION['model']->id;
                 $modelabonpokazn->data = date("Y-m-d");
-                $modelabonpokazn->pokazn = $modelpokazn->pokazn;
+          //      $modelabonpokazn->pokazn = $modelpokazn->pokazn;
                 $modelabonpokazn->vid = 'site';
                 if ($modelabonpokazn->validate()) {
                     $modelabonpokazn->save();
@@ -791,8 +791,8 @@ class UtAbonentController extends Controller
 //                }
 
                // $modelpokazn->date_pok = null;
-                $modelpokazn->date_pok = date("Y-m-d");
-                $modelpokazn->pokaznik = $modelpokazn->pokazn;
+           //     $modelpokazn->date_pok = date("Y-m-d");
+           //     $modelpokazn->pokaznik = $modelpokazn->pokazn;
                 if (!$modelpokazn->save()) {
                     Yii::error($modelpokazn->getErrors(), 'warning');
                 }
