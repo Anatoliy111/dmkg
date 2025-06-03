@@ -59,6 +59,9 @@ class UtDomController extends Controller
 		$searchModel = new SearchDolgDom();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $doms = $dataProvider->getModels();
+
+     //   $rrr2 = $dataProvider->asArray()->all();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
