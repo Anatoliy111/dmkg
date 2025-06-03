@@ -25,7 +25,7 @@ use yii\helpers\Url;
     $prev = 0;
 	echo GridView::widget([
 		'dataProvider' =>  $dataProvider,
-
+        'showPageSummary' => true,
 		'columns' => [
 			['class' => '\kartik\grid\SerialColumn'],
 //			[

@@ -6,6 +6,7 @@ use app\models\DolgDom;
 use app\models\DolgNtarif;
 use app\models\DolgObor;
 use app\models\DolgPeriod;
+use app\models\DOLGVWTAR;
 use app\models\Obor;
 use app\models\UtKart;
 use app\poslug\models\DolgOborNow;
@@ -136,35 +137,47 @@ class UtDomController extends Controller
 //        $dPnach = new ActiveDataProvider([
 //			'query' => $nach,
 //		]);
+        $tardom = DOLGVWTAR::find();
+        $tardom->select('period,name,tarif tartarif,norma tarnorma,naim,vid');
+        $tardom->where(['in', 'kl', $arrkl]);
+        $tardom->andwhere(['period' => $session['perioddom']]);
+        $tardom->andwhere(['not', ['tarif' => null]]);
+        $tardom->andwhere(['<>', 'tarif', 0]);
+        $tardom->orderBy('npp')->asArray()->all();
+//        $res2 = $tardom1->asArray()->all();
+//
+//        $tardom = DolgNtarif::find();
+////        $tardom->select('*');
+//        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
+////        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
+//        $tardom->leftJoin('wid','(ntarif.wid=wid.wid)');
+//        leftJoin('wid','(`nach`.`wid`=`wid`.`wid`)');
+//   //    $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1]);
+//        $tardom->where(['in', 'ntarif.kl', $arrkl]);
+//        $tardom->andwhere(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1]);
+//      //  $tardom->andWhere(['not', ['ntarif.wid' => null]]);
+//        $tardom->orderBy('wid.npp')->asArray()->all();
 
-        $tardom = DolgNtarif::find();
-        $tardom->select('*');
-//        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
-//        $tardom->select('ntarif.period,ntarif.name,ntarif.tarif tartarif,ntarif.norma tarnorma,wid.naim,wid.vid');
-        $tardom->leftJoin('wid','(ntarif.wid=wid.wid)');
-//        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1]);
-        $tardom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl]);
-        $tardom->orderBy('wid.npp')->asArray()->all();
-//
-//
-////        $res2 = $tardom->asArray()->all();
-//
 		$dPtarif= new ActiveDataProvider([
 			'query' => $tardom,
 		]);
 
-        $vodadom = DolgNtarif::find();
-        $vodadom->select('*');
-        $vodadom->leftJoin('wid','(ntarif.wid=wid.wid)');
-        $vodadom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl]);
-        $vodadom->orderBy('wid.npp')->asArray()->all();
+//        $dPtarif = new ArrayDataProvider([
+//            'allModels' => Yii::$app->dolgdb->createCommand('select * from ntarif left join wid as widd on (ntarif.wid=widd.wid) where ntarif.period=\''.$period.'\' and ntarif.kl=\''.$arrkl.'\' and ntarif.upd=1 order by widd.npp')->QueryAll(),
+//        ]);
+
+//        $vodadom = DolgNtarif::find();
+//        $vodadom->select('*');
+//        $vodadom->leftJoin('wid','(ntarif.wid=wid.wid)');
+//        $vodadom->where(['ntarif.period' => $session['perioddom'], 'ntarif.upd'=>1,'ntarif.kl'=>$arrkl]);
+//        $vodadom->orderBy('wid.npp')->asArray()->all();
 //
 //
 ////        $res2 = $tardom->asArray()->all();
 //
-        $dPvoda= new ActiveDataProvider([
-            'query' => $vodadom,
-        ]);
+//        $dPvoda= new ActiveDataProvider([
+//            'query' => $vodadom,
+//        ]);
 
 //        $tt = ArrayHelper::toArray($dPtarif);
 

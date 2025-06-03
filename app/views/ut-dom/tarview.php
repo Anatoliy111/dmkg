@@ -83,15 +83,16 @@ use yii\helpers\Url;
                 }
 			],
 			[
-				'attribute' => 'tarif',
+				'attribute' => 'tartarif',
                 'label'=>'Тариф',
                 'format'=>['decimal', 2],
 
 			],
 			[
-				'attribute' => 'norma',
+				'attribute' => 'tarnorma',
                 'label'=>'Норма',
                 'format'=>['decimal', 3],
+
 			],
 
 
