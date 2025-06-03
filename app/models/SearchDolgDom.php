@@ -97,14 +97,11 @@ class SearchDolgDom extends DolgDom
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            $dom->where('0=1');
-            return $dom;
+            return $dom = [];
         }
 
-        // grid filtering conditions
-        $dom->andFilterWhere([
-            'kl_ul' => $this->kl_ul
-        ]);
+        $dom=Yii::$app->dolgdb->createCommand('select vw_dom.* from vw_dom where kl_ul=\''.$this->kl_ul.'\' order by ulnaim,ndom,nomdom')->QueryAll();
+
 
 //        $query->orderBy('n_dom');
 
