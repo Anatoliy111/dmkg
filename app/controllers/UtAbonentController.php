@@ -490,7 +490,7 @@ class UtAbonentController extends Controller
 //            $opl1=Yii::$app->dolgdb->createCommand('select * from opl_rows(\''.$periodkab.'\',\''.$abon->schet.'\')')->QueryAll();
 
             $dpopl = new ArrayDataProvider([
-                'allModels' => Yii::$app->dolgdb->createCommand('select * from opl_rows(\''.$periodkab.'\',\''.$abon->schet.'\')')->QueryAll(), // запрос на выборку новостей
+                'allModels' => Yii::$app->dolgdb->createCommand('select * from opl_rows(\''.$periodkab.'\',\''.$abon->schet.'\')')->QueryAll(), // запрос на выборку
             ]);
 
 

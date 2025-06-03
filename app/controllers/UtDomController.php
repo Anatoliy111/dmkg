@@ -57,14 +57,20 @@ class UtDomController extends Controller
         $session['perioddom']=null;
 
 		$searchModel = new SearchDolgDom();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $doms = $dataProvider->getModels();
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $alldoms = $searchModel->search2(Yii::$app->request->queryParams);
 
-     //   $rrr2 = $dataProvider->asArray()->all();
+//        $dpdom = new ArrayDataProvider([
+//            'allModels' => Yii::$app->dolgdb->createCommand('select * from vw_dom where kl_ul=\''.$periodkab.'\' and schet=\''.$abon->schet.'\' and subs<>0  order by npp')->QueryAll(),
+//        ]);
+
+        //$doms = $dataProvider->getModels();
+
+       $doms = $alldoms->asArray()->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+          //  'dataProvider' => $dataProvider,
             'doms' => $doms,
         ]);
     }

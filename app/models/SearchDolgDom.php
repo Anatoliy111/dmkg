@@ -4,8 +4,10 @@ namespace app\models;
 
 
 use Yii;
+use yii\base\BaseObject;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 
 /**
@@ -49,8 +51,8 @@ class SearchDolgDom extends DolgDom
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+ //       $dataProvider = new ActiveDataProvider([
+        $dataProvider = new ArrayDataProvider([
 			'pagination' => [
 				'pageSize' => 50,
 			],
@@ -77,11 +79,40 @@ class SearchDolgDom extends DolgDom
 
 //        $query->orderBy('n_dom');
 
-        $query->orderBy(['ulnaim' => SORT_ASC, 'ndom' => SORT_ASC, 'nomdom' => SORT_ASC]);
+      //  $query->orderBy(['ulnaim' => SORT_ASC, 'ndom' => SORT_ASC, 'nomdom' => SORT_ASC]);
 
 
 
         return $dataProvider;
+    }
+
+    public function search2($params)
+    {
+        $dom = DolgDom::find();
+
+
+
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            $dom->where('0=1');
+            return $dom;
+        }
+
+        // grid filtering conditions
+        $dom->andFilterWhere([
+            'kl_ul' => $this->kl_ul
+        ]);
+
+//        $query->orderBy('n_dom');
+
+        //  $query->orderBy(['ulnaim' => SORT_ASC, 'ndom' => SORT_ASC, 'nomdom' => SORT_ASC]);
+
+
+
+        return $dom;
     }
 
 }

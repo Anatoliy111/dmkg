@@ -48,7 +48,7 @@ class DolgDom extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'kl_ul' => 'Kl Ul',
+            'kl_ul' => 'Вулиця',
             'ulnaim' => 'Ulnaim',
             'nomdom' => 'Nomdom',
             'ndom' => 'Ndom',
