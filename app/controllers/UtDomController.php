@@ -137,22 +137,31 @@ class UtDomController extends Controller
 
 
 //        $res = $nach->asArray()->all();
-//        $arrkl = [];
+        $arrkl = '';
 //
         foreach ($nach2 as $kl){
-            $arrkl[] = $kl['kl_ntar'];
+            $arrkl = $arrkl . strval(intval($kl['kl_ntar'])) . ",";
         }
-
+        $arrkl = rtrim($arrkl, ',');
 //        $dPnach = new ActiveDataProvider([
 //			'query' => $nach,
 //		]);
-        $tardom = DOLGVWTAR::find();
-        $tardom->select('period,name,tarif tartarif,norma tarnorma,naim,vid');
-        $tardom->where(['in', 'kl', $arrkl]);
-        $tardom->andwhere(['period' => $session['perioddom']]);
-        $tardom->andwhere(['not', ['tarif' => null]]);
-        $tardom->andwhere(['<>', 'tarif', 0]);
-        $tardom->orderBy('npp')->asArray()->all();
+//        $tardom = DOLGVWTAR::find();
+//        $tardom->select('period,name,tarif tartarif,norma tarnorma,naim,vid');
+//        $tardom->where(['in', 'kl', $arrkl]);
+//        $tardom->andwhere(['period' => $session['perioddom']]);
+//        $tardom->andwhere(['not', ['tarif' => null]]);
+//        $tardom->andwhere(['<>', 'tarif', 0]);
+//        $tardom->orderBy('npp')->asArray()->all();
+
+        $tardom = Yii::$app->dolgdb->createCommand('select period,name,tarif tartarif,norma tarnorma,naim,vid from vw_tar where kl in ('.$arrkl.') and period =\''.$session['perioddom'].'\' and  tarif<>0 and tarif is not null order by npp')->QueryAll();
+//        $tardom = Yii::$app->dolgdb->createCommand('select period,name,tarif tartarif,norma tarnorma,naim,vid from vw_tar where kl in (43,164) and period =\''.$session['perioddom'].'\' and  tarif<>0 and tarif is not null order by npp')->QueryAll();
+
+        $dPtarif = new ArrayDataProvider([
+            'allModels' => $tardom,
+        ]);
+
+
 //        $res2 = $tardom1->asArray()->all();
 //
 //        $tardom = DolgNtarif::find();
@@ -167,9 +176,6 @@ class UtDomController extends Controller
 //      //  $tardom->andWhere(['not', ['ntarif.wid' => null]]);
 //        $tardom->orderBy('wid.npp')->asArray()->all();
 
-		$dPtarif= new ActiveDataProvider([
-			'query' => $tardom,
-		]);
 
 //        $dPtarif = new ArrayDataProvider([
 //            'allModels' => Yii::$app->dolgdb->createCommand('select * from ntarif left join wid as widd on (ntarif.wid=widd.wid) where ntarif.period=\''.$period.'\' and ntarif.kl=\''.$arrkl.'\' and ntarif.upd=1 order by widd.npp')->QueryAll(),
