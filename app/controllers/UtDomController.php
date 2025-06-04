@@ -115,7 +115,9 @@ class UtDomController extends Controller
 	{
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
       //  $modeld = DolgDom::find()->select('ndom')->where(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom])->one();
-        $model = DolgDom::findOne(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom]);
+      //  $model = DolgDom::findOne(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom]);
+        $model = Yii::$app->dolgdb->createCommand('select * from vw_dom where kl_ul =\''.$kl_ul.'\' and  nomdom =\''.$nomdom.'\'order by kl_ul')->QueryAll();
+
 
 //		$model = $this->findModel($kl_ul,$nomdom);
         $session = Yii::$app->session;
@@ -201,7 +203,7 @@ class UtDomController extends Controller
 //        $tt = ArrayHelper::toArray($dPtarif);
 
 		return $this->render('view', [
-			'model' => $model,
+			'model' => $model[0],
 //			'dominfo' => $dominfo,
 			'dPtarif' => $dPtarif,
 			'dPnach' => $dPnach,

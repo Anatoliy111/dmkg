@@ -23,9 +23,9 @@ use yii\widgets\DetailView;
 <?php Pjax::begin(); ?>
 <?php
 //$ul = $model->getUlica()->one();
-$this->title = iconv('windows-1251', 'UTF-8', $model->ulnaim.' '.$model->nomdom);
+$this->title = iconv('windows-1251', 'UTF-8', $model["ulnaim"].' '.$model["nomdom"]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('easyii', 'Ut Doms'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => iconv('windows-1251', 'UTF-8', $model->ulnaim), 'url' => ['index', 'SearchUtDom'=>['id_ulica' => $model->kl_ul]]];
+$this->params['breadcrumbs'][] = ['label' => iconv('windows-1251', 'UTF-8', $model["ulnaim"]), 'url' => ['index', 'SearchUtDom'=>['id_ulica' => $model["kl_ul"]]]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
