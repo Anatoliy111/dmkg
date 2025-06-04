@@ -114,9 +114,10 @@ class UtDomController extends Controller
 	public function actionView($kl_ul,$nomdom)
 	{
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
-        $modeld = DolgDom::find()->select('ndom')->where(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom])->one();
+      //  $modeld = DolgDom::find()->select('ndom')->where(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom])->one();
+        $model = DolgDom::findOne(['kl_ul'=>$kl_ul, 'nomdom'=>$nomdom]);
 
-		$model = $this->findModel($kl_ul,$nomdom);
+//		$model = $this->findModel($kl_ul,$nomdom);
         $session = Yii::$app->session;
         $period=DolgPeriod::find()->select('period')->orderBy(['period' => SORT_DESC])->one()->period;
 		if (Yii::$app->session['perioddom']==null)
