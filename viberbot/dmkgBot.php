@@ -1085,12 +1085,12 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
                 } else {
 
-//                $messageLog = [
-//                    'status' => 'Помилка додавання показника',
-//                    'post' => $modelpokazn->errors
-//                ];
-//
-//                Yii::error($messageLog, 'viber_err');
+                $messageLog = [
+                    'status' => 'Помилка додавання показника',
+                    'post' => $modelpokazn->errors
+                ];
+
+                Yii::error($messageLog, 'viber_err');
                     $meserr = '';
                     $errors = $modelpokazn->getErrors();
                     foreach ($errors as $err) {
@@ -1102,7 +1102,9 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 }
             }
         }
-    } else $mess=null;
+    } else {                    $mess = [];
+        $mess[0] = 'err';
+        $mess[1] = 'Abonent not found!';}
 
     return $mess;
 }
