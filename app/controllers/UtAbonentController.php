@@ -751,7 +751,7 @@ class UtAbonentController extends Controller
                 $modelabonpokazn->name = $_SESSION['model']->fio;
                 $modelabonpokazn->id_abonent = $_SESSION['model']->id;
                 $modelabonpokazn->data = date("Y-m-d");
-          //      $modelabonpokazn->pokazn = $modelpokazn->pokazn;
+                $modelabonpokazn->pokazn = $modelpokazn->pokazn;
                 $modelabonpokazn->vid = 'site';
                 if ($modelabonpokazn->validate()) {
                     $modelabonpokazn->save();
