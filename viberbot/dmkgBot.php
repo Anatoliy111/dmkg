@@ -985,11 +985,13 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
     $mess = [];
     $mess[0] = 'err';
-    $mess[1] = 'addPokazn';
-    
-    return $mess;
+
+
+
 
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
+    $mess[1] = $abonent->fio;
+    return $mess;    
     $nowdate = intval(date('Y').date('m'));
 
 
