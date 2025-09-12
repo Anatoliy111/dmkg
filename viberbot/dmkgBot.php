@@ -1093,8 +1093,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
                 } else {
 
-                    $mess[1] = 'err';
-                    return $mess;                    
+
                 $messageLog = [
                     'status' => 'Помилка додавання показника',
                     'post' => $modelpokazn->errors
