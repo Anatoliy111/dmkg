@@ -62,9 +62,9 @@ class Pokazn extends \yii\db\ActiveRecord
                 $this->lastpokazn = $pok->pokazn;
                 $kub = $this->pokazn-$this->lastpokazn;
                 $period = $session['period'];
-//                if ($this->pokazn<$this->lastpokazn) {
-//                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$this->lastpokazn."! Спробуйте ще!!!");
-//                }
+                if ($this->pokazn<$this->lastpokazn) {
+                    $this->addError($attribute, "Ваш показник меньший за останній зареєстрований показник ".$this->lastpokazn."! Спробуйте ще!!!");
+                }
 //                else {
 //                    if ($kub > 100 and $this->vid_pok <> 21) {
 //                        if (isset($session['bigkub'])) {
