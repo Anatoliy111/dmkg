@@ -59,7 +59,7 @@ class Pokazn extends \yii\db\ActiveRecord
             [['pokazn'], function ($attribute) {
                 $session = Yii::$app->session;
                 $pok = Pokazn::find()->where(['schet' => $this->schet])->andWhere(['or', ['del' => 0], ['del' => null]])->orderBy(['id' => SORT_DESC])->one();
-//                $this->lastpokazn = $pok->pokazn;
+                $this->lastpokazn = $pok->pokazn;
 //                $kub = $this->pokazn-$this->lastpokazn;
 //                $period = $_SESSION['period'];
 //                if ($this->pokazn<$this->lastpokazn) {
