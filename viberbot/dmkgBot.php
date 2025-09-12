@@ -996,8 +996,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
     if ($abonent!=null) {
         $voda = HVoda::find()->where(['schet' => trim($schet), 'yearmon' => $lasdatehvd])->orderBy(['kl' => SORT_DESC])->one();
-        $mess[1] = $voda['schet'];
-        return $mess;
+
         if ($voda['wid']==42) {
             $mess = [];
             $mess[0] = 'err';
@@ -1032,6 +1031,8 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 $modelpokazn->data = date("Y-m-d");
                 $modelpokazn->pokazn = $pokazn;
                 $modelpokazn->vid = 'viber';
+                $mess[1] = $pokazn;
+                return $mess;
                 if ($modelpokazn->validate()) {
                     $modelpokazn->save();
 //            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
