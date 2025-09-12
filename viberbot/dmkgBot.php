@@ -1071,9 +1071,10 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 $modelpokazn->vid_pok = 21;
                 $modelpokazn->fio = trim(iconv('UTF-8', 'windows-1251', $abonent->fio));
 
-                $mess[1] = $pokazn;
-                return $mess;
+
                 if ($modelpokazn->validate()) {
+                    $mess[1] = $pokazn;
+                    return $mess;
 
                     $modelpokazn->save();
 //                $mess = [];
