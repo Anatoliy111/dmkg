@@ -983,6 +983,11 @@ function infoProf($Receiv,$abon){
 function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 {
 
+    $mess = [];
+    $mess[0] = 'err';
+    $mess[1] = 'addPokazn';
+    
+    return $mess;
 
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
     $nowdate = intval(date('Y').date('m'));
