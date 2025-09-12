@@ -1031,8 +1031,7 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 $modelpokazn->data = date("Y-m-d");
                 $modelpokazn->pokazn = $pokazn;
                 $modelpokazn->vid = 'viber';
-                $mess[1] = $pokazn;
-                return $mess;
+
                 if ($modelpokazn->validate()) {
                     $modelpokazn->save();
 //            $meserr='Вітаємо '.$abonent->fio.', ваш показник лічильника холодної води '.'<h2 style="color:#b92c28">'.$pokazn.'</h2>'.'<h3 style="line-height: 1.5;">'.' по рахунку '.$schet.' прийнято в обробку! Наразі відбувається закриття звітного періоду, яке триває від 3-х до 6-ти днів від початку місяця, після чого ваш показник буде оброблено'.'</h3>';
@@ -1072,7 +1071,8 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
                 $modelpokazn->vid_pok = 21;
                 $modelpokazn->fio = trim(iconv('UTF-8', 'windows-1251', $abonent->fio));
 
-
+                $mess[1] = $pokazn;
+                return $mess;
                 if ($modelpokazn->validate()) {
 
                     $modelpokazn->save();
