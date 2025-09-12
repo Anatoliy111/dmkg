@@ -990,14 +990,14 @@ function addPokazn($Receiv,$pokazn, $schet, $lasdatehvd)
 
 
     $abonent = UtAbonent::findOne($Receiv->id_abonent);
-
     $nowdate = intval(date('Y').date('m'));
 
-    $mess[1] = $nowdate;
-    return $mess;
+
 
     if ($abonent!=null) {
         $voda = HVoda::find()->where(['schet' => trim($schet), 'yearmon' => $lasdatehvd])->orderBy(['kl' => SORT_DESC])->one();
+        $mess[1] = $voda['schet'];
+        return $mess;
         if ($voda['wid']==42) {
             $mess = [];
             $mess[0] = 'err';
