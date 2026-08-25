@@ -84,7 +84,7 @@ $year = $my_date->format('php:Y');
 								<span class="separator icon icon-Timer"></span>
 							</div>
 							<div itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" class="content-box">
-								<p itemprop="name">Пн - Пт 8.00 - 17.00 <br/>Сб. Нд. вихідний</p>
+								<p itemprop="name">Пн - Чт 8.00 - 17.15 (Пт 16.00)<br/>Сб. Нд. вихідний</p>
 
 							</div>
 						</div>
