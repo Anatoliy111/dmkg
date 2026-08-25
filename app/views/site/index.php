@@ -260,7 +260,7 @@ if ($informingmodel!=null) {
                                 <i class="fa fa fa-phone"></i>
 
 
-                                <h3>Диспетчер</h3>
+                                <h3>Абон. відділ</h3>
                                 <h4 class="text-primary mb-0">(067) 520-87-30</h4>
 
                         </div>

@@ -76,7 +76,7 @@ $year = $my_date->format('php:Y');
 								<span class="separator icon icon-Phone2"></span>
 							</div>
 							<div class="content-box">
-								<p itemprop="telephone"> +38(066)942-00-12 <br> dmkg28500@ukr.net </p>
+								<p itemprop="telephone"> +38(067) 520-87-30 <br> dmkg28500@ukr.net </p>
 							</div>
 						</div>
 						<div class="top-info">
@@ -172,9 +172,9 @@ $year = $my_date->format('php:Y');
 
 			<div class="col-lg-5 col-md-5 col-sm-4 col-xs-12 footer-tel">
 				<div class="footer-info">
-					<h3 class="block-title heading">Диспетчер (цілодобово)</h3>
+					<h3 class="block-title heading">Абон. відділ</h3>
 					<h4 class="block-title heading">(067) 520-87-30</h4>
-					<h4 class="block-title heading">(066) 942-00-12</h4>
+<!--					<h4 class="block-title heading">(066) 942-00-12</h4>-->
 
 				</div>
 			</div>
